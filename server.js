@@ -14,7 +14,7 @@ const openaiClient = new openai.OpenAI({
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const SECRET_KEY = 'your-secret-key'; // In production, use environment variable
+const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key'; // In production, use environment variable
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -261,6 +261,14 @@ app.post('/admin/job/:id/edit', verifyToken, (req, res) => {
   });
 });
 
+app.post('/admin/application/:id/shortlist', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  db.run('UPDATE applications SET status = ? WHERE id = ?', ['shortlisted', req.params.id], (err) => {
+    if (err) return res.status(500).send('Error shortlisting application');
+    res.redirect('/admin');
+  });
+});
+
 app.get('/interview/:applicationId', verifyToken, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).send('Access denied');
   const appId = req.params.applicationId;
@@ -384,11 +392,35 @@ app.get('/candidate-interview/:jobId', verifyToken, async (req, res) => {
 
 app.post('/candidate-interview/:interviewId/answer', verifyToken, async (req, res) => {
   const { questionId, answer } = req.body;
-  // Get the question text
-  db.get('SELECT question FROM interview_questions WHERE id = ?', [questionId], async (err, q) => {
-    const score = await evaluateAnswer(q.question, answer);
-    db.run('UPDATE interview_questions SET answer = ?, score = ? WHERE id = ?', [answer, score, questionId], (err) => {
-      res.json({ score });
+  // Get the question text and interview details
+  db.get('SELECT iq.question, i.application_id FROM interview_questions iq JOIN interviews i ON iq.interview_id = i.id WHERE iq.id = ?', [questionId], async (err, qData) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    
+    const score = await evaluateAnswer(qData.question, answer);
+    db.run('UPDATE interview_questions SET answer = ?, score = ? WHERE id = ?', [answer, score, questionId], async (err) => {
+      if (err) return res.status(500).json({ error: 'Update error' });
+      
+      // If score is low (< 70), generate a follow-up question
+      let followUpQuestion = null;
+      if (score < 70) {
+        // Get job details for context
+        db.get('SELECT j.* FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.id = ?', [qData.application_id], async (err, job) => {
+          if (!err && job) {
+            followUpQuestion = await generateFollowUpQuestion(qData.question, answer, job.category);
+            if (followUpQuestion) {
+              // Insert follow-up question
+              db.run('INSERT INTO interview_questions (interview_id, question) VALUES (?, ?)', [req.params.interviewId, followUpQuestion], function(err) {
+                if (!err) {
+                  followUpQuestion = { id: this.lastID, question: followUpQuestion };
+                }
+              });
+            }
+          }
+          res.json({ score, followUp: followUpQuestion });
+        });
+      } else {
+        res.json({ score });
+      }
     });
   });
 });
@@ -514,4 +546,27 @@ function fallbackScoring(answer) {
   if (answer.length > 100) score += 20;
   if (answer.length > 200) score += 10;
   return Math.min(score, 100);
+}
+
+async function generateFollowUpQuestion(originalQuestion, answer, category) {
+  try {
+    const prompt = `Based on this interview question and answer, generate one follow-up question to probe deeper.
+    
+Original Question: ${originalQuestion}
+Candidate's Answer: ${answer}
+Job Category: ${category}
+
+The follow-up should be relevant, specific, and help assess the candidate's expertise. Return only the follow-up question.`;
+
+    const response = await openaiClient.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 100
+    });
+
+    return response.choices[0].message.content.trim();
+  } catch (error) {
+    console.log('Follow-up generation error:', error.message);
+    return null;
+  }
 }

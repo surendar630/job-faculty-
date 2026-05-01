@@ -1,3 +1,5 @@
+# Render deployment configuration for Job Faculty Portal
+# Features: AI-powered interviews, resume shortlisting, job applications
 services:
   - type: web
     name: job-faculty
@@ -7,3 +9,7 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: OPENAI_API_KEY
+        value: your-openai-api-key-here  # Required for AI interview assistance
+      - key: JWT_SECRET
+        value: your-jwt-secret-key-here  # Required for secure authentication

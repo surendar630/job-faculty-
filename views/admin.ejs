@@ -360,14 +360,22 @@
   <!-- APPLICATIONS SECTION -->
   <div class="applications-section">
     <h3 class="section-title"><i class="fas fa-file-alt"></i> Candidate Applications</h3>
-    <div class="applications-list">
+    <div style="margin-bottom: 1rem;">
+      <label for="statusFilter" style="font-weight: 600; margin-right: 0.5rem;">Filter by Status:</label>
+      <select id="statusFilter" onchange="filterApplications()" style="padding: 0.5rem; border-radius: 6px; border: 1px solid #e2e8f0;">
+        <option value="all">All Applications</option>
+        <option value="pending">Pending</option>
+        <option value="shortlisted">Shortlisted</option>
+      </select>
+    </div>
+    <div class="applications-list" id="applicationsList">
       <% if (applications.length === 0) { %>
         <div class="empty-state">
           <i class="fas fa-inbox"></i>
           <p>No applications yet. Candidates will appear here once they apply!</p>
         </div>
       <% } else { applications.forEach(app => { %>
-        <div class="application-item">
+        <div class="application-item" data-status="<%= app.status %>">
           <div class="app-item-header">
             <div>
               <h4 class="app-item-title"><i class="fas fa-file-alt"></i> <%= app.job_title %></h4>
@@ -404,6 +412,23 @@
     </div>
   </div>
 </div>
+
+<script>
+function filterApplications() {
+  const filter = document.getElementById('statusFilter').value;
+  const items = document.querySelectorAll('.application-item');
+  items.forEach(item => {
+    if (filter === 'all' || item.getAttribute('data-status') === filter) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// Initialize filter
+filterApplications();
+</script>
 
 </body>
 </html>

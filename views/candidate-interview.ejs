@@ -104,7 +104,27 @@ function submitAnswer(questionId, questionIndex) {
     updateProgress();
     // Hide the question
     document.getElementById('question' + questionIndex).style.opacity = '0.5';
+    
+    // If there's a follow-up question, add it
+    if (data.followUp) {
+      addFollowUpQuestion(data.followUp, totalQuestions);
+      totalQuestions++;
+    }
   });
+}
+
+function addFollowUpQuestion(followUp, questionIndex) {
+  const questionDiv = document.createElement('div');
+  questionDiv.className = 'question';
+  questionDiv.id = 'question' + questionIndex;
+  questionDiv.innerHTML = `
+    <h3>Follow-up Question: ${followUp.question}</h3>
+    <textarea id="answer${followUp.id}" placeholder="Type or speak your answer..."></textarea>
+    <button class="btn voice-btn" onclick="startVoice(${followUp.id})">🎤 Voice Input</button>
+    <button class="btn" onclick="submitAnswer(${followUp.id}, ${questionIndex})">Submit Answer</button>
+    <div class="score"></div>
+  `;
+  document.querySelector('div[style="padding:20px;"]').appendChild(questionDiv);
 }
 
 function completeInterview() {
