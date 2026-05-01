@@ -152,19 +152,19 @@
     <h3><i class="fas fa-chart-bar"></i> Your Activity</h3>
     <div class="quick-stats">
       <div class="quick-stat">
-        <div class="quick-stat-number">0</div>
+        <div class="quick-stat-number"><%= stats.applications %></div>
         <div class="quick-stat-label">Applications</div>
       </div>
       <div class="quick-stat">
-        <div class="quick-stat-number">0</div>
+        <div class="quick-stat-number"><%= stats.interviews %></div>
         <div class="quick-stat-label">Interviews</div>
       </div>
       <div class="quick-stat">
-        <div class="quick-stat-number">0</div>
-        <div class="quick-stat-label">Offers</div>
+        <div class="quick-stat-number"><%= stats.offers %></div>
+        <div class="quick-stat-label">Completed</div>
       </div>
       <div class="quick-stat">
-        <div class="quick-stat-number">0</div>
+        <div class="quick-stat-number"><%= stats.favorites %></div>
         <div class="quick-stat-label">Favorites</div>
       </div>
     </div>
@@ -191,10 +191,10 @@
 
       <% if (user.role === 'admin') { %>
       <div class="dashboard-card" onclick="window.location.href='/admin'">
-        <i class="fas fa-cog"></i>
-        <h3>Admin Panel</h3>
-        <p>Manage job postings, applications, and candidate interviews.</p>
-        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Admin Dashboard</button>
+        <i class="fas fa-check-circle"></i>
+        <h3>Resume Shortlisting</h3>
+        <p>Review and shortlist candidate applications for faculty positions.</p>
+        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Manage Applications</button>
       </div>
       <% } %>
 
@@ -206,10 +206,10 @@
       </div>
 
       <div class="dashboard-card" onclick="window.location.href='/profile'">
-        <i class="fas fa-microphone"></i>
-        <h3>AI Interviews</h3>
-        <p>Participate in AI-powered interview sessions for applied positions.</p>
-        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> View Interviews</button>
+        <i class="fas fa-robot"></i>
+        <h3>AI Interview Prep</h3>
+        <p>Practice with AI-powered interview questions and get instant feedback.</p>
+        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Start Interview</button>
       </div>
 
       <div class="dashboard-card" onclick="window.location.href='/jobs'">

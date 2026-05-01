@@ -138,7 +138,20 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/dashboard', verifyToken, (req, res) => {
-  res.render('dashboard', { user: req.user });
+  // Get user statistics
+  db.get('SELECT COUNT(*) as application_count FROM applications WHERE user_id = ?', [req.user.id], (err, appStats) => {
+    db.get('SELECT COUNT(*) as interview_count FROM interviews i JOIN applications a ON i.application_id = a.id WHERE a.user_id = ?', [req.user.id], (err, interviewStats) => {
+      db.get('SELECT COUNT(*) as completed_interview_count FROM interviews i JOIN applications a ON i.application_id = a.id WHERE a.user_id = ? AND i.status = "completed"', [req.user.id], (err, completedStats) => {
+        const stats = {
+          applications: appStats ? appStats.application_count : 0,
+          interviews: interviewStats ? interviewStats.interview_count : 0,
+          offers: completedStats ? completedStats.completed_interview_count : 0, // Using completed interviews as proxy for offers
+          favorites: 0 // Could be implemented later with a favorites table
+        };
+        res.render('dashboard', { user: req.user, stats: stats });
+      });
+    });
+  });
 });
 
 app.post('/register', (req, res) => {
