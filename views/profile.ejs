@@ -5,45 +5,257 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Profile - AcademiaPro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/styles.css" rel="stylesheet">
 <style>
-body { font-family: 'DM Sans', sans-serif; background: #f8f4ed; margin: 0; }
-nav { background: #122040; color: white; padding: 15px; display: flex; justify-content: space-between; }
-.logo { font-size: 22px; font-weight: bold; }
-.nav-links span { margin: 0 10px; cursor: pointer; }
-.profile { background: white; margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.profile-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.profile-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.profile-info-card {
+  background: rgba(255,255,255,0.15);
+  padding: 1.5rem;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.profile-info-label {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.profile-info-value {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 500;
+}
+
+.applications-section {
+  margin-top: 2rem;
+}
+
+.applications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.application-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  border-left: 4px solid #6366f1;
+  transition: var(--transition);
+}
+
+.application-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.app-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-top: 0;
+}
+
+.app-university {
+  color: #6366f1;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.app-meta {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.app-status {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 1rem 0;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-shortlisted {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-accepted {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.interview-score {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.score-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.score-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.empty-state {
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.app-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.app-actions .btn {
+  flex: 1;
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  margin: 0;
+}
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
-  <div class="logo">AcademiaPro</div>
+  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
   <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'">Dashboard</span>
-    <span onclick="window.location.href='/jobs'">Jobs</span>
-    <span onclick="window.location.href='/profile'">Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
-    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+    <form action="/logout" method="POST" style="display:inline;">
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
   </div>
 </nav>
-<div class="profile">
-  <h1>Your Profile</h1>
-  <p><strong>Name:</strong> <%= user.name %></p>
-  <p><strong>Email:</strong> <%= user.email %></p>
-  <p><strong>Role:</strong> <%= user.role %></p>
 
-  <h2>Your Applications</h2>
-  <% if (applications.length === 0) { %>
-    <p>No applications yet.</p>
-  <% } else { %>
-    <% applications.forEach(app => { %>
-      <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-        <h3><%= app.title %></h3>
-        <p><%= app.university %> - <%= app.location %></p>
-        <p>Status: <%= app.status %></p>
-        <p>Applied: <%= new Date(app.applied_at).toLocaleDateString() %></p>        <% if (app.interview_score !== null) { %>
-          <p>Interview Score: <%= app.interview_score %>%</p>
-        <% } %>      </div>
-    <% }); %>
-  <% } %>
+<div class="container">
+  <!-- PROFILE HEADER -->
+  <div class="profile-header">
+    <h1><i class="fas fa-user-circle"></i> Your Profile</h1>
+    <div class="profile-info" style="margin-top: 1.5rem;">
+      <div class="profile-info-card">
+        <div class="profile-info-label"><i class="fas fa-user"></i> Name</div>
+        <div class="profile-info-value"><%= user.name %></div>
+      </div>
+      <div class="profile-info-card">
+        <div class="profile-info-label"><i class="fas fa-envelope"></i> Email</div>
+        <div class="profile-info-value"><%= user.email %></div>
+      </div>
+      <div class="profile-info-card">
+        <div class="profile-info-label"><i class="fas fa-id-badge"></i> Role</div>
+        <div class="profile-info-value"><%= user.role.toUpperCase() %></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATIONS SECTION -->
+  <div class="applications-section">
+    <h2 style="font-size: 1.8rem; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> Your Applications</h2>
+    
+    <% if (applications.length === 0) { %>
+      <div class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <h3>No applications yet</h3>
+        <p>Start exploring job opportunities and apply to positions that interest you.</p>
+        <a href="/jobs" class="btn btn-primary" style="display: inline-block; margin-top: 1rem;"><i class="fas fa-briefcase"></i> Browse Jobs</a>
+      </div>
+    <% } else { %>
+      <div class="applications-grid">
+        <% applications.forEach(app => { %>
+          <div class="application-card">
+            <h3 class="app-title"><i class="fas fa-file-alt"></i> <%= app.title %></h3>
+            <p class="app-university"><i class="fas fa-school"></i> <%= app.university %></p>
+            
+            <div class="app-meta">
+              <span><i class="fas fa-map-marker-alt"></i> <%= app.location %></span>
+              <span><i class="fas fa-calendar"></i> <%= new Date(app.applied_at).toLocaleDateString() %></span>
+            </div>
+
+            <div class="app-status status-<%= app.status.toLowerCase() %>">
+              <i class="fas fa-tag"></i> <%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %>
+            </div>
+
+            <% if (app.interview_score !== null) { %>
+              <div class="interview-score">
+                <div class="score-label">Interview Score</div>
+                <div class="score-value"><%= app.interview_score %>%</div>
+              </div>
+            <% } %>
+
+            <div class="app-actions">
+              <a href="/job/<%= app.job_id %>" class="btn btn-primary" style="text-decoration: none;">
+                <i class="fas fa-eye"></i> View Job
+              </a>
+              <% if (app.status === 'applied' || app.interview_score === null) { %>
+                <a href="/candidate-interview/<%= app.job_id %>" class="btn btn-secondary" style="text-decoration: none;">
+                  <i class="fas fa-microphone"></i> Take Interview
+                </a>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
 </div>
+
 </body>
 </html>

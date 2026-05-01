@@ -5,50 +5,312 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Job Details - AcademiaPro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/styles.css" rel="stylesheet">
 <style>
-body { font-family: 'DM Sans', sans-serif; background: #f8f4ed; margin: 0; }
-nav { background: #122040; color: white; padding: 15px; display: flex; justify-content: space-between; }
-.logo { font-size: 22px; font-weight: bold; }
-.nav-links span { margin: 0 10px; cursor: pointer; }
-.job-detail { background: white; margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.btn { background: #0a1628; color: white; padding: 8px 15px; border: none; cursor: pointer; }
+.detail-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.detail-header h1 {
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.detail-header p {
+  color: rgba(255,255,255,0.9);
+  margin: 0.25rem 0;
+  font-size: 1rem;
+}
+
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.info-card {
+  background: rgba(255,255,255,0.15);
+  padding: 1rem;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.info-card-label {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.info-card-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+}
+
+.content-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.detail-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-md);
+  border-left: 4px solid #6366f1;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #0f172a;
+  border-bottom: 2px solid #6366f1;
+  padding-bottom: 1rem;
+}
+
+.section-header i {
+  color: #6366f1;
+  font-size: 1.5rem;
+}
+
+.section-content {
+  color: #64748b;
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+
+.section-content ul,
+.section-content ol {
+  padding-left: 2rem;
+}
+
+.section-content li {
+  margin-bottom: 0.5rem;
+}
+
+.salary-badge {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.action-buttons .btn {
+  flex: 1;
+  min-width: 200px;
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.status-badge {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.requirements-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.requirement-item {
+  background: #f0f4ff;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #6366f1;
+}
+
+.requirement-item i {
+  color: #6366f1;
+  margin-right: 0.5rem;
+}
+
+.breadcrumb {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.breadcrumb a {
+  color: #6366f1;
+  transition: var(--transition);
+}
+
+.breadcrumb a:hover {
+  color: #8b5cf6;
+}
+
+.breadcrumb-separator {
+  color: #cbd5e1;
+}
+
+@media (max-width: 768px) {
+  .detail-header {
+    padding: 2rem 1rem;
+  }
+
+  .detail-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .detail-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons .btn {
+    width: 100%;
+  }
+
+  .requirements-list {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
-  <div class="logo">AcademiaPro</div>
+  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
   <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'">Dashboard</span>
-    <span onclick="window.location.href='/jobs'">Jobs</span>
-    <span onclick="window.location.href='/profile'">Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
-    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+    <form action="/logout" method="POST" style="display:inline;">
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
   </div>
 </nav>
-<div class="job-detail">
-  <h1><%= job.title %></h1>
-  <p><strong>University:</strong> <%= job.university %></p>
-  <p><strong>Location:</strong> <%= job.location %></p>
-  <p><strong>Salary:</strong> <%= job.salary %></p>
-  <p><strong>Category:</strong> <%= job.category %></p>
-  <% if (job.description) { %>
-    <h3>Job Description</h3>
-    <p><%= job.description %></p>
-  <% } %>
-  <% if (job.requirements) { %>
-    <h3>Requirements</h3>
-    <p><%= job.requirements %></p>
-  <% } %>
-  <% if (applied) { %>
-    <p style="color: green;">You have already applied for this job.</p>
-    <a href="/candidate-interview/<%= job.id %>"><button class="btn">Take Interview</button></a>
-  <% } else { %>
-    <form action="/apply/<%= job.id %>" method="POST">
-      <button class="btn" type="submit">Apply Now</button>
-    </form>
-  <% } %>
-  <br><br>
-  <a href="/jobs"><button class="btn" style="background: #17a2b8;">More Vacancies</button></a>
+
+<div class="container">
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="/jobs"><i class="fas fa-briefcase"></i> Jobs</a>
+    <span class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></span>
+    <span><i class="fas fa-file"></i> Job Details</span>
+  </div>
+
+  <!-- HEADER -->
+  <div class="detail-header">
+    <h1><i class="fas fa-briefcase"></i> <%= job.title %></h1>
+    <p><i class="fas fa-school"></i> <%= job.university %></p>
+    
+    <div class="detail-info-grid">
+      <div class="info-card">
+        <div class="info-card-label"><i class="fas fa-map-marker-alt"></i> Location</div>
+        <div class="info-card-value"><%= job.location %></div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label"><i class="fas fa-tag"></i> Category</div>
+        <div class="info-card-value"><%= job.category %></div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label"><i class="fas fa-dollar-sign"></i> Salary</div>
+        <div class="info-card-value"><%= job.salary %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- STATUS -->
+    <% if (applied) { %>
+      <div class="status-badge"><i class="fas fa-check-circle"></i> You have already applied for this position</div>
+    <% } %>
+
+    <!-- JOB DESCRIPTION -->
+    <% if (job.description) { %>
+      <div class="detail-section">
+        <div class="section-header">
+          <i class="fas fa-align-left"></i> Job Description
+        </div>
+        <div class="section-content">
+          <%= job.description %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- REQUIREMENTS -->
+    <% if (job.requirements) { %>
+      <div class="detail-section">
+        <div class="section-header">
+          <i class="fas fa-list-check"></i> Key Requirements
+        </div>
+        <div class="section-content">
+          <%= job.requirements %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-buttons">
+      <% if (applied) { %>
+        <a href="/candidate-interview/<%= job.id %>" class="btn btn-success" style="text-decoration: none; text-align: center;">
+          <i class="fas fa-microphone"></i> Take Interview
+        </a>
+      <% } else { %>
+        <form action="/apply/<%= job.id %>" method="POST" style="flex: 1;">
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            <i class="fas fa-paper-plane"></i> Apply Now
+          </button>
+        </form>
+      <% } %>
+      
+      <button class="btn btn-secondary" onclick="window.location.href='/jobs'" style="text-decoration: none;">
+        <i class="fas fa-arrow-left"></i> Back to Jobs
+      </button>
+    </div>
+
+    <!-- MORE VACANCIES -->
+    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f8fafc; border-radius: 12px;">
+      <h3 style="color: #0f172a; margin-top: 0;">Looking for more opportunities?</h3>
+      <p style="color: #64748b; margin-bottom: 1.5rem;">Explore other available positions from universities worldwide.</p>
+      <a href="/jobs" class="btn btn-primary"><i class="fas fa-briefcase"></i> View All Vacancies</a>
+    </div>
+  </div>
 </div>
+
 </body>
 </html>

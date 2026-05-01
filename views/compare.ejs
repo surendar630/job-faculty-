@@ -5,84 +5,287 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Compare Jobs - AcademiaPro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/styles.css" rel="stylesheet">
 <style>
-body { font-family: 'DM Sans', sans-serif; background: #f8f4ed; margin: 0; }
-nav { background: #122040; color: white; padding: 15px; display: flex; justify-content: space-between; }
-.logo { font-size: 22px; font-weight: bold; }
-.nav-links span { margin: 0 10px; cursor: pointer; }
-.compare-table { background: white; margin: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
-th { background: #f2f2f2; }
-.btn { background: #0a1628; color: white; padding: 8px 15px; border: none; cursor: pointer; }
+.compare-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.compare-header h1 {
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.compare-header p {
+  color: rgba(255,255,255,0.9);
+}
+
+.compare-table-wrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.compare-table th {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+.compare-table td {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #64748b;
+}
+
+.compare-table tr:last-child td {
+  border-bottom: none;
+}
+
+.attribute-name {
+  font-weight: 600;
+  color: #0f172a;
+  background: #f8fafc;
+  width: 150px;
+  min-width: 150px;
+}
+
+.job-column {
+  background: #f8fafc;
+  font-weight: 500;
+  color: #6366f1;
+}
+
+.salary-cell {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.category-badge {
+  background: #f0f4ff;
+  color: #6366f1;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.comparison-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.comparison-actions .btn {
+  margin: 0;
+}
+
+.mobile-compare {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .compare-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .compare-table {
+    min-width: 800px;
+  }
+}
+
+@media (max-width: 768px) {
+  .compare-table {
+    display: none;
+  }
+
+  .mobile-compare {
+    display: block;
+  }
+
+  .mobile-job-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #6366f1;
+  }
+
+  .mobile-job-card h3 {
+    margin-top: 0;
+    color: #6366f1;
+  }
+
+  .mobile-job-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .mobile-job-row:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-job-label {
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  .mobile-job-value {
+    color: #64748b;
+    text-align: right;
+  }
+}
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
-  <div class="logo">AcademiaPro</div>
+  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
   <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'">Dashboard</span>
-    <span onclick="window.location.href='/jobs'">Jobs</span>
-    <span onclick="window.location.href='/profile'">Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
-    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+    <form action="/logout" method="POST" style="display:inline;">
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
   </div>
 </nav>
 
-<div style="padding:20px;">
-  <h1>Compare Jobs</h1>
-  <div class="compare-table">
-    <table>
-      <tr>
-        <th>Attribute</th>
-        <% jobs.forEach(job => { %>
-          <th><%= job.title %></th>
-        <% }); %>
-      </tr>
-      <tr>
-        <td><strong>University</strong></td>
-        <% jobs.forEach(job => { %>
-          <td><%= job.university %></td>
-        <% }); %>
-      </tr>
-      <tr>
-        <td><strong>Location</strong></td>
-        <% jobs.forEach(job => { %>
-          <td><%= job.location %></td>
-        <% }); %>
-      </tr>
-      <tr>
-        <td><strong>Salary</strong></td>
-        <% jobs.forEach(job => { %>
-          <td><%= job.salary %></td>
-        <% }); %>
-      </tr>
-      <tr>
-        <td><strong>Category</strong></td>
-        <% jobs.forEach(job => { %>
-          <td><%= job.category %></td>
-        <% }); %>
-      </tr>
-      <tr>
-        <td><strong>Description</strong></td>
-        <% jobs.forEach(job => { %>
-          <td><%= job.description %></td>
-        <% }); %>
-      </tr>
-      <tr>
-        <td><strong>Requirements</strong></td>
-        <% jobs.forEach(job => { %>
-          <td><%= job.requirements %></td>
-        <% }); %>
-      </tr>
-      <tr>
-        <td><strong>Action</strong></td>
-        <% jobs.forEach(job => { %>
-          <td><button class="btn" onclick="window.location.href='/job/<%= job.id %>'">View Details</button></td>
-        <% }); %>
-      </tr>
+<div class="container">
+  <!-- HEADER -->
+  <div class="compare-header">
+    <h1><i class="fas fa-chart-line"></i> Compare Job Offers</h1>
+    <p>Side-by-side comparison of your selected positions</p>
+  </div>
+
+  <!-- DESKTOP VIEW -->
+  <div class="compare-table-wrapper">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Comparison Criteria</th>
+          <% jobs.forEach(job => { %>
+            <th class="job-column"><%= job.title %></th>
+          <% }); %>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="attribute-name"><i class="fas fa-school"></i> University</td>
+          <% jobs.forEach(job => { %>
+            <td><strong><%= job.university %></strong></td>
+          <% }); %>
+        </tr>
+        <tr>
+          <td class="attribute-name"><i class="fas fa-map-marker-alt"></i> Location</td>
+          <% jobs.forEach(job => { %>
+            <td><%= job.location %></td>
+          <% }); %>
+        </tr>
+        <tr>
+          <td class="attribute-name"><i class="fas fa-dollar-sign"></i> Salary</td>
+          <% jobs.forEach(job => { %>
+            <td class="salary-cell"><%= job.salary %></td>
+          <% }); %>
+        </tr>
+        <tr>
+          <td class="attribute-name"><i class="fas fa-tag"></i> Category</td>
+          <% jobs.forEach(job => { %>
+            <td><span class="category-badge"><%= job.category %></span></td>
+          <% }); %>
+        </tr>
+        <tr>
+          <td class="attribute-name"><i class="fas fa-align-left"></i> Description</td>
+          <% jobs.forEach(job => { %>
+            <td><%= job.description %></td>
+          <% }); %>
+        </tr>
+        <tr>
+          <td class="attribute-name"><i class="fas fa-list-check"></i> Requirements</td>
+          <% jobs.forEach(job => { %>
+            <td><%= job.requirements %></td>
+          <% }); %>
+        </tr>
+        <tr>
+          <td class="attribute-name"><i class="fas fa-arrow-right"></i> Action</td>
+          <% jobs.forEach(job => { %>
+            <td>
+              <button class="btn btn-primary" onclick="window.location.href='/job/<%= job.id %>'">
+                <i class="fas fa-eye"></i> View Details
+              </button>
+            </td>
+          <% }); %>
+        </tr>
+      </tbody>
     </table>
   </div>
+
+  <!-- MOBILE VIEW -->
+  <div class="mobile-compare">
+    <% jobs.forEach(job => { %>
+      <div class="mobile-job-card">
+        <h3><i class="fas fa-briefcase"></i> <%= job.title %></h3>
+        
+        <div class="mobile-job-row">
+          <span class="mobile-job-label"><i class="fas fa-school"></i> University</span>
+          <span class="mobile-job-value"><strong><%= job.university %></strong></span>
+        </div>
+
+        <div class="mobile-job-row">
+          <span class="mobile-job-label"><i class="fas fa-map-marker-alt"></i> Location</span>
+          <span class="mobile-job-value"><%= job.location %></span>
+        </div>
+
+        <div class="mobile-job-row">
+          <span class="mobile-job-label"><i class="fas fa-dollar-sign"></i> Salary</span>
+          <span class="mobile-job-value" style="color: #10b981; font-weight: 700;"><%= job.salary %></span>
+        </div>
+
+        <div class="mobile-job-row">
+          <span class="mobile-job-label"><i class="fas fa-tag"></i> Category</span>
+          <span class="mobile-job-value"><span class="category-badge"><%= job.category %></span></span>
+        </div>
+
+        <div style="padding: 0.75rem 0; text-align: center;">
+          <button class="btn btn-primary" onclick="window.location.href='/job/<%= job.id %>'" style="width: 100%;">
+            <i class="fas fa-eye"></i> View Details
+          </button>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: #f8fafc; border-radius: 12px;">
+    <h3 style="color: #0f172a; margin-top: 0;">Need more options?</h3>
+    <a href="/jobs" class="btn btn-primary"><i class="fas fa-briefcase"></i> Browse More Jobs</a>
+    <a href="/dashboard" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+  </div>
 </div>
+
 </body>
 </html>

@@ -3,70 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jobs - AcademiaPro</title>
+<title>Available Jobs - AcademiaPro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/styles.css" rel="stylesheet">
 <style>
-body { font-family: 'DM Sans', sans-serif; background: #f8f4ed; margin: 0; }
-nav { background: #122040; color: white; padding: 15px; display: flex; justify-content: space-between; }
-.logo { font-size: 22px; font-weight: bold; }
-.nav-links span { margin: 0 10px; cursor: pointer; }
-.filters { background: white; padding: 20px; margin: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.job-card { background: white; margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; }
-.job-info { flex: 1; }
-.btn { background: #0a1628; color: white; padding: 8px 15px; border: none; cursor: pointer; margin: 5px; }
-.compare-btn { background: #28a745; }
+.page-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.page-header h1 {
+  color: white;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: rgba(255,255,255,0.9);
+  font-size: 1rem;
+}
+
+.filters-header {
+  background: white;
+  padding: 1.5rem;
+  margin: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  border-left: 4px solid #6366f1;
+}
+
+.filters-header h3 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #0f172a;
+}
+
+.filters form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.filters input,
+.filters select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+
+.filters input:focus,
+.filters select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.filters button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+.filters button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.jobs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.jobs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.jobs-count {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.compare-section {
+  background: #f0f4ff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid #6366f1;
+}
+
+.compare-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  padding: 0.75rem 1.5rem !important;
+}
+
+.jobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.job-card-wrapper {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  border-left: 4px solid #6366f1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.job-card-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-left-color: #8b5cf6;
+}
+
+.job-card-wrapper input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  accent-color: #6366f1;
+}
+
+.job-card-content {
+  flex: 1;
+}
+
+.job-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.job-university {
+  color: #6366f1;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.job-meta-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.job-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.job-salary {
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.job-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.job-actions .btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .job-card-wrapper {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .job-meta-row {
+    justify-content: center;
+  }
+
+  .job-actions {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .filters form {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+}
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
-  <div class="logo">AcademiaPro</div>
+  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
   <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'">Dashboard</span>
-    <span onclick="window.location.href='/jobs'">Jobs</span>
-    <span onclick="window.location.href='/profile'">Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
-    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+    <form action="/logout" method="POST" style="display:inline;">
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
   </div>
 </nav>
 
-<div class="filters">
-  <form action="/jobs" method="GET">
-    <input type="text" name="search" placeholder="Search jobs..." value="<%= search || '' %>">
-    <select name="category">
-      <option value="">All Categories</option>
-      <option value="Computer Science" <%= category === 'Computer Science' ? 'selected' : '' %>>Computer Science</option>
-      <option value="Data Science" <%= category === 'Data Science' ? 'selected' : '' %>>Data Science</option>
-      <option value="Machine Learning" <%= category === 'Machine Learning' ? 'selected' : '' %>>Machine Learning</option>
-      <option value="Engineering" <%= category === 'Engineering' ? 'selected' : '' %>>Engineering</option>
-      <option value="Mathematics" <%= category === 'Mathematics' ? 'selected' : '' %>>Mathematics</option>
-      <option value="Cybersecurity" <%= category === 'Cybersecurity' ? 'selected' : '' %>>Cybersecurity</option>
-    </select>
-    <input type="text" name="location" placeholder="Location" value="<%= location || '' %>">
-    <select name="sort">
-      <option value="">Sort by</option>
-      <option value="salary" <%= sort === 'salary' ? 'selected' : '' %>>Salary</option>
-    </select>
-    <button type="submit" class="btn">Filter</button>
-  </form>
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1><i class="fas fa-briefcase"></i> Available Opportunities</h1>
+  <p>Explore faculty and professor positions from universities worldwide</p>
 </div>
 
-<form action="/compare" method="POST" id="compareForm">
-  <div style="padding:20px;">
-    <h1>Available Jobs</h1>
-    <button type="submit" class="btn compare-btn">Compare Selected</button>
-    <% jobs.forEach(job => { %>
-      <div class="job-card">
-        <input type="checkbox" name="jobIds" value="<%= job.id %>" style="margin-right: 10px;">
-        <div class="job-info">
-          <h3><%= job.title %></h3>
-          <p><%= job.university %> - <%= job.location %> | <%= job.category %></p>
-          <p><b><%= job.salary %></b></p>
-        </div>
-        <button class="btn" onclick="window.location.href='/job/<%= job.id %>'">View Details</button>
-      </div>
-    <% }); %>
+<!-- FILTERS -->
+<div class="filters-header">
+  <h3><i class="fas fa-filter"></i> Filter Jobs</h3>
+  <div class="filters">
+    <form action="/jobs" method="GET">
+      <input type="text" name="search" placeholder="Search by title or university..." value="<%= search || '' %>">
+      <select name="category">
+        <option value="">All Categories</option>
+        <option value="Computer Science" <%= category === 'Computer Science' ? 'selected' : '' %>>Computer Science</option>
+        <option value="Data Science" <%= category === 'Data Science' ? 'selected' : '' %>>Data Science</option>
+        <option value="Machine Learning" <%= category === 'Machine Learning' ? 'selected' : '' %>>Machine Learning</option>
+        <option value="Engineering" <%= category === 'Engineering' ? 'selected' : '' %>>Engineering</option>
+        <option value="Mathematics" <%= category === 'Mathematics' ? 'selected' : '' %>>Mathematics</option>
+        <option value="Cybersecurity" <%= category === 'Cybersecurity' ? 'selected' : '' %>>Cybersecurity</option>
+      </select>
+      <input type="text" name="location" placeholder="Location" value="<%= location || '' %>">
+      <select name="sort">
+        <option value="">Sort by</option>
+        <option value="salary" <%= sort === 'salary' ? 'selected' : '' %>>Salary (High to Low)</option>
+      </select>
+      <button type="submit"><i class="fas fa-search"></i> Filter</button>
+    </form>
   </div>
-</form>
+</div>
+
+<div class="jobs-container">
+  <!-- COMPARE SECTION -->
+  <form action="/compare" method="POST" id="compareForm">
+    <div class="compare-section">
+      <div class="jobs-count">
+        <i class="fas fa-list"></i> <strong><%= jobs.length %></strong> positions available
+      </div>
+      <button type="submit" class="btn compare-btn"><i class="fas fa-chart-line"></i> Compare Selected Jobs</button>
+    </div>
+
+    <!-- JOBS LIST -->
+    <div class="jobs-list">
+      <% if (jobs.length > 0) { %>
+        <% jobs.forEach(job => { %>
+          <div class="job-card-wrapper">
+            <input type="checkbox" name="jobIds" value="<%= job.id %>">
+            <div class="job-card-content">
+              <div class="job-title"><i class="fas fa-briefcase"></i> <%= job.title %></div>
+              <div class="job-university"><i class="fas fa-school"></i> <%= job.university %></div>
+              
+              <div class="job-meta-row">
+                <div class="job-meta-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <%= job.location %>
+                </div>
+                <div class="job-meta-item">
+                  <i class="fas fa-tag"></i>
+                  <%= job.category %>
+                </div>
+              </div>
+
+              <div class="job-salary"><i class="fas fa-dollar-sign"></i> <%= job.salary %></div>
+            </div>
+
+            <div class="job-actions">
+              <button type="button" class="btn btn-primary" onclick="window.location.href='/job/<%= job.id %>'">
+                <i class="fas fa-arrow-right"></i> View Details
+              </button>
+            </div>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="empty-state">
+          <i class="fas fa-search"></i>
+          <h3>No jobs found</h3>
+          <p>Try adjusting your search filters or check back later for new opportunities.</p>
+        </div>
+      <% } %>
+    </div>
+  </form>
+</div>
 
 <script>
 document.getElementById('compareForm').addEventListener('submit', function(e) {
@@ -77,5 +359,6 @@ document.getElementById('compareForm').addEventListener('submit', function(e) {
   }
 });
 </script>
+
 </body>
 </html>
