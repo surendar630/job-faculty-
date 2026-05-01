@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Jobs - AcademiaPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'DM Sans', sans-serif; background: #f8f4ed; margin: 0; }
+nav { background: #122040; color: white; padding: 15px; display: flex; justify-content: space-between; }
+.logo { font-size: 22px; font-weight: bold; }
+.nav-links span { margin: 0 10px; cursor: pointer; }
+.compare-table { background: white; margin: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
+th { background: #f2f2f2; }
+.btn { background: #0a1628; color: white; padding: 8px 15px; border: none; cursor: pointer; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">AcademiaPro</div>
+  <div class="nav-links">
+    <span onclick="window.location.href='/dashboard'">Dashboard</span>
+    <span onclick="window.location.href='/jobs'">Jobs</span>
+    <span onclick="window.location.href='/profile'">Profile</span>
+    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
+    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+  </div>
+</nav>
+
+<div style="padding:20px;">
+  <h1>Compare Jobs</h1>
+  <div class="compare-table">
+    <table>
+      <tr>
+        <th>Attribute</th>
+        <% jobs.forEach(job => { %>
+          <th><%= job.title %></th>
+        <% }); %>
+      </tr>
+      <tr>
+        <td><strong>University</strong></td>
+        <% jobs.forEach(job => { %>
+          <td><%= job.university %></td>
+        <% }); %>
+      </tr>
+      <tr>
+        <td><strong>Location</strong></td>
+        <% jobs.forEach(job => { %>
+          <td><%= job.location %></td>
+        <% }); %>
+      </tr>
+      <tr>
+        <td><strong>Salary</strong></td>
+        <% jobs.forEach(job => { %>
+          <td><%= job.salary %></td>
+        <% }); %>
+      </tr>
+      <tr>
+        <td><strong>Category</strong></td>
+        <% jobs.forEach(job => { %>
+          <td><%= job.category %></td>
+        <% }); %>
+      </tr>
+      <tr>
+        <td><strong>Description</strong></td>
+        <% jobs.forEach(job => { %>
+          <td><%= job.description %></td>
+        <% }); %>
+      </tr>
+      <tr>
+        <td><strong>Requirements</strong></td>
+        <% jobs.forEach(job => { %>
+          <td><%= job.requirements %></td>
+        <% }); %>
+      </tr>
+      <tr>
+        <td><strong>Action</strong></td>
+        <% jobs.forEach(job => { %>
+          <td><button class="btn" onclick="window.location.href='/job/<%= job.id %>'">View Details</button></td>
+        <% }); %>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

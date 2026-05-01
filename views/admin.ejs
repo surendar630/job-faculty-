@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - AcademiaPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'DM Sans', sans-serif; background: #f8f4ed; margin: 0; }
+nav { background: #122040; color: white; padding: 15px; display: flex; justify-content: space-between; }
+.logo { font-size: 22px; font-weight: bold; }
+.nav-links span { margin: 0 10px; cursor: pointer; }
+.form { background: white; margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; }
+.btn { background: #0a1628; color: white; padding: 10px; border: none; cursor: pointer; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">AcademiaPro</div>
+  <div class="nav-links">
+    <span onclick="window.location.href='/dashboard'">Dashboard</span>
+    <span onclick="window.location.href='/jobs'">Jobs</span>
+    <span onclick="window.location.href='/profile'">Profile</span>
+    <span onclick="window.location.href='/admin'">Admin</span>
+    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+  </div>
+</nav>
+
+<div style="padding:20px;">
+  <h1>Admin Panel - Add Job</h1>
+  <div class="form">
+    <form action="/admin/job" method="POST">
+      <input type="text" name="title" placeholder="Job Title" required>
+      <input type="text" name="university" placeholder="University" required>
+      <input type="text" name="location" placeholder="Location" required>
+      <input type="text" name="salary" placeholder="Salary" required>
+      <textarea name="description" placeholder="Description" required></textarea>
+      <textarea name="requirements" placeholder="Requirements" required></textarea>
+      <select name="category" required>
+        <option value="">Select Category</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Data Science">Data Science</option>
+        <option value="Machine Learning">Machine Learning</option>
+        <option value="Engineering">Engineering</option>
+        <option value="Mathematics">Mathematics</option>
+        <option value="Cybersecurity">Cybersecurity</option>
+        <option value="Software Engineering">Software Engineering</option>
+      </select>
+      <button type="submit" class="btn">Add Job</button>
+    </form>
+  </div>
+
+  <h2>Existing Jobs</h2>
+  <% jobs.forEach(job => { %>
+    <div style="background: white; margin: 10px 0; padding: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h3><%= job.title %></h3>
+        <p><%= job.university %> - <%= job.location %></p>
+      </div>
+      <div>
+        <a href="/admin/job/<%= job.id %>/edit" style="margin-right: 10px;"><button class="btn">Edit</button></a>
+        <form action="/admin/job/<%= job.id %>/delete" method="POST" style="display:inline;">
+          <button type="submit" class="btn" style="background: #dc3545;">Delete</button>
+        </form>
+      </div>
+    </div>
+  <% }); %>
+
+  <h2>Applications</h2>
+  <% applications.forEach(app => { %>
+    <div style="background: white; margin: 10px 0; padding: 10px; border-radius: 5px;">
+      <h3><%= app.job_title %></h3>
+      <p>Candidate: <%= app.candidate_name %></p>
+      <p>Status: <%= app.status %></p>
+      <p>Applied: <%= new Date(app.applied_at).toLocaleDateString() %></p>
+      <% if (app.interview_score !== null) { %>
+        <p>Interview Score: <%= app.interview_score %>%</p>
+      <% } %>
+      <% if (app.status === 'pending') { %>
+        <form action="/admin/application/<%= app.id %>/shortlist" method="POST" style="display:inline;">
+          <button type="submit" class="btn">Shortlist</button>
+        </form>
+        <a href="/interview/<%= app.id %>"><button class="btn">Start Interview</button></a>
+      <% } %>
+      <% 
+        // Get interview score if exists
+        let interviewScore = null;
+        // Note: In real app, join with interviews table
+      %>
+    </div>
+  <% }); %>
+</div>
+</body>
+</html>

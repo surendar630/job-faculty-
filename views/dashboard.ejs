@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - AcademiaPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'DM Sans', sans-serif; background: #f8f4ed; margin: 0; }
+nav { background: #122040; color: white; padding: 15px; display: flex; justify-content: space-between; }
+.logo { font-size: 22px; font-weight: bold; }
+.nav-links span { margin: 0 10px; cursor: pointer; }
+.dashboard { padding: 20px; }
+.card { background: white; margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
+.btn { background: #0a1628; color: white; padding: 10px 20px; border: none; cursor: pointer; margin: 10px; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">AcademiaPro</div>
+  <div class="nav-links">
+    <span onclick="window.location.href='/dashboard'">Dashboard</span>
+    <span onclick="window.location.href='/jobs'">Jobs</span>
+    <span onclick="window.location.href='/profile'">Profile</span>
+    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
+    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+  </div>
+</nav>
+
+<div class="dashboard">
+  <h1>Welcome to AcademiaPro, <%= user.name %>!</h1>
+  <p>Navigate to different sections of the application:</p>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <div class="card">
+      <h3>Jobs</h3>
+      <p>Browse and apply for faculty positions.</p>
+      <button class="btn" onclick="window.location.href='/jobs'">View Jobs</button>
+    </div>
+    <div class="card">
+      <h3>Profile</h3>
+      <p>View your applications and profile.</p>
+      <button class="btn" onclick="window.location.href='/profile'">View Profile</button>
+    </div>
+    <% if (user.role === 'admin') { %>
+    <div class="card">
+      <h3>Admin Panel</h3>
+      <p>Manage jobs and applications.</p>
+      <button class="btn" onclick="window.location.href='/admin'">Admin Panel</button>
+    </div>
+    <% } %>
+    <div class="card">
+      <h3>Compare Jobs</h3>
+      <p>Compare multiple job offers.</p>
+      <button class="btn" onclick="window.location.href='/jobs'">Go to Jobs</button>
+    </div>
+    <div class="card">
+      <h3>Interviews</h3>
+      <p>Participate in AI-powered interviews.</p>
+      <button class="btn" onclick="window.location.href='/profile'">View Applications</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
