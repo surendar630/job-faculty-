@@ -189,6 +189,13 @@
         <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Go to Profile</button>
       </div>
 
+      <div class="dashboard-card" onclick="document.getElementById('resumeModal').style.display='block'">
+        <i class="fas fa-file-upload"></i>
+        <h3>Upload Resume</h3>
+        <p>Upload or update your resume for faster job applications.</p>
+        <button class="btn btn-primary card-btn" type="button"><i class="fas fa-upload"></i> Upload Resume</button>
+      </div>
+
       <% if (user.role === 'admin') { %>
       <div class="dashboard-card" onclick="window.location.href='/admin'">
         <i class="fas fa-check-circle"></i>
@@ -258,6 +265,58 @@
     </div>
   </div>
 </div>
+
+<!-- RESUME UPLOAD MODAL -->
+<div id="resumeModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-2xl); width: 90%; max-width: 500px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h3 style="margin: 0; color: #0f172a;"><i class="fas fa-file-upload"></i> Upload Your Resume</h3>
+      <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+    </div>
+    
+    <form action="/profile/resume" method="POST" enctype="multipart/form-data">
+      <div style="margin-bottom: 1.5rem;">
+        <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;">
+          <i class="fas fa-file-upload"></i> Select Resume File
+        </label>
+        <input type="file" id="resume" name="resume" accept=".pdf,image/*" required 
+               style="width: 100%; padding: 1rem; border: 2px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; transition: var(--transition); cursor: pointer;">
+        <small style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+          <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, JPG, PNG
+        </small>
+      </div>
+      
+      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+        <button type="button" onclick="document.getElementById('resumeModal').style.display='none'" 
+                style="padding: 0.75rem 1.5rem; background: #f3f4f6; color: #374151; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" style="border: none;">
+          <i class="fas fa-upload"></i> Upload Resume
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('resumeModal');
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// File input styling
+document.getElementById('resume').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    // You could add file validation here
+    console.log('Selected file:', file.name);
+  }
+});
+</script>
 
 </body>
 </html>

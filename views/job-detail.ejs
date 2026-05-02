@@ -296,20 +296,42 @@
             <i class="fas fa-upload"></i> Apply for this Position
           </div>
           <form action="/apply/<%= job.id %>" method="POST" enctype="multipart/form-data">
+            <% if (hasResume) { %>
+              <div style="background: #d1fae5; border: 1px solid #10b981; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; color: #065f46; font-weight: 600;">
+                  <i class="fas fa-check-circle"></i>
+                  Resume Available
+                </div>
+                <p style="color: #065f46; margin: 0.5rem 0 0; font-size: 0.9rem;">
+                  Your resume from the dashboard will be used for this application. You can upload a different resume below if needed.
+                </p>
+              </div>
+            <% } %>
+            
             <div style="margin-bottom: 1.5rem;">
               <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;">
-                <i class="fas fa-file-upload"></i> Upload Your Resume (PDF or Image)
+                <i class="fas fa-file-upload"></i> <%= hasResume ? 'Upload Different Resume (Optional)' : 'Upload Your Resume (PDF or Image)' %>
               </label>
-              <input type="file" id="resume" name="resume" accept=".pdf,image/*" required 
+              <input type="file" id="resume" name="resume" accept=".pdf,image/*" <%= hasResume ? '' : 'required' %>
                      style="width: 100%; padding: 0.75rem; border: 2px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; transition: var(--transition);">
               <small style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
                 <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, JPG, PNG
+                <%= hasResume ? 'Leave empty to use your uploaded resume.' : '' %>
               </small>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 100%;">
               <i class="fas fa-paper-plane"></i> Submit Application
             </button>
           </form>
+          
+          <% if (!hasResume) { %>
+            <div style="text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+              <p style="color: #64748b; margin-bottom: 1rem;">Don't have a resume ready?</p>
+              <button onclick="window.location.href='/dashboard'" class="btn btn-secondary">
+                <i class="fas fa-upload"></i> Upload Resume to Dashboard First
+              </button>
+            </div>
+          <% } %>
         </div>
       <% } %>
       

@@ -61,6 +61,7 @@ db.serialize(() => {
     name TEXT,
     email TEXT UNIQUE,
     password TEXT,
+    resume_path TEXT,
     role TEXT DEFAULT 'user'
   )`);
 
@@ -224,26 +225,46 @@ app.get('/job/:id', verifyToken, (req, res) => {
   db.get('SELECT * FROM jobs WHERE id = ?', [id], (err, job) => {
     if (err) return res.status(500).send('Error');
     db.get('SELECT * FROM applications WHERE user_id = ? AND job_id = ?', [req.user.id, id], (err, application) => {
-      res.render('job-detail', { job, user: req.user, applied: !!application });
+      db.get('SELECT resume_path FROM users WHERE id = ?', [req.user.id], (err, userResume) => {
+        res.render('job-detail', { job, user: req.user, applied: !!application, hasResume: !!userResume?.resume_path });
+      });
     });
   });
 });
 
 app.post('/apply/:id', upload.single('resume'), verifyToken, (req, res) => {
   const jobId = req.params.id;
-  const resumePath = req.file ? req.file.path : null;
+  let resumePath = req.file ? req.file.path : null;
   
+  // If no file uploaded, check if user has a resume in their profile
   if (!resumePath) {
-    return res.status(400).send('Resume upload is required');
+    db.get('SELECT resume_path FROM users WHERE id = ?', [req.user.id], (err, user) => {
+      if (err) return res.status(500).send('Error checking user resume');
+      
+      resumePath = user?.resume_path;
+      if (!resumePath) {
+        return res.status(400).send('Resume upload is required. Please upload a resume first or select one from your dashboard.');
+      }
+      
+      // Proceed with application using user's resume
+      db.run('INSERT INTO applications (user_id, job_id, resume_path) VALUES (?, ?, ?)', [req.user.id, jobId, resumePath], (err) => {
+        if (err) {
+          console.error('Apply error:', err);
+          return res.status(500).send('Error applying');
+        }
+        res.redirect('/candidate-interview/' + jobId);
+      });
+    });
+  } else {
+    // User uploaded a new resume for this application
+    db.run('INSERT INTO applications (user_id, job_id, resume_path) VALUES (?, ?, ?)', [req.user.id, jobId, resumePath], (err) => {
+      if (err) {
+        console.error('Apply error:', err);
+        return res.status(500).send('Error applying');
+      }
+      res.redirect('/candidate-interview/' + jobId);
+    });
   }
-  
-  db.run('INSERT INTO applications (user_id, job_id, resume_path) VALUES (?, ?, ?)', [req.user.id, jobId, resumePath], (err) => {
-    if (err) {
-      console.error('Apply error:', err);
-      return res.status(500).send('Error applying');
-    }
-    res.redirect('/candidate-interview/' + jobId);
-  });
 });
 
 app.post('/compare', verifyToken, (req, res) => {
@@ -281,6 +302,22 @@ app.post('/profile/update', verifyToken, (req, res) => {
       
       res.redirect('/profile');
     });
+  });
+});
+
+app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => {
+  const resumePath = req.file ? req.file.path : null;
+  
+  if (!resumePath) {
+    return res.status(400).send('Please select a resume file to upload');
+  }
+  
+  db.run('UPDATE users SET resume_path = ? WHERE id = ?', [resumePath, req.user.id], (err) => {
+    if (err) {
+      console.error('Resume upload error:', err);
+      return res.status(500).send('Error uploading resume');
+    }
+    res.redirect('/dashboard');
   });
 });
 
