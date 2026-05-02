@@ -1,19 +1,35 @@
 # AcademiaPro - Faculty & Professor Job Portal
 
-A full-stack web application for finding academic jobs with advanced features.
+A full-stack web application for finding academic jobs with advanced AI-powered features.
 
 ## Features
 
 - User registration and login
 - Job listings with advanced filtering and search
-- Job comparison tool (compare multiple jobs side by side)
-- Job application tracking
-- Admin panel for adding jobs
+- Job comparison tool (compare multiple jobs side-by-side)
+- Job application tracking with resume upload
+- Resume shortlisting and management
+- Admin panel for managing jobs and applications
 - AI-powered candidate interviews with voice assistance
 - Direct interview flow after job application
-- Responsive design
+- Progressive question display with real-time scoring
+- Responsive and modern UI/UX design
+- File upload support for resumes (PDF/Image)
 
 ## New Features Added
+
+### Resume Management System
+- **Resume Upload**: Candidates can upload PDF or image resumes during application
+- **Resume Shortlisting**: Admins can shortlist applications and view/download resumes
+- **Resume Dashboard**: Dedicated dashboard for viewing shortlisted candidate resumes
+- **File Validation**: Secure file upload with size and type validation
+
+### Enhanced UI/UX
+- **Advanced Animations**: Smooth transitions, hover effects, and micro-interactions
+- **Glassmorphism Effects**: Modern glass-like design elements
+- **Gradient Backgrounds**: Beautiful gradient overlays and backgrounds
+- **Responsive Design**: Optimized for all device sizes
+- **Loading States**: Visual feedback for user actions
 
 ### Candidate Interview Flow
 - **Direct Interview After Apply**: Candidates are immediately redirected to interview after applying
@@ -22,32 +38,70 @@ A full-stack web application for finding academic jobs with advanced features.
 - **Real-time Scoring**: AI evaluates answers instantly with percentage scores
 - **Interview Completion**: Automatic calculation of overall interview score
 
-### Enhanced User Experience
-- **More Vacancies Button**: Easy access to browse additional job opportunities
-- **Interview Progress Bar**: Visual indicator of interview completion
-- **Profile Integration**: View interview scores and application status
-- **Seamless Navigation**: Smooth flow from application to interview to results
-
 ## Tech Stack
 
-- Backend: Node.js, Express, SQLite
+- Backend: Node.js, Express, SQLite, Multer (file uploads)
 - Frontend: EJS templates, HTML, CSS, JavaScript
 - Authentication: JWT
+- AI: OpenAI API for interview evaluation
+- File Storage: Local file system with secure upload handling
 
 ## Setup
 
 1. Clone the repository
 2. Run `npm install`
-3. Set up OpenAI API key: `export OPENAI_API_KEY=your-key-here`
+3. Set up environment variables:
+   ```bash
+   export OPENAI_API_KEY=your-openai-api-key-here
+   export JWT_SECRET=your-jwt-secret-key-here
+   ```
 4. Run `npm start`
 5. Open http://localhost:3000
 
+## Deployment to Render
+
+1. **Connect Repository**: Link your GitHub repository to Render
+2. **Environment Variables**: Set the following in Render dashboard:
+   - `NODE_ENV`: `production`
+   - `OPENAI_API_KEY`: Your OpenAI API key
+   - `JWT_SECRET`: A secure random string for JWT
+   - `PORT`: `10000` (or Render's assigned port)
+3. **Build Settings**: 
+   - Build Command: `npm install && mkdir -p uploads`
+   - Start Command: `npm start`
+4. **Deploy**: Render will automatically build and deploy your application
+
 ## Usage
 
-- Register a new account or login
-- Browse and filter jobs
-- Select multiple jobs to compare them
-- Apply for jobs and track applications in profile
+- **For Candidates**:
+  - Register a new account or login
+  - Browse and filter jobs
+  - Upload resume when applying for jobs
+  - Take AI-powered interviews
+  - Track applications and interview scores in profile
+
+- **For Admins**:
+  - Login with admin credentials (admin@academiapro.com / admin123)
+  - Add new job postings
+  - Review and shortlist applications
+  - View/download candidate resumes
+  - Conduct interviews and view scores
+
+## File Structure
+
+```
+├── server.js              # Main application server
+├── views/                 # EJS templates
+│   ├── dashboard.ejs      # User dashboard
+│   ├── admin.ejs          # Admin panel
+│   ├── shortlisted.ejs    # Resume shortlisting
+│   └── ...
+├── public/                # Static assets
+│   └── styles.css         # Main stylesheet
+├── uploads/               # Resume file storage
+├── render.yaml            # Render deployment config
+└── package.json           # Dependencies
+```
 - Admin login: admin@academiapro.com / admin123 (to add jobs)
 
 ## AI Interview Assistant

@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const openai = require('openai');
+const multer = require('multer');
 
 // Initialize OpenAI (in production, use environment variable for API key)
 const openaiClient = new openai.OpenAI({
@@ -21,6 +22,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Configure multer for resume uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf' || file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF and image files are allowed'));
+    }
+  }
+});
 
 // Set view engine
 app.set('view engine', 'ejs');
@@ -54,6 +79,7 @@ db.serialize(() => {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     job_id INTEGER,
+    resume_path TEXT,
     status TEXT DEFAULT 'pending',
     applied_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
@@ -203,9 +229,15 @@ app.get('/job/:id', verifyToken, (req, res) => {
   });
 });
 
-app.post('/apply/:id', verifyToken, (req, res) => {
+app.post('/apply/:id', upload.single('resume'), verifyToken, (req, res) => {
   const jobId = req.params.id;
-  db.run('INSERT INTO applications (user_id, job_id) VALUES (?, ?)', [req.user.id, jobId], (err) => {
+  const resumePath = req.file ? req.file.path : null;
+  
+  if (!resumePath) {
+    return res.status(400).send('Resume upload is required');
+  }
+  
+  db.run('INSERT INTO applications (user_id, job_id, resume_path) VALUES (?, ?, ?)', [req.user.id, jobId, resumePath], (err) => {
     if (err) {
       console.error('Apply error:', err);
       return res.status(500).send('Error applying');
@@ -224,10 +256,30 @@ app.post('/compare', verifyToken, (req, res) => {
   });
 });
 
-app.get('/profile', verifyToken, (req, res) => {
-  db.get('SELECT * FROM users WHERE id = ?', [req.user.id], (err, user) => {
-    db.all('SELECT j.*, a.status, a.applied_at, i.score as interview_score FROM applications a JOIN jobs j ON a.job_id = j.id LEFT JOIN interviews i ON a.id = i.application_id WHERE a.user_id = ?', [req.user.id], (err, applications) => {
-      res.render('profile', { user, applications });
+app.get('/shortlisted', verifyToken, (req, res) => {
+  db.all('SELECT a.*, j.title as job_title, j.university, j.location FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.status = "shortlisted"', [], (err, applications) => {
+    if (err) return res.status(500).send('Error');
+    res.render('shortlisted', { applications, user: req.user });
+  });
+});
+
+app.post('/profile/update', verifyToken, (req, res) => {
+  const { name, email } = req.body;
+  
+  // Check if email is already taken by another user
+  db.get('SELECT id FROM users WHERE email = ? AND id != ?', [email, req.user.id], (err, existingUser) => {
+    if (err) return res.status(500).send('Database error');
+    if (existingUser) return res.status(400).send('Email already in use by another account');
+    
+    // Update user profile
+    db.run('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, req.user.id], (err) => {
+      if (err) return res.status(500).send('Error updating profile');
+      
+      // Update JWT token with new email
+      const token = jwt.sign({ id: req.user.id, email: email, role: req.user.role }, SECRET_KEY);
+      res.cookie('token', token);
+      
+      res.redirect('/profile');
     });
   });
 });

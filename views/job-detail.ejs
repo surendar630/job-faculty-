@@ -291,11 +291,26 @@
           <i class="fas fa-microphone"></i> Take Interview
         </a>
       <% } else { %>
-        <form action="/apply/<%= job.id %>" method="POST" style="flex: 1;">
-          <button type="submit" class="btn btn-primary" style="width: 100%;">
-            <i class="fas fa-paper-plane"></i> Apply Now
-          </button>
-        </form>
+        <div class="detail-section">
+          <div class="section-header">
+            <i class="fas fa-upload"></i> Apply for this Position
+          </div>
+          <form action="/apply/<%= job.id %>" method="POST" enctype="multipart/form-data">
+            <div style="margin-bottom: 1.5rem;">
+              <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;">
+                <i class="fas fa-file-upload"></i> Upload Your Resume (PDF or Image)
+              </label>
+              <input type="file" id="resume" name="resume" accept=".pdf,image/*" required 
+                     style="width: 100%; padding: 0.75rem; border: 2px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; transition: var(--transition);">
+              <small style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+                <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, JPG, PNG
+              </small>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              <i class="fas fa-paper-plane"></i> Submit Application
+            </button>
+          </form>
+        </div>
       <% } %>
       
       <button class="btn btn-secondary" onclick="window.location.href='/jobs'" style="text-decoration: none;">

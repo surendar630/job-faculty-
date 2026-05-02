@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shortlisted Resumes - AcademiaPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/styles.css" rel="stylesheet">
+<style>
+.shortlisted-header {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.shortlisted-header h1 {
+  color: white;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.shortlisted-header p {
+  color: rgba(255,255,255,0.9);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.resume-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: var(--transition);
+  border: 1px solid #e2e8f0;
+}
+
+.resume-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.resume-header {
+  background: linear-gradient(135deg, #f0f4ff, #f5f3ff);
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.resume-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.resume-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.resume-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.resume-content {
+  padding: 1.5rem;
+}
+
+.resume-actions {
+  padding: 1rem 1.5rem 1.5rem;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.resume-actions .btn {
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .resume-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
+  <div class="nav-links">
+    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+    <form action="/logout" method="POST" style="display:inline;">
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
+  </div>
+</nav>
+
+<div class="container">
+  <!-- HEADER -->
+  <div class="shortlisted-header">
+    <h1><i class="fas fa-check-circle"></i> Shortlisted Candidates</h1>
+    <p>Review resumes of shortlisted applicants for faculty positions</p>
+  </div>
+
+  <!-- RESUMES GRID -->
+  <% if (applications.length === 0) { %>
+    <div class="empty-state">
+      <i class="fas fa-inbox"></i>
+      <h3>No Shortlisted Resumes Yet</h3>
+      <p>Candidates will appear here once they are shortlisted by administrators.</p>
+    </div>
+  <% } else { %>
+    <div class="resume-grid">
+      <% applications.forEach(app => { %>
+        <div class="resume-card">
+          <div class="resume-header">
+            <div class="resume-title"><i class="fas fa-file-alt"></i> <%= app.job_title %></div>
+            <div class="resume-meta">
+              <span><i class="fas fa-school"></i> <%= app.university %></span>
+              <span><i class="fas fa-map-marker-alt"></i> <%= app.location %></span>
+            </div>
+          </div>
+
+          <div class="resume-content">
+            <p style="color: #64748b; margin: 0;">
+              <strong>Status:</strong> 
+              <span style="background: #dbeafe; color: #1e40af; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">
+                <i class="fas fa-check"></i> Shortlisted
+              </span>
+            </p>
+          </div>
+
+          <div class="resume-actions">
+            <% if (app.resume_path) { %>
+              <a href="/<%= app.resume_path %>" target="_blank" class="btn btn-primary">
+                <i class="fas fa-download"></i> View Resume
+              </a>
+              <a href="/interview/<%= app.id %>" class="btn btn-secondary">
+                <i class="fas fa-microphone"></i> Start Interview
+              </a>
+            <% } else { %>
+              <span class="btn btn-secondary" style="background: #f3f4f6; color: #9ca3af; cursor: not-allowed;">
+                <i class="fas fa-file"></i> No Resume
+              </span>
+            <% } %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</div>
+
+</body>
+</html>

@@ -4,7 +4,7 @@ services:
   - type: web
     name: job-faculty
     runtime: node
-    buildCommand: npm install
+    buildCommand: npm install && mkdir -p uploads
     startCommand: npm start
     envVars:
       - key: NODE_ENV
@@ -13,3 +13,5 @@ services:
         value: your-openai-api-key-here  # Required for AI interview assistance
       - key: JWT_SECRET
         value: your-jwt-secret-key-here  # Required for secure authentication
+      - key: PORT
+        value: 10000

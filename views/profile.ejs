@@ -168,6 +168,27 @@
   font-size: 0.85rem;
   margin: 0;
 }
+
+.profile-edit-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  font-size: 1.1rem;
+  font-family: inherit;
+}
+
+.profile-edit-input:focus {
+  outline: none;
+  border-color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.2);
+}
+
+.profile-edit-input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
 </style>
 </head>
 <body>
@@ -189,8 +210,37 @@
 <div class="container">
   <!-- PROFILE HEADER -->
   <div class="profile-header">
-    <h1><i class="fas fa-user-circle"></i> Your Profile</h1>
-    <div class="profile-info" style="margin-top: 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+      <h1><i class="fas fa-user-circle"></i> Your Profile</h1>
+      <button id="editBtn" class="btn btn-primary" onclick="toggleEditMode()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">
+        <i class="fas fa-edit"></i> Edit Profile
+      </button>
+    </div>
+    <form id="profileForm" action="/profile/update" method="POST" style="display: none;">
+      <div class="profile-info" style="margin-top: 1.5rem;">
+        <div class="profile-info-card">
+          <div class="profile-info-label"><i class="fas fa-user"></i> Name</div>
+          <input type="text" name="name" value="<%= user.name %>" class="profile-edit-input" required>
+        </div>
+        <div class="profile-info-card">
+          <div class="profile-info-label"><i class="fas fa-envelope"></i> Email</div>
+          <input type="email" name="email" value="<%= user.email %>" class="profile-edit-input" required>
+        </div>
+        <div class="profile-info-card">
+          <div class="profile-info-label"><i class="fas fa-id-badge"></i> Role</div>
+          <div class="profile-info-value"><%= user.role.toUpperCase() %></div>
+        </div>
+      </div>
+      <div style="margin-top: 2rem; text-align: center;">
+        <button type="submit" class="btn btn-primary" style="margin-right: 1rem;">
+          <i class="fas fa-save"></i> Save Changes
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+    </form>
+    <div id="profileDisplay" class="profile-info" style="margin-top: 1.5rem;">
       <div class="profile-info-card">
         <div class="profile-info-label"><i class="fas fa-user"></i> Name</div>
         <div class="profile-info-value"><%= user.name %></div>
@@ -256,6 +306,28 @@
     <% } %>
   </div>
 </div>
+
+<script>
+function toggleEditMode() {
+  const profileForm = document.getElementById('profileForm');
+  const profileDisplay = document.getElementById('profileDisplay');
+  const editBtn = document.getElementById('editBtn');
+  
+  if (profileForm.style.display === 'none') {
+    // Switch to edit mode
+    profileForm.style.display = 'block';
+    profileDisplay.style.display = 'none';
+    editBtn.innerHTML = '<i class="fas fa-times"></i> Cancel Edit';
+    editBtn.style.background = 'rgba(239, 68, 68, 0.8)';
+  } else {
+    // Switch to view mode
+    profileForm.style.display = 'none';
+    profileDisplay.style.display = 'grid';
+    editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Profile';
+    editBtn.style.background = 'rgba(255,255,255,0.2)';
+  }
+}
+</script>
 
 </body>
 </html>
