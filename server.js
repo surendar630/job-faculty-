@@ -62,7 +62,17 @@ db.serialize(() => {
     email TEXT UNIQUE,
     password TEXT,
     resume_path TEXT,
-    role TEXT DEFAULT 'user'
+    role TEXT DEFAULT 'user',
+    phone TEXT,
+    address TEXT,
+    education TEXT,
+    experience TEXT,
+    skills TEXT,
+    linkedin TEXT,
+    website TEXT,
+    bio TEXT,
+    current_position TEXT,
+    institution TEXT
   )`);
 
   db.run(`CREATE TABLE IF NOT EXISTS jobs (
@@ -285,21 +295,63 @@ app.get('/shortlisted', verifyToken, (req, res) => {
 });
 
 app.post('/profile/update', verifyToken, (req, res) => {
-  const { name, email } = req.body;
+  const { 
+    name, 
+    email, 
+    phone, 
+    address, 
+    education, 
+    experience, 
+    skills, 
+    linkedin, 
+    website, 
+    bio, 
+    current_position, 
+    institution 
+  } = req.body;
   
   // Check if email is already taken by another user
   db.get('SELECT id FROM users WHERE email = ? AND id != ?', [email, req.user.id], (err, existingUser) => {
     if (err) return res.status(500).send('Database error');
     if (existingUser) return res.status(400).send('Email already in use by another account');
     
-    // Update user profile
-    db.run('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, req.user.id], (err) => {
-      if (err) return res.status(500).send('Error updating profile');
+    // Update user profile with all fields
+    db.run(`UPDATE users SET 
+      name = ?, 
+      email = ?, 
+      phone = ?, 
+      address = ?, 
+      education = ?, 
+      experience = ?, 
+      skills = ?, 
+      linkedin = ?, 
+      website = ?, 
+      bio = ?, 
+      current_position = ?, 
+      institution = ? 
+      WHERE id = ?`, [
+      name, 
+      email, 
+      phone || null, 
+      address || null, 
+      education || null, 
+      experience || null, 
+      skills || null, 
+      linkedin || null, 
+      website || null, 
+      bio || null, 
+      current_position || null, 
+      institution || null, 
+      req.user.id
+    ], (err) => {
+      if (err) {
+        console.error('Profile update error:', err);
+        return res.status(500).send('Error updating profile');
+      }
       
       // Update JWT token with new email
       const token = jwt.sign({ id: req.user.id, email: email, role: req.user.role }, SECRET_KEY);
       res.cookie('token', token);
-      
       res.redirect('/profile');
     });
   });

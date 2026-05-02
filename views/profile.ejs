@@ -19,7 +19,7 @@
 
 .profile-info {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
@@ -178,16 +178,27 @@
   color: white;
   font-size: 1.1rem;
   font-family: inherit;
+  transition: var(--transition);
+  resize: vertical;
 }
 
 .profile-edit-input:focus {
   outline: none;
   border-color: rgba(255,255,255,0.8);
   background: rgba(255,255,255,0.2);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
 }
 
 .profile-edit-input::placeholder {
   color: rgba(255,255,255,0.6);
+}
+
+.profile-edit-input[type="url"] {
+  color: #60a5fa;
+}
+
+.profile-edit-input[type="url"]:focus {
+  color: white;
 }
 </style>
 </head>
@@ -217,9 +228,13 @@
       </button>
     </div>
     <form id="profileForm" action="/profile/update" method="POST" style="display: none;">
-      <div class="profile-info" style="margin-top: 1.5rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+        <!-- Basic Information -->
+        <div style="grid-column: span 2;">
+          <h4 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;"><i class="fas fa-user"></i> Basic Information</h4>
+        </div>
         <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fas fa-user"></i> Name</div>
+          <div class="profile-info-label"><i class="fas fa-user"></i> Full Name</div>
           <input type="text" name="name" value="<%= user.name %>" class="profile-edit-input" required>
         </div>
         <div class="profile-info-card">
@@ -227,10 +242,62 @@
           <input type="email" name="email" value="<%= user.email %>" class="profile-edit-input" required>
         </div>
         <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fas fa-id-badge"></i> Role</div>
-          <div class="profile-info-value"><%= user.role.toUpperCase() %></div>
+          <div class="profile-info-label"><i class="fas fa-phone"></i> Phone Number</div>
+          <input type="tel" name="phone" value="<%= user.phone || '' %>" class="profile-edit-input" placeholder="e.g., +1 (555) 123-4567">
+        </div>
+        <div class="profile-info-card">
+          <div class="profile-info-label"><i class="fas fa-map-marker-alt"></i> Address</div>
+          <input type="text" name="address" value="<%= user.address || '' %>" class="profile-edit-input" placeholder="City, State, Country">
+        </div>
+        
+        <!-- Professional Information -->
+        <div style="grid-column: span 2;">
+          <h4 style="color: white; margin: 2rem 0 1rem; font-size: 1.1rem;"><i class="fas fa-briefcase"></i> Professional Information</h4>
+        </div>
+        <div class="profile-info-card">
+          <div class="profile-info-label"><i class="fas fa-graduation-cap"></i> Current Position</div>
+          <input type="text" name="current_position" value="<%= user.current_position || '' %>" class="profile-edit-input" placeholder="e.g., Assistant Professor">
+        </div>
+        <div class="profile-info-card">
+          <div class="profile-info-label"><i class="fas fa-school"></i> Institution</div>
+          <input type="text" name="institution" value="<%= user.institution || '' %>" class="profile-edit-input" placeholder="e.g., University Name">
+        </div>
+        <div class="profile-info-card" style="grid-column: span 2;">
+          <div class="profile-info-label"><i class="fas fa-book"></i> Education</div>
+          <textarea name="education" class="profile-edit-input" rows="3" placeholder="e.g., PhD in Computer Science, Stanford University (2015-2020)"><%= user.education || '' %></textarea>
+        </div>
+        <div class="profile-info-card" style="grid-column: span 2;">
+          <div class="profile-info-label"><i class="fas fa-history"></i> Experience</div>
+          <textarea name="experience" class="profile-edit-input" rows="3" placeholder="e.g., 5+ years teaching experience, Research in AI/ML"><%= user.experience || '' %></textarea>
+        </div>
+        <div class="profile-info-card" style="grid-column: span 2;">
+          <div class="profile-info-label"><i class="fas fa-tools"></i> Skills</div>
+          <textarea name="skills" class="profile-edit-input" rows="2" placeholder="e.g., Python, Machine Learning, Data Analysis, Teaching"><%= user.skills || '' %></textarea>
+        </div>
+        
+        <!-- Online Presence -->
+        <div style="grid-column: span 2;">
+          <h4 style="color: white; margin: 2rem 0 1rem; font-size: 1.1rem;"><i class="fas fa-globe"></i> Online Presence</h4>
+        </div>
+        <div class="profile-info-card">
+          <div class="profile-info-label"><i class="fab fa-linkedin"></i> LinkedIn Profile</div>
+          <input type="url" name="linkedin" value="<%= user.linkedin || '' %>" class="profile-edit-input" placeholder="https://linkedin.com/in/yourprofile">
+        </div>
+        <div class="profile-info-card">
+          <div class="profile-info-label"><i class="fas fa-link"></i> Personal Website</div>
+          <input type="url" name="website" value="<%= user.website || '' %>" class="profile-edit-input" placeholder="https://yourwebsite.com">
+        </div>
+        
+        <!-- Bio -->
+        <div style="grid-column: span 2;">
+          <h4 style="color: white; margin: 2rem 0 1rem; font-size: 1.1rem;"><i class="fas fa-user-circle"></i> Professional Bio</h4>
+        </div>
+        <div class="profile-info-card" style="grid-column: span 2;">
+          <div class="profile-info-label"><i class="fas fa-align-left"></i> Bio/Summary</div>
+          <textarea name="bio" class="profile-edit-input" rows="4" placeholder="Tell us about yourself, your research interests, teaching philosophy, and career goals..."><%= user.bio || '' %></textarea>
         </div>
       </div>
+      
       <div style="margin-top: 2rem; text-align: center;">
         <button type="submit" class="btn btn-primary" style="margin-right: 1rem;">
           <i class="fas fa-save"></i> Save Changes
@@ -241,14 +308,99 @@
       </div>
     </form>
     <div id="profileDisplay" class="profile-info" style="margin-top: 1.5rem;">
+      <!-- Basic Information -->
+      <div style="grid-column: span 2; margin-bottom: 1rem;">
+        <h4 style="color: white; font-size: 1.1rem; margin-bottom: 1rem;"><i class="fas fa-user"></i> Basic Information</h4>
+      </div>
       <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fas fa-user"></i> Name</div>
+        <div class="profile-info-label"><i class="fas fa-user"></i> Full Name</div>
         <div class="profile-info-value"><%= user.name %></div>
       </div>
       <div class="profile-info-card">
         <div class="profile-info-label"><i class="fas fa-envelope"></i> Email</div>
         <div class="profile-info-value"><%= user.email %></div>
       </div>
+      <% if (user.phone) { %>
+      <div class="profile-info-card">
+        <div class="profile-info-label"><i class="fas fa-phone"></i> Phone</div>
+        <div class="profile-info-value"><%= user.phone %></div>
+      </div>
+      <% } %>
+      <% if (user.address) { %>
+      <div class="profile-info-card">
+        <div class="profile-info-label"><i class="fas fa-map-marker-alt"></i> Address</div>
+        <div class="profile-info-value"><%= user.address %></div>
+      </div>
+      <% } %>
+      
+      <!-- Professional Information -->
+      <% if (user.current_position || user.institution || user.education || user.experience || user.skills) { %>
+      <div style="grid-column: span 2; margin: 2rem 0 1rem;">
+        <h4 style="color: white; font-size: 1.1rem;"><i class="fas fa-briefcase"></i> Professional Information</h4>
+      </div>
+      <% if (user.current_position) { %>
+      <div class="profile-info-card">
+        <div class="profile-info-label"><i class="fas fa-graduation-cap"></i> Current Position</div>
+        <div class="profile-info-value"><%= user.current_position %></div>
+      </div>
+      <% } %>
+      <% if (user.institution) { %>
+      <div class="profile-info-card">
+        <div class="profile-info-label"><i class="fas fa-school"></i> Institution</div>
+        <div class="profile-info-value"><%= user.institution %></div>
+      </div>
+      <% } %>
+      <% if (user.education) { %>
+      <div class="profile-info-card" style="grid-column: span 2;">
+        <div class="profile-info-label"><i class="fas fa-book"></i> Education</div>
+        <div class="profile-info-value" style="white-space: pre-line;"><%= user.education %></div>
+      </div>
+      <% } %>
+      <% if (user.experience) { %>
+      <div class="profile-info-card" style="grid-column: span 2;">
+        <div class="profile-info-label"><i class="fas fa-history"></i> Experience</div>
+        <div class="profile-info-value" style="white-space: pre-line;"><%= user.experience %></div>
+      </div>
+      <% } %>
+      <% if (user.skills) { %>
+      <div class="profile-info-card" style="grid-column: span 2;">
+        <div class="profile-info-label"><i class="fas fa-tools"></i> Skills</div>
+        <div class="profile-info-value"><%= user.skills %></div>
+      </div>
+      <% } %>
+      <% } %>
+      
+      <!-- Online Presence -->
+      <% if (user.linkedin || user.website) { %>
+      <div style="grid-column: span 2; margin: 2rem 0 1rem;">
+        <h4 style="color: white; font-size: 1.1rem;"><i class="fas fa-globe"></i> Online Presence</h4>
+      </div>
+      <% if (user.linkedin) { %>
+      <div class="profile-info-card">
+        <div class="profile-info-label"><i class="fab fa-linkedin"></i> LinkedIn</div>
+        <div class="profile-info-value"><a href="<%= user.linkedin %>" target="_blank" style="color: #0ea5e9; text-decoration: none;"><%= user.linkedin %></a></div>
+      </div>
+      <% } %>
+      <% if (user.website) { %>
+      <div class="profile-info-card">
+        <div class="profile-info-label"><i class="fas fa-link"></i> Website</div>
+        <div class="profile-info-value"><a href="<%= user.website %>" target="_blank" style="color: #0ea5e9; text-decoration: none;"><%= user.website %></a></div>
+      </div>
+      <% } %>
+      <% } %>
+      
+      <!-- Bio -->
+      <% if (user.bio) { %>
+      <div style="grid-column: span 2; margin: 2rem 0 1rem;">
+        <h4 style="color: white; font-size: 1.1rem;"><i class="fas fa-user-circle"></i> Professional Bio</h4>
+      </div>
+      <div class="profile-info-card" style="grid-column: span 2;">
+        <div class="profile-info-label"><i class="fas fa-align-left"></i> Bio</div>
+        <div class="profile-info-value" style="white-space: pre-line;"><%= user.bio %></div>
+      </div>
+      <% } %>
+      
+      <!-- Role (always shown) -->
       <div class="profile-info-card">
         <div class="profile-info-label"><i class="fas fa-id-badge"></i> Role</div>
         <div class="profile-info-value"><%= user.role.toUpperCase() %></div>
