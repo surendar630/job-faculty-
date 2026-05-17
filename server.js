@@ -294,10 +294,12 @@ app.post('/auth/google-firebase', async (req, res) => {
       return res.status(400).send('Invalid Firebase token');
     }
 
-    if (tokenInfo.aud !== GOOGLE_CLIENT_ID) {
+    if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== 'your-google-client-id' && tokenInfo.aud !== GOOGLE_CLIENT_ID) {
+      console.error('Firebase token audience mismatch:', tokenInfo.aud, 'expected', GOOGLE_CLIENT_ID);
       return res.status(400).send('Token audience mismatch');
     }
     if (tokenInfo.iss !== 'https://accounts.google.com' && tokenInfo.iss !== 'accounts.google.com') {
+      console.error('Invalid token issuer:', tokenInfo.iss);
       return res.status(400).send('Invalid token issuer');
     }
 
