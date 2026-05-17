@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - AcademiaPro</title>
+<title>Reset Password - AcademiaPro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
@@ -18,7 +18,6 @@
   position: relative;
   overflow: hidden;
 }
-
 .login-hero::before {
   content: '';
   position: absolute;
@@ -30,7 +29,6 @@
   border-radius: 50%;
   pointer-events: none;
 }
-
 .login-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -41,29 +39,24 @@
   position: relative;
   z-index: 1;
 }
-
 .login-info {
   color: white;
 }
-
 .login-info h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   color: white;
 }
-
 .login-info p {
   color: rgba(255,255,255,0.9);
   font-size: 1.1rem;
   margin-bottom: 2rem;
   line-height: 1.8;
 }
-
 .features {
   list-style: none;
   margin-bottom: 2rem;
 }
-
 .features li {
   display: flex;
   align-items: center;
@@ -71,13 +64,11 @@
   margin-bottom: 1rem;
   color: rgba(255,255,255,0.85);
 }
-
 .features i {
   color: #6366f1;
   font-size: 1.3rem;
   min-width: 30px;
 }
-
 .form {
   background: white;
   padding: 2.5rem;
@@ -85,24 +76,20 @@
   box-shadow: var(--shadow-xl);
   border-top: 4px solid #6366f1;
 }
-
 .form h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   color: #0f172a;
 }
-
 .form-group {
   margin-bottom: 1.5rem;
 }
-
 .form-group label {
   display: block;
   font-weight: 500;
   margin-bottom: 0.5rem;
   color: #1e293b;
 }
-
 .form-group input {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -112,13 +99,11 @@
   font-size: 0.95rem;
   transition: var(--transition);
 }
-
 .form-group input:focus {
   outline: none;
   border-color: #6366f1;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
-
 .form-group button {
   width: 100%;
   padding: 0.75rem;
@@ -132,41 +117,33 @@
   font-size: 1rem;
   box-shadow: var(--shadow-md);
 }
-
 .form-group button:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
-
 .form p {
   text-align: center;
   margin-top: 1.5rem;
   color: #64748b;
 }
-
 .form a {
   color: #6366f1;
   font-weight: 600;
   transition: var(--transition);
 }
-
 .form a:hover {
   color: #8b5cf6;
 }
-
 @media (max-width: 768px) {
   nav {
     display: none;
   }
-  
   .login-content {
     grid-template-columns: 1fr;
   }
-  
   .login-info {
     display: none;
   }
-  
   .form {
     max-width: 100%;
     width: 100%;
@@ -178,33 +155,34 @@
 <div class="login-hero">
   <div class="login-content">
     <div class="login-info">
-      <h1>Welcome to AcademiaPro</h1>
-      <p>Find your perfect faculty or professor position with our advanced job portal.</p>
+      <h1>Reset Your Password</h1>
+      <p>Enter the email address associated with your AcademiaPro account and choose a new password to regain access.</p>
       <ul class="features">
-        <li><i class="fas fa-check-circle"></i> Browse top university positions</li>
-        <li><i class="fas fa-check-circle"></i> AI-powered interviews</li>
-        <li><i class="fas fa-check-circle"></i> Compare job offers</li>
-        <li><i class="fas fa-check-circle"></i> Expert matching algorithm</li>
+        <li><i class="fas fa-shield-alt"></i> Secure password update</li>
+        <li><i class="fas fa-user-check"></i> Easy recovery process</li>
+        <li><i class="fas fa-lock"></i> Keep your account safe</li>
       </ul>
     </div>
-    
     <div class="form">
-      <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
-      <form action="/login" method="POST">
+      <h2><i class="fas fa-key"></i> Reset Password</h2>
+      <form action="/reset" method="POST">
         <div class="form-group">
           <label for="email"><i class="fas fa-envelope"></i> Email</label>
           <input type="email" id="email" name="email" placeholder="your@email.com" required>
         </div>
         <div class="form-group">
-          <label for="password"><i class="fas fa-lock"></i> Password</label>
+          <label for="password"><i class="fas fa-lock"></i> New Password</label>
           <input type="password" id="password" name="password" placeholder="••••••••" required>
         </div>
         <div class="form-group">
-          <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+          <label for="confirm_password"><i class="fas fa-lock"></i> Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="••••••••" required>
+        </div>
+        <div class="form-group">
+          <button type="submit"><i class="fas fa-save"></i> Reset Password</button>
         </div>
       </form>
-      <p>Don't have an account? <a href="/register"><i class="fas fa-arrow-right"></i> Register now</a></p>
-      <p>Forgot your password? <a href="/reset"><i class="fas fa-key"></i> Reset it here</a></p>
+      <p>Remembered your password? <a href="/login"><i class="fas fa-arrow-left"></i> Back to login</a></p>
     </div>
   </div>
 </div>

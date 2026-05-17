@@ -209,6 +209,33 @@ app.get('/register', (req, res) => {
   res.render('register');
 });
 
+app.get('/reset', (req, res) => {
+  res.render('reset');
+});
+
+app.post('/reset', (req, res) => {
+  const { email, password, confirm_password } = req.body;
+  if (!email || !password || !confirm_password) {
+    return res.status(400).send('Please fill in all fields');
+  }
+  if (password !== confirm_password) {
+    return res.status(400).send('Passwords do not match');
+  }
+
+  db.get('SELECT id FROM users WHERE email = ?', [email], (err, user) => {
+    if (err) return res.status(500).send('Database error');
+    if (!user) return res.status(400).send('No account found with that email');
+
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) return res.status(500).send('Error hashing password');
+      db.run('UPDATE users SET password = ? WHERE id = ?', [hash, user.id], (err) => {
+        if (err) return res.status(500).send('Error resetting password');
+        res.redirect('/login');
+      });
+    });
+  });
+});
+
 app.get('/dashboard', verifyToken, (req, res) => {
   // Get user statistics
   db.get('SELECT COUNT(*) as application_count FROM applications WHERE user_id = ?', [req.user.id], (err, appStats) => {
