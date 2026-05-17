@@ -138,20 +138,40 @@
   box-shadow: var(--shadow-lg);
 }
 
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.75rem;
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-google:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-google i {
+  margin-right: 0.75rem;
+}
+
 .form p {
   text-align: center;
   margin-top: 1.5rem;
   color: #64748b;
 }
 
-.form a {
-  color: #6366f1;
-  font-weight: 600;
-  transition: var(--transition);
-}
-
-.form a:hover {
-  color: #8b5cf6;
+@media (max-width: 768px) {
 }
 
 @media (max-width: 768px) {
@@ -203,10 +223,54 @@
           <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
         </div>
       </form>
+      <div class="form-group">
+        <button id="firebaseGoogleBtn" type="button" class="btn btn-google"><i class="fab fa-google"></i> Sign in with Google</button>
+      </div>
       <p>Don't have an account? <a href="/register"><i class="fas fa-arrow-right"></i> Register now</a></p>
       <p>Forgot your password? <a href="/reset"><i class="fas fa-key"></i> Reset it here</a></p>
     </div>
   </div>
 </div>
 </body>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+  import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: 'AIzaSyA54_DnlblEXm5mDMgOhwTG2dx7JAhWSHQ',
+    authDomain: 'acadimeapro.firebaseapp.com',
+    projectId: 'acadimeapro',
+    storageBucket: 'acadimeapro.firebasestorage.app',
+    messagingSenderId: '1037123729626',
+    appId: '1:1037123729626:web:5f07c7087f62e35da38de3',
+    measurementId: 'G-44FDYL437S'
+  };
+
+  const alternateFirebaseApiKey = 'AIzaSyBF8PsHnsoy4tfOH5URzp1ipTnH_bj08TE'; // Alternate auth key
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  document.getElementById('firebaseGoogleBtn').addEventListener('click', async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
+      const response = await fetch('/auth/google-firebase', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken })
+      });
+      if (response.ok) {
+        window.location.href = '/dashboard';
+      } else {
+        const errorText = await response.text();
+        alert('Google sign-in failed: ' + errorText);
+      }
+    } catch (error) {
+      console.error('Firebase Google sign-in error:', error);
+      alert('Google sign-in failed. Please try again.');
+    }
+  });
+</script>
 </html>

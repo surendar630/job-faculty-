@@ -8,6 +8,10 @@ const path = require('path');
 const openai = require('openai');
 const multer = require('multer');
 
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id';
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'your-google-client-secret';
+const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback';
+
 // Initialize OpenAI (in production, use environment variable for API key)
 const openaiClient = new openai.OpenAI({
   apiKey: process.env.OPENAI_API_KEY || 'your-api-key-here' // Replace with actual key
@@ -193,6 +197,7 @@ app.post('/login', (req, res) => {
   db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
     if (err) return res.status(500).send('Error');
     if (!user) return res.status(400).send('User not found');
+    if (!user.password) return res.status(400).send('Please sign in with Google or reset your password');
     bcrypt.compare(password, user.password, (err, result) => {
       if (result) {
         const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
@@ -203,6 +208,128 @@ app.post('/login', (req, res) => {
       }
     });
   });
+});
+
+app.get('/auth/google', (req, res) => {
+  const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth' +
+    '?response_type=code' +
+    `&client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}` +
+    `&redirect_uri=${encodeURIComponent(GOOGLE_REDIRECT_URI)}` +
+    '&scope=openid%20email%20profile' +
+    '&prompt=select_account';
+  res.redirect(authUrl);
+});
+
+app.get('/auth/google/callback', async (req, res) => {
+  const code = req.query.code;
+  if (!code) return res.redirect('/login');
+
+  try {
+    const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        code,
+        client_id: GOOGLE_CLIENT_ID,
+        client_secret: GOOGLE_CLIENT_SECRET,
+        redirect_uri: GOOGLE_REDIRECT_URI,
+        grant_type: 'authorization_code'
+      })
+    });
+
+    const tokenData = await tokenResponse.json();
+    if (!tokenResponse.ok) {
+      console.error('Google token error:', tokenData);
+      return res.status(500).send('Google sign-in failed');
+    }
+
+    const userInfoResponse = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` }
+    });
+    const googleUser = await userInfoResponse.json();
+    if (!userInfoResponse.ok) {
+      console.error('Google user info error:', googleUser);
+      return res.status(500).send('Google sign-in failed');
+    }
+
+    const email = googleUser.email;
+    if (!email) return res.status(500).send('Google account did not return email');
+
+    db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
+      if (err) return res.status(500).send('Database error');
+      const name = googleUser.name || email.split('@')[0];
+      if (user) {
+        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
+        res.cookie('token', token);
+        return res.redirect('/dashboard');
+      }
+
+      db.run('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, null, 'user'], function (err) {
+        if (err) {
+          console.error('Google user creation error:', err);
+          return res.status(500).send('Error creating user account');
+        }
+        const userId = this.lastID;
+        const token = jwt.sign({ id: userId, email, role: 'user' }, SECRET_KEY);
+        res.cookie('token', token);
+        res.redirect('/dashboard');
+      });
+    });
+  } catch (error) {
+    console.error('Google auth exception:', error);
+    res.status(500).send('Google sign-in failed');
+  }
+});
+
+app.post('/auth/google-firebase', async (req, res) => {
+  const { idToken } = req.body;
+  if (!idToken) return res.status(400).send('Missing Firebase ID token');
+
+  try {
+    const verifyResponse = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
+    const tokenInfo = await verifyResponse.json();
+
+    if (!verifyResponse.ok) {
+      console.error('Firebase token verification failed:', tokenInfo);
+      return res.status(400).send('Invalid Firebase token');
+    }
+
+    if (tokenInfo.aud !== GOOGLE_CLIENT_ID) {
+      return res.status(400).send('Token audience mismatch');
+    }
+    if (tokenInfo.iss !== 'https://accounts.google.com' && tokenInfo.iss !== 'accounts.google.com') {
+      return res.status(400).send('Invalid token issuer');
+    }
+
+    const email = tokenInfo.email;
+    const name = tokenInfo.name || email.split('@')[0];
+    if (!email) {
+      return res.status(400).send('Firebase token did not return an email');
+    }
+
+    db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
+      if (err) return res.status(500).send('Database error');
+      if (user) {
+        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
+        res.cookie('token', token);
+        return res.json({ success: true });
+      }
+
+      db.run('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, null, 'user'], function (err) {
+        if (err) {
+          console.error('Google Firebase user creation error:', err);
+          return res.status(500).send('Error creating user account');
+        }
+        const userId = this.lastID;
+        const token = jwt.sign({ id: userId, email, role: 'user' }, SECRET_KEY);
+        res.cookie('token', token);
+        res.json({ success: true });
+      });
+    });
+  } catch (error) {
+    console.error('Firebase auth exception:', error);
+    res.status(500).send('Firebase sign-in failed');
+  }
 });
 
 app.get('/register', (req, res) => {
