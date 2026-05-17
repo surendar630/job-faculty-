@@ -336,7 +336,7 @@
       <% } %>
       
       <button type="button" class="btn btn-secondary" onclick="toggleFavorite(<%= job.id %>, this)" data-favorited="<%= isFavorite ? 'true' : 'false' %>">
-        <i class="fas fa-heart"></i> <%= isFavorite ? 'Saved Job' : 'Save Job' %>
+        <i class="fas fa-bookmark"></i> <%= isFavorite ? 'Saved Job' : 'Save Job' %>
       </button>
       <button class="btn btn-secondary" onclick="window.location.href='/jobs'" style="text-decoration: none;">
         <i class="fas fa-arrow-left"></i> Back to Jobs

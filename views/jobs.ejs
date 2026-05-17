@@ -334,7 +334,7 @@
 
             <div class="job-actions">
               <button type="button" class="btn btn-secondary" onclick="toggleFavorite(<%= job.id %>, this)" data-favorited="<%= favoriteIds && favoriteIds.includes(job.id) ? 'true' : 'false' %>">
-                <i class="fas fa-heart"></i> <%= favoriteIds && favoriteIds.includes(job.id) ? 'Saved' : 'Save' %>
+                <i class="fas fa-bookmark"></i> <%= favoriteIds && favoriteIds.includes(job.id) ? 'Saved' : 'Save' %>
               </button>
               <button type="button" class="btn btn-primary" onclick="window.location.href='/job/<%= job.id %>'">
                 <i class="fas fa-arrow-right"></i> View Details
