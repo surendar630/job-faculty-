@@ -335,6 +335,9 @@
         </div>
       <% } %>
       
+      <button type="button" class="btn btn-secondary" onclick="toggleFavorite(<%= job.id %>, this)" data-favorited="<%= isFavorite ? 'true' : 'false' %>">
+        <i class="fas fa-heart"></i> <%= isFavorite ? 'Saved Job' : 'Save Job' %>
+      </button>
       <button class="btn btn-secondary" onclick="window.location.href='/jobs'" style="text-decoration: none;">
         <i class="fas fa-arrow-left"></i> Back to Jobs
       </button>
@@ -349,5 +352,20 @@
   </div>
 </div>
 
+<script>
+async function toggleFavorite(jobId, button) {
+  try {
+    const response = await fetch(`/jobs/${jobId}/favorite`, { method: 'POST' });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Unable to update saved job');
+    button.innerHTML = `<i class="fas fa-heart"></i> ${data.favorited ? 'Saved Job' : 'Save Job'}`;
+    button.dataset.favorited = data.favorited ? 'true' : 'false';
+  } catch (error) {
+    alert(error.message);
+  }
+}
+</script>
+
 </body>
+</html>
 </html>

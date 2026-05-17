@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saved Jobs - AcademiaPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/styles.css" rel="stylesheet">
+<style>
+.page-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+.page-header h1 {
+  color: white;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+.page-header p {
+  color: rgba(255,255,255,0.9);
+  font-size: 1rem;
+}
+.jobs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.jobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.job-card-wrapper {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  border-left: 4px solid #6366f1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.job-card-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-left-color: #8b5cf6;
+}
+.job-card-content {
+  flex: 1;
+}
+.job-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+.job-university {
+  color: #6366f1;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.job-meta-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+.job-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+}
+.empty-state i {
+  font-size: 3rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+@media (max-width: 768px) {
+  .job-card-wrapper {
+    flex-direction: column;
+    text-align: center;
+  }
+  .job-meta-row {
+    justify-content: center;
+  }
+  .job-actions {
+    justify-content: center;
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
+  <div class="nav-links">
+    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+    <span onclick="window.location.href='/favorites'"><i class="fas fa-heart"></i> Saved</span>
+    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+    <form action="/logout" method="POST" style="display:inline;">
+      <button type="submit" style="background:none;border:none;color:#0f172a;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#0f172a'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1><i class="fas fa-heart"></i> Saved Jobs</h1>
+  <p>Keep track of the positions you want to revisit and apply to later.</p>
+</div>
+
+<div class="jobs-container">
+  <div class="jobs-list">
+    <% if (jobs.length > 0) { %>
+      <% jobs.forEach(job => { %>
+        <div class="job-card-wrapper">
+          <div class="job-card-content">
+            <div class="job-title"><i class="fas fa-briefcase"></i> <%= job.title %></div>
+            <div class="job-university"><i class="fas fa-school"></i> <%= job.university %></div>
+            <div class="job-meta-row">
+              <div class="job-meta-item"><i class="fas fa-map-marker-alt"></i> <%= job.location %></div>
+              <div class="job-meta-item"><i class="fas fa-tag"></i> <%= job.category %></div>
+            </div>
+            <div class="job-salary"><i class="fas fa-dollar-sign"></i> <%= job.salary %></div>
+          </div>
+          <div class="job-actions">
+            <button class="btn btn-primary" type="button" onclick="window.location.href='/job/<%= job.id %>'"><i class="fas fa-eye"></i> View Job</button>
+            <button class="btn btn-secondary" type="button" onclick="toggleFavorite(<%= job.id %>, this)"><i class="fas fa-heart"></i> Remove</button>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="empty-state">
+        <i class="fas fa-heart-broken"></i>
+        <h3>No saved jobs yet</h3>
+        <p>Browse jobs and save the positions you want to apply to later.</p>
+        <button class="btn btn-primary" onclick="window.location.href='/jobs'" style="margin-top: 1rem;"><i class="fas fa-briefcase"></i> Browse Jobs</button>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<script>
+async function toggleFavorite(jobId, button) {
+  try {
+    const res = await fetch(`/jobs/${jobId}/favorite`, { method: 'POST' });
+    if (!res.ok) throw new Error(await res.text());
+    button.innerHTML = '<i class="fas fa-heart"></i> Removed';
+    button.disabled = true;
+    setTimeout(() => { window.location.reload(); }, 600);
+  } catch (error) {
+    alert('Could not update favorites: ' + error.message);
+  }
+}
+</script>
+
+</body>
+</html>

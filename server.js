@@ -101,6 +101,15 @@ db.serialize(() => {
     FOREIGN KEY (job_id) REFERENCES jobs(id)
   )`);
 
+  db.run(`CREATE TABLE IF NOT EXISTS favorited_jobs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    job_id INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (job_id) REFERENCES jobs(id)
+  )`);
+
   db.run(`CREATE TABLE IF NOT EXISTS interviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     application_id INTEGER,
@@ -370,13 +379,15 @@ app.get('/dashboard', verifyToken, (req, res) => {
   db.get('SELECT COUNT(*) as application_count FROM applications WHERE user_id = ?', [req.user.id], (err, appStats) => {
     db.get('SELECT COUNT(*) as interview_count FROM interviews i JOIN applications a ON i.application_id = a.id WHERE a.user_id = ?', [req.user.id], (err, interviewStats) => {
       db.get('SELECT COUNT(*) as completed_interview_count FROM interviews i JOIN applications a ON i.application_id = a.id WHERE a.user_id = ? AND i.status = "completed"', [req.user.id], (err, completedStats) => {
-        const stats = {
-          applications: appStats ? appStats.application_count : 0,
-          interviews: interviewStats ? interviewStats.interview_count : 0,
-          offers: completedStats ? completedStats.completed_interview_count : 0, // Using completed interviews as proxy for offers
-          favorites: 0 // Could be implemented later with a favorites table
-        };
-        res.render('dashboard', { user: req.user, stats: stats });
+        db.get('SELECT COUNT(*) as favorite_count FROM favorited_jobs WHERE user_id = ?', [req.user.id], (err, favoriteStats) => {
+          const stats = {
+            applications: appStats ? appStats.application_count : 0,
+            interviews: interviewStats ? interviewStats.interview_count : 0,
+            offers: completedStats ? completedStats.completed_interview_count : 0, // Using completed interviews as proxy for offers
+            favorites: favoriteStats ? favoriteStats.favorite_count : 0
+          };
+          res.render('dashboard', { user: req.user, stats: stats });
+        });
       });
     });
   });
@@ -424,7 +435,36 @@ app.get('/jobs', verifyToken, (req, res) => {
 
   db.all(query, params, (err, jobs) => {
     if (err) return res.status(500).send('Error');
-    res.render('jobs', { jobs, user: req.user, search, category, location, sort });
+    db.all('SELECT job_id FROM favorited_jobs WHERE user_id = ?', [req.user.id], (err, favorites) => {
+      if (err) return res.status(500).send('Error');
+      const favoriteIds = favorites.map(f => f.job_id);
+      res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds });
+    });
+  });
+});
+
+app.post('/jobs/:id/favorite', verifyToken, (req, res) => {
+  const jobId = req.params.id;
+  db.get('SELECT * FROM favorited_jobs WHERE user_id = ? AND job_id = ?', [req.user.id, jobId], (err, favorite) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    if (favorite) {
+      db.run('DELETE FROM favorited_jobs WHERE id = ?', [favorite.id], (err) => {
+        if (err) return res.status(500).json({ error: 'Error removing favorite' });
+        res.json({ favorited: false });
+      });
+    } else {
+      db.run('INSERT INTO favorited_jobs (user_id, job_id) VALUES (?, ?)', [req.user.id, jobId], (err) => {
+        if (err) return res.status(500).json({ error: 'Error saving favorite' });
+        res.json({ favorited: true });
+      });
+    }
+  });
+});
+
+app.get('/favorites', verifyToken, (req, res) => {
+  db.all('SELECT j.* FROM favorited_jobs f JOIN jobs j ON f.job_id = j.id WHERE f.user_id = ?', [req.user.id], (err, jobs) => {
+    if (err) return res.status(500).send('Error loading saved jobs');
+    res.render('favorites', { jobs, user: req.user });
   });
 });
 
@@ -434,7 +474,9 @@ app.get('/job/:id', verifyToken, (req, res) => {
     if (err) return res.status(500).send('Error');
     db.get('SELECT * FROM applications WHERE user_id = ? AND job_id = ?', [req.user.id, id], (err, application) => {
       db.get('SELECT resume_path FROM users WHERE id = ?', [req.user.id], (err, userResume) => {
-        res.render('job-detail', { job, user: req.user, applied: !!application, hasResume: !!userResume?.resume_path });
+        db.get('SELECT * FROM favorited_jobs WHERE user_id = ? AND job_id = ?', [req.user.id, id], (err, favorite) => {
+          res.render('job-detail', { job, user: req.user, applied: !!application, hasResume: !!userResume?.resume_path, isFavorite: !!favorite });
+        });
       });
     });
   });
