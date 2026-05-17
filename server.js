@@ -105,13 +105,45 @@ db.serialize(() => {
     FOREIGN KEY (application_id) REFERENCES applications(id)
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS interview_questions (
+  db.run(`CREATE TABLE IF NOT EXISTS custom_questions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    interview_id INTEGER,
-    question TEXT,
-    answer TEXT,
-    score REAL,
-    FOREIGN KEY (interview_id) REFERENCES interviews(id)
+    job_id INTEGER,
+    question TEXT NOT NULL,
+    category TEXT,
+    difficulty TEXT DEFAULT 'medium',
+    created_by INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT 1,
+    FOREIGN KEY (job_id) REFERENCES jobs(id),
+    FOREIGN KEY (created_by) REFERENCES users(id)
+  )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS interview_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    job_id INTEGER,
+    session_type TEXT DEFAULT 'practice',
+    total_questions INTEGER DEFAULT 0,
+    completed_questions INTEGER DEFAULT 0,
+    total_score REAL DEFAULT 0,
+    average_score REAL DEFAULT 0,
+    started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    completed_at DATETIME,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (job_id) REFERENCES jobs(id)
+  )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS interview_responses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id INTEGER,
+    question_id INTEGER,
+    question_text TEXT,
+    user_answer TEXT,
+    ai_score REAL,
+    feedback TEXT,
+    response_time INTEGER,
+    answered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (session_id) REFERENCES interview_sessions(id)
   )`);
 
   // Insert sample jobs
@@ -131,14 +163,17 @@ db.serialize(() => {
   });
 });
 
-// Middleware to verify JWT
+// Middleware to verify JWT and load full user data
 function verifyToken(req, res, next) {
   const token = req.cookies.token;
   if (!token) return res.redirect('/login');
-  jwt.verify(token, SECRET_KEY, (err, user) => {
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) return res.redirect('/login');
-    req.user = user;
-    next();
+    db.get('SELECT * FROM users WHERE id = ?', [decoded.id], (err, user) => {
+      if (err || !user) return res.redirect('/login');
+      req.user = user;
+      next();
+    });
   });
 }
 
@@ -188,6 +223,13 @@ app.get('/dashboard', verifyToken, (req, res) => {
         res.render('dashboard', { user: req.user, stats: stats });
       });
     });
+  });
+});
+
+app.get('/profile', verifyToken, (req, res) => {
+  db.all('SELECT a.*, j.title as job_title, j.university, j.location FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.user_id = ?', [req.user.id], (err, applications) => {
+    if (err) return res.status(500).send('Error loading profile applications');
+    res.render('profile', { user: req.user, applications });
   });
 });
 
