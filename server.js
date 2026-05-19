@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const fs = require('fs');
 const openai = require('openai');
 const multer = require('multer');
 
@@ -39,6 +40,10 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
   }
 });
+
+if (!fs.existsSync(path.join(__dirname, 'uploads'))) {
+  fs.mkdirSync(path.join(__dirname, 'uploads'), { recursive: true });
+}
 
 const upload = multer({
   storage: storage,
@@ -993,6 +998,18 @@ app.post('/candidate-interview/:interviewId/complete', verifyToken, (req, res) =
 app.post('/logout', (req, res) => {
   res.clearCookie('token');
   res.redirect('/');
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  if (err && err.name === 'MulterError') {
+    return res.status(400).send('File upload error: ' + err.message);
+  }
+  if (err && err.message && err.message.includes('Only PDF and image files are allowed')) {
+    return res.status(400).send(err.message);
+  }
+  res.status(500).send('Internal server error');
 });
 
 app.listen(PORT, '0.0.0.0', () => {
