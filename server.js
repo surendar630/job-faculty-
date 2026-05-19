@@ -748,6 +748,10 @@ app.post('/profile/update', verifyToken, (req, res) => {
   });
 });
 
+app.get('/profile/resume', verifyToken, (req, res) => {
+  return res.redirect('/profile');
+});
+
 app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => {
   const resumePath = req.file ? req.file.path : null;
   
@@ -760,8 +764,12 @@ app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => 
       console.error('Resume upload error:', err);
       return res.status(500).send('Error uploading resume');
     }
-    res.redirect('/dashboard');
+    res.redirect('/practice');
   });
+});
+
+app.get('/practice', verifyToken, (req, res) => {
+  res.render('practice', { user: req.user });
 });
 
 app.get('/admin', verifyToken, (req, res) => {
