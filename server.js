@@ -994,9 +994,10 @@ app.listen(PORT, '0.0.0.0', () => {
 async function generateQuestions(category, jobTitle, jobDescription) {
   try {
     // In production, use OpenAI to generate questions
-    const prompt = `Generate 4 interview questions for a ${category} professor position titled "${jobTitle}". 
+    const prompt = `Generate 4 interview questions for a ${category} professor position titled "${jobTitle}".
     Job description: ${jobDescription}
-    Questions should assess teaching experience, research background, and subject expertise.
+    Use W3Schools reference material and common training topics for programming and web languages like HTML, CSS, JavaScript, Python, Java, SQL, C, C++, PHP, and data structures.
+    Questions should assess teaching experience, research background, and subject expertise in the selected language or category.
     Format: Return only the questions, one per line.`;
 
     const response = await openaiClient.chat.completions.create({
@@ -1057,32 +1058,98 @@ function getFallbackQuestions(category) {
       'How do you incorporate agile practices into your software engineering courses?',
       'Can you discuss a challenging software project you have overseen as an educator?',
       'What strategies do you use to teach students about software testing and quality assurance?'
-    ]
-  };
-  const normalized = (category || '').toLowerCase();
-  if (normalized.includes('dsa') || normalized.includes('data structures') || normalized.includes('algorithms')) {
-    return [
-      'What is the average-case time complexity of quicksort? Please explain in one sentence.',
-      'Which data structure is best for implementing a priority queue, and why?',
-      'What is the main difference between a stack and a queue?',
-      'Explain how a hash table resolves collisions.'
-    ];
-  }
-  if (normalized.includes('python')) {
-    return [
+    ],
+    'HTML': [
+      'What are the core structural elements of an HTML document and why do they matter?',
+      'How do you create an accessible form in HTML and what attributes help screen readers?',
+      'What is the difference between <div> and <span> elements?',
+      'How do you embed images and multimedia in HTML pages?'
+    ],
+    'CSS': [
+      'How do you apply responsive design using CSS media queries?',
+      'What is the difference between class selectors and ID selectors?',
+      'Explain the CSS box model and how padding, border, and margin interact.',
+      'How do you use Flexbox to align content in a layout?'
+    ],
+    'JavaScript': [
+      'What is the difference between var, let, and const in JavaScript?',
+      'How do you handle asynchronous code using promises or async/await?',
+      'What are JavaScript closures and why are they useful?',
+      'How do you manipulate the DOM using JavaScript?'
+    ],
+    'Python': [
       'What are Python decorators and when would you use them?',
       'How do you handle errors and exceptions in Python programs?',
       'What is the difference between a list and a tuple in Python?',
       'Explain Python’s memory management for objects and data structures.'
-    ];
-  }
-  if (normalized.includes('java')) {
-    return [
+    ],
+    'Java': [
       'Describe how Java achieves platform independence.',
       'What are the differences between interfaces and abstract classes in Java?',
       'How does Java garbage collection work?',
       'Explain the role of the Java Virtual Machine in running a Java application.'
-    ];
+    ],
+    'SQL': [
+      'What is the difference between INNER JOIN and LEFT JOIN?',
+      'How do you filter query results using WHERE and HAVING?',
+      'What is normalization and why is it important in SQL databases?',
+      'How do you create an index and when should you use one?'
+    ],
+    'C': [
+      'What are pointers and how are they used in C?',
+      'How do you allocate and free memory in C?',
+      'What is the difference between a stack and a heap?',
+      'How do you define and use a struct in C?'
+    ],
+    'C++': [
+      'What is object-oriented programming and how does C++ support it?',
+      'What are constructors and destructors in C++?',
+      'How do templates enable generic programming in C++?',
+      'What is the difference between public, private, and protected access specifiers?'
+    ],
+    'PHP': [
+      'How do you handle form data submitted via POST in PHP?',
+      'What is the difference between include and require in PHP?',
+      'How do you connect to a MySQL database using PHP?',
+      'What are sessions and cookies used for in PHP?'
+    ],
+    'DSA': [
+      'What is the average-case time complexity of quicksort? Please explain in one sentence.',
+      'Which data structure is best for implementing a priority queue, and why?',
+      'What is the main difference between a stack and a queue?',
+      'Explain how a hash table resolves collisions.'
+    ]
+  };
+  const normalized = (category || '').toLowerCase();
+  if (normalized.includes('dsa') || normalized.includes('data structures') || normalized.includes('algorithms')) {
+    return questionSets['DSA'];
+  }
+  if (normalized.includes('python')) {
+    return questionSets['Python'];
+  }
+  if (normalized.includes('java')) {
+    return questionSets['Java'];
+  }
+  if (normalized.includes('javascript')) {
+    return questionSets['JavaScript'];
+  }
+  if (normalized.includes('html')) {
+    return questionSets['HTML'];
+  }
+  if (normalized.includes('css')) {
+    return questionSets['CSS'];
+  }
+  if (normalized.includes('sql')) {
+    return questionSets['SQL'];
+  }
+  if (normalized.includes('c++') || normalized.includes('cpp')) {
+    return questionSets['C++'];
+  }
+  if (normalized === 'c') {
+    return questionSets['C'];
+  }
+  if (normalized.includes('php')) {
+    return questionSets['PHP'];
   }
   return questionSets[category] || questionSets['Computer Science'];
 }
