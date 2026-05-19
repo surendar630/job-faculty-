@@ -184,23 +184,20 @@
   border: 1px solid #bae6fd;
 }
 
-.password-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-.password-row .form-group {
-  flex: 1;
-}
-
 .remember-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.remember-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #475569;
+  font-size: 0.95rem;
 }
 
 .remember-row label {
@@ -267,15 +264,13 @@
           <label for="email"><i class="fas fa-envelope"></i> Email</label>
           <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" autofocus>
         </div>
-        <div class="password-row">
-          <div class="form-group">
-            <label for="password"><i class="fas fa-lock"></i> Password</label>
-            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
-          </div>
-          <div class="form-group remember-row" style="margin-bottom: 0;">
-            <label><input type="checkbox" name="remember"> Remember me</label>
-            <label><input type="checkbox" id="showPassword"> Show password</label>
-          </div>
+        <div class="form-group">
+          <label for="password"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <div class="form-group remember-row" style="margin-bottom: 0;">
+          <label><input type="checkbox" name="remember"> Remember me</label>
+          <label><input type="checkbox" id="showPassword"> Show password</label>
         </div>
         <div class="form-group">
           <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>

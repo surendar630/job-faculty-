@@ -196,6 +196,26 @@
           <button type="submit"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
         </div>
       </form>
+      <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e2e8f0;">
+      <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #0f172a; text-align: center;">Manual Reset</h3>
+      <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem; text-align: center;">If you prefer, reset your password directly by providing your email and a strong new password.</p>
+      <form action="/reset-manual" method="POST">
+        <div class="form-group">
+          <label for="manual_email"><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="manual_email" name="email" placeholder="your@email.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="manual_password"><i class="fas fa-lock"></i> New Password</label>
+          <input type="password" id="manual_password" name="password" placeholder="••••••••" required autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label for="manual_confirm_password"><i class="fas fa-lock"></i> Confirm Password</label>
+          <input type="password" id="manual_confirm_password" name="confirm_password" placeholder="••••••••" required autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <button type="submit"><i class="fas fa-unlock-alt"></i> Reset Manually</button>
+        </div>
+      </form>
       <p>Remembered your password? <a href="/login"><i class="fas fa-arrow-left"></i> Back to login</a></p>
     </div>
   </div>

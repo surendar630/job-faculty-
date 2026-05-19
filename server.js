@@ -390,6 +390,32 @@ app.post('/reset-request', (req, res) => {
   });
 });
 
+app.post('/reset-manual', (req, res) => {
+  const { email, password, confirm_password } = req.body;
+  if (!email || !password || !confirm_password) {
+    return res.render('reset', { error: 'Please fill in all fields for manual reset.', info: null });
+  }
+  if (password !== confirm_password) {
+    return res.render('reset', { error: 'Passwords do not match.', info: null });
+  }
+  if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+    return res.render('reset', { error: 'Password must be at least 8 characters long and include a number and uppercase letter.', info: null });
+  }
+
+  db.get('SELECT id FROM users WHERE email = ?', [email], (err, user) => {
+    if (err) return res.status(500).send('Server error');
+    if (!user) return res.render('reset', { error: 'No account found with that email.', info: null });
+
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) return res.status(500).send('Server error');
+      db.run('UPDATE users SET password = ? WHERE id = ?', [hash, user.id], (err) => {
+        if (err) return res.status(500).send('Server error');
+        return res.render('reset', { error: null, info: 'Your password has been reset successfully. You can now log in.' });
+      });
+    });
+  });
+});
+
 app.get('/reset/:token', (req, res) => {
   const { token } = req.params;
   db.get('SELECT * FROM password_resets WHERE token = ?', [token], (err, row) => {
