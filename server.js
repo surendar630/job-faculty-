@@ -2,6 +2,7 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
@@ -159,6 +160,14 @@ db.serialize(() => {
     FOREIGN KEY (session_id) REFERENCES interview_sessions(id)
   )`);
 
+  db.run(`CREATE TABLE IF NOT EXISTS password_resets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT,
+    token TEXT UNIQUE,
+    expires_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`);
+
   // Insert sample jobs
   db.run(`INSERT OR IGNORE INTO jobs (title, university, location, salary, description, requirements, category) VALUES
     ('Professor - AI', 'MIT', 'USA', '$200k', 'Teaching AI courses and conducting research', 'PhD in AI, 5+ years experience', 'Computer Science'),
@@ -198,23 +207,31 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', { error: null, info: null });
 });
 
 app.post('/login', (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, remember } = req.body;
+  if (!email || !password) {
+    return res.render('login', { error: 'Please enter both email and password.', info: null });
+  }
+
   db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
-    if (err) return res.status(500).send('Error');
-    if (!user) return res.status(400).send('User not found');
-    if (!user.password) return res.status(400).send('Please sign in with Google or reset your password');
+    if (err) return res.status(500).send('Server error');
+    if (!user) return res.render('login', { error: 'No account found with that email.', info: null });
+    if (!user.password) return res.render('login', { error: 'Please sign in with Google or reset your password.', info: null });
+
     bcrypt.compare(password, user.password, (err, result) => {
-      if (result) {
-        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
-        res.cookie('token', token);
-        res.redirect('/dashboard');
-      } else {
-        res.status(400).send('Invalid password');
+      if (err) return res.status(500).send('Server error');
+      if (!result) return res.render('login', { error: 'Incorrect password. Please try again.', info: null });
+
+      const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
+      const cookieOptions = {};
+      if (remember === 'on') {
+        cookieOptions.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
       }
+      res.cookie('token', token, cookieOptions);
+      res.redirect('/dashboard');
     });
   });
 });
@@ -348,30 +365,77 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/reset', (req, res) => {
-  res.render('reset');
+  res.render('reset', { error: null, info: null });
 });
 
-app.post('/reset', (req, res) => {
-  const { email, password, confirm_password } = req.body;
-  if (!email || !password || !confirm_password) {
-    return res.status(400).send('Please fill in all fields');
-  }
-  if (password !== confirm_password) {
-    return res.status(400).send('Passwords do not match');
+app.post('/reset-request', (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.render('reset', { error: 'Please enter your email address.', info: null });
   }
 
   db.get('SELECT id FROM users WHERE email = ?', [email], (err, user) => {
-    if (err) return res.status(500).send('Database error');
-    if (!user) return res.status(400).send('No account found with that email');
+    if (err) return res.status(500).send('Server error');
+    if (!user) return res.render('reset', { error: 'No account found with that email.', info: null });
+
+    const token = crypto.randomBytes(24).toString('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
+
+    db.run('INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)', [email, token, expiresAt], (err) => {
+      if (err) return res.status(500).send('Server error');
+      const resetLink = `${req.protocol}://${req.get('host')}/reset/${token}`;
+      // In production, send resetLink via email.
+      return res.render('reset', { error: null, info: `A password reset link has been generated. Use this link to complete your reset: ${resetLink}` });
+    });
+  });
+});
+
+app.get('/reset/:token', (req, res) => {
+  const { token } = req.params;
+  db.get('SELECT * FROM password_resets WHERE token = ?', [token], (err, row) => {
+    if (err) return res.status(500).send('Server error');
+    if (!row || new Date(row.expires_at) < new Date()) {
+      return res.render('reset', { error: 'This reset link is invalid or has expired.', info: null });
+    }
+    res.render('reset-password', { error: null, info: null, email: row.email, token });
+  });
+});
+
+app.post('/reset/:token', (req, res) => {
+  const { token } = req.params;
+  const { password, confirm_password } = req.body;
+  if (!password || !confirm_password) {
+    return res.render('reset-password', { error: 'Please fill out both password fields.', info: null, email: req.body.email, token });
+  }
+  if (password !== confirm_password) {
+    return res.render('reset-password', { error: 'Passwords do not match.', info: null, email: req.body.email, token });
+  }
+  if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+    return res.render('reset-password', { error: 'Password must be at least 8 characters long and include a number and uppercase letter.', info: null, email: req.body.email, token });
+  }
+
+  db.get('SELECT * FROM password_resets WHERE token = ?', [token], (err, row) => {
+    if (err) return res.status(500).send('Server error');
+    if (!row || new Date(row.expires_at) < new Date()) {
+      return res.render('reset', { error: 'This reset link is invalid or has expired.', info: null });
+    }
 
     bcrypt.hash(password, 10, (err, hash) => {
-      if (err) return res.status(500).send('Error hashing password');
-      db.run('UPDATE users SET password = ? WHERE id = ?', [hash, user.id], (err) => {
-        if (err) return res.status(500).send('Error resetting password');
-        res.redirect('/login');
+      if (err) return res.status(500).send('Server error');
+      db.run('UPDATE users SET password = ? WHERE email = ?', [hash, row.email], (err) => {
+        if (err) return res.status(500).send('Server error');
+        db.run('DELETE FROM password_resets WHERE token = ?', [token], (err) => {
+          if (err) console.error('Password reset cleanup failed:', err);
+          res.redirect('/login');
+        });
       });
     });
   });
+});
+
+app.get('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.redirect('/login');
 });
 
 app.get('/dashboard', verifyToken, (req, res) => {

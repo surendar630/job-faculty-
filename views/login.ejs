@@ -165,6 +165,52 @@
   margin-right: 0.75rem;
 }
 
+.alert {
+  border-radius: 10px;
+  padding: 1rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.alert-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.alert-info {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.password-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.password-row .form-group {
+  flex: 1;
+}
+
+.remember-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.remember-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
 .form p {
   text-align: center;
   margin-top: 1.5rem;
@@ -210,14 +256,26 @@
     
     <div class="form">
       <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+      <% if (error) { %>
+        <div class="alert alert-error"><%= error %></div>
+      <% } %>
+      <% if (info) { %>
+        <div class="alert alert-info"><%= info %></div>
+      <% } %>
       <form action="/login" method="POST">
         <div class="form-group">
           <label for="email"><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" autofocus>
         </div>
-        <div class="form-group">
-          <label for="password"><i class="fas fa-lock"></i> Password</label>
-          <input type="password" id="password" name="password" placeholder="••••••••" required>
+        <div class="password-row">
+          <div class="form-group">
+            <label for="password"><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <div class="form-group remember-row" style="margin-bottom: 0;">
+            <label><input type="checkbox" name="remember"> Remember me</label>
+            <label><input type="checkbox" id="showPassword"> Show password</label>
+          </div>
         </div>
         <div class="form-group">
           <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
@@ -270,6 +328,13 @@
     } catch (error) {
       console.error('Firebase Google sign-in error:', error);
       alert('Google sign-in failed. Please try again.');
+    }
+  });
+
+  document.getElementById('showPassword')?.addEventListener('change', (event) => {
+    const passwordField = document.getElementById('password');
+    if (passwordField) {
+      passwordField.type = event.target.checked ? 'text' : 'password';
     }
   });
 </script>
