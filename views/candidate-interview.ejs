@@ -17,6 +17,13 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; }
 .score { color: green; font-weight: bold; }
 .progress { background: #ddd; height: 20px; border-radius: 10px; margin: 10px 0; }
 .progress-bar { background: #0a1628; height: 100%; border-radius: 10px; transition: width 0.3s; }
+.sample-mcq { background: #ffffff; padding: 18px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin: 20px 0; }
+.sample-mcq h3 { margin-top: 0; }
+.sample-mcq select, .sample-mcq button { min-width: 150px; }
+.sample-mcq-list { margin-top: 1rem; }
+.sample-mcq-question { margin-bottom: 1rem; }
+.sample-mcq-option { display: flex; align-items: center; margin: 0.35rem 0; }
+.sample-mcq-option input { margin-right: 0.5rem; }
 </style>
 </head>
 <body>
@@ -31,9 +38,24 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; }
   </div>
 </nav>
 
-<div style="padding:20px;">
+<div style="padding:20px;" id="interviewContent">
   <h1>Interview for <%= job_title %></h1>
   <p>Answer the following questions. You can use voice input or type your responses. Your answers will be evaluated by our AI assistant.</p>
+
+  <div class="sample-mcq">
+    <h3>Sample MCQ practice</h3>
+    <p>Select a field and review a few sample multiple-choice questions before your interview.</p>
+    <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; margin-top:0.75rem;">
+      <label for="sampleField" style="font-weight:600; color:#1e293b;">Field:</label>
+      <select id="sampleField">
+        <option value="DSA" <%= job_category && job_category.toLowerCase().includes('computer science') ? 'selected' : '' %>>DSA</option>
+        <option value="Python" <%= job_category && job_category.toLowerCase().includes('python') ? 'selected' : '' %>>Python</option>
+        <option value="Java" <%= job_category && job_category.toLowerCase().includes('java') ? 'selected' : '' %>>Java</option>
+      </select>
+      <button class="btn" type="button" onclick="showSampleMCQs()">Show Sample MCQs</button>
+    </div>
+    <div id="sampleMCQContainer" class="sample-mcq-list"></div>
+  </div>
 
   <div class="progress">
     <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
@@ -124,7 +146,56 @@ function addFollowUpQuestion(followUp, questionIndex) {
     <button class="btn" onclick="submitAnswer(${followUp.id}, ${questionIndex})">Submit Answer</button>
     <div class="score"></div>
   `;
-  document.querySelector('div[style="padding:20px;"]').appendChild(questionDiv);
+  document.getElementById('interviewContent').appendChild(questionDiv);
+}
+
+function showSampleMCQs() {
+  const field = document.getElementById('sampleField').value;
+  const sampleMCQs = {
+    DSA: [
+      { question: 'What is the average-case time complexity of quicksort?', choices: ['O(n)', 'O(log n)', 'O(n log n)', 'O(n^2)'], answer: 2 },
+      { question: 'Which data structure is best for implementing a LIFO order?', choices: ['Queue', 'Stack', 'Heap', 'Graph'], answer: 1 }
+    ],
+    Python: [
+      { question: 'Which keyword is used to define a function in Python?', choices: ['func', 'define', 'def', 'function'], answer: 2 },
+      { question: 'Which data type is immutable in Python?', choices: ['List', 'Dictionary', 'Tuple', 'Set'], answer: 2 }
+    ],
+    Java: [
+      { question: 'Which of these is a valid Java access modifier?', choices: ['public', 'protected', 'private', 'All of the above'], answer: 3 },
+      { question: 'Which keyword is used to inherit a class in Java?', choices: ['extends', 'implements', 'inherits', 'uses'], answer: 0 }
+    ]
+  };
+
+  const container = document.getElementById('sampleMCQContainer');
+  container.innerHTML = '';
+  const selectedQuestions = sampleMCQs[field] || sampleMCQs.DSA;
+
+  selectedQuestions.forEach((item, index) => {
+    const questionEl = document.createElement('div');
+    questionEl.className = 'sample-mcq-question';
+    questionEl.innerHTML = `<strong>Q${index + 1}.</strong> ${item.question}`;
+    item.choices.forEach((choice, idx) => {
+      const label = document.createElement('label');
+      label.className = 'sample-mcq-option';
+      label.innerHTML = `<input type="radio" name="mcq${index}" value="${idx}"> ${choice}`;
+      questionEl.appendChild(label);
+    });
+    container.appendChild(questionEl);
+  });
+
+  const gradeBtn = document.createElement('button');
+  gradeBtn.className = 'btn';
+  gradeBtn.type = 'button';
+  gradeBtn.textContent = 'Check Answers';
+  gradeBtn.onclick = () => {
+    let score = 0;
+    selectedQuestions.forEach((item, index) => {
+      const selected = document.querySelector(`input[name="mcq${index}"]:checked`);
+      if (selected && parseInt(selected.value, 10) === item.answer) score += 1;
+    });
+    alert(`Your sample MCQ score for ${field}: ${score} / ${selectedQuestions.length}`);
+  };
+  container.appendChild(gradeBtn);
 }
 
 function completeInterview() {

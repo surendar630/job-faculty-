@@ -97,6 +97,7 @@ db.serialize(() => {
     job_id INTEGER,
     resume_path TEXT,
     status TEXT DEFAULT 'pending',
+    shortlisted_field TEXT,
     applied_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (job_id) REFERENCES jobs(id)
@@ -199,6 +200,12 @@ db.serialize(() => {
     ('Professor - Software Engineering', 'CMU', 'USA', '$190k', 'Software engineering education', 'PhD in SE, industry experience', 'Software Engineering'),
     ('Assistant Professor - Robotics', 'MIT', 'USA', '$160k', 'Robotics research and teaching', 'PhD in Robotics', 'Engineering'),
     ('Lecturer - Mathematics', 'Princeton', 'USA', '$110k', 'Advanced mathematics courses', 'PhD in Mathematics', 'Mathematics')`);
+
+  db.all("PRAGMA table_info(applications)", (err, columns) => {
+    if (!err && !columns.some(column => column.name === 'shortlisted_field')) {
+      db.run('ALTER TABLE applications ADD COLUMN shortlisted_field TEXT');
+    }
+  });
 
   // Create admin user
   bcrypt.hash('admin123', 10, (err, hash) => {
@@ -760,7 +767,7 @@ app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => 
 app.get('/admin', verifyToken, (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).send('Access denied');
   db.all('SELECT * FROM jobs', [], (err, jobs) => {
-    db.all('SELECT a.*, j.title as job_title, u.name as candidate_name, i.score as interview_score FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id LEFT JOIN interviews i ON a.id = i.application_id', [], (err, applications) => {
+    db.all('SELECT a.*, j.title as job_title, u.name as candidate_name, u.skills as candidate_skills, i.score as interview_score FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id LEFT JOIN interviews i ON a.id = i.application_id', [], (err, applications) => {
       res.render('admin', { jobs, applications });
     });
   });
@@ -801,7 +808,8 @@ app.post('/admin/job/:id/edit', verifyToken, (req, res) => {
 
 app.post('/admin/application/:id/shortlist', verifyToken, (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).send('Access denied');
-  db.run('UPDATE applications SET status = ? WHERE id = ?', ['shortlisted', req.params.id], (err) => {
+  const field = req.body.field || null;
+  db.run('UPDATE applications SET status = ?, shortlisted_field = ? WHERE id = ?', ['shortlisted', field, req.params.id], (err) => {
     if (err) return res.status(500).send('Error shortlisting application');
     res.redirect('/admin');
   });
@@ -901,7 +909,7 @@ app.get('/candidate-interview/:jobId', verifyToken, async (req, res) => {
                         console.error('Question fetch error:', err);
                         return res.status(500).send('Server error loading questions');
                       }
-                      res.render('candidate-interview', { interviewId, questions, job_title: job.title, user: req.user });
+                      res.render('candidate-interview', { interviewId, questions, job_title: job.title, job_category: job.category, user: req.user });
                     });
                   })
                   .catch(e => {
@@ -920,7 +928,7 @@ app.get('/candidate-interview/:jobId', verifyToken, async (req, res) => {
               console.error('Question fetch error:', err);
               return res.status(500).send('Server error loading questions');
             }
-            res.render('candidate-interview', { interviewId: interview.id, questions, job_title: job.title, user: req.user });
+            res.render('candidate-interview', { interviewId: interview.id, questions, job_title: job.title, job_category: job.category, user: req.user });
           });
         }
       });
@@ -1051,6 +1059,31 @@ function getFallbackQuestions(category) {
       'What strategies do you use to teach students about software testing and quality assurance?'
     ]
   };
+  const normalized = (category || '').toLowerCase();
+  if (normalized.includes('dsa') || normalized.includes('data structures') || normalized.includes('algorithms')) {
+    return [
+      'What is the average-case time complexity of quicksort? Please explain in one sentence.',
+      'Which data structure is best for implementing a priority queue, and why?',
+      'What is the main difference between a stack and a queue?',
+      'Explain how a hash table resolves collisions.'
+    ];
+  }
+  if (normalized.includes('python')) {
+    return [
+      'What are Python decorators and when would you use them?',
+      'How do you handle errors and exceptions in Python programs?',
+      'What is the difference between a list and a tuple in Python?',
+      'Explain Python’s memory management for objects and data structures.'
+    ];
+  }
+  if (normalized.includes('java')) {
+    return [
+      'Describe how Java achieves platform independence.',
+      'What are the differences between interfaces and abstract classes in Java?',
+      'How does Java garbage collection work?',
+      'Explain the role of the Java Virtual Machine in running a Java application.'
+    ];
+  }
   return questionSets[category] || questionSets['Computer Science'];
 }
 
