@@ -168,6 +168,17 @@ db.serialize(() => {
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )`);
 
+  db.run(`CREATE TABLE IF NOT EXISTS form_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    form_name TEXT,
+    route TEXT,
+    form_data TEXT,
+    ip_address TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  )`);
+
   // Insert sample jobs
   db.run(`INSERT OR IGNORE INTO jobs (title, university, location, salary, description, requirements, category) VALUES
     ('Professor - AI', 'MIT', 'USA', '$200k', 'Teaching AI courses and conducting research', 'PhD in AI, 5+ years experience', 'Computer Science'),
@@ -198,6 +209,39 @@ function verifyToken(req, res, next) {
     });
   });
 }
+
+function sanitizeForHistory(body) {
+  const safe = {};
+  const excludedKeys = ['password', 'confirm_password', 'current_password', 'new_password', 'idToken', 'token'];
+  Object.keys(body || {}).forEach((key) => {
+    if (!excludedKeys.includes(key)) {
+      safe[key] = body[key];
+    }
+  });
+  return safe;
+}
+
+function saveFormHistory(req, formName) {
+  const formData = sanitizeForHistory(req.body);
+  const jsonData = JSON.stringify(formData);
+  const ip = req.headers['x-forwarded-for'] || req.ip || req.socket?.remoteAddress || '';
+  const userId = req.user ? req.user.id : null;
+  db.run(
+    'INSERT INTO form_history (user_id, form_name, route, form_data, ip_address) VALUES (?, ?, ?, ?, ?)',
+    [userId, formName, req.originalUrl, jsonData, ip],
+    (err) => {
+      if (err) console.error('Failed to save form history:', err);
+    }
+  );
+}
+
+app.use((req, res, next) => {
+  if (req.method === 'POST') {
+    const formName = req.body && req.body.form_name ? req.body.form_name : req.path;
+    saveFormHistory(req, formName);
+  }
+  next();
+});
 
 // Routes
 app.get('/', (req, res) => {
