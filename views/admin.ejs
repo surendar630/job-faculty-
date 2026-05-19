@@ -442,6 +442,9 @@
               <div class="app-item-meta">
                 <span><i class="fas fa-user"></i> <%= app.candidate_name %></span>
                 <span><i class="fas fa-calendar"></i> <%= new Date(app.applied_at).toLocaleDateString() %></span>
+                <% if (app.candidate_score != null) { %>
+                  <span><i class="fas fa-star"></i> Score: <strong><%= app.candidate_score %>%</strong></span>
+                <% } %>
               </div>
             </div>
             <span class="app-status status-<%= app.status.toLowerCase() %>">

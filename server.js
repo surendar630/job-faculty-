@@ -788,11 +788,39 @@ app.get('/practice', verifyToken, (req, res) => {
 app.get('/admin', verifyToken, (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).send('Access denied');
   db.all('SELECT * FROM jobs', [], (err, jobs) => {
+    if (err) return res.status(500).send('Error fetching jobs');
     db.all('SELECT a.*, j.title as job_title, u.name as candidate_name, u.skills as candidate_skills, i.score as interview_score FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id LEFT JOIN interviews i ON a.id = i.application_id', [], (err, applications) => {
-      db.all('SELECT * FROM users WHERE resume_path IS NOT NULL', [], (err, resumeUsers) => {
-        db.all('SELECT * FROM interview_sessions', [], (err, sessions) => {
-          db.all('SELECT i.*, a.user_id FROM interviews i JOIN applications a ON i.application_id = a.id', [], (err, interviews) => {
-            res.render('admin', { jobs, applications, resumeUsers, sessions, interviews });
+      if (err) return res.status(500).send('Error fetching applications');
+
+      // Compute average interview scores per user (from interviews)
+      db.all('SELECT a.user_id as user_id, AVG(i.score) as avg_interview_score FROM interviews i JOIN applications a ON i.application_id = a.id GROUP BY a.user_id', [], (err, avgInterviews) => {
+        const avgInterviewMap = {};
+        if (!err && avgInterviews) avgInterviews.forEach(r => { avgInterviewMap[r.user_id] = r.avg_interview_score; });
+
+        // Compute average session scores per user (from interview_sessions)
+        db.all('SELECT user_id, AVG(average_score) as avg_session_score FROM interview_sessions GROUP BY user_id', [], (err, avgSessions) => {
+          const avgSessionMap = {};
+          if (!err && avgSessions) avgSessions.forEach(r => { avgSessionMap[r.user_id] = r.avg_session_score; });
+
+          // Attach a consolidated candidate_score to each application for admin view
+          applications.forEach(app => {
+            const directInterview = app.interview_score;
+            const avgInt = avgInterviewMap[app.user_id];
+            const avgSess = avgSessionMap[app.user_id];
+            let score = null;
+            if (directInterview != null) score = Math.round(directInterview);
+            else if (avgInt != null) score = Math.round(avgInt);
+            else if (avgSess != null) score = Math.round(avgSess);
+            app.candidate_score = score;
+          });
+
+          // Also fetch resume submissions and raw sessions/interviews for the resume section
+          db.all('SELECT * FROM users WHERE resume_path IS NOT NULL', [], (err, resumeUsers) => {
+            db.all('SELECT * FROM interview_sessions', [], (err, sessions) => {
+              db.all('SELECT i.*, a.user_id FROM interviews i JOIN applications a ON i.application_id = a.id', [], (err, interviews) => {
+                res.render('admin', { jobs, applications, resumeUsers, sessions, interviews });
+              });
+            });
           });
         });
       });
