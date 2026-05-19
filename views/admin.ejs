@@ -357,6 +357,66 @@
     </div>
   </div>
 
+  <!-- RESUME SUBMISSIONS SECTION -->
+  <div class="applications-section">
+    <h3 class="section-title"><i class="fas fa-file"></i> Resume Submissions</h3>
+    <div class="applications-list">
+      <% if (!resumeUsers || resumeUsers.length === 0) { %>
+        <div class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <p>No resume submissions yet.</p>
+        </div>
+      <% } else { resumeUsers.forEach(u => { %>
+        <div class="application-item">
+          <div class="app-item-header">
+            <div>
+              <h4 class="app-item-title"><i class="fas fa-user"></i> <%= u.name %> &nbsp; <small style="color:#64748b; font-weight:600;">(&lt;<%= u.email %>&gt;)</small></h4>
+            </div>
+            <span class="app-status status-<%= (u.resume_review_status || 'pending').toLowerCase() %>">
+              <i class="fas fa-tag"></i> <%= (u.resume_review_status || 'pending').charAt(0).toUpperCase() + (u.resume_review_status || 'pending').slice(1) %>
+            </span>
+          </div>
+
+          <p style="margin:0.5rem 0 0; color:#475569;"><strong>Submitted Resume:</strong>
+            <% if (u.resume_path) { %>
+              <a href="/<%= u.resume_path %>" target="_blank" style="margin-left:0.5rem; text-decoration:none; color:#0f172a;">View Resume</a>
+            <% } %>
+          </p>
+
+          <div style="margin-top:0.75rem;">
+            <strong>Scores:</strong>
+            <div style="margin-top:0.5rem; color:#475569;">
+              <% 
+                const userSessions = (sessions || []).filter(s => s.user_id === u.id);
+                const userInterviews = (interviews || []).filter(i => i.user_id === u.id);
+              %>
+              <% if (userSessions.length === 0 && userInterviews.length === 0) { %>
+                <span style="color:#94a3b8;">No interview scores available yet.</span>
+              <% } %>
+              <% userSessions.forEach(s => { %>
+                <div>Session #<%= s.id %>: total_score: <strong><%= s.total_score %></strong>, average_score: <strong><%= s.average_score %></strong></div>
+              <% }); %>
+              <% userInterviews.forEach(i => { %>
+                <div>Interview #<%= i.id %>: score: <strong><%= i.score %></strong></div>
+              <% }); %>
+            </div>
+          </div>
+
+          <div class="app-item-actions" style="margin-top:1rem;">
+            <form action="/admin/resume/<%= u.id %>/review" method="POST" style="display:flex; gap:0.5rem; align-items:center;">
+              <select name="action" style="padding: 0.6rem 0.9rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a;">
+                <option value="pending" <%= (!u.resume_review_status || u.resume_review_status === 'pending') ? 'selected' : '' %>>Pending</option>
+                <option value="shortlist">Shortlist</option>
+                <option value="reject">Reject</option>
+              </select>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Update</button>
+            </form>
+          </div>
+        </div>
+      <% }); } %>
+    </div>
+  </div>
+
   <!-- APPLICATIONS SECTION -->
   <div class="applications-section">
     <h3 class="section-title"><i class="fas fa-file-alt"></i> Candidate Applications</h3>

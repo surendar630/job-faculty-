@@ -212,6 +212,13 @@ db.serialize(() => {
     }
   });
 
+  // Ensure users table has a resume_review_status column to track admin review state
+  db.all("PRAGMA table_info(users)", (err, columns) => {
+    if (!err && !columns.some(column => column.name === 'resume_review_status')) {
+      db.run("ALTER TABLE users ADD COLUMN resume_review_status TEXT");
+    }
+  });
+
   // Create admin user
   bcrypt.hash('admin123', 10, (err, hash) => {
     db.run(`INSERT OR IGNORE INTO users (name, email, password, role) VALUES ('Admin', 'admin@academiapro.com', ?, 'admin')`, [hash]);
@@ -764,7 +771,8 @@ app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => 
     return res.status(400).send('Please select a resume file to upload');
   }
   
-  db.run('UPDATE users SET resume_path = ? WHERE id = ?', [resumePath, req.user.id], (err) => {
+  // Mark resume upload and set review status to pending so admins can review
+  db.run('UPDATE users SET resume_path = ?, resume_review_status = ? WHERE id = ?', [resumePath, 'pending', req.user.id], (err) => {
     if (err) {
       console.error('Resume upload error:', err);
       return res.status(500).send('Error uploading resume');
@@ -781,8 +789,27 @@ app.get('/admin', verifyToken, (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).send('Access denied');
   db.all('SELECT * FROM jobs', [], (err, jobs) => {
     db.all('SELECT a.*, j.title as job_title, u.name as candidate_name, u.skills as candidate_skills, i.score as interview_score FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id LEFT JOIN interviews i ON a.id = i.application_id', [], (err, applications) => {
-      res.render('admin', { jobs, applications });
+      db.all('SELECT * FROM users WHERE resume_path IS NOT NULL', [], (err, resumeUsers) => {
+        db.all('SELECT * FROM interview_sessions', [], (err, sessions) => {
+          db.all('SELECT i.*, a.user_id FROM interviews i JOIN applications a ON i.application_id = a.id', [], (err, interviews) => {
+            res.render('admin', { jobs, applications, resumeUsers, sessions, interviews });
+          });
+        });
+      });
     });
+  });
+});
+
+// Admin review endpoint for standalone resume submissions
+app.post('/admin/resume/:userId/review', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  const action = req.body.action || 'pending';
+  let status = action;
+  if (action === 'shortlist') status = 'shortlisted';
+  if (action === 'reject') status = 'rejected';
+  db.run('UPDATE users SET resume_review_status = ? WHERE id = ?', [status, req.params.userId], (err) => {
+    if (err) return res.status(500).send('Error updating review status');
+    res.redirect('/admin');
   });
 });
 
