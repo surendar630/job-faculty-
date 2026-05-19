@@ -147,6 +147,16 @@ db.serialize(() => {
     FOREIGN KEY (job_id) REFERENCES jobs(id)
   )`);
 
+  db.run(`CREATE TABLE IF NOT EXISTS interview_questions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    interview_id INTEGER,
+    question TEXT,
+    answer TEXT,
+    score REAL DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (interview_id) REFERENCES interviews(id)
+  )`);
+
   db.run(`CREATE TABLE IF NOT EXISTS interview_responses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     session_id INTEGER,
@@ -891,7 +901,7 @@ app.get('/candidate-interview/:jobId', verifyToken, async (req, res) => {
                         console.error('Question fetch error:', err);
                         return res.status(500).send('Server error loading questions');
                       }
-                      res.render('candidate-interview', { interviewId, questions, job_title: job.title });
+                      res.render('candidate-interview', { interviewId, questions, job_title: job.title, user: req.user });
                     });
                   })
                   .catch(e => {
@@ -910,7 +920,7 @@ app.get('/candidate-interview/:jobId', verifyToken, async (req, res) => {
               console.error('Question fetch error:', err);
               return res.status(500).send('Server error loading questions');
             }
-            res.render('candidate-interview', { interviewId: interview.id, questions, job_title: job.title });
+            res.render('candidate-interview', { interviewId: interview.id, questions, job_title: job.title, user: req.user });
           });
         }
       });
@@ -929,22 +939,24 @@ app.post('/candidate-interview/:interviewId/answer', verifyToken, async (req, re
       if (err) return res.status(500).json({ error: 'Update error' });
       
       // If score is low (< 70), generate a follow-up question
-      let followUpQuestion = null;
       if (score < 70) {
-        // Get job details for context
         db.get('SELECT j.* FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.id = ?', [qData.application_id], async (err, job) => {
+          let followUp = null;
           if (!err && job) {
-            followUpQuestion = await generateFollowUpQuestion(qData.question, answer, job.category);
-            if (followUpQuestion) {
-              // Insert follow-up question
-              db.run('INSERT INTO interview_questions (interview_id, question) VALUES (?, ?)', [req.params.interviewId, followUpQuestion], function(err) {
-                if (!err) {
-                  followUpQuestion = { id: this.lastID, question: followUpQuestion };
-                }
+            const questionText = await generateFollowUpQuestion(qData.question, answer, job.category);
+            if (questionText) {
+              followUp = await new Promise((resolve) => {
+                db.run('INSERT INTO interview_questions (interview_id, question) VALUES (?, ?)', [req.params.interviewId, questionText], function(err) {
+                  if (err) {
+                    console.error('Follow-up insert error:', err);
+                    return resolve(null);
+                  }
+                  resolve({ id: this.lastID, question: questionText });
+                });
               });
             }
           }
-          res.json({ score, followUp: followUpQuestion });
+          res.json({ score, followUp });
         });
       } else {
         res.json({ score });

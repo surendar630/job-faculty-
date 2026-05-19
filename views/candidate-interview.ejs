@@ -55,7 +55,7 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; }
 <script>
 let recognition;
 let answeredCount = 0;
-const totalQuestions = <%= questions.length %>;
+let totalQuestions = <%= questions.length %>;
 
 function updateProgress() {
   const progress = (answeredCount / totalQuestions) * 100;
@@ -107,8 +107,8 @@ function submitAnswer(questionId, questionIndex) {
     
     // If there's a follow-up question, add it
     if (data.followUp) {
-      addFollowUpQuestion(data.followUp, totalQuestions);
       totalQuestions++;
+      addFollowUpQuestion(data.followUp, totalQuestions);
     }
   });
 }
