@@ -11,10 +11,11 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
 .logo { font-size: 22px; font-weight: bold; }
 .nav-links span { margin: 0 10px; cursor: pointer; }
 .question { background: white; margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; }
+textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; border: 1px solid #cbd5e1; border-radius: 10px; font-family: inherit; }
+#codingAnswer { min-height: 220px; font-family: 'Courier New', Courier, monospace; background: #f8fafc; }
 .btn { background: #0a1628; color: white; padding: 10px; border: none; cursor: pointer; margin: 5px; }
 .voice-btn { background: #28a745; }
-.score { color: green; font-weight: bold; }
+.score { color: #0f766e; font-weight: bold; }
 .progress { background: #ddd; height: 20px; border-radius: 10px; margin: 10px 0; }
 .progress-bar { background: #0a1628; height: 100%; border-radius: 10px; transition: width 0.3s; }
 .sample-mcq { background: #ffffff; padding: 18px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin: 20px 0; }
@@ -72,6 +73,22 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; }
     <div id="sampleMCQContainer" class="sample-mcq-list"></div>
   </div>
 
+  <div class="question" id="codingRound">
+    <h3>Coding Round</h3>
+    <p>Type a simple code example inspired by W3Schools. Create a working HTML page with a button that displays an alert when clicked.</p>
+    <textarea id="codingAnswer" placeholder="Type your code here..."></textarea>
+    <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; margin-top:0.5rem;">
+      <button class="btn" type="button" onclick="loadSampleCode()">Load W3Schools Example</button>
+      <button class="btn" type="button" onclick="runCode()">Run Code</button>
+      <button class="btn" type="button" onclick="submitCodingRound()">Submit Coding Round</button>
+    </div>
+    <div id="codingResult" class="score" style="margin-top:0.75rem;"></div>
+    <div id="codingPreview" style="background:#ffffff; border:1px solid #cbd5e1; padding:18px; border-radius:12px; margin-top:18px;">
+      <h4 style="margin-top:0;">Live Preview</h4>
+      <iframe id="codePreviewFrame" sandbox="allow-scripts" style="width:100%; min-height:250px; border:1px solid #cbd5e1; border-radius:10px;"></iframe>
+    </div>
+  </div>
+
   <div class="progress">
     <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
   </div>
@@ -92,12 +109,15 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; }
 <script>
 let recognition;
 let answeredCount = 0;
+let codingCompleted = false;
 let totalQuestions = <%= questions.length %>;
 
 function updateProgress() {
-  const progress = (answeredCount / totalQuestions) * 100;
+  const completed = answeredCount + (codingCompleted ? 1 : 0);
+  const total = totalQuestions + 1;
+  const progress = Math.round((completed / total) * 100);
   document.getElementById('progressBar').style.width = progress + '%';
-  if (answeredCount === totalQuestions) {
+  if (completed === total) {
     document.getElementById('completeBtn').style.display = 'block';
   }
 }
@@ -140,15 +160,73 @@ function submitAnswer(questionId, questionIndex) {
     document.querySelector('#question' + questionIndex + ' .score').innerHTML = 'Score: ' + data.score + '%';
     answeredCount++;
     updateProgress();
-    // Hide the question
     document.getElementById('question' + questionIndex).style.opacity = '0.5';
-    
-    // If there's a follow-up question, add it
+
     if (data.followUp) {
       totalQuestions++;
       addFollowUpQuestion(data.followUp, totalQuestions);
     }
   });
+}
+
+function submitCodingRound() {
+  const code = document.getElementById('codingAnswer').value;
+  if (!code.trim()) {
+    alert('Please type your coding answer before submitting.');
+    return;
+  }
+
+  const score = gradeCodingAnswer(code);
+  codingCompleted = true;
+  document.getElementById('codingResult').innerText = `Coding round submitted. Score: ${score}%`;
+  document.getElementById('codingAnswer').style.borderColor = '#0f766e';
+  updateProgress();
+}
+
+function gradeCodingAnswer(code) {
+  let score = 0;
+  const lowerCode = code.toLowerCase();
+  if (lowerCode.includes('<button')) score += 25;
+  if (lowerCode.includes('onclick')) score += 25;
+  if (lowerCode.includes('alert(') || lowerCode.includes('window.alert(')) score += 25;
+  if (lowerCode.includes('<script') || lowerCode.includes('function')) score += 25;
+  if (code.trim().length > 150) score += 10;
+  return Math.min(score, 100);
+}
+
+function runCode() {
+  const code = document.getElementById('codingAnswer').value;
+  if (!code.trim()) {
+    alert('Please write some code first to preview.');
+    return;
+  }
+
+  const iframe = document.getElementById('codePreviewFrame');
+  iframe.srcdoc = code.includes('<html') ? code : `<html><body>${code}</body></html>`;
+}
+
+function loadSampleCode() {
+  const sample = `<!DOCTYPE html>
+<html>
+<head>
+  <title>W3Schools Button Example</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; }
+    .btn-sample { padding: 12px 22px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>W3Schools-style Button Example</h2>
+  <button class="btn-sample" onclick="showMessage()">Click me</button>
+  <script>
+    function showMessage() {
+      alert('Hello! This code uses a button event from W3Schools.');
+    }
+  </script>
+</body>
+</html>`;
+  document.getElementById('codingAnswer').value = sample;
+  document.getElementById('codePreviewFrame').srcdoc = sample;
 }
 
 function addFollowUpQuestion(followUp, questionIndex) {
