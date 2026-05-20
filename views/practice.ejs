@@ -15,6 +15,13 @@
   .container { max-width: 980px; margin: 0 auto; padding: 24px 20px; }
   h1 { font-size: 28px; margin-bottom: 6px; }
   .subtitle { font-size: 15px; color: #475569; margin-bottom: 18px; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 22px; }
+  .info-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px; }
+  .info-card h2 { font-size: 16px; margin-bottom: 10px; color: #111827; }
+  .info-card p, .info-list li { font-size: 14px; color: #475569; line-height: 1.7; }
+  .info-list { list-style: none; padding-left: 0; margin: 0; display: grid; gap: 10px; }
+  .resource-link { color: #2563eb; text-decoration: none; }
+  .resource-link:hover { text-decoration: underline; }
   .tabs { display: flex; gap: 8px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
   .tab { padding: 12px 18px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: #64748b; border-bottom: 2px solid transparent; transition: all 0.15s ease; }
   .tab.active { color: #111; border-bottom-color: #111; }
@@ -93,6 +100,21 @@
 <div class="container">
   <h1>Interview Trainer</h1>
   <p class="subtitle">Practice MCQ and coding questions across HTML, CSS, JavaScript, Python, DSA &amp; CS.</p>
+  <div class="info-grid">
+    <div class="info-card">
+      <h2>W3Schools-style review</h2>
+      <p>These practice items follow the same quick-check style used by W3Schools: focused questions, clear answer options, and short explanations. Use them to reinforce core concepts in HTML, CSS, JavaScript, Python, algorithms, and CS fundamentals.</p>
+    </div>
+    <div class="info-card">
+      <h2>Recommended resources</h2>
+      <ul class="info-list">
+        <li><a class="resource-link" href="https://www.w3schools.com/" target="_blank" rel="noreferrer">W3Schools</a> – easy reference for web fundamentals and examples.</li>
+        <li><a class="resource-link" href="https://developer.mozilla.org/" target="_blank" rel="noreferrer">MDN Web Docs</a> – authoritative browser and web standard documentation.</li>
+        <li><a class="resource-link" href="https://www.freecodecamp.org/" target="_blank" rel="noreferrer">freeCodeCamp</a> – hands-on tutorials and interactive practice.</li>
+        <li><a class="resource-link" href="https://www.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks</a> – deeper algorithm and computer science explanations.</li>
+      </ul>
+    </div>
+  </div>
 
   <div class="tabs">
     <button class="tab active" onclick="switchTab('mcq')">MCQ round <span class="badge" id="mcq-badge">0/0</span></button>
