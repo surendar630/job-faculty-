@@ -785,6 +785,28 @@ app.get('/practice', verifyToken, (req, res) => {
   res.render('practice', { user: req.user });
 });
 
+app.post('/practice/submit', verifyToken, express.json(), (req, res) => {
+  const { totalScore, averageScore, totalQuestions, completedQuestions } = req.body;
+  if (typeof totalScore !== 'number' || typeof averageScore !== 'number') {
+    return res.status(400).json({ error: 'Invalid score data' });
+  }
+
+  const questions = Number.isInteger(totalQuestions) ? totalQuestions : 1;
+  const completed = Number.isInteger(completedQuestions) ? completedQuestions : 1;
+
+  db.run(
+    'INSERT INTO interview_sessions (user_id, job_id, session_type, total_questions, completed_questions, total_score, average_score) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [req.user.id, null, 'practice', questions, completed, totalScore, averageScore],
+    function(err) {
+      if (err) {
+        console.error('Practice session save error:', err);
+        return res.status(500).json({ error: 'Failed to save practice score' });
+      }
+      res.json({ success: true, sessionId: this.lastID });
+    }
+  );
+});
+
 app.get('/admin', verifyToken, (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).send('Access denied');
   db.all('SELECT * FROM jobs', [], (err, jobs) => {

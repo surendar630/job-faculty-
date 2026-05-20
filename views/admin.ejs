@@ -394,7 +394,7 @@
                 <span style="color:#94a3b8;">No interview scores available yet.</span>
               <% } %>
               <% userSessions.forEach(s => { %>
-                <div>Session #<%= s.id %>: total_score: <strong><%= s.total_score %></strong>, average_score: <strong><%= s.average_score %></strong></div>
+                <div>Session #<%= s.id %> (<%= s.session_type ? s.session_type : 'practice' %>): total_score: <strong><%= s.total_score %></strong>, average_score: <strong><%= s.average_score %></strong></div>
               <% }); %>
               <% userInterviews.forEach(i => { %>
                 <div>Interview #<%= i.id %>: score: <strong><%= i.score %></strong></div>

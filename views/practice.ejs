@@ -221,7 +221,27 @@ function submitCodingRound() {
   }
 
   const score = gradePracticeCode(code);
-  document.getElementById('practiceCodingResult').innerText = `Coding round submitted. Score: ${score}%`;
+  fetch('/practice/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      totalScore: score,
+      averageScore: score,
+      totalQuestions: 1,
+      completedQuestions: 1
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('practiceCodingResult').innerText = `Coding round submitted and saved. Score: ${score}%`;
+    } else {
+      document.getElementById('practiceCodingResult').innerText = 'Unable to save coding score. Please try again.';
+    }
+  })
+  .catch(() => {
+    document.getElementById('practiceCodingResult').innerText = 'Unable to save coding score. Please try again.';
+  });
 }
 
 function gradePracticeCode(code) {
