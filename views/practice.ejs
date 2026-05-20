@@ -78,7 +78,7 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
       <button class="btn" type="button" onclick="loadSampleCode()">Load W3Schools Example</button>
       <button class="btn" type="button" onclick="runPracticeCode()">Run Code</button>
       <button class="btn" type="button" onclick="submitCodingRound()">Submit Coding Round</button>
-      <button class="btn" type="button" onclick="startVoiceDictation()">Voice Dictation</button>
+      <button id="voiceDictationBtn" class="btn" type="button" onclick="startVoiceDictation()">Voice Dictation</button>
     </div>
     <textarea id="practiceCodingAnswer" placeholder="Type your coding answer here..."></textarea>
     <div id="practiceCodingResult" class="coding-result"></div>
@@ -89,79 +89,80 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
   </div>
 </div>
 <script>
+// Global practice data for MCQs and coding prompts
+const SAMPLE_MCQ_DATA = {
+  DSA: [
+    { question: 'What is the average-case time complexity of quicksort?', choices: ['O(n)', 'O(log n)', 'O(n log n)', 'O(n^2)'], answer: 2 },
+    { question: 'Which data structure is best for implementing a LIFO order?', choices: ['Queue', 'Stack', 'Heap', 'Graph'], answer: 1 },
+    { question: 'What is the main difference between a stack and a queue?', choices: ['Order of insertion', 'Memory usage', 'Underlying structure', 'Capacity'], answer: 0 }
+  ],
+  Python: [
+    { question: 'Which keyword is used to define a function in Python?', choices: ['func', 'define', 'def', 'function'], answer: 2 },
+    { question: 'Which data type is immutable in Python?', choices: ['List', 'Dictionary', 'Tuple', 'Set'], answer: 2 },
+    { question: 'How do you handle errors in Python?', choices: ['if/else', 'try/except', 'switch/case', 'throw/catch'], answer: 1 }
+  ],
+  Java: [
+    { question: 'Which keyword is used to inherit a class in Java?', choices: ['extends', 'implements', 'inherits', 'uses'], answer: 0 },
+    { question: 'Which of these is a valid Java access modifier?', choices: ['public', 'protected', 'private', 'All of the above'], answer: 3 },
+    { question: 'What does JVM stand for?', choices: ['Java Visual Machine', 'Java Virtual Machine', 'Just Virtual Machine', 'Java Version Manager'], answer: 1 }
+  ],
+  JavaScript: [
+    { question: 'What is the difference between var and let in JavaScript?', choices: ['Scope only', 'Type only', 'Both scope and hoisting', 'No difference'], answer: 2 },
+    { question: 'Which method adds an element to the end of an array?', choices: ['push()', 'pop()', 'shift()', 'unshift()'], answer: 0 },
+    { question: 'How do you write a comment in JavaScript?', choices: ['<!-- -->', '//', '/* */', 'Both // and /* */'], answer: 3 }
+  ],
+  HTML: [
+    { question: 'What does HTML stand for?', choices: ['Hyper Text Markup Language', 'Home Tool Markup Language', 'Hyperlinks and Text Markup Language', 'High Text Machine Language'], answer: 0 },
+    { question: 'Which HTML tag is used for the largest heading?', choices: ['<head>', '<h6>', '<h1>', '<title>'], answer: 2 },
+    { question: 'Which attribute is used to create a hyperlink?', choices: ['src', 'href', 'link', 'ref'], answer: 1 }
+  ],
+  CSS: [
+    { question: 'How do you select an element with class "button" in CSS?', choices: ['#button', '.button', 'button', '*button'], answer: 1 },
+    { question: 'Which property controls the text size?', choices: ['font-style', 'font-weight', 'font-size', 'text-size'], answer: 2 },
+    { question: 'Which CSS property is used to change the background color?', choices: ['color', 'background-color', 'bgcolor', 'back-color'], answer: 1 }
+  ],
+  SQL: [
+    { question: 'Which SQL statement is used to extract data from a database?', choices: ['GET', 'OPEN', 'SELECT', 'EXTRACT'], answer: 2 },
+    { question: 'What does JOIN do in SQL?', choices: ['Updates data', 'Deletes data', 'Combines rows from multiple tables', 'Renames a table'], answer: 2 },
+    { question: 'Which clause is used to filter rows?', choices: ['ORDER BY', 'GROUP BY', 'WHERE', 'HAVING'], answer: 2 }
+  ],
+  C: [
+    { question: 'Which header file is required for printf in C?', choices: ['<stdio.h>', '<stdlib.h>', '<string.h>', '<math.h>'], answer: 0 },
+    { question: 'How do you declare a pointer to int in C?', choices: ['int p;', 'int *p;', 'pointer int p;', 'int &p;'], answer: 1 },
+    { question: 'What is the size of char in C on most systems?', choices: ['1 byte', '2 bytes', '4 bytes', '8 bytes'], answer: 0 }
+  ],
+  'C++': [
+    { question: 'What is the keyword to define a class in C++?', choices: ['struct', 'object', 'class', 'type'], answer: 2 },
+    { question: 'Which feature is used for runtime polymorphism?', choices: ['Templates', 'Inheritance', 'Virtual functions', 'Overloading'], answer: 2 },
+    { question: 'What is the purpose of a constructor?', choices: ['Free memory', 'Initialize objects', 'Destroy objects', 'Assign variables'], answer: 1 }
+  ],
+  PHP: [
+    { question: 'Which symbol is used to start PHP code?', choices: ['<?php', '<php>', '{php}', '[php]'], answer: 0 },
+    { question: 'Which function is used to output text in PHP?', choices: ['print()', 'echo', 'write()', 'display()'], answer: 1 },
+    { question: 'How do you create a PHP array?', choices: ['array()', 'list()', '{}', 'new array()'], answer: 0 }
+  ]
+};
+
+const CODING_PROMPTS = {
+  DSA: 'Write a JavaScript function that checks whether a number is prime. Display results in the console.',
+  Python: 'Write a Python snippet that calculates the factorial of a number and prints the result.',
+  Java: 'Write a Java method that returns true if a string is a palindrome.',
+  JavaScript: 'Write a JavaScript function that adds a click handler to a button and shows an alert.',
+  HTML: 'Create a simple HTML page with a button that displays an alert when clicked.',
+  CSS: 'Create a small HTML/CSS example where a button changes color on hover.',
+  SQL: 'Write a SQL query to select all users from a users table where the role is "student".',
+  C: 'Write a C program that prints "Hello, world!" to the console.',
+  'C++': 'Write a C++ function that swaps two integers using references.',
+  PHP: 'Write a PHP script that outputs "Hello, PHP" to the browser.'
+};
+
 function showSampleMCQs() {
   const field = document.getElementById('practiceField').value;
-  const sampleMCQs = {
-    DSA: [
-      { question: 'What is the average-case time complexity of quicksort?', choices: ['O(n)', 'O(log n)', 'O(n log n)', 'O(n^2)'], answer: 2 },
-      { question: 'Which data structure is best for implementing a LIFO order?', choices: ['Queue', 'Stack', 'Heap', 'Graph'], answer: 1 },
-      { question: 'What is the main difference between a stack and a queue?', choices: ['Order of insertion', 'Memory usage', 'Underlying structure', 'Capacity'], answer: 0 }
-    ],
-    Python: [
-      { question: 'Which keyword is used to define a function in Python?', choices: ['func', 'define', 'def', 'function'], answer: 2 },
-      { question: 'Which data type is immutable in Python?', choices: ['List', 'Dictionary', 'Tuple', 'Set'], answer: 2 },
-      { question: 'How do you handle errors in Python?', choices: ['if/else', 'try/except', 'switch/case', 'throw/catch'], answer: 1 }
-    ],
-    Java: [
-      { question: 'Which keyword is used to inherit a class in Java?', choices: ['extends', 'implements', 'inherits', 'uses'], answer: 0 },
-      { question: 'Which of these is a valid Java access modifier?', choices: ['public', 'protected', 'private', 'All of the above'], answer: 3 },
-      { question: 'What does JVM stand for?', choices: ['Java Visual Machine', 'Java Virtual Machine', 'Just Virtual Machine', 'Java Version Manager'], answer: 1 }
-    ],
-    JavaScript: [
-      { question: 'What is the difference between var and let in JavaScript?', choices: ['Scope only', 'Type only', 'Both scope and hoisting', 'No difference'], answer: 2 },
-      { question: 'Which method adds an element to the end of an array?', choices: ['push()', 'pop()', 'shift()', 'unshift()'], answer: 0 },
-      { question: 'How do you write a comment in JavaScript?', choices: ['<!-- -->', '//', '/* */', 'Both // and /* */'], answer: 3 }
-    ],
-    HTML: [
-      { question: 'What does HTML stand for?', choices: ['Hyper Text Markup Language', 'Home Tool Markup Language', 'Hyperlinks and Text Markup Language', 'High Text Machine Language'], answer: 0 },
-      { question: 'Which HTML tag is used for the largest heading?', choices: ['<head>', '<h6>', '<h1>', '<title>'], answer: 2 },
-      { question: 'Which attribute is used to create a hyperlink?', choices: ['src', 'href', 'link', 'ref'], answer: 1 }
-    ],
-    CSS: [
-      { question: 'How do you select an element with class "button" in CSS?', choices: ['#button', '.button', 'button', '*button'], answer: 1 },
-      { question: 'Which property controls the text size?', choices: ['font-style', 'font-weight', 'font-size', 'text-size'], answer: 2 },
-      { question: 'Which CSS property is used to change the background color?', choices: ['color', 'background-color', 'bgcolor', 'back-color'], answer: 1 }
-    ],
-    SQL: [
-      { question: 'Which SQL statement is used to extract data from a database?', choices: ['GET', 'OPEN', 'SELECT', 'EXTRACT'], answer: 2 },
-      { question: 'What does JOIN do in SQL?', choices: ['Updates data', 'Deletes data', 'Combines rows from multiple tables', 'Renames a table'], answer: 2 },
-      { question: 'Which clause is used to filter rows?', choices: ['ORDER BY', 'GROUP BY', 'WHERE', 'HAVING'], answer: 2 }
-    ],
-    C: [
-      { question: 'Which header file is required for printf in C?', choices: ['<stdio.h>', '<stdlib.h>', '<string.h>', '<math.h>'], answer: 0 },
-      { question: 'How do you declare a pointer to int in C?', choices: ['int p;', 'int *p;', 'pointer int p;', 'int &p;'], answer: 1 },
-      { question: 'What is the size of char in C on most systems?', choices: ['1 byte', '2 bytes', '4 bytes', '8 bytes'], answer: 0 }
-    ],
-    'C++': [
-      { question: 'What is the keyword to define a class in C++?', choices: ['struct', 'object', 'class', 'type'], answer: 2 },
-      { question: 'Which feature is used for runtime polymorphism?', choices: ['Templates', 'Inheritance', 'Virtual functions', 'Overloading'], answer: 2 },
-      { question: 'What is the purpose of a constructor?', choices: ['Free memory', 'Initialize objects', 'Destroy objects', 'Assign variables'], answer: 1 }
-    ],
-    PHP: [
-      { question: 'Which symbol is used to start PHP code?', choices: ['<?php', '<php>', '{php}', '[php]'], answer: 0 },
-      { question: 'Which function is used to output text in PHP?', choices: ['print()', 'echo', 'write()', 'display()'], answer: 1 },
-      { question: 'How do you create a PHP array?', choices: ['array()', 'list()', '{}', 'new array()'], answer: 0 }
-    ]
-  };
-
-  const codingPrompts = {
-    DSA: 'Write a JavaScript function that checks whether a number is prime. Display results in the console.',
-    Python: 'Write a Python snippet that calculates the factorial of a number and prints the result.',
-    Java: 'Write a Java method that returns true if a string is a palindrome.',
-    JavaScript: 'Write a JavaScript function that adds a click handler to a button and shows an alert.',
-    HTML: 'Create a simple HTML page with a button that displays an alert when clicked.',
-    CSS: 'Create a small HTML/CSS example where a button changes color on hover.',
-    SQL: 'Write a SQL query to select all users from a users table where the role is "student".',
-    C: 'Write a C program that prints "Hello, world!" to the console.',
-    'C++': 'Write a C++ function that swaps two integers using references.',
-    PHP: 'Write a PHP script that outputs "Hello, PHP" to the browser.'
-  };
-
   const container = document.getElementById('sampleMCQContainer');
-  const promptText = codingPrompts[field] || codingPrompts.DSA;
+  const promptText = CODING_PROMPTS[field] || CODING_PROMPTS.DSA;
   document.getElementById('codingQuestionText').innerHTML = `<strong>Coding question:</strong> ${promptText}`;
   container.innerHTML = '';
-  const selected = sampleMCQs[field] || sampleMCQs.DSA;
+  const selected = SAMPLE_MCQ_DATA[field] || SAMPLE_MCQ_DATA.DSA;
 
   selected.forEach((item, index) => {
     const block = document.createElement('div');
@@ -180,14 +181,7 @@ function showSampleMCQs() {
   gradeBtn.className = 'btn';
   gradeBtn.type = 'button';
   gradeBtn.textContent = 'Check Answers';
-  gradeBtn.onclick = () => {
-    let score = 0;
-    selected.forEach((item, index) => {
-      const selectedOption = document.querySelector(`input[name="mcq${index}"]:checked`);
-      if (selectedOption && parseInt(selectedOption.value, 10) === item.answer) score += 1;
-    });
-    alert(`Your score for ${field}: ${score} / ${selected.length}`);
-  };
+  gradeBtn.onclick = () => submitMCQResults(field);
 
   container.appendChild(gradeBtn);
 }
@@ -197,6 +191,45 @@ function playVoiceGuide() {
   const speech = new SpeechSynthesisUtterance(message);
   speech.lang = 'en-US';
   window.speechSynthesis.speak(speech);
+}
+
+function submitMCQResults(field) {
+  const selected = SAMPLE_MCQ_DATA[field] || SAMPLE_MCQ_DATA.DSA;
+  let score = 0;
+  let answered = 0;
+  selected.forEach((item, index) => {
+    const selectedOption = document.querySelector(`input[name="mcq${index}"]:checked`);
+    if (selectedOption) {
+      answered++;
+      if (parseInt(selectedOption.value, 10) === item.answer) score += 1;
+    }
+  });
+  const percent = Math.round((score / selected.length) * 100);
+  let resultEl = document.getElementById('mcqResult');
+  if (!resultEl) {
+    resultEl = document.createElement('div');
+    resultEl.id = 'mcqResult';
+    resultEl.className = 'coding-result';
+    document.getElementById('sampleMCQContainer').appendChild(resultEl);
+  }
+
+  fetch('/practice/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      totalScore: percent,
+      averageScore: percent,
+      totalQuestions: selected.length,
+      completedQuestions: answered,
+      sessionType: 'mcq'
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) resultEl.innerText = `MCQ submitted and saved. Score: ${percent}% (${score}/${selected.length})`;
+    else resultEl.innerText = 'Unable to save MCQ results. Try again.';
+  })
+  .catch(() => { resultEl.innerText = 'Unable to save MCQ results. Try again.'; });
 }
 
 let recognition;
@@ -233,9 +266,13 @@ function startVoiceDictation() {
 
   recognition.onend = function() {
     isDictating = false;
+    const btn = document.getElementById('voiceDictationBtn');
+    if (btn) btn.innerText = 'Voice Dictation';
   };
 
   recognition.start();
+  const btn = document.getElementById('voiceDictationBtn');
+  if (btn) btn.innerText = 'Stop Dictation';
 }
 
 function loadSampleCode() {
