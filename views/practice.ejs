@@ -23,6 +23,11 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
 .sample-mcq-option { display: flex; align-items: center; margin-top: 0.65rem; }
 .sample-mcq-option input { margin-right: 0.65rem; }
 .action-bar { display: flex; gap: 1rem; flex-wrap: wrap; }
+.coding-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+#practiceCodingAnswer { width: 100%; min-height: 220px; padding: 14px; border-radius: 14px; border: 1px solid #cbd5e1; font-family: 'Courier New', Courier, monospace; background: #f8fafc; margin-bottom: 1rem; }
+.coding-preview { background: #ffffff; padding: 18px; border-radius: 14px; border: 1px solid #cbd5e1; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08); }
+.coding-preview h3 { margin-top: 0; }
+.coding-result { color: #0f766e; font-weight: 600; margin-bottom: 1rem; }
 .btn { background: #0a1628; color: white; border: none; border-radius: 10px; padding: 0.95rem 1.2rem; cursor: pointer; }
 </style>
 </head>
@@ -62,6 +67,21 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
       <button class="btn" type="button" onclick="playVoiceGuide()">Voice Guide</button>
     </div>
     <div id="sampleMCQContainer" class="sample-mcq-list"></div>
+  </div>
+  <div class="card">
+    <h2>Coding Round</h2>
+    <p>Type your code below and run it in the live preview. Use the W3Schools example to build a working HTML button that shows an alert.</p>
+    <div class="coding-actions">
+      <button class="btn" type="button" onclick="loadSampleCode()">Load W3Schools Example</button>
+      <button class="btn" type="button" onclick="runPracticeCode()">Run Code</button>
+      <button class="btn" type="button" onclick="submitCodingRound()">Submit Coding Round</button>
+    </div>
+    <textarea id="practiceCodingAnswer" placeholder="Type your coding answer here..."></textarea>
+    <div id="practiceCodingResult" class="coding-result"></div>
+    <div class="coding-preview">
+      <h3>Live Preview</h3>
+      <iframe id="practiceCodePreview" sandbox="allow-scripts" style="width:100%; min-height:280px; border:1px solid #cbd5e1; border-radius:12px;"></iframe>
+    </div>
   </div>
 </div>
 <script>
@@ -158,6 +178,60 @@ function playVoiceGuide() {
   const speech = new SpeechSynthesisUtterance(message);
   speech.lang = 'en-US';
   window.speechSynthesis.speak(speech);
+}
+
+function loadSampleCode() {
+  const sample = `<!DOCTYPE html>
+<html>
+<head>
+  <title>W3Schools Button Example</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9fafb; padding: 24px; }
+    .btn-sample { padding: 12px 22px; background: #007bff; color: white; border: none; border-radius: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h3>W3Schools Button Example</h3>
+  <button class="btn-sample" onclick="showMessage()">Click me</button>
+  <script>
+    function showMessage() {
+      alert('Hello! This is a W3Schools-style example.');
+    }
+  </script>
+</body>
+</html>`;
+  document.getElementById('practiceCodingAnswer').value = sample;
+  document.getElementById('practiceCodePreview').srcdoc = sample;
+}
+
+function runPracticeCode() {
+  const code = document.getElementById('practiceCodingAnswer').value;
+  if (!code.trim()) {
+    alert('Please enter your code to preview it.');
+    return;
+  }
+  document.getElementById('practiceCodePreview').srcdoc = code.includes('<html') ? code : `<html><body>${code}</body></html>`;
+}
+
+function submitCodingRound() {
+  const code = document.getElementById('practiceCodingAnswer').value;
+  if (!code.trim()) {
+    alert('Please type your coding answer before submitting.');
+    return;
+  }
+
+  const score = gradePracticeCode(code);
+  document.getElementById('practiceCodingResult').innerText = `Coding round submitted. Score: ${score}%`;
+}
+
+function gradePracticeCode(code) {
+  let score = 0;
+  const text = code.toLowerCase();
+  if (text.includes('<button')) score += 25;
+  if (text.includes('onclick')) score += 25;
+  if (text.includes('alert(') || text.includes('window.alert(')) score += 25;
+  if (text.includes('<script') || text.includes('function')) score += 25;
+  return Math.min(score, 100);
 }
 </script>
 </body>
