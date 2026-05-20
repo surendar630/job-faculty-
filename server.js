@@ -786,7 +786,7 @@ app.get('/practice', verifyToken, (req, res) => {
 });
 
 app.post('/practice/submit', verifyToken, express.json(), (req, res) => {
-  const { totalScore, averageScore, totalQuestions, completedQuestions } = req.body;
+  const { totalScore, averageScore, totalQuestions, completedQuestions, mcqAnswers, codingAnswer, sessionType } = req.body;
   if (typeof totalScore !== 'number' || typeof averageScore !== 'number') {
     return res.status(400).json({ error: 'Invalid score data' });
   }
@@ -802,7 +802,31 @@ app.post('/practice/submit', verifyToken, express.json(), (req, res) => {
         console.error('Practice session save error:', err);
         return res.status(500).json({ error: 'Failed to save practice score' });
       }
-      res.json({ success: true, sessionId: this.lastID });
+      const sessionId = this.lastID;
+
+      // Save detailed responses if provided
+      try {
+        if (Array.isArray(mcqAnswers) && mcqAnswers.length > 0) {
+          const stmt = db.prepare('INSERT INTO interview_responses (session_id, question_text, user_answer, ai_score, response_time) VALUES (?, ?, ?, ?, ?)');
+          mcqAnswers.forEach(a => {
+            const questionText = a.question_text || a.question || `MCQ Q${a.index + 1}`;
+            const userAnswer = typeof a.user_answer === 'string' ? a.user_answer : String(a.user_answer);
+            const aiScore = typeof a.ai_score === 'number' ? a.ai_score : null;
+            const responseTime = typeof a.response_time === 'number' ? a.response_time : null;
+            stmt.run(sessionId, questionText, userAnswer, aiScore, responseTime);
+          });
+          stmt.finalize();
+        }
+
+        if (codingAnswer && typeof codingAnswer === 'string' && codingAnswer.trim()) {
+          db.run('INSERT INTO interview_responses (session_id, question_text, user_answer, ai_score, response_time) VALUES (?, ?, ?, ?, ?)',
+            [sessionId, 'coding_answer', codingAnswer, null, null]);
+        }
+      } catch (e) {
+        console.error('Error saving detailed responses:', e);
+      }
+
+      res.json({ success: true, sessionId });
     }
   );
 });
@@ -839,9 +863,12 @@ app.get('/admin', verifyToken, (req, res) => {
           // Also fetch resume submissions and raw sessions/interviews for the resume section
           db.all('SELECT * FROM users WHERE resume_path IS NOT NULL', [], (err, resumeUsers) => {
             db.all('SELECT * FROM interview_sessions', [], (err, sessions) => {
-              db.all('SELECT i.*, a.user_id FROM interviews i JOIN applications a ON i.application_id = a.id', [], (err, interviews) => {
-                res.render('admin', { jobs, applications, resumeUsers, sessions, interviews });
-              });
+                db.all('SELECT i.*, a.user_id FROM interviews i JOIN applications a ON i.application_id = a.id', [], (err, interviews) => {
+                  // Fetch all responses and pass to view for detailed session display
+                  db.all('SELECT * FROM interview_responses', [], (err, responses) => {
+                    res.render('admin', { jobs, applications, resumeUsers, sessions, interviews, responses });
+                  });
+                });
             });
           });
         });

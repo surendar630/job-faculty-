@@ -63,7 +63,8 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
         <option value="C++">C++</option>
         <option value="PHP">PHP</option>
       </select>
-      <button class="btn" type="button" onclick="showSampleMCQs()">Load Practice Questions</button>
+      <button class="btn" type="button" onclick="(CURRENT_MCQ_SET = SAMPLE_MCQ_DATA, showSampleMCQs())">Load Practice Questions</button>
+      <button class="btn" type="button" onclick="loadW3SchoolsSet()">Load W3Schools Questions</button>
       <button class="btn" type="button" onclick="playVoiceGuide()">Voice Guide</button>
     </div>
     <div id="sampleMCQContainer" class="sample-mcq-list"></div>
@@ -156,13 +157,46 @@ const CODING_PROMPTS = {
   PHP: 'Write a PHP script that outputs "Hello, PHP" to the browser.'
 };
 
+// W3Schools-inspired sample question bank (paraphrased)
+const W3_SAMPLE_MCQ_DATA = {
+  HTML: [
+    { question: 'Which tag is used to create a hyperlink?', choices: ['<link>', '<a>', '<href>', '<url>'], answer: 1 },
+    { question: 'Which tag defines an unordered list?', choices: ['<ol>', '<ul>', '<li>', '<list>'], answer: 1 },
+    { question: 'Which attribute provides alternative text for an image?', choices: ['alt', 'title', 'src', 'caption'], answer: 0 }
+  ],
+  CSS: [
+    { question: 'How do you apply a background color to an element?', choices: ['color', 'background', 'background-color', 'bgcolor'], answer: 2 },
+    { question: 'Which property changes the font size?', choices: ['text-size', 'font-size', 'size', 'font-style'], answer: 1 },
+    { question: 'Which selector targets elements by class?', choices: ['#class', '.class', 'class', '*class'], answer: 1 }
+  ],
+  JavaScript: [
+    { question: 'How do you log a message to the console?', choices: ['console.log()', 'print()', 'echo()', 'log()'], answer: 0 },
+    { question: 'Which keyword declares a variable with block scope?', choices: ['var', 'let', 'const', 'block'], answer: 1 },
+    { question: 'Which method converts a JSON string to an object?', choices: ['JSON.parse()', 'JSON.stringify()', 'parseJSON()', 'toObject()'], answer: 0 }
+  ],
+  Python: [
+    { question: 'Which keyword starts a function definition?', choices: ['def', 'function', 'fn', 'define'], answer: 0 },
+    { question: 'Which structure is used for ordered, mutable collections?', choices: ['tuple', 'list', 'set', 'dict'], answer: 1 },
+    { question: 'How do you write a comment in Python?', choices: ['//', '#', '/* */', '<!-- -->'], answer: 1 }
+  ]
+};
+
+const W3_CODING_PROMPTS = {
+  HTML: 'Create a simple HTML page with a button that shows an alert when clicked.',
+  CSS: 'Create a small HTML snippet with a button that changes color on hover using CSS.',
+  JavaScript: 'Write JavaScript that adds a click handler to a button and logs a message to the console.',
+  Python: 'Write a Python function that returns the factorial of a number.'
+};
+
+let CURRENT_MCQ_SET = SAMPLE_MCQ_DATA;
+
 function showSampleMCQs() {
   const field = document.getElementById('practiceField').value;
   const container = document.getElementById('sampleMCQContainer');
-  const promptText = CODING_PROMPTS[field] || CODING_PROMPTS.DSA;
+  const promptText = (CODING_PROMPTS[field] || CODING_PROMPTS.DSA) || (W3_CODING_PROMPTS[field] || 'Write your code here.');
   document.getElementById('codingQuestionText').innerHTML = `<strong>Coding question:</strong> ${promptText}`;
   container.innerHTML = '';
-  const selected = SAMPLE_MCQ_DATA[field] || SAMPLE_MCQ_DATA.DSA;
+  const selected = (CURRENT_MCQ_SET && CURRENT_MCQ_SET[field]) ? CURRENT_MCQ_SET[field] : (SAMPLE_MCQ_DATA[field] || SAMPLE_MCQ_DATA.DSA);
 
   selected.forEach((item, index) => {
     const block = document.createElement('div');
@@ -193,17 +227,28 @@ function playVoiceGuide() {
   window.speechSynthesis.speak(speech);
 }
 
+function loadW3SchoolsSet() {
+  CURRENT_MCQ_SET = W3_SAMPLE_MCQ_DATA;
+  const field = document.getElementById('practiceField').value;
+  if (W3_CODING_PROMPTS[field]) {
+    document.getElementById('codingQuestionText').innerHTML = `<strong>Coding question:</strong> ${W3_CODING_PROMPTS[field]}`;
+  }
+  showSampleMCQs();
+}
+
 function submitMCQResults(field) {
-  const selected = SAMPLE_MCQ_DATA[field] || SAMPLE_MCQ_DATA.DSA;
+  const selected = (CURRENT_MCQ_SET && CURRENT_MCQ_SET[field]) ? CURRENT_MCQ_SET[field] : (SAMPLE_MCQ_DATA[field] || SAMPLE_MCQ_DATA.DSA);
   let score = 0;
   let answered = 0;
+  const mcqAnswers = [];
   selected.forEach((item, index) => {
     const selectedOption = document.querySelector(`input[name="mcq${index}"]:checked`);
-    if (selectedOption) {
-      answered++;
-      if (parseInt(selectedOption.value, 10) === item.answer) score += 1;
-    }
+    const userVal = selectedOption ? parseInt(selectedOption.value, 10) : null;
+    if (selectedOption) answered++;
+    if (userVal !== null && userVal === item.answer) score += 1;
+    mcqAnswers.push({ index, question_text: item.question, user_answer: userVal });
   });
+
   const percent = Math.round((score / selected.length) * 100);
   let resultEl = document.getElementById('mcqResult');
   if (!resultEl) {
@@ -221,7 +266,8 @@ function submitMCQResults(field) {
       averageScore: percent,
       totalQuestions: selected.length,
       completedQuestions: answered,
-      sessionType: 'mcq'
+      sessionType: 'mcq',
+      mcqAnswers
     })
   })
   .then(res => res.json())
@@ -323,7 +369,10 @@ function submitCodingRound() {
       totalScore: score,
       averageScore: score,
       totalQuestions: 1,
-      completedQuestions: 1
+      completedQuestions: 1,
+      sessionType: 'coding',
+      codingAnswer: code,
+      mcqAnswers: []
     })
   })
   .then(res => res.json())
