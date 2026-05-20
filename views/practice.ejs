@@ -78,6 +78,7 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
       <button class="btn" type="button" onclick="loadSampleCode()">Load W3Schools Example</button>
       <button class="btn" type="button" onclick="runPracticeCode()">Run Code</button>
       <button class="btn" type="button" onclick="submitCodingRound()">Submit Coding Round</button>
+      <button class="btn" type="button" onclick="startVoiceDictation()">Voice Dictation</button>
     </div>
     <textarea id="practiceCodingAnswer" placeholder="Type your coding answer here..."></textarea>
     <div id="practiceCodingResult" class="coding-result"></div>
@@ -196,6 +197,45 @@ function playVoiceGuide() {
   const speech = new SpeechSynthesisUtterance(message);
   speech.lang = 'en-US';
   window.speechSynthesis.speak(speech);
+}
+
+let recognition;
+let isDictating = false;
+
+function startVoiceDictation() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert('Voice recognition is not supported in this browser. Use Chrome or Edge.');
+    return;
+  }
+
+  if (isDictating && recognition) {
+    recognition.stop();
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+  isDictating = true;
+
+  recognition.onresult = function(event) {
+    const transcript = event.results[event.results.length - 1][0].transcript;
+    const codeArea = document.getElementById('practiceCodingAnswer');
+    codeArea.value += transcript + ' ';
+  };
+
+  recognition.onerror = function(event) {
+    console.error('Speech recognition error:', event.error);
+    isDictating = false;
+  };
+
+  recognition.onend = function() {
+    isDictating = false;
+  };
+
+  recognition.start();
 }
 
 function loadSampleCode() {
