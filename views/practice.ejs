@@ -63,14 +63,17 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
         <option value="C++">C++</option>
         <option value="PHP">PHP</option>
       </select>
-      <button class="btn" type="button" onclick="showSampleMCQs()">Show Sample MCQs</button>
+      <button class="btn" type="button" onclick="showSampleMCQs()">Load Practice Questions</button>
       <button class="btn" type="button" onclick="playVoiceGuide()">Voice Guide</button>
     </div>
     <div id="sampleMCQContainer" class="sample-mcq-list"></div>
   </div>
   <div class="card">
     <h2>Coding Round</h2>
-    <p>Type your code below and run it in the live preview. Use the W3Schools example to build a working HTML button that shows an alert.</p>
+    <p>Answer the coding prompt below and type your code in the editor. You can preview the result instantly.</p>
+    <div id="codingQuestionText" class="sample-mcq-question" style="background:#eef2ff;">
+      <strong>Coding question:</strong> Choose a field and click "Load Practice Questions" to display the coding prompt here.
+    </div>
     <div class="coding-actions">
       <button class="btn" type="button" onclick="loadSampleCode()">Load W3Schools Example</button>
       <button class="btn" type="button" onclick="runPracticeCode()">Run Code</button>
@@ -140,7 +143,22 @@ function showSampleMCQs() {
     ]
   };
 
+  const codingPrompts = {
+    DSA: 'Write a JavaScript function that checks whether a number is prime. Display results in the console.',
+    Python: 'Write a Python snippet that calculates the factorial of a number and prints the result.',
+    Java: 'Write a Java method that returns true if a string is a palindrome.',
+    JavaScript: 'Write a JavaScript function that adds a click handler to a button and shows an alert.',
+    HTML: 'Create a simple HTML page with a button that displays an alert when clicked.',
+    CSS: 'Create a small HTML/CSS example where a button changes color on hover.',
+    SQL: 'Write a SQL query to select all users from a users table where the role is "student".',
+    C: 'Write a C program that prints "Hello, world!" to the console.',
+    'C++': 'Write a C++ function that swaps two integers using references.',
+    PHP: 'Write a PHP script that outputs "Hello, PHP" to the browser.'
+  };
+
   const container = document.getElementById('sampleMCQContainer');
+  const promptText = codingPrompts[field] || codingPrompts.DSA;
+  document.getElementById('codingQuestionText').innerHTML = `<strong>Coding question:</strong> ${promptText}`;
   container.innerHTML = '';
   const selected = sampleMCQs[field] || sampleMCQs.DSA;
 
