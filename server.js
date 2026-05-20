@@ -691,10 +691,14 @@ app.post('/compare', verifyToken, (req, res) => {
 });
 
 app.get('/shortlisted', verifyToken, (req, res) => {
-  db.all('SELECT a.*, j.title as job_title, j.university, j.location FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.status = "shortlisted"', [], (err, applications) => {
-    if (err) return res.status(500).send('Error');
-    res.render('shortlisted', { applications, user: req.user });
-  });
+  db.all(
+    'SELECT a.*, j.title as job_title, j.university, j.location, u.name as applicant_name, u.email as applicant_email FROM applications a JOIN jobs j ON a.job_id = j.id LEFT JOIN users u ON a.user_id = u.id WHERE a.status = "shortlisted"',
+    [],
+    (err, applications) => {
+      if (err) return res.status(500).send('Error');
+      res.render('shortlisted', { applications, user: req.user });
+    }
+  );
 });
 
 app.post('/profile/update', verifyToken, (req, res) => {

@@ -1,195 +1,756 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shortlisted Resumes - AcademiaPro</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="/styles.css" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shortlisted Candidates Manager - AcademiaPro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+<link href="/styles.css" rel="stylesheet" />
 <style>
-.shortlisted-header {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-  padding: 3rem 2rem;
-  border-radius: 12px;
-  margin-bottom: 3rem;
-  box-shadow: var(--shadow-lg);
-}
-
-.shortlisted-header h1 {
-  color: white;
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
-}
-
-.shortlisted-header p {
-  color: rgba(255,255,255,0.9);
-  font-size: 1.1rem;
-  margin: 0;
-}
-
-.resume-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-}
-
-.resume-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  overflow: hidden;
-  transition: var(--transition);
-  border: 1px solid #e2e8f0;
-}
-
-.resume-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
-}
-
-.resume-header {
-  background: linear-gradient(135deg, #f0f4ff, #f5f3ff);
-  padding: 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.resume-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 0.5rem;
-}
-
-.resume-meta {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  color: #64748b;
-  font-size: 0.9rem;
-}
-
-.resume-meta span {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.resume-content {
-  padding: 1.5rem;
-}
-
-.resume-actions {
-  padding: 1rem 1.5rem 1.5rem;
-  border-top: 1px solid #f1f5f9;
-  display: flex;
-  gap: 0.75rem;
-}
-
-.resume-actions .btn {
-  flex: 1;
-  padding: 0.75rem;
-  font-size: 0.9rem;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 3rem;
-  color: #64748b;
-  background: white;
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-}
-
-.empty-state i {
-  font-size: 3rem;
-  color: #cbd5e1;
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 768px) {
-  .resume-grid {
-    grid-template-columns: 1fr;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --emerald: #1a9e6e;
+    --emerald-deep: #0e6347;
+    --emerald-light: #d1f0e4;
+    --emerald-pale: #f0faf5;
+    --ink: #0d1f1a;
+    --ink-muted: #3d5a50;
+    --ink-faint: #7a9e91;
+    --surface: #ffffff;
+    --surface-2: #f5faf7;
+    --surface-3: #eaf4ef;
+    --border: #d4e8de;
+    --border-soft: #e8f4ee;
+    --shadow-sm: 0 1px 3px rgba(14,99,71,0.08), 0 1px 2px rgba(14,99,71,0.06);
+    --shadow-md: 0 4px 16px rgba(14,99,71,0.1), 0 2px 6px rgba(14,99,71,0.06);
+    --shadow-lg: 0 12px 40px rgba(14,99,71,0.12), 0 4px 12px rgba(14,99,71,0.08);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
   }
-
-  .resume-meta {
+  html, body {
+    min-height: 100vh;
+    background: var(--surface-2);
+    font-family: var(--font-body);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  body {
+    background-image:
+      radial-gradient(ellipse 80% 60% at 10% 0%, rgba(26,158,110,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 100%, rgba(26,158,110,0.04) 0%, transparent 60%);
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    padding: 1.1rem 1.25rem;
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--emerald-deep);
+  }
+  .logo i { font-size: 1.15rem; }
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .nav-links span, .nav-links button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.92rem;
+    color: var(--ink-faint);
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-links span:hover,
+  .nav-links button:hover { background: rgba(14,158,110,0.08); color: var(--ink); }
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+  .header {
+    margin-bottom: 2.5rem;
+    position: relative;
+    max-width: 900px;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--emerald);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .header-eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--emerald);
+    border-radius: 2px;
+  }
+  .header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 38px);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .header h1 em { font-style: italic; color: var(--emerald); }
+  .header-sub {
+    font-size: 14px;
+    color: var(--ink-faint);
+    max-width: 520px;
+    font-weight: 300;
+  }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+  .stat-card:nth-child(1)::after { background: var(--emerald); }
+  .stat-card:nth-child(2)::after { background: #185fa5; }
+  .stat-card:nth-child(3)::after { background: #7c3aed; }
+  .stat-icon {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .stat-card:nth-child(1) .stat-icon { background: var(--emerald-pale); color: var(--emerald); }
+  .stat-card:nth-child(2) .stat-icon { background: #e8f1fb; color: #185fa5; }
+  .stat-card:nth-child(3) .stat-icon { background: #f3effe; color: #7c3aed; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stat-lbl {
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    margin-top: 3px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+  .add-form {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+  }
+  .add-form::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--emerald), #0e9e8a);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  }
+  .form-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .form-title i { color: var(--emerald); font-size: 18px; }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 540px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-group {
+    display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 5px;
   }
-}
+  .form-group label {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .form-group input,
+  .form-group select {
+    height: 40px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface-2);
+    color: var(--ink);
+    padding: 0 12px;
+    font-size: 14px;
+    font-family: var(--font-body);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .form-group input::placeholder { color: var(--ink-faint); font-weight: 300; }
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: var(--emerald);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(26,158,110,0.12);
+  }
+  .form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a9e91' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 36px;
+  }
+  .subjects-section { margin-bottom: 14px; }
+  .subjects-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .subjects-row { display: flex; gap: 8px; }
+  .subjects-row input {
+    flex: 1;
+    height: 40px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface-2);
+    color: var(--ink);
+    padding: 0 12px;
+    font-size: 14px;
+    font-family: var(--font-body);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .subjects-row input::placeholder { color: var(--ink-faint); font-weight: 300; }
+  .subjects-row input:focus {
+    border-color: var(--emerald);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(26,158,110,0.12);
+  }
+  .btn-add-tag {
+    height: 40px;
+    padding: 0 14px;
+    background: var(--emerald-pale);
+    border: 1.5px solid var(--emerald-light);
+    border-radius: var(--radius-md);
+    color: var(--emerald-deep);
+    font-size: 13px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .btn-add-tag:hover { background: var(--emerald-light); border-color: var(--emerald); }
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 9px;
+    min-height: 10px;
+  }
+  .subject-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--emerald-pale);
+    color: var(--emerald-deep);
+    border: 1px solid var(--emerald-light);
+    border-radius: 99px;
+    padding: 3px 10px 3px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    animation: tagIn 0.18s ease;
+  }
+  @keyframes tagIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+  .subject-tag button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--emerald);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+  }
+  .subject-tag button:hover { opacity: 1; }
+  .subject-tag button i { font-size: 14px; }
+  .form-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 4px;
+  }
+  .btn-primary {
+    height: 40px;
+    padding: 0 20px;
+    background: var(--emerald);
+    border: none;
+    border-radius: var(--radius-md);
+    color: #fff;
+    font-size: 14px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+    box-shadow: 0 2px 8px rgba(26,158,110,0.35);
+  }
+  .btn-primary:hover { background: var(--emerald-deep); box-shadow: 0 4px 14px rgba(26,158,110,0.4); }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-ghost {
+    height: 40px;
+    padding: 0 16px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--ink-muted);
+    font-size: 14px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .btn-ghost:hover { background: var(--surface-3); border-color: var(--border); }
+  .list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .list-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .list-title i { color: var(--ink-faint); font-size: 17px; }
+  .list-count {
+    background: var(--surface-3);
+    color: var(--ink-muted);
+    border-radius: 99px;
+    padding: 1px 9px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .filter-bar { display: flex; gap: 8px; align-items: center; flex: 1; min-width: 0; }
+  .search-wrap { position: relative; flex: 1; min-width: 0; }
+  .search-wrap i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 15px; color: var(--ink-faint); pointer-events: none; }
+  .search-wrap input {
+    width: 100%; height: 38px; border: 1.5px solid var(--border); border-radius: var(--radius-md); background: var(--surface); color: var(--ink); padding: 0 12px 0 36px; font-size: 13.5px; font-family: var(--font-body); outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .search-wrap input::placeholder { color: var(--ink-faint); font-weight: 300; }
+  .search-wrap input:focus { border-color: var(--emerald); box-shadow: 0 0 0 3px rgba(26,158,110,0.1); }
+  .filter-select {
+    height: 38px;
+    padding: 0 32px 0 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a9e91' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    appearance: none;
+    color: var(--ink);
+    font-size: 13px;
+    font-family: var(--font-body);
+    outline: none;
+    white-space: nowrap;
+    transition: border-color 0.15s;
+    flex-shrink: 0;
+  }
+  .filter-select:focus { border-color: var(--emerald); }
+  .candidates-list { display: flex; flex-direction: column; gap: 10px; }
+  .candidate-card {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+    animation: cardIn 0.22s ease;
+  }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .candidate-card:hover { border-color: var(--emerald-light); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .avatar {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+  .av-0 { background: #d1f0e4; color: #0e6347; }
+  .av-1 { background: #daeaf8; color: #185fa5; }
+  .av-2 { background: #ede9fe; color: #5b21b6; }
+  .av-3 { background: #fef3c7; color: #92400e; }
+  .av-4 { background: #fce7f3; color: #9d174d; }
+  .candidate-info { flex: 1; min-width: 0; }
+  .candidate-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .candidate-meta {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .candidate-meta span { display: flex; align-items: center; gap: 4px; }
+  .candidate-meta i { font-size: 13px; }
+  .faculty-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #e8f1fb;
+    color: #185fa5;
+    border: 1px solid #c8ddf5;
+    border-radius: 99px;
+    padding: 3px 11px;
+    font-size: 11.5px;
+    font-weight: 500;
+    margin-top: 7px;
+  }
+  .faculty-pill i { font-size: 12px; }
+  .subject-tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 7px;
+  }
+  .stag {
+    background: var(--emerald-pale);
+    color: var(--emerald-deep);
+    border: 1px solid var(--emerald-light);
+    border-radius: 99px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .card-actions {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+    align-items: flex-start;
+  }
+  .icon-btn {
+    width: 32px; height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface-2);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--ink-faint);
+    font-size: 15px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .icon-btn:hover { background: var(--surface-3); color: var(--ink-muted); border-color: var(--border); }
+  .icon-btn.info:hover { background: #e8f1fb; color: #185fa5; border-color: #c8ddf5; }
+  .icon-btn.danger:hover { background: #fff0f0; color: #c0392b; border-color: #f5c6c6; }
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    background: var(--surface);
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-xl);
+  }
+  .empty-icon {
+    width: 56px; height: 56px;
+    background: var(--surface-3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .empty-icon i { font-size: 26px; color: var(--ink-faint); }
+  .empty-state p { font-size: 14px; color: var(--ink-faint); font-weight: 300; }
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--ink);
+    color: #fff;
+    padding: 11px 18px;
+    border-radius: var(--radius-md);
+    font-size: 13.5px;
+    font-weight: 400;
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+    transition: opacity 0.22s, transform 0.22s;
+    pointer-events: none;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow-lg);
+    max-width: 280px;
+  }
+  .toast i { color: var(--emerald); font-size: 16px; flex-shrink: 0; }
+  .toast.show { opacity: 1; transform: translateY(0) scale(1); }
+  .divider { border: none; border-top: 1px solid var(--border-soft); margin: 0 0 1.5rem; }
+  @media (max-width: 960px) {
+    .filters-row { flex-direction: column; align-items: stretch; }
+  }
 </style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav>
-  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
+  <div class="logo"><i class="ti ti-graduation-cap"></i> AcademiaPro</div>
   <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
-    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
-    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+    <span onclick="window.location.href='/dashboard'"><i class="ti ti-home"></i> Dashboard</span>
+    <span onclick="window.location.href='/jobs'"><i class="ti ti-briefcase"></i> Jobs</span>
+    <span onclick="window.location.href='/profile'"><i class="ti ti-user"></i> Profile</span>
+    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="ti ti-settings"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:var(--ink-faint);cursor:pointer;font-weight:600;padding:0.55rem 0.9rem;border-radius:999px;transition:background 0.2s,color 0.2s;">
+        <i class="ti ti-logout"></i> Logout
+      </button>
     </form>
   </div>
 </nav>
-
 <div class="container">
-  <!-- HEADER -->
-  <div class="shortlisted-header">
-    <h1><i class="fas fa-check-circle"></i> Shortlisted Candidates</h1>
-    <p>Review resumes of shortlisted applicants for faculty positions</p>
+  <div class="header">
+    <div class="header-eyebrow">Faculty Recruitment</div>
+    <h1>Shortlisted <em>Candidates</em></h1>
+    <p class="header-sub">Review and manage shortlisted faculty applicants — assign departments and tag subjects they can teach.</p>
   </div>
-
-  <!-- RESUMES GRID -->
-  <% if (applications.length === 0) { %>
-    <div class="empty-state">
-      <i class="fas fa-inbox"></i>
-      <h3>No Shortlisted Resumes Yet</h3>
-      <p>Candidates will appear here once they are shortlisted by administrators.</p>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="ti ti-users"></i></div>
+      <div class="stat-num" id="stat-total">0</div>
+      <div class="stat-lbl">Total shortlisted</div>
     </div>
-  <% } else { %>
-    <div class="resume-grid">
-      <% applications.forEach(app => { %>
-        <div class="resume-card">
-          <div class="resume-header">
-            <div class="resume-title"><i class="fas fa-file-alt"></i> <%= app.job_title %></div>
-            <div class="resume-meta">
-              <span><i class="fas fa-school"></i> <%= app.university %></span>
-              <span><i class="fas fa-map-marker-alt"></i> <%= app.location %></span>
-            </div>
-          </div>
-
-          <div class="resume-content">
-            <p style="color: #64748b; margin: 0;">
-              <strong>Status:</strong> 
-              <span style="background: #dbeafe; color: #1e40af; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">
-                <i class="fas fa-check"></i> Shortlisted
-              </span>
-            </p>
-          </div>
-
-          <div class="resume-actions">
-            <% if (app.resume_path) { %>
-              <a href="/<%= app.resume_path %>" target="_blank" class="btn btn-primary">
-                <i class="fas fa-download"></i> View Resume
-              </a>
-              <a href="/interview/<%= app.id %>" class="btn btn-secondary">
-                <i class="fas fa-microphone"></i> Start Interview
-              </a>
-            <% } else { %>
-              <span class="btn btn-secondary" style="background: #f3f4f6; color: #9ca3af; cursor: not-allowed;">
-                <i class="fas fa-file"></i> No Resume
-              </span>
-            <% } %>
-          </div>
-        </div>
-      <% }); %>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="ti ti-building"></i></div>
+      <div class="stat-num" id="stat-faculties">0</div>
+      <div class="stat-lbl">Faculties covered</div>
     </div>
-  <% } %>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="ti ti-book"></i></div>
+      <div class="stat-num" id="stat-subjects">0</div>
+      <div class="stat-lbl">Subjects tagged</div>
+    </div>
+  </div>
+  <div class="add-form">
+    <div class="form-title"><i class="ti ti-user-plus"></i> Add professor to shortlist</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="inp-name">Professor name</label>
+        <input type="text" id="inp-name" placeholder="e.g. Dr. Anita Sharma" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label for="inp-email">Email address</label>
+        <input type="email" id="inp-email" placeholder="email@university.edu" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label for="inp-faculty">Faculty / Department</label>
+        <select id="inp-faculty">
+          <option value="">Select faculty…</option>
+          <option>Computer Science &amp; Engineering</option>
+          <option>Mathematics &amp; Statistics</option>
+          <option>Physics</option>
+          <option>Chemistry</option>
+          <option>Biology &amp; Life Sciences</option>
+          <option>Electrical Engineering</option>
+          <option>Mechanical Engineering</option>
+          <option>Civil Engineering</option>
+          <option>Economics</option>
+          <option>Business Administration</option>
+          <option>Psychology</option>
+          <option>English &amp; Literature</option>
+          <option>History &amp; Political Science</option>
+          <option>Law</option>
+          <option>Medicine &amp; Health Sciences</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="inp-position">Position applied for</label>
+        <input type="text" id="inp-position" placeholder="e.g. Associate Professor" autocomplete="off" />
+      </div>
+    </div>
+    <div class="subjects-section">
+      <span class="subjects-label">Subjects they can teach</span>
+      <div class="subjects-row">
+        <input type="text" id="inp-subject" placeholder="Type a subject and press Enter or click Add…" />
+        <button class="btn-add-tag" onclick="addSubjectTag()"><i class="ti ti-plus"></i> Add</button>
+      </div>
+      <div class="tags-container" id="new-tags"></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-ghost" onclick="clearForm()">Clear</button>
+      <button class="btn-primary" onclick="addCandidate()"><i class="ti ti-circle-check"></i> Shortlist professor</button>
+    </div>
+  </div>
+  <div class="list-header">
+    <div class="list-title"><i class="ti ti-list-check"></i> Shortlisted professors <span class="list-count" id="list-count">0</span></div>
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <i class="ti ti-search"></i>
+        <input type="text" id="search-inp" placeholder="Search name, faculty, subject…" oninput="renderList()" />
+      </div>
+      <select class="filter-select" id="faculty-filter" onchange="renderList()">
+        <option value="">All faculties</option>
+      </select>
+    </div>
+  </div>
+  <div id="candidates-list"></div>
 </div>
-
+<div class="toast" id="toast"><i class="ti ti-check"></i> <span id="toast-msg"></span></div>
+<script>
+const COLORS = 5;
+const applicationsData = <%- JSON.stringify(applications.map(app => ({
+  id: app.id,
+  name: app.applicant_name || 'Applicant',
+  email: app.applicant_email || '',
+  faculty: app.shortlisted_field || app.job_title || 'Faculty',
+  position: app.job_title || 'Faculty position',
+  subjects: app.shortlisted_field ? [app.shortlisted_field] : [],
+  university: app.university || '',
+  location: app.location || '',
+  resume_path: app.resume_path || ''
+}))) %>;
+let candidates = applicationsData.map((app, idx) => ({ ...app, ci: idx % COLORS }));
+let nextId = candidates.length ? Math.max(...candidates.map(c => c.id)) + 1 : 1;
+let pendingSubjects = [];
+function initials(name) { return name.trim().split(/\s+/).filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join(''); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showToast(msg) { const t = document.getElementById('toast'); document.getElementById('toast-msg').textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2600); }
+function addSubjectTag() { const inp = document.getElementById('inp-subject'); const val = inp.value.trim(); if (!val) return; if (pendingSubjects.some(s => s.toLowerCase() === val.toLowerCase())) { inp.value=''; return; } pendingSubjects.push(val); renderPendingTags(); inp.value = ''; inp.focus(); }
+document.getElementById('inp-subject').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addSubjectTag(); }});
+function renderPendingTags() { const c = document.getElementById('new-tags'); c.innerHTML = pendingSubjects.map((s,i)=>`<span class="subject-tag">${esc(s)}<button onclick="removeTag(${i})" aria-label="Remove ${esc(s)}"><i class="ti ti-x"></i></button></span>`).join(''); }
+function removeTag(i) { pendingSubjects.splice(i,1); renderPendingTags(); }
+function addCandidate() {
+  const name = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  const faculty = document.getElementById('inp-faculty').value;
+  const position = document.getElementById('inp-position').value.trim();
+  if (!name) { highlight('inp-name'); return; }
+  if (!faculty) { highlight('inp-faculty'); return; }
+  const candidate = { id: nextId++, name, email, faculty, position, subjects:[...pendingSubjects], ci: candidates.length % COLORS };
+  candidates.push(candidate);
+  clearForm();
+  updateFacultyFilter();
+  renderList();
+  updateStats();
+  showToast(`${name} added to shortlist`);
+}
+function highlight(id) { const el = document.getElementById(id); el.style.borderColor = '#e53e3e'; el.style.boxShadow = '0 0 0 3px rgba(229,62,62,0.15)'; setTimeout(() => { el.style.borderColor=''; el.style.boxShadow=''; }, 1400); }
+function removeCandidate(id) { const c = candidates.find(x=>x.id===id); const el = document.getElementById('crd-'+id); if (el) { el.style.opacity='0'; el.style.transform='translateY(-4px) scale(0.98)'; el.style.transition='opacity 0.18s,transform 0.18s'; } setTimeout(() => { candidates = candidates.filter(x=>x.id!==id); updateFacultyFilter(); renderList(); updateStats(); if (c) showToast(`${c.name} removed`); }, 180); }
+function clearForm() { ['inp-name','inp-email','inp-position','inp-subject'].forEach(id=>document.getElementById(id).value=''); document.getElementById('inp-faculty').value=''; pendingSubjects=[]; renderPendingTags(); }
+function updateFacultyFilter() { const sel=document.getElementById('faculty-filter'); const current=sel.value; const faculties=[...new Set(candidates.map(c=>c.faculty))].sort(); sel.innerHTML = '<option value="">All faculties</option>' + faculties.map(f=>`<option value="${esc(f)}"${f===current?' selected':''}>${esc(f)}</option>`).join(''); }
+function updateStats() { document.getElementById('stat-total').textContent = candidates.length; document.getElementById('stat-faculties').textContent = new Set(candidates.map(c=>c.faculty)).size; document.getElementById('stat-subjects').textContent = new Set(candidates.flatMap(c=>c.subjects)).size; }
+function renderList() {
+  const search=document.getElementById('search-inp').value.toLowerCase(); const fac=document.getElementById('faculty-filter').value;
+  const filtered=candidates.filter(c=>{
+    const match=!search || [c.name,c.faculty,c.position,...c.subjects].some(v=>String(v||'').toLowerCase().includes(search));
+    return match && (!fac || c.faculty===fac);
+  });
+  document.getElementById('list-count').textContent = filtered.length;
+  const el=document.getElementById('candidates-list');
+  if (!filtered.length) {
+    el.innerHTML=`<div class="empty-state"><div class="empty-icon"><i class="ti ti-inbox"></i></div><p>${candidates.length ? 'No candidates match this filter.' : 'No shortlisted professors yet. Add one above.'}</p></div>`;
+    return;
+  }
+  el.innerHTML=`<div class="candidates-list">${filtered.map(c=>`
+    <div class="candidate-card" id="crd-${c.id}">
+      <div class="avatar av-${c.ci}">${esc(initials(c.name))}</div>
+      <div class="candidate-info">
+        <div class="candidate-name">${esc(c.name)}</div>
+        <div class="candidate-meta">
+          ${c.position ? `<span><i class="ti ti-briefcase"></i>${esc(c.position)}</span>` : ''}
+          ${c.email ? `<span><i class="ti ti-mail"></i>${esc(c.email)}</span>` : ''}
+        </div>
+        <span class="faculty-pill"><i class="ti ti-building-community"></i>${esc(c.faculty)}</span>
+        ${c.subjects.length ? `<div class="subject-tags-row">${c.subjects.map(s=>`<span class="stag">${esc(s)}</span>`).join('')}</div>` : ''}
+      </div>
+      <div class="card-actions">
+        <button class="icon-btn info" title="Ask about ${esc(c.name)}" onclick="askAbout(${c.id})"><i class="ti ti-info-circle"></i></button>
+        <button class="icon-btn danger" title="Remove ${esc(c.name)}" onclick="removeCandidate(${c.id})"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+function askAbout(id) { const c=candidates.find(x=>x.id===id); if(!c) return; showToast(`Opening info for ${c.name}`); }
+updateFacultyFilter(); renderList(); updateStats();
+</script>
 </body>
 </html>
