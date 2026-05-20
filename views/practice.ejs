@@ -1,51 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI MCQ Practice - AcademiaPro</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Interview Trainer - AcademiaPro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-body { font-family: 'DM Sans', sans-serif; background: #f8f4ed; margin: 0; }
-nav { background: #122040; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-.logo { font-size: 22px; font-weight: bold; }
-.nav-links span, .nav-links a { margin: 0 10px; cursor: pointer; color: white; text-decoration: none; }
-.content { padding: 24px; max-width: 1000px; margin: 0 auto; }
-.card { background: white; border-radius: 18px; padding: 24px; margin-bottom: 20px; box-shadow: 0 12px 24px rgba(17, 24, 39, 0.08); }
-.card h1, .card h2 { margin-top: 0; }
-.reference-box { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 14px; padding: 18px; margin-bottom: 20px; }
-.reference-box a { color: #3730a3; text-decoration: none; font-weight: 600; }
-.reference-box a:hover { text-decoration: underline; }
-.sample-mcq { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem; }
-.sample-mcq select, .sample-mcq button { padding: 0.9rem 1.2rem; border-radius: 10px; border: 1px solid #cbd5e1; background: #ffffff; color: #0f172a; cursor: pointer; }
-.sample-mcq-list { margin-top: 1.5rem; }
-.sample-mcq-question { background: #f8fafc; padding: 18px; border-radius: 14px; margin-bottom: 1rem; }
-.sample-mcq-option { display: flex; align-items: center; margin-top: 0.65rem; }
-.sample-mcq-option input { margin-right: 0.65rem; }
-.action-bar { display: flex; gap: 1rem; flex-wrap: wrap; }
-.coding-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
-#practiceCodingAnswer { width: 100%; min-height: 220px; padding: 14px; border-radius: 14px; border: 1px solid #cbd5e1; font-family: 'Courier New', Courier, monospace; background: #f8fafc; margin-bottom: 1rem; }
-.coding-preview { background: #ffffff; padding: 18px; border-radius: 14px; border: 1px solid #cbd5e1; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08); }
-.coding-preview h3 { margin-top: 0; }
-.coding-result { color: #0f766e; font-weight: 600; margin-bottom: 1rem; }
-.tabs { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-.tab { flex: 1; padding: 1rem 1.25rem; border-radius: 14px; border: 1px solid #e2e8f0; background: #edf2ff; color: #1e293b; font-weight: 700; cursor: pointer; text-align: center; }
-.tab.active { background: #0f172a; color: white; border-color: #0f172a; }
-.tag-list { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
-.tag { padding: 0.8rem 1rem; border-radius: 999px; background: #f1f5f9; border: 1px solid #e2e8f0; color: #0f172a; cursor: pointer; transition: all 0.2s ease; }
-.tag.active { background: #6366f1; color: white; border-color: #6366f1; }
-.task-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px; margin-bottom: 1.5rem; }
-.task-label { font-size: 0.9rem; font-weight: 700; color: #6366f1; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
-.task-description { color: #334155; font-size: 1rem; line-height: 1.6; }
-.practice-card { padding: 28px; }
-.practice-section { display: block; }
-.practice-section.hidden { display: none; }
-.section-heading { margin-bottom: 1rem; }
-.section-heading h2 { margin: 0; }
-.section-meta { color: #475569; margin-top: 0.35rem; font-size: 0.95rem; }
-.result-summary { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px; color: #334155; }
-#practiceCodingAnswer { min-height: 320px; }
-.btn { background: #0a1628; color: white; border: none; border-radius: 10px; padding: 0.95rem 1.2rem; cursor: pointer; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #f8fafc; color: #111; min-height: 100vh; }
+  nav { background: #0f172a; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-size: 20px; font-weight: 700; }
+  .nav-links { display: flex; gap: 18px; align-items: center; }
+  .nav-links span, .nav-links a { color: white; cursor: pointer; text-decoration: none; font-size: 14px; }
+  .container { max-width: 980px; margin: 0 auto; padding: 24px 20px; }
+  h1 { font-size: 28px; margin-bottom: 6px; }
+  .subtitle { font-size: 15px; color: #475569; margin-bottom: 18px; }
+  .tabs { display: flex; gap: 8px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
+  .tab { padding: 12px 18px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: #64748b; border-bottom: 2px solid transparent; transition: all 0.15s ease; }
+  .tab.active { color: #111; border-bottom-color: #111; }
+  .tab span.badge { margin-left: 8px; display: inline-block; padding: 2px 8px; border-radius: 999px; background: #e2e8f0; color: #475569; font-size: 11px; }
+  .pane { display: none; }
+  .pane.active { display: block; }
+  .field-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .ftab { padding: 8px 14px; border-radius: 999px; border: 1px solid #e2e8f0; background: #fff; color: #475569; cursor: pointer; transition: all 0.15s ease; font-size: 13px; }
+  .ftab.on { background: #111827; color: white; border-color: #111827; }
+  .card { background: white; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; margin-bottom: 18px; }
+  .dots { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .dot { width: 12px; height: 12px; border-radius: 999px; background: #e2e8f0; }
+  .dot.cur { background: #64748b; }
+  .dot.ok { background: #16a34a; }
+  .dot.bad { background: #dc2626; }
+  .q-meta { font-size: 12px; color: #94a3b8; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .q-text { font-size: 16px; line-height: 1.8; color: #111827; margin-bottom: 18px; }
+  .opts { display: grid; gap: 10px; }
+  .opt { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.15s ease; background: white; }
+  .opt:hover { border-color: #94a3b8; }
+  .opt.sel { border-color: #2563eb; background: #eff6ff; }
+  .opt.ok { border-color: #16a34a; background: #dcfce7; }
+  .opt.bad { border-color: #dc2626; background: #fee2e2; }
+  .okey { width: 26px; height: 26px; min-width: 26px; border-radius: 999px; border: 1px solid #d1d5db; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280; font-weight: 700; }
+  .opt.sel .okey { background: #2563eb; color: white; border-color: #2563eb; }
+  .opt.ok .okey { background: #16a34a; color: white; border-color: #16a34a; }
+  .opt.bad .okey { background: #dc2626; color: white; border-color: #dc2626; }
+  .otext { font-size: 14px; color: #111827; line-height: 1.7; }
+  .fb { margin-top: 14px; padding: 12px 14px; border-radius: 12px; line-height: 1.7; font-size: 14px; }
+  .fb.ok { background: #ecfdf5; color: #166534; border: 1px solid #bbf7d0; }
+  .fb.bad { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+  .tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+  .tag-HTML { background: #ffedd5; color: #c2410c; }
+  .tag-CSS { background: #dbeafe; color: #1d4ed8; }
+  .tag-JavaScript { background: #fef3c7; color: #a16207; }
+  .tag-Python { background: #dcfce7; color: #15803d; }
+  .tag-DSA { background: #f5d0fe; color: #6b21a8; }
+  .tag-CS { background: #e0f2fe; color: #0369a1; }
+  .nav-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+  .btn { padding: 10px 18px; border-radius: 10px; border: 1px solid #d1d5db; background: white; color: #111827; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s ease; }
+  .btn:hover { background: #f8fafc; }
+  .btn.pri { background: #111827; color: white; border-color: #111827; }
+  .btn.suc { background: #16a34a; color: white; border-color: #16a34a; }
+  .sc { margin-left: auto; color: #475569; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+  .cq-sel { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+  .cqbtn { padding: 10px 14px; border-radius: 999px; border: 1px solid #e2e8f0; background: white; color: #475569; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s ease; }
+  .cqbtn.on { background: #111827; color: white; border-color: #111827; }
+  .coding-prompt { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; font-size: 15px; line-height: 1.7; margin-bottom: 14px; }
+  textarea.editor { width: 100%; min-height: 250px; border: 2px solid #e2e8f0; border-radius: 14px; padding: 16px; font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.6; resize: vertical; background: white; color: #111827; }
+  textarea.editor:focus { outline: none; border-color: #111827; }
+  .prev-label { margin-top: 18px; margin-bottom: 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #64748b; font-weight: 700; }
+  .prev-box { border: 1px solid #e2e8f0; border-radius: 14px; background: white; overflow: hidden; min-height: 110px; }
+  iframe#preview { width: 100%; border: none; min-height: 110px; }
+  .ai-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px; margin-top: 16px; font-size: 14px; line-height: 1.8; color: #111827; }
+  .ai-box .lbl { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: #64748b; margin-bottom: 10px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 18px; }
+  .stat { background: white; border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px; text-align: center; }
+  .stat .v { font-size: 26px; font-weight: 700; color: #111827; }
+  .stat .l { margin-top: 6px; font-size: 12px; color: #64748b; }
+  .ld::after { content: ''; animation: ld 1.2s steps(4,end) infinite; }
+  @keyframes ld { 0%,20%{content:'.'} 40%{content:'..'} 60%{content:'...'} 80%,100%{content:''} }
+  @media (max-width: 780px) { .tabs { flex-wrap: wrap; } .nav-row { flex-direction: column; align-items: stretch; } }
 </style>
 </head>
 <body>
@@ -59,493 +90,105 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
     <a href="/logout">Logout</a>
   </div>
 </nav>
-<div class="content">
-  <div class="card practice-header-card">
-    <div class="tabs practice-tabs">
-      <button id="tab-mcq" class="tab active" type="button" onclick="switchTab('mcq')">
-        MCQ round <span id="mcqProgress">0/0</span>
-      </button>
-      <button id="tab-coding" class="tab" type="button" onclick="switchTab('coding')">Coding round</button>
-      <button id="tab-results" class="tab" type="button" onclick="switchTab('results')">Results</button>
+<div class="container">
+  <h1>Interview Trainer</h1>
+  <p class="subtitle">Practice MCQ and coding questions across HTML, CSS, JavaScript, Python, DSA &amp; CS.</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('mcq')">MCQ round <span class="badge" id="mcq-badge">0/0</span></button>
+    <button class="tab" onclick="switchTab('code')">&lt;/&gt; Coding round</button>
+    <button class="tab" onclick="switchTab('results')">Results</button>
+  </div>
+
+  <div class="pane active" id="pane-mcq">
+    <div class="field-tabs" id="field-tabs"></div>
+    <div class="dots" id="dots"></div>
+    <div class="card" id="mcq-card">
+      <div class="q-meta" id="q-meta"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="opts" id="opts"></div>
+      <div id="fb"></div>
     </div>
-    <div class="tag-list" id="practiceTagList">
-      <button class="tag active" type="button" onclick="setPracticeField('HTML')">HTML</button>
-      <button class="tag" type="button" onclick="setPracticeField('JavaScript')">JavaScript</button>
-      <button class="tag" type="button" onclick="setPracticeField('CSS')">CSS</button>
-      <button class="tag" type="button" onclick="setPracticeField('Python')">Python</button>
-      <button class="tag" type="button" onclick="setPracticeField('DSA')">DSA</button>
-      <button class="tag" type="button" onclick="setPracticeField('SQL')">SQL</button>
-      <button class="tag" type="button" onclick="setPracticeField('Java')">Java</button>
-      <button class="tag" type="button" onclick="setPracticeField('C')">C</button>
-      <button class="tag" type="button" onclick="setPracticeField('C++')">C++</button>
-      <button class="tag" type="button" onclick="setPracticeField('PHP')">PHP</button>
-    </div>
-    <div class="task-card">
-      <div class="task-label">Task</div>
-      <div class="task-description" id="taskDescription">Select a field to load the W3Schools-style practice prompt and coding task.</div>
+    <div class="nav-row">
+      <span class="sc">★ <span id="score-txt">0 / 0</span></span>
+      <button class="btn" id="btn-prev" onclick="moveQ(-1)" style="display:none">← Prev</button>
+      <button class="btn pri" id="btn-next" onclick="moveQ(1)">Next →</button>
+      <button class="btn suc" id="btn-done-mcq" style="display:none" onclick="switchTab('code')">Go to coding →</button>
     </div>
   </div>
 
-  <div class="card practice-card">
-    <div id="mcqSection" class="practice-section">
-      <div class="section-heading">
-        <h2>MCQ Practice</h2>
-        <div class="section-meta">Answer the MCQs based on W3Schools-style questions.</div>
-      </div>
-      <div id="sampleMCQContainer" class="sample-mcq-list"></div>
-      <div class="coding-actions" style="justify-content:flex-start; margin-top:1rem;">
-        <button class="btn" type="button" onclick="(CURRENT_MCQ_SET = SAMPLE_MCQ_DATA, showSampleMCQs())">Load Practice Questions</button>
-        <button class="btn" type="button" onclick="loadW3SchoolsSet()">Load W3Schools Questions</button>
-        <button class="btn" type="button" onclick="submitMCQResults(currentField)">Submit MCQ Answers</button>
-      </div>
+  <div class="pane" id="pane-code">
+    <div class="cq-sel" id="cq-sel"></div>
+    <div class="coding-prompt" id="cq-prompt"></div>
+    <textarea class="editor" id="editor" placeholder="Type your code here..."></textarea>
+    <div class="prev-label">Live preview</div>
+    <div class="prev-box"><iframe id="preview" title="Live code preview"></iframe></div>
+    <div id="ai-area"></div>
+    <div class="nav-row">
+      <button class="btn" onclick="loadExample()">Load example</button>
+      <button class="btn" onclick="runPreview()">Run</button>
+      <button class="btn pri" onclick="submitCode()">Get AI feedback ↗</button>
+      <button class="btn suc" id="btn-results" style="display:none" onclick="switchTab('results')">See results →</button>
     </div>
+  </div>
 
-    <div id="codingSection" class="practice-section hidden">
-      <div class="section-heading">
-        <h2>Coding Practice</h2>
-        <div class="section-meta">Use the editor below to complete the coding task.</div>
-      </div>
-      <div class="coding-actions">
-        <button class="btn" type="button" onclick="loadSampleCode()">Load example</button>
-        <button class="btn" type="button" onclick="runPracticeCode()">Run</button>
-        <button class="btn" type="button" onclick="submitCodingRound()">Submit</button>
-        <button class="btn" type="button" onclick="getAIFeedback()">Get AI feedback</button>
-      </div>
-      <textarea id="practiceCodingAnswer" placeholder="Type your code here..."></textarea>
-      <div id="practiceCodingResult" class="coding-result"></div>
-      <div class="coding-preview">
-        <h3>Live Preview</h3>
-        <iframe id="practiceCodePreview" sandbox="allow-scripts" style="width:100%; min-height:280px; border:1px solid #cbd5e1; border-radius:12px;"></iframe>
-      </div>
-    </div>
-
-    <div id="resultsSection" class="practice-section hidden">
-      <div class="section-heading">
-        <h2>Practice Results</h2>
-        <div class="section-meta">Review your latest practice session results.</div>
-      </div>
-      <div id="resultSummary" class="result-summary">
-        <p>No practice session completed yet. Complete an MCQ or coding round to see results here.</p>
-      </div>
+  <div class="pane" id="pane-results">
+    <div class="stat-grid" id="stat-grid"></div>
+    <div class="card" id="result-detail"></div>
+    <div class="nav-row">
+      <button class="btn pri" onclick="resetAll()">Restart</button>
     </div>
   </div>
 </div>
+
 <script>
-// Global practice data for MCQs and coding prompts
-const SAMPLE_MCQ_DATA = {
-  DSA: [
-    { question: 'What is the average-case time complexity of quicksort?', choices: ['O(n)', 'O(log n)', 'O(n log n)', 'O(n^2)'], answer: 2 },
-    { question: 'Which data structure is best for implementing a LIFO order?', choices: ['Queue', 'Stack', 'Heap', 'Graph'], answer: 1 },
-    { question: 'What is the main difference between a stack and a queue?', choices: ['Order of insertion', 'Memory usage', 'Underlying structure', 'Capacity'], answer: 0 }
-  ],
-  Python: [
-    { question: 'Which keyword is used to define a function in Python?', choices: ['func', 'define', 'def', 'function'], answer: 2 },
-    { question: 'Which data type is immutable in Python?', choices: ['List', 'Dictionary', 'Tuple', 'Set'], answer: 2 },
-    { question: 'How do you handle errors in Python?', choices: ['if/else', 'try/except', 'switch/case', 'throw/catch'], answer: 1 }
-  ],
-  Java: [
-    { question: 'Which keyword is used to inherit a class in Java?', choices: ['extends', 'implements', 'inherits', 'uses'], answer: 0 },
-    { question: 'Which of these is a valid Java access modifier?', choices: ['public', 'protected', 'private', 'All of the above'], answer: 3 },
-    { question: 'What does JVM stand for?', choices: ['Java Visual Machine', 'Java Virtual Machine', 'Just Virtual Machine', 'Java Version Manager'], answer: 1 }
-  ],
-  JavaScript: [
-    { question: 'What is the difference between var and let in JavaScript?', choices: ['Scope only', 'Type only', 'Both scope and hoisting', 'No difference'], answer: 2 },
-    { question: 'Which method adds an element to the end of an array?', choices: ['push()', 'pop()', 'shift()', 'unshift()'], answer: 0 },
-    { question: 'How do you write a comment in JavaScript?', choices: ['<!-- -->', '//', '/* */', 'Both // and /* */'], answer: 3 }
-  ],
-  HTML: [
-    { question: 'What does HTML stand for?', choices: ['Hyper Text Markup Language', 'Home Tool Markup Language', 'Hyperlinks and Text Markup Language', 'High Text Machine Language'], answer: 0 },
-    { question: 'Which HTML tag is used for the largest heading?', choices: ['<head>', '<h6>', '<h1>', '<title>'], answer: 2 },
-    { question: 'Which attribute is used to create a hyperlink?', choices: ['src', 'href', 'link', 'ref'], answer: 1 }
-  ],
-  CSS: [
-    { question: 'How do you select an element with class "button" in CSS?', choices: ['#button', '.button', 'button', '*button'], answer: 1 },
-    { question: 'Which property controls the text size?', choices: ['font-style', 'font-weight', 'font-size', 'text-size'], answer: 2 },
-    { question: 'Which CSS property is used to change the background color?', choices: ['color', 'background-color', 'bgcolor', 'back-color'], answer: 1 }
-  ],
-  SQL: [
-    { question: 'Which SQL statement is used to extract data from a database?', choices: ['GET', 'OPEN', 'SELECT', 'EXTRACT'], answer: 2 },
-    { question: 'What does JOIN do in SQL?', choices: ['Updates data', 'Deletes data', 'Combines rows from multiple tables', 'Renames a table'], answer: 2 },
-    { question: 'Which clause is used to filter rows?', choices: ['ORDER BY', 'GROUP BY', 'WHERE', 'HAVING'], answer: 2 }
-  ],
-  C: [
-    { question: 'Which header file is required for printf in C?', choices: ['<stdio.h>', '<stdlib.h>', '<string.h>', '<math.h>'], answer: 0 },
-    { question: 'How do you declare a pointer to int in C?', choices: ['int p;', 'int *p;', 'pointer int p;', 'int &p;'], answer: 1 },
-    { question: 'What is the size of char in C on most systems?', choices: ['1 byte', '2 bytes', '4 bytes', '8 bytes'], answer: 0 }
-  ],
-  'C++': [
-    { question: 'What is the keyword to define a class in C++?', choices: ['struct', 'object', 'class', 'type'], answer: 2 },
-    { question: 'Which feature is used for runtime polymorphism?', choices: ['Templates', 'Inheritance', 'Virtual functions', 'Overloading'], answer: 2 },
-    { question: 'What is the purpose of a constructor?', choices: ['Free memory', 'Initialize objects', 'Destroy objects', 'Assign variables'], answer: 1 }
-  ],
-  PHP: [
-    { question: 'Which symbol is used to start PHP code?', choices: ['<?php', '<php>', '{php}', '[php]'], answer: 0 },
-    { question: 'Which function is used to output text in PHP?', choices: ['print()', 'echo', 'write()', 'display()'], answer: 1 },
-    { question: 'How do you create a PHP array?', choices: ['array()', 'list()', '{}', 'new array()'], answer: 0 }
-  ]
-};
-
-const CODING_PROMPTS = {
-  DSA: 'Write a JavaScript function that checks whether a number is prime. Display results in the console.',
-  Python: 'Write a Python snippet that calculates the factorial of a number and prints the result.',
-  Java: 'Write a Java method that returns true if a string is a palindrome.',
-  JavaScript: 'Write a JavaScript function that adds a click handler to a button and shows an alert.',
-  HTML: 'Create a simple HTML page with a button that displays an alert when clicked.',
-  CSS: 'Create a small HTML/CSS example where a button changes color on hover.',
-  SQL: 'Write a SQL query to select all users from a users table where the role is "student".',
-  C: 'Write a C program that prints "Hello, world!" to the console.',
-  'C++': 'Write a C++ function that swaps two integers using references.',
-  PHP: 'Write a PHP script that outputs "Hello, PHP" to the browser.'
-};
-
-// W3Schools-inspired sample question bank (paraphrased)
-const W3_SAMPLE_MCQ_DATA = {
-  HTML: [
-    { question: 'Which tag is used to create a hyperlink?', choices: ['<link>', '<a>', '<href>', '<url>'], answer: 1 },
-    { question: 'Which tag defines an unordered list?', choices: ['<ol>', '<ul>', '<li>', '<list>'], answer: 1 },
-    { question: 'Which attribute provides alternative text for an image?', choices: ['alt', 'title', 'src', 'caption'], answer: 0 }
-  ],
-  CSS: [
-    { question: 'How do you apply a background color to an element?', choices: ['color', 'background', 'background-color', 'bgcolor'], answer: 2 },
-    { question: 'Which property changes the font size?', choices: ['text-size', 'font-size', 'size', 'font-style'], answer: 1 },
-    { question: 'Which selector targets elements by class?', choices: ['#class', '.class', 'class', '*class'], answer: 1 }
-  ],
-  JavaScript: [
-    { question: 'How do you log a message to the console?', choices: ['console.log()', 'print()', 'echo()', 'log()'], answer: 0 },
-    { question: 'Which keyword declares a variable with block scope?', choices: ['var', 'let', 'const', 'block'], answer: 1 },
-    { question: 'Which method converts a JSON string to an object?', choices: ['JSON.parse()', 'JSON.stringify()', 'parseJSON()', 'toObject()'], answer: 0 }
-  ],
-  Python: [
-    { question: 'Which keyword starts a function definition?', choices: ['def', 'function', 'fn', 'define'], answer: 0 },
-    { question: 'Which structure is used for ordered, mutable collections?', choices: ['tuple', 'list', 'set', 'dict'], answer: 1 },
-    { question: 'How do you write a comment in Python?', choices: ['//', '#', '/* */', '<!-- -->'], answer: 1 }
-  ]
-};
-
-const W3_CODING_PROMPTS = {
-  HTML: 'Create a simple HTML page with a button that shows an alert when clicked.',
-  CSS: 'Create a small HTML snippet with a button that changes color on hover using CSS.',
-  JavaScript: 'Write JavaScript that adds a click handler to a button and logs a message to the console.',
-  Python: 'Write a Python function that returns the factorial of a number.'
-};
-
-let currentField = 'HTML';
-let currentTab = 'mcq';
-let CURRENT_MCQ_SET = SAMPLE_MCQ_DATA;
-let lastPracticeResult = null;
-
-function setPracticeField(field) {
-  currentField = field;
-  document.querySelectorAll('.tag').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.trim() === field);
-  });
-  document.getElementById('taskDescription').innerText = `Current field: ${field}. Load the questions and practice the selected topic. Use W3Schools as a reference.`;
-  if (currentTab === 'mcq') {
-    showSampleMCQs();
-  } else if (currentTab === 'coding') {
-    updateCodingPrompt();
-  }
-}
-
-function switchTab(tab) {
-  currentTab = tab;
-  document.getElementById('tab-mcq').classList.toggle('active', tab === 'mcq');
-  document.getElementById('tab-coding').classList.toggle('active', tab === 'coding');
-  document.getElementById('tab-results').classList.toggle('active', tab === 'results');
-  document.getElementById('mcqSection').classList.toggle('hidden', tab !== 'mcq');
-  document.getElementById('codingSection').classList.toggle('hidden', tab !== 'coding');
-  document.getElementById('resultsSection').classList.toggle('hidden', tab !== 'results');
-  if (tab === 'mcq') showSampleMCQs();
-  if (tab === 'coding') updateCodingPrompt();
-  if (tab === 'results') renderResults();
-}
-
-function updateCodingPrompt() {
-  const prompt = W3_CODING_PROMPTS[currentField] || CODING_PROMPTS[currentField] || 'Write your code for the selected task.';
-  document.getElementById('taskDescription').innerText = prompt;
-  document.getElementById('codingQuestionText').innerHTML = `<strong>Coding question:</strong> ${prompt}`;
-}
-
-function renderResults() {
-  const summary = document.getElementById('resultSummary');
-  if (!lastPracticeResult) {
-    summary.innerHTML = '<p>No practice session completed yet. Complete an MCQ or coding round to see results here.</p>';
-    return;
-  }
-  summary.innerHTML = `
-    <div><strong>Type:</strong> ${lastPracticeResult.type}</div>
-    <div><strong>Score:</strong> ${lastPracticeResult.score}%</div>
-    <div><strong>Completed:</strong> ${lastPracticeResult.completedQuestions} / ${lastPracticeResult.totalQuestions}</div>
-    <div style="margin-top:0.75rem;"><strong>Details:</strong> ${lastPracticeResult.details || 'No extra details.'}</div>
-  `;
-}
-
-function showSampleMCQs() {
-  const field = currentField;
-  const container = document.getElementById('sampleMCQContainer');
-  const promptText = W3_CODING_PROMPTS[field] || CODING_PROMPTS[field] || 'Answer these practice questions.';
-  document.getElementById('taskDescription').innerText = `MCQ practice for ${field}. ${promptText}`;
-  document.getElementById('codingQuestionText').innerHTML = `<strong>Coding question:</strong> ${promptText}`;
-  container.innerHTML = '';
-  const selected = (CURRENT_MCQ_SET && CURRENT_MCQ_SET[field]) ? CURRENT_MCQ_SET[field] : (SAMPLE_MCQ_DATA[field] || SAMPLE_MCQ_DATA.DSA);
-
-  selected.forEach((item, index) => {
-    const block = document.createElement('div');
-    block.className = 'sample-mcq-question';
-    block.innerHTML = `<strong>Q${index + 1}.</strong> ${item.question}`;
-    item.choices.forEach((choice, idx) => {
-      const label = document.createElement('label');
-      label.className = 'sample-mcq-option';
-      label.innerHTML = `<input type="radio" name="mcq${index}" value="${idx}"> ${choice}`;
-      block.appendChild(label);
-    });
-    const inputs = block.querySelectorAll('input[type="radio"]');
-    inputs.forEach(input => {
-      input.addEventListener('change', updateMCQProgress);
-    });
-    container.appendChild(block);
-  });
-
-  const gradeBtn = document.createElement('button');
-  gradeBtn.className = 'btn';
-  gradeBtn.type = 'button';
-  gradeBtn.textContent = 'Check Answers';
-  gradeBtn.onclick = () => submitMCQResults(field);
-
-  container.appendChild(gradeBtn);
-  updateMCQProgress();
-}
-
-function updateMCQProgress() {
-  const selected = (CURRENT_MCQ_SET && CURRENT_MCQ_SET[currentField]) ? CURRENT_MCQ_SET[currentField] : (SAMPLE_MCQ_DATA[currentField] || SAMPLE_MCQ_DATA.DSA);
-  const answered = selected.reduce((count, item, index) => {
-    const selectedOption = document.querySelector(`input[name="mcq${index}"]:checked`);
-    return count + (selectedOption ? 1 : 0);
-  }, 0);
-  document.getElementById('mcqProgress').innerText = `${answered}/${selected.length}`;
-}
-
-function playVoiceGuide() {
-  const message = 'Select a field and review the sample MCQ questions. Then choose the best answer for each question.';
-  const speech = new SpeechSynthesisUtterance(message);
-  speech.lang = 'en-US';
-  window.speechSynthesis.speak(speech);
-}
-
-function loadW3SchoolsSet() {
-  CURRENT_MCQ_SET = W3_SAMPLE_MCQ_DATA;
-  const field = currentField;
-  if (W3_CODING_PROMPTS[field]) {
-    document.getElementById('codingQuestionText').innerHTML = `<strong>Coding question:</strong> ${W3_CODING_PROMPTS[field]}`;
-    document.getElementById('taskDescription').innerText = W3_CODING_PROMPTS[field];
-  }
-  showSampleMCQs();
-}
-
-function getAIFeedback() {
-  const code = document.getElementById('practiceCodingAnswer').value.trim();
-  if (!code) {
-    alert('Please enter code first to get AI feedback.');
-    return;
-  }
-  const feedback = [];
-  if (!code.includes('function') && !code.includes('onclick') && !code.includes('<button')) {
-    feedback.push('Try using a function or interactive element to make the task more complete.');
-  }
-  if (code.includes('alert(') || code.includes('console.log(')) {
-    feedback.push('Good: you are using output methods.');
-  }
-  if (feedback.length === 0) {
-    feedback.push('Your code looks reasonable for the current task. Consider adding behavioral details or styling for better results.');
-  }
-  document.getElementById('practiceCodingResult').innerText = feedback.join(' ');
-}
-
-function submitMCQResults(field) {
-  const selected = (CURRENT_MCQ_SET && CURRENT_MCQ_SET[field]) ? CURRENT_MCQ_SET[field] : (SAMPLE_MCQ_DATA[field] || SAMPLE_MCQ_DATA.DSA);
-  let score = 0;
-  let answered = 0;
-  const mcqAnswers = [];
-  selected.forEach((item, index) => {
-    const selectedOption = document.querySelector(`input[name="mcq${index}"]:checked`);
-    const userVal = selectedOption ? parseInt(selectedOption.value, 10) : null;
-    if (selectedOption) answered++;
-    if (userVal !== null && userVal === item.answer) score += 1;
-    mcqAnswers.push({ index, question_text: item.question, user_answer: userVal });
-  });
-
-  const percent = Math.round((score / selected.length) * 100);
-  let resultEl = document.getElementById('mcqResult');
-  if (!resultEl) {
-    resultEl = document.createElement('div');
-    resultEl.id = 'mcqResult';
-    resultEl.className = 'coding-result';
-    document.getElementById('sampleMCQContainer').appendChild(resultEl);
-  }
-
-  fetch('/practice/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      totalScore: percent,
-      averageScore: percent,
-      totalQuestions: selected.length,
-      completedQuestions: answered,
-      sessionType: 'mcq',
-      mcqAnswers
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      resultEl.innerText = `MCQ submitted and saved. Score: ${percent}% (${score}/${selected.length})`;
-      lastPracticeResult = {
-        type: 'MCQ',
-        score: percent,
-        totalQuestions: selected.length,
-        completedQuestions: answered,
-        details: `${score}/${selected.length} correct`
-      };
-      if (currentTab === 'results') renderResults();
-    } else {
-      resultEl.innerText = 'Unable to save MCQ results. Try again.';
-    }
-  })
-  .catch(() => { resultEl.innerText = 'Unable to save MCQ results. Try again.'; });
-}
-
-let recognition;
-let isDictating = false;
-
-function startVoiceDictation() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    alert('Voice recognition is not supported in this browser. Use Chrome or Edge.');
-    return;
-  }
-
-  if (isDictating && recognition) {
-    recognition.stop();
-    return;
-  }
-
-  recognition = new SpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = false;
-  recognition.lang = 'en-US';
-  isDictating = true;
-
-  recognition.onresult = function(event) {
-    const transcript = event.results[event.results.length - 1][0].transcript;
-    const codeArea = document.getElementById('practiceCodingAnswer');
-    codeArea.value += transcript + ' ';
-  };
-
-  recognition.onerror = function(event) {
-    console.error('Speech recognition error:', event.error);
-    isDictating = false;
-  };
-
-  recognition.onend = function() {
-    isDictating = false;
-    const btn = document.getElementById('voiceDictationBtn');
-    if (btn) btn.innerText = 'Voice Dictation';
-  };
-
-  recognition.start();
-  const btn = document.getElementById('voiceDictationBtn');
-  if (btn) btn.innerText = 'Stop Dictation';
-}
-
-function loadSampleCode() {
-  const sample = `<!DOCTYPE html>
-<html>
-<head>
-  <title>W3Schools Button Example</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f9fafb; padding: 24px; }
-    .btn-sample { padding: 12px 22px; background: #007bff; color: white; border: none; border-radius: 10px; cursor: pointer; }
-  </style>
-</head>
-<body>
-  <h3>W3Schools Button Example</h3>
-  <button class="btn-sample" onclick="showMessage()">Click me</button>
-  <script>
-    function showMessage() {
-      alert('Hello! This is a W3Schools-style example.');
-    }
-  </script>
-</body>
-</html>`;
-  document.getElementById('practiceCodingAnswer').value = sample;
-  document.getElementById('practiceCodePreview').srcdoc = sample;
-}
-
-function runPracticeCode() {
-  const code = document.getElementById('practiceCodingAnswer').value;
-  if (!code.trim()) {
-    alert('Please enter your code to preview it.');
-    return;
-  }
-  document.getElementById('practiceCodePreview').srcdoc = code.includes('<html') ? code : `<html><body>${code}</body></html>`;
-}
-
-function submitCodingRound() {
-  const code = document.getElementById('practiceCodingAnswer').value;
-  if (!code.trim()) {
-    alert('Please type your coding answer before submitting.');
-    return;
-  }
-
-  const score = gradePracticeCode(code);
-  fetch('/practice/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      totalScore: score,
-      averageScore: score,
-      totalQuestions: 1,
-      completedQuestions: 1,
-      sessionType: 'coding',
-      codingAnswer: code,
-      mcqAnswers: []
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      document.getElementById('practiceCodingResult').innerText = `Coding round submitted and saved. Score: ${score}%`;
-      lastPracticeResult = {
-        type: 'Coding',
-        score,
-        totalQuestions: 1,
-        completedQuestions: 1,
-        details: 'Coding answer saved for review.'
-      };
-      if (currentTab === 'results') renderResults();
-    } else {
-      document.getElementById('practiceCodingResult').innerText = 'Unable to save coding score. Please try again.';
-    }
-  })
-  .catch(() => {
-    document.getElementById('practiceCodingResult').innerText = 'Unable to save coding score. Please try again.';
-  });
-}
-
-function gradePracticeCode(code) {
-  let score = 0;
-  const text = code.toLowerCase();
-  if (text.includes('<button')) score += 25;
-  if (text.includes('onclick')) score += 25;
-  if (text.includes('alert(') || text.includes('window.alert(')) score += 25;
-  if (text.includes('<script') || text.includes('function')) score += 25;
-  return Math.min(score, 100);
-}
-
-window.addEventListener('load', function() {
-  setPracticeField(currentField);
-  switchTab('mcq');
-});
+const FIELDS = ["All","HTML","CSS","JavaScript","Python","DSA","CS"];
+const ALL_Q = [
+  {f:"HTML",q:"Which HTML tag defines the document's body?",o:["<head>","<body>","<main>","<content>"],a:1,e:"The <body> tag contains all the visible page content — text, images, links, etc."},
+  {f:"HTML",q:"What attribute makes an input field required in HTML5?",o:["mandatory","validate","required","must"],a:2,e:"The 'required' attribute on a form input prevents submission if the field is empty."},
+  {f:"HTML",q:"Which tag is used to create a hyperlink?",o:["<link>","<href>","<a>","<url>"],a:2,e:"The <a> (anchor) tag creates hyperlinks. The href attribute specifies the destination URL."},
+  {f:"CSS",q:"Which CSS property controls the stacking order of overlapping elements?",o:["stack-order","layer","z-index","depth"],a:2,e:"z-index sets the stack order. Higher values sit on top; it only works on positioned elements."},
+  {f:"CSS",q:"What does the 'em' unit in CSS refer to?",o:["Pixels relative to screen","Font size of the root element","Font size of the parent element","Viewport width"],a:2,e:"'em' is relative to the font-size of the parent element. 'rem' is relative to the root <html> element."},
+  {f:"CSS",q:"Which property is used to make a flex container?",o:["display: block","display: inline","display: flex","float: left"],a:2,e:"Setting display: flex on a container enables Flexbox layout for its direct children."},
+  {f:"JavaScript",q:"Which method removes the last element from a JavaScript array?",o:["shift()","remove()","pop()","delete()"],a:2,e:"Array.pop() removes and returns the last element. shift() removes the first element."},
+  {f:"JavaScript",q:"What does '===' check in JavaScript?",o:["Value only","Type only","Value and type","Reference equality"],a:2,e:"=== is strict equality — it checks both value AND type. == does type coercion before comparing."},
+  {f:"JavaScript",q:"Which method adds an element to the END of an array?",o:["push()","append()","add()","insert()"],a:0,e:"Array.push() appends one or more elements to the end of an array and returns the new length."},
+  {f:"Python",q:"Which keyword is used to define a function in Python?",o:["function","fun","define","def"],a:3,e:"Python uses 'def' to define functions: def my_func():"},
+  {f:"Python",q:"What is the output of len([1, 2, 3]) in Python?",o:["2","3","4","Error"],a:1,e:"len() returns the number of items in a list. [1,2,3] has 3 elements → output is 3."},
+  {f:"Python",q:"Which of these creates a dictionary in Python?",o:["[]","()","{}","<>"],a:2,e:"Curly braces {} create a dictionary in Python. [] is a list, () is a tuple."},
+  {f:"DSA",q:"What is the time complexity of binary search?",o:["O(n)","O(log n)","O(n²)","O(1)"],a:1,e:"Binary search halves the search space each step → O(log n) time complexity."},
+  {f:"DSA",q:"Which data structure uses LIFO (Last In, First Out) order?",o:["Queue","Array","Stack","Linked List"],a:2,e:"A stack follows LIFO — the last element pushed is the first one popped. Queues use FIFO."},
+  {f:"DSA",q:"What is the worst-case time complexity of bubble sort?",o:["O(n)","O(n log n)","O(n²)","O(log n)"],a:2,e:"Bubble sort compares adjacent elements repeatedly. In the worst case it performs O(n²) comparisons."},
+  {f:"CS",q:"What does HTTP stand for?",o:["HyperText Transfer Protocol","High Transfer Text Process","HyperText Transport Program","Host Transfer Text Protocol"],a:0,e:"HTTP = HyperText Transfer Protocol — the foundation of data exchange on the web."},
+  {f:"CS",q:"Which of the following is NOT an OOP principle?",o:["Encapsulation","Polymorphism","Compilation","Inheritance"],a:2,e:"The four OOP pillars are Encapsulation, Abstraction, Polymorphism, and Inheritance. Compilation is not one of them."},
+  {f:"CS",q:"What does RAM stand for?",o:["Read Access Memory","Random Access Memory","Rapid Application Memory","Remote Access Module"],a:1,e:"RAM stands for Random Access Memory — fast, volatile memory the CPU uses to store data it's actively using."},
+];
+const CODING_Q = [
+  {id:0,f:"HTML",label:"Profile card",prompt:"Build a profile card using HTML & CSS. Show an avatar circle with initials, a name, job title, and a skill badge.",ex:`<style>\n.card{font-family:sans-serif;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:24px;max-width:240px;text-align:center}\n.av{width:60px;height:60px;border-radius:50%;background:#3b82f6;color:#fff;font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}\nh2{font-size:17px;margin:0 0 4px;color:#111}p{color:#6b7280;font-size:13px;margin:0 0 10px}\n.badge{background:#eff6ff;color:#1d4ed8;font-size:11px;padding:3px 10px;border-radius:20px}\n</style>\n<div class="card"><div class="av">AR</div><h2>Anya Rao</h2><p>Frontend Developer</p><span class="badge">React · CSS</span></div>`},
+  {id:1,f:"JavaScript",label:"Counter app",prompt:"Build a counter app using HTML, CSS & JavaScript. Show a number with + and − buttons. The counter should not go below 0.",ex:`<style>\nbody{font-family:sans-serif;display:flex;justify-content:center;padding:40px}\n.c{text-align:center}.num{font-size:56px;font-weight:700;color:#111;margin:8px 0}.btns{display:flex;gap:12px;justify-content:center}button{width:48px;height:48px;border-radius:50%;border:1px solid #d1d5db;background:#f9fafb;font-size:22px;cursor:pointer}button:hover{background:#e5e7eb}\n</style>\n<div class="c"><div class="num" id="n">0</div><div class="btns"><button onclick="update(-1)">−</button><button onclick="update(1)">+</button></div></div>\n<script>let v=0;function update(d){v=Math.max(0,v+d);document.getElementById('n').textContent=v} <\/script>`},
+  {id:2,f:"CSS",label:"Flexbox nav",prompt:"Build a responsive nav bar using CSS Flexbox. Logo left, three nav links right. Dark background with hover effects.",ex:`<style>\n*{box-sizing:border-box;margin:0;padding:0}\nnav{background:#1e293b;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:54px}\n.brand{color:#f8fafc;font-size:17px;font-weight:700}.links{display:flex;gap:4px}.links a{color:#94a3b8;text-decoration:none;font-size:13px;padding:6px 12px;border-radius:6px;transition:background .15s,color .15s}.links a:hover{background:#334155;color:#f8fafc}\n</style>\n<nav><span class="brand">DevCo</span><div class="links"><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></div></nav>`},
+  {id:3,f:"Python",label:"FizzBuzz",prompt:"Write a Python function fizzbuzz(n) that prints numbers 1 to n. Multiples of 3 → 'Fizz', multiples of 5 → 'Buzz', both → 'FizzBuzz'. (Paste your Python code — AI will review it.)",ex:`def fizzbuzz(n):\n    for i in range(1, n + 1):\n        if i % 15 == 0:\n            print("FizzBuzz")\n        elif i % 3 == 0:\n            print("Fizz")\n        elif i % 5 == 0:\n            print("Buzz")\n        else:\n            print(i)\n\nfizzbuzz(20)`},
+  {id:4,f:"DSA",label:"Reverse a string",prompt:"Write a function (any language) to reverse a string without using built-in reverse methods. Example: 'hello' → 'olleh'",ex:`function reverseString(str) {\n  let result = '';\n  for (let i = str.length - 1; i >= 0; i--) {\n    result += str[i];\n  }\n  return result;\n}\n\nconsole.log(reverseString('hello')); // 'olleh'`},
+];
+let curField = "All", curIdx = 0, answered = {}, selCQ = 0, codeRating = "", codeFeedback = "";
+function filteredQ() { return curField === "All" ? ALL_Q : ALL_Q.filter(q => q.f === curField); }
+function tagEl(field) { return `<span class="tag tag-${field}">${field}</span>`; }
+function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+function renderFieldTabs() { const c = document.getElementById("field-tabs"); c.innerHTML = ""; FIELDS.forEach(f => { const b = document.createElement("button"); b.className = "ftab" + (f === curField ? " on" : ""); b.textContent = f; b.onclick = () => { curField = f; curIdx = 0; renderFieldTabs(); renderQ(); }; c.appendChild(b); }); }
+function renderDots() { const qs = filteredQ(); const c = document.getElementById("dots"); c.innerHTML = ""; qs.forEach((q, i) => { const key = ALL_Q.indexOf(q); const d = document.createElement("div"); d.className = "dot" + (i === curIdx ? " cur" : answered[key] === true ? " ok" : answered[key] === false ? " bad" : ""); c.appendChild(d); }); }
+function renderQ() { const qs = filteredQ(); if (!qs.length) { document.getElementById("mcq-card").innerHTML = '<p style="font-size:14px;color:#64748b;padding:8px 0">No questions in this category.</p>'; renderDots(); return; } if (curIdx >= qs.length) curIdx = qs.length - 1; const q = qs[curIdx]; const key = ALL_Q.indexOf(q); const isAnswered = answered[key] !== undefined; document.getElementById("q-meta").innerHTML = `<span>Question ${curIdx + 1} of ${qs.length}</span>${tagEl(q.f)}`; document.getElementById("q-text").textContent = q.q; const opts = document.getElementById("opts"); opts.innerHTML = ""; ["A","B","C","D"].forEach((k, i) => { const d = document.createElement("div"); let cls = "opt" + (isAnswered ? " locked" : ""); if (isAnswered) { if (i === q.a) cls += " ok"; else if (i === answered[key] && answered[key] !== q.a) cls += " bad"; } d.className = cls; d.innerHTML = `<span class="okey">${k}</span><span class="otext">${q.o[i]}</span>`; if (!isAnswered) d.onclick = () => selectOpt(key, q, i); opts.appendChild(d); }); const fb = document.getElementById("fb"); if (isAnswered) { const correct = answered[key] === q.a; fb.innerHTML = `<div class="fb ${correct ? 'ok' : 'bad'}">${correct ? '&#10003; Correct! ' : '&#10007; Not quite. '}${q.e}</div>`; } else { fb.innerHTML = ""; } document.getElementById("btn-prev").style.display = curIdx === 0 ? "none" : ""; const isLast = curIdx === qs.length - 1; document.getElementById("btn-next").style.display = isLast ? "none" : ""; document.getElementById("btn-done-mcq").style.display = isLast && isAnswered ? "" : "none"; renderDots(); updateBadge(); }
+function selectOpt(key, q, i) { answered[key] = i; renderQ(); }
+function moveQ(dir) { const qs = filteredQ(); curIdx = Math.max(0, Math.min(qs.length - 1, curIdx + dir)); renderQ(); }
+function updateBadge() { const qs = filteredQ(); const done = qs.filter(q => answered[ALL_Q.indexOf(q)] !== undefined).length; const correct = qs.filter(q => answered[ALL_Q.indexOf(q)] === q.a).length; document.getElementById("mcq-badge").textContent = `${correct}/${done}`; document.getElementById("score-txt").textContent = `${correct} / ${done} correct`; }
+function renderCodingPane() { const sel = document.getElementById("cq-sel"); sel.innerHTML = ""; CODING_Q.forEach((q, i) => { const b = document.createElement("button"); b.className = "cqbtn" + (i === selCQ ? " on" : ""); b.innerHTML = `${tagEl(q.f)} ${q.label}`; b.onclick = () => { selCQ = i; renderCodingPane(); }; sel.appendChild(b); }); const cq = CODING_Q[selCQ]; document.getElementById("cq-prompt").innerHTML = `<strong>Task:</strong> ${cq.prompt.replace(/\n/g, "<br>")}`; document.getElementById("ai-area").innerHTML = ""; document.getElementById("btn-results").style.display = "none"; }
+function loadExample() { document.getElementById("editor").value = CODING_Q[selCQ].ex; runPreview(); }
+function runPreview() { const code = document.getElementById("editor").value; const iframe = document.getElementById("preview"); const doc = iframe.contentDocument || iframe.contentWindow.document; doc.open(); doc.write(code); doc.close(); iframe.style.height = "auto"; setTimeout(() => { iframe.style.height = (doc.body.scrollHeight + 20) + "px"; }, 220); }
+document.getElementById("editor").addEventListener("input", debounce(runPreview, 700));
+async function submitCode() { const code = document.getElementById("editor").value.trim(); if (!code) { alert("Please write some code first!"); return; } runPreview(); const area = document.getElementById("ai-area"); area.innerHTML = `<div class="ai-box"><div class="lbl">AI feedback</div><span class="ld">Reviewing your code</span></div>`; const cq = CODING_Q[selCQ]; try { const res = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, messages: [{ role: "user", content: `You are a technical interview coach. A candidate submitted this solution:\n\nTask: ${cq.prompt}\n\nCode:\n${code}\n\nGive concise feedback (3-4 sentences): correctness, code quality, and one improvement tip. End with: Rating: Excellent / Good / Needs improvement.` }] }) }); const data = await res.json(); const text = data.content?.map(b => b.text || "").join("") || "Could not get feedback."; codeRating = text.includes("Excellent") ? "Excellent" : text.includes("Good") ? "Good" : "Needs work"; codeFeedback = text; area.innerHTML = `<div class="ai-box"><div class="lbl">AI feedback</div>${text.replace(/\n/g, "<br>")}</div>`; document.getElementById("btn-results").style.display = ""; } catch(e) { area.innerHTML = `<div class="ai-box"><div class="lbl">AI feedback</div>Could not connect to AI. Check your connection and API key.</div>`; } }
+function showResults() { const correct = ALL_Q.filter((q, i) => answered[i] === q.a).length; const done = Object.keys(answered).length; const pct = done ? Math.round((correct / done) * 100) : 0; const overall = pct >= 80 && codeRating === "Excellent" ? "Excellent" : pct >= 60 ? "Good" : "Keep going"; document.getElementById("stat-grid").innerHTML = `<div class="stat"><div class="v">${correct}/${ALL_Q.length}</div><div class="l">MCQ correct</div></div><div class="stat"><div class="v">${pct}%</div><div class="l">MCQ accuracy</div></div><div class="stat"><div class="v">${codeRating || "—"}</div><div class="l">Code rating</div></div><div class="stat"><div class="v">${overall}</div><div class="l">Overall</div></div>`; document.getElementById("result-detail").innerHTML = codeFeedback ? `<p style="font-size:14px;color:#475569;line-height:1.7"><strong style="color:#111">Coding feedback:</strong><br>${codeFeedback}</p>` : `<p style="font-size:14px;color:#64748b">Complete the coding round to see full feedback here.</p>`; }
+function switchTab(name) { const tabs = document.querySelectorAll(".tab"); tabs.forEach((t, idx) => t.classList.toggle("active", ["mcq","code","results"][idx] === name)); const panes = document.querySelectorAll(".pane"); panes.forEach((p, idx) => p.classList.toggle("active", ["pane-mcq","pane-code","pane-results"][idx] === "pane-" + name)); if (name === "results") showResults(); }
+function resetAll() { answered = {}; selCQ = 0; codeRating = ""; codeFeedback = ""; curIdx = 0; curField = "All"; document.getElementById("editor").value = ""; renderFieldTabs(); renderQ(); renderCodingPane(); switchTab("mcq"); }
+renderFieldTabs(); renderQ(); renderCodingPane();
 </script>
 </body>
 </html>
