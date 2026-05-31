@@ -38,6 +38,8 @@
   <div class="mp-controls">
     <button class="mp-btn active" id="mp-rec" onclick="toggleRecording()">🔴 REC</button>
     <button class="mp-btn active" id="mp-monitor" onclick="toggleMonitoring()">📊 MON</button>
+    <button class="mp-btn active" id="mp-camera" onclick="toggleCamera()">📹 CAM</button>
+    <button class="mp-btn active" id="mp-mic" onclick="toggleMic()">🎤 MIC</button>
   </div>
   <div class="mp-status" id="mp-status">Monitoring Active</div>
 </div>
@@ -224,6 +226,16 @@ function toggleRecording(){
 function toggleMonitoring(){
   const btn=document.getElementById('mp-monitor');
   btn.className=btn.className==='mp-btn active'?'mp-btn':'mp-btn active';
+}
+function toggleCamera(){
+  const btn=document.getElementById('mp-camera');
+  btn.className=btn.className==='mp-btn active'?'mp-btn':'mp-btn active';
+  toast(btn.className.includes('active')?'📹 Camera ON':'📹 Camera OFF');
+}
+function toggleMic(){
+  const btn=document.getElementById('mp-mic');
+  btn.className=btn.className==='mp-btn active'?'mp-btn':'mp-btn active';
+  toast(btn.className.includes('active')?'🎤 Mic ON':'🎤 Mic OFF');
 }
 let tt=null;
 function toast(m){
