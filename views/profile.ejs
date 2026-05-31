@@ -483,7 +483,7 @@
               <a href="/job/<%= app.job_id %>" class="btn btn-primary" style="text-decoration: none;">
                 <i class="fas fa-eye"></i> View Job
               </a>
-              <% if (app.status === 'applied' || app.interview_score === null) { %>
+              <% if (app.status === 'applied' || app.status === 'shortlisted' || app.interview_score === null) { %>
                 <a href="/candidate-interview/<%= app.job_id %>" class="btn btn-secondary" style="text-decoration: none;">
                   <i class="fas fa-microphone"></i> Take Interview
                 </a>

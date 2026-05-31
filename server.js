@@ -743,6 +743,26 @@ app.post('/apply/:id', upload.single('resume'), verifyToken, (req, res) => {
   }
 });
 
+// Apply using existing uploaded resume and immediately start the interview
+app.post('/apply-and-interview/:id', verifyToken, (req, res) => {
+  const jobId = req.params.id;
+  db.get('SELECT resume_path FROM users WHERE id = ?', [req.user.id], (err, user) => {
+    if (err) return res.status(500).send('Error checking user resume');
+    const resumePath = user?.resume_path;
+    if (!resumePath) {
+      return res.status(400).send('Please upload a resume first in your profile before taking the interview.');
+    }
+
+    db.run('INSERT INTO applications (user_id, job_id, resume_path) VALUES (?, ?, ?)', [req.user.id, jobId, resumePath], function(err) {
+      if (err) {
+        console.error('Apply-and-interview error:', err);
+        return res.status(500).send('Error applying');
+      }
+      res.redirect('/candidate-interview/' + jobId);
+    });
+  });
+});
+
 app.post('/compare', verifyToken, (req, res) => {
   const jobIds = req.body.jobIds;
   if (!jobIds || jobIds.length < 2) return res.redirect('/jobs');
