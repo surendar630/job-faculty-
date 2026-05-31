@@ -531,10 +531,10 @@ function toggleEditMode() {
         <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;">
           <i class="fas fa-file-upload"></i> Select Resume File
         </label>
-        <input type="file" id="resume" name="resume" accept=".pdf,image/*" required 
+        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,image/*" required 
                style="width: 100%; padding: 1rem; border: 2px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; transition: var(--transition); cursor: pointer;">
         <small style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
-          <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, JPG, PNG
+          <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, DOC, DOCX, JPG, PNG
           <%= user.resume_path ? '<br><i class="fas fa-info-circle"></i> This will replace your current resume.' : '' %>
         </small>
       </div>

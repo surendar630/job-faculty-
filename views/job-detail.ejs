@@ -310,12 +310,12 @@
             
             <div style="margin-bottom: 1.5rem;">
               <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;">
-                <i class="fas fa-file-upload"></i> <%= hasResume ? 'Upload Different Resume (Optional)' : 'Upload Your Resume (PDF or Image)' %>
+                <i class="fas fa-file-upload"></i> <%= hasResume ? 'Upload Different Resume (Optional)' : 'Upload Your Resume (PDF, DOC, DOCX or Image)' %>
               </label>
-              <input type="file" id="resume" name="resume" accept=".pdf,image/*" <%= hasResume ? '' : 'required' %>
+              <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,image/*" <%= hasResume ? '' : 'required' %>
                      style="width: 100%; padding: 0.75rem; border: 2px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; transition: var(--transition);">
               <small style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
-                <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, JPG, PNG
+                <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, DOC, DOCX, JPG, PNG
                 <%= hasResume ? 'Leave empty to use your uploaded resume.' : '' %>
               </small>
             </div>

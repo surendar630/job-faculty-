@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Office Portal - AcademiaPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/styles.css" rel="stylesheet">
+<style>
+.office-header {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  padding: 2.5rem 2rem;
+  border-radius: 14px;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--shadow-lg);
+}
+.office-header h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+.office-header p {
+  color: rgba(255,255,255,0.9);
+  font-size: 1rem;
+}
+.office-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.office-card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem;
+}
+.office-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: #0f172a;
+}
+.office-card p {
+  color: #475569;
+  line-height: 1.6;
+}
+.office-card .stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+.office-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.office-actions a,
+.office-actions button {
+  background: #2563eb;
+  color: white;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+.office-actions a:hover,
+.office-actions button:hover {
+  opacity: 0.9;
+}
+.office-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+.office-table th,
+.office-table td {
+  padding: 0.95rem 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+.office-table th {
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.office-table tbody tr:hover {
+  background: #f8fafc;
+}
+.office-nav span {
+  cursor: pointer;
+  color: #cbd5e1;
+  transition: color 0.2s ease;
+}
+.office-nav span:hover {
+  color: #ffffff;
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
+  <div class="nav-links">
+    <span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span>
+    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+    <form action="/logout" method="POST" style="display:inline;">
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="office-header">
+    <h1><i class="fas fa-building"></i> Office Portal</h1>
+    <p>Welcome, <%= user.name %>. Manage shortlisted candidates, review resumes, and coordinate interview workflows from the HR portal.</p>
+  </div>
+
+  <div class="office-grid">
+    <div class="office-card">
+      <h3>Total Applications</h3>
+      <div class="stat-number"><%= stats.applications %></div>
+      <p>Applications received across all active positions. Track volume and workflow progress here.</p>
+    </div>
+    <div class="office-card">
+      <h3>Shortlisted Candidates</h3>
+      <div class="stat-number"><%= stats.shortlisted %></div>
+      <p>Candidates already shortlisted for review. Use the shortlist page to review their resumes and interview status.</p>
+    </div>
+    <div class="office-card">
+      <h3>Resumes Available</h3>
+      <div class="stat-number"><%= stats.resumes %></div>
+      <p>Uploaded resumes across the platform. View, filter, and download candidate documents from the shortlist view.</p>
+    </div>
+  </div>
+
+  <div class="office-card">
+    <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:1rem;">
+      <div>
+        <h3>Recent Applications</h3>
+        <p>Newest hires and pending resumes from candidates.</p>
+      </div>
+      <div class="office-actions">
+        <a href="/office/shortlisted"><i class="fas fa-file-alt"></i> View Shortlisted Resumes</a>
+        <a href="/shortlisted"><i class="fas fa-check-circle"></i> Shared Resume Shortlist</a>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="office-table">
+        <thead>
+          <tr>
+            <th>Candidate</th>
+            <th>Job</th>
+            <th>University</th>
+            <th>Status</th>
+            <th>Applied</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (recentApps.length === 0) { %>
+            <tr><td colspan="5" style="color:#64748b; padding:1.5rem; text-align:center;">No recent applications yet.</td></tr>
+          <% } else { %>
+            <% recentApps.forEach(app => { %>
+              <tr>
+                <td><%= app.candidate_name %> <span style="color:#64748b; font-size:0.85rem;"><%= app.candidate_email %></span></td>
+                <td><%= app.job_title %></td>
+                <td><%= app.university %></td>
+                <td><%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %></td>
+                <td><%= new Date(app.applied_at).toLocaleDateString('en-IN') %></td>
+              </tr>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

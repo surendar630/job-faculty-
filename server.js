@@ -49,10 +49,15 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'application/pdf' || file.mimetype.startsWith('image/')) {
+    const allowedMimeTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
+    if (allowedMimeTypes.includes(file.mimetype) || file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
-      cb(new Error('Only PDF and image files are allowed'));
+      cb(new Error('Only PDF, DOC, DOCX and image files are allowed'));
     }
   }
 });
@@ -304,7 +309,9 @@ app.post('/login', (req, res) => {
         cookieOptions.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
       }
       res.cookie('token', token, cookieOptions);
-      res.redirect('/dashboard');
+      if (user.role === 'admin') return res.redirect('/admin');
+      if (user.role === 'hr') return res.redirect('/office');
+      return res.redirect('/dashboard');
     });
   });
 });
@@ -360,6 +367,8 @@ app.get('/auth/google/callback', async (req, res) => {
       if (user) {
         const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
         res.cookie('token', token);
+        if (user.role === 'admin') return res.redirect('/admin');
+        if (user.role === 'hr') return res.redirect('/office');
         return res.redirect('/dashboard');
       }
 
@@ -413,7 +422,9 @@ app.post('/auth/google-firebase', async (req, res) => {
       if (user) {
         const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
         res.cookie('token', token);
-        return res.json({ success: true });
+        if (user.role === 'admin') return res.json({ success: true, redirect: '/admin' });
+        if (user.role === 'hr') return res.json({ success: true, redirect: '/office' });
+        return res.json({ success: true, redirect: '/dashboard' });
       }
 
       db.run('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, null, 'user'], function (err) {
@@ -424,7 +435,7 @@ app.post('/auth/google-firebase', async (req, res) => {
         const userId = this.lastID;
         const token = jwt.sign({ id: userId, email, role: 'user' }, SECRET_KEY);
         res.cookie('token', token);
-        res.json({ success: true });
+        res.json({ success: true, redirect: '/dashboard' });
       });
     });
   } catch (error) {
@@ -564,12 +575,64 @@ app.get('/profile', verifyToken, (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
+  const normalizedRole = role === 'hr' ? 'hr' : 'user';
   bcrypt.hash(password, 10, (err, hash) => {
-    db.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hash], (err) => {
+    db.run('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hash, normalizedRole], (err) => {
       if (err) return res.status(500).send('Error registering user');
       res.redirect('/login');
     });
+  });
+});
+
+app.get('/candidate', verifyToken, (req, res) => {
+  if (req.user.role === 'admin') return res.redirect('/admin');
+  if (req.user.role === 'hr') return res.redirect('/office');
+  return res.redirect('/dashboard');
+});
+
+app.get('/hr', verifyToken, (req, res) => {
+  if (req.user.role === 'admin') return res.redirect('/admin');
+  if (req.user.role !== 'hr') return res.redirect('/dashboard');
+  return res.redirect('/office');
+});
+
+app.get('/office', verifyToken, (req, res) => {
+  if (req.user.role !== 'hr') return res.status(403).send('Access denied');
+
+  db.get('SELECT COUNT(*) as total_applications FROM applications', [], (err, appCount) => {
+    if (err) return res.status(500).send('Error loading office dashboard');
+    db.get('SELECT COUNT(*) as total_shortlisted FROM applications WHERE status = "shortlisted"', [], (err, shortlistCount) => {
+      if (err) return res.status(500).send('Error loading office dashboard');
+      db.get('SELECT COUNT(*) as total_resumes FROM users WHERE resume_path IS NOT NULL', [], (err, resumeCount) => {
+        if (err) return res.status(500).send('Error loading office dashboard');
+        db.all(`SELECT a.*, u.name as candidate_name, u.email as candidate_email, j.title as job_title, j.university, j.location
+                FROM applications a
+                JOIN users u ON a.user_id = u.id
+                JOIN jobs j ON a.job_id = j.id
+                ORDER BY a.applied_at DESC
+                LIMIT 6`, [], (err, recentApps) => {
+          if (err) return res.status(500).send('Error loading office dashboard');
+          res.render('office', {
+            user: req.user,
+            stats: {
+              applications: appCount.total_applications || 0,
+              shortlisted: shortlistCount.total_shortlisted || 0,
+              resumes: resumeCount.total_resumes || 0
+            },
+            recentApps
+          });
+        });
+      });
+    });
+  });
+});
+
+app.get('/office/shortlisted', verifyToken, (req, res) => {
+  if (req.user.role !== 'hr') return res.status(403).send('Access denied');
+  db.all('SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id WHERE a.status = "shortlisted"', [], (err, applications) => {
+    if (err) return res.status(500).send('Error');
+    res.render('shortlisted', { applications, user: req.user });
   });
 });
 
@@ -691,7 +754,8 @@ app.post('/compare', verifyToken, (req, res) => {
 });
 
 app.get('/shortlisted', verifyToken, (req, res) => {
-  db.all('SELECT a.*, j.title as job_title, j.university, j.location FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.status = "shortlisted"', [], (err, applications) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  db.all('SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id WHERE a.status = "shortlisted"', [], (err, applications) => {
     if (err) return res.status(500).send('Error');
     res.render('shortlisted', { applications, user: req.user });
   });

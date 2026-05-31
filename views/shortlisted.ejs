@@ -129,6 +129,7 @@
     <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
     <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+    <% if (user.role === 'hr') { %><span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span><% } %>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
       <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -157,6 +158,8 @@
           <div class="resume-header">
             <div class="resume-title"><i class="fas fa-file-alt"></i> <%= app.job_title %></div>
             <div class="resume-meta">
+              <span><i class="fas fa-user"></i> <%= app.candidate_name || 'Candidate' %></span>
+              <span><i class="fas fa-envelope"></i> <%= app.candidate_email || 'N/A' %></span>
               <span><i class="fas fa-school"></i> <%= app.university %></span>
               <span><i class="fas fa-map-marker-alt"></i> <%= app.location %></span>
             </div>

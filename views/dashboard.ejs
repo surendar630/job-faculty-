@@ -133,6 +133,7 @@
     <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
     <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+    <% if (user.role === 'hr') { %><span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span><% } %>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
       <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -216,6 +217,14 @@
         <h3>Shortlisted Resumes</h3>
         <p>View and download resumes of shortlisted candidates.</p>
         <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> View Resumes</button>
+      </div>
+      <% } %>
+      <% if (user.role === 'hr') { %>
+      <div class="dashboard-card" onclick="window.location.href='/office'">
+        <i class="fas fa-building"></i>
+        <h3>HR Portal</h3>
+        <p>Access the office dashboard and shortlisted candidate resumes.</p>
+        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Open Office</button>
       </div>
       <% } %>
 
