@@ -1002,7 +1002,7 @@ app.post('/admin/application/:id/shortlist', verifyToken, (req, res) => {
 });
 
 app.get('/interview/:applicationId', verifyToken, async (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const appId = req.params.applicationId;
   db.get('SELECT i.*, a.user_id, j.title as job_title FROM interviews i JOIN applications a ON i.application_id = a.id JOIN jobs j ON a.job_id = j.id WHERE i.application_id = ?', [appId], async (err, interview) => {
     if (!interview) {
@@ -1029,7 +1029,7 @@ app.get('/interview/:applicationId', verifyToken, async (req, res) => {
 });
 
 app.post('/interview/:interviewId/answer', verifyToken, async (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const { questionId, answer } = req.body;
   // Get the question text
   db.get('SELECT question FROM interview_questions WHERE id = ?', [questionId], async (err, q) => {
@@ -1041,7 +1041,7 @@ app.post('/interview/:interviewId/answer', verifyToken, async (req, res) => {
 });
 
 app.post('/interview/:interviewId/complete', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   db.all('SELECT score FROM interview_questions WHERE interview_id = ?', [req.params.interviewId], (err, questions) => {
     const totalScore = questions.reduce((sum, q) => sum + q.score, 0) / questions.length;
     db.run('UPDATE interviews SET status = ?, score = ? WHERE id = ?', ['completed', totalScore, req.params.interviewId], (err) => {
