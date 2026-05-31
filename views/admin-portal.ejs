@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InterviewLink - Admin Complete Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08090c;--s1:#0f1015;--s2:#16171d;--s3:#1c1d26;--b1:#222330;--b2:#2d2f42;--purple:#9b6dff;--t1:#eeeef5;--t2:#9091a8;--t3:#555668;--g:#22c55e;--fh:'Instrument Serif',serif;--fb:'Geist',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;font-family:var(--fb);}body{background:var(--bg);color:var(--t1);} 
+.screen{display:none;height:100vh;overflow:hidden;flex-direction:column;}.screen.on{display:flex;}.auth-screens{justify-content:center;align-items:center;}.auth-card{background:var(--s1);border:1px solid var(--b2);border-radius:20px;padding:40px;width:500px;}.auth-header{text-align:center;margin-bottom:30px;}.auth-logo{font-family:var(--fh);font-size:3rem;font-style:italic;color:var(--purple);}.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}.field label{font-size:0.7rem;font-weight:600;color:var(--t2);}.finput{background:var(--s2);border:1px solid var(--b1);border-radius:9px;padding:11px 13px;color:var(--t1);outline:none;}.btn{padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer;border:none;display:inline-flex;}.btn-p{background:linear-gradient(135deg,var(--purple),#b88bff);color:#fff;}.btn-full{width:100%;justify-content:center;}.error{background:rgba(239,68,68,0.15);color:#ff6b6b;padding:10px;border-radius:8px;margin-bottom:14px;} 
+.portal-screen{flex-direction:row;}.pnav{width:280px;background:var(--s1);border-right:1px solid var(--b1);overflow-y:auto;display:flex;flex-direction:column;}.pn-logo{padding:20px 14px;border-bottom:1px solid var(--b1);}.pn-logomark{font-family:var(--fh);font-style:italic;font-size:1.1rem;}.pn-portal{font-size:0.65rem;color:var(--purple);margin-top:3px;font-weight:700;}.pn-user-info{padding:12px;background:var(--s2);border-radius:8px;margin:12px;text-align:center;font-size:0.75rem;}.pn-sec{padding:12px 12px 4px;font-size:0.6rem;color:var(--t3);}.ni{display:flex;align-items:center;gap:9px;padding:10px 11px;margin:2px 6px;border-radius:9px;cursor:pointer;color:var(--t2);font-size:0.84rem;}.ni:hover{background:var(--s2);}.ni.on{background:rgba(155,109,255,0.1);color:var(--t1);}.pn-user{margin-top:auto;padding:10px 8px;border-top:1px solid var(--b1);}.pn-logout{margin:8px;padding:10px;border-radius:7px;cursor:pointer;font-size:0.76rem;background:rgba(239,68,68,0.1);} 
+.pmain{flex:1;display:flex;flex-direction:column;overflow:hidden;}.ptopbar{padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);}.status-badge{padding:6px 12px;border-radius:20px;font-size:0.75rem;font-weight:600;background:rgba(155,109,255,0.15);color:var(--purple);}.status-badge.live{background:rgba(34,197,94,0.15);color:var(--g);} 
+.meeting-panel{position:fixed;bottom:20px;right:20px;background:var(--s1);border:2px solid var(--purple);border-radius:15px;padding:15px;width:360px;z-index:500;max-height:80vh;overflow-y:auto;}.mp-header{font-weight:600;margin-bottom:12px;display:flex;justify-content:space-between;border-bottom:1px solid var(--b1);padding-bottom:10px;}.mp-close{background:none;border:none;color:var(--t2);cursor:pointer;}.mp-videos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}.mp-video{aspect-ratio:1;border-radius:10px;background:#000;border:2px solid var(--purple);position:relative;overflow:hidden;}.mp-video video{width:100%;height:100%;object-fit:cover;}.mp-video-label{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.8);color:#fff;padding:4px 8px;border-radius:6px;font-size:0.65rem;}.mp-video-status{position:absolute;top:8px;right:8px;background:rgba(34,197,94,0.9);color:#fff;padding:3px 8px;border-radius:4px;font-size:0.65rem;font-weight:700;} 
+.mp-controls{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}.mp-btn{flex:1;min-width:60px;padding:8px 6px;border-radius:6px;border:none;cursor:pointer;font-size:0.75rem;font-weight:600;background:var(--s2);color:var(--t1);}.mp-btn.active{background:rgba(155,109,255,0.2);color:var(--purple);} 
+.mp-status{font-size:0.7rem;color:var(--t2);text-align:center;padding:8px;background:var(--s2);border-radius:6px;}.mp-status.live{background:rgba(34,197,94,0.15);color:var(--g);font-weight:600;} 
+.views{flex:1;overflow-y:auto;padding:28px;}.vw{display:none;}.vw.on{display:block;}.ph{margin-bottom:22px;}.ph-t{font-family:var(--fh);font-size:1.8rem;font-style:italic;}.ph-s{color:var(--t2);font-size:0.85rem;} 
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}.stat-card{background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:16px;text-align:center;cursor:pointer;}.stat-value{font-family:var(--fh);font-size:1.6rem;font-style:italic;color:var(--purple);}.stat-label{font-size:0.75rem;color:var(--t2);margin-top:6px;} 
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:13px;margin-bottom:16px;}.card-h{padding:13px 18px;border-bottom:1px solid var(--b1);font-weight:600;}.card-b{padding:14px 18px;}.row{display:flex;align-items:center;gap:10px;padding:12px;border-bottom:1px solid var(--b1);}.row:last-child{border-bottom:none;}.row-icon{font-size:1.2rem;}.row-content{flex:1;}.row-title{font-weight:600;}.row-subtitle{font-size:0.75rem;color:var(--t2);margin-top:3px;}.row-badge{padding:3px 8px;border-radius:12px;font-size:0.7rem;font-weight:600;}.badge-green{background:rgba(34,197,94,0.15);color:var(--g);}.badge-red{background:rgba(239,68,68,0.15);color:#ff6b6b;} 
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--s1);border:1px solid var(--b2);border-radius:9px;padding:12px 18px;font-size:0.8rem;opacity:0;z-index:999;}#toast.on{opacity:1;} 
+.hidden-video{display:none;}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<video id="session1" class="hidden-video" autoplay playsinline></video>
+<video id="session2" class="hidden-video" autoplay playsinline></video>
+<!-- MONITORING PANEL -->
+<div id="meetingPanel" class="meeting-panel" style="display:none;">
+  <div class="mp-header">
+    👁️ Live Monitoring
+    <button class="mp-close" onclick="closeMeetingPanel()">✕</button>
+  </div>
+  <div class="mp-videos">
+    <div class="mp-video"><video id="panel-session1" autoplay playsinline></video><div class="mp-video-status">🟢</div><div class="mp-video-label">Session 1</div></div>
+    <div class="mp-video"><video id="panel-session2" autoplay playsinline></video><div class="mp-video-status">🟢</div><div class="mp-video-label">Session 2</div></div>
+  </div>
+  <div class="mp-controls">
+    <button class="mp-btn active" id="mp-rec" onclick="toggleRecording()">🔴 REC</button>
+    <button class="mp-btn active" id="mp-monitor" onclick="toggleMonitoring()">📊 MON</button>
+  </div>
+  <div class="mp-status" id="mp-status">Monitoring Active</div>
+</div>
+<!-- AUTH -->
+<div class="screen auth-screens on" id="s-login">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo">🛡️</div>
+      <div class="auth-title">Admin Portal</div>
+    </div>
+    <div id="login-error"></div>
+    <div class="field"><label>Email</label><input class="finput" id="login-email" value="admin@vit.edu"></div>
+    <div class="field"><label>Password</label><input class="finput" id="login-pass" type="password" value="admin123" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn btn-p btn-full" onclick="doLogin()">Sign In →</button>
+  </div>
+</div>
+<!-- ADMIN PORTAL -->
+<div class="screen portal-screen" id="s-admin">
+  <nav class="pnav">
+    <div class="pn-logo">
+      <div class="pn-logomark">InterviewLink</div>
+      <div class="pn-portal">🛡️ Admin</div>
+    </div>
+    <div class="pn-user-info">
+      <div>Admin Dashboard</div>
+      <div>4 Sessions Live</div>
+    </div>
+    <div class="pn-sec">Monitoring</div>
+    <div class="ni on" onclick="goView('home')"><span>📊</span>Dashboard</div>
+    <div class="ni" onclick="openMeetingPanel()"><span>👁️</span>Live Monitor</div>
+    <div class="ni" onclick="goView('sessions')"><span>📹</span>Sessions</div>
+    <div class="pn-sec">Management</div>
+    <div class="ni" onclick="goView('candidates')"><span>👥</span>Candidates</div>
+    <div class="ni" onclick="goView('hr-team')"><span>👔</span>HR Team</div>
+    <div class="ni" onclick="goView('reports')"><span>📊</span>Reports</div>
+    <div class="pn-sec">System</div>
+    <div class="ni" onclick="goView('settings')"><span>⚙️</span>Settings</div>
+    <div class="ni" onclick="goView('logs')"><span>📝</span>Activity Logs</div>
+    <div class="pn-user">
+      <div class="pn-logout" onclick="logout()">🚪 Logout</div>
+    </div>
+  </nav>
+  <div class="pmain">
+    <div class="ptopbar">
+      <div><strong>Admin Dashboard</strong> · <span id="time">00:00</span></div>
+      <div style="display:flex;gap:10px;">
+        <div class="status-badge live">🟢 4 LIVE</div>
+        <button class="btn" onclick="openMeetingPanel()" style="padding:6px 12px;font-size:0.75rem;background:var(--purple);color:#fff;">Monitor</button>
+      </div>
+    </div>
+    <div class="views">
+      <div class="vw on" id="v-home">
+        <div class="ph">
+          <div class="ph-t">System Overview 📊</div>
+          <div class="ph-s">Complete platform monitoring</div>
+        </div>
+        <div class="sgrid">
+          <div class="stat-card"><div class="stat-value">128</div><div class="stat-label">Total Users</div></div>
+          <div class="stat-card"><div class="stat-value">24</div><div class="stat-label">Today's Interviews</div></div>
+          <div class="stat-card"><div class="stat-value">18</div><div class="stat-label">Completed</div></div>
+          <div class="stat-card"><div class="stat-value">4.2★</div><div class="stat-label">Avg Rating</div></div>
+        </div>
+        <div class="card">
+          <div class="card-h">🔴 Live Sessions</div>
+          <div class="card-b">
+            <div class="row"><div class="row-icon">📹</div><div class="row-content"><div class="row-title">Session 1 - Alex Sharma</div><div class="row-subtitle">10:15 AM • 52 minutes</div></div><div class="row-badge badge-green">LIVE</div></div>
+            <div class="row"><div class="row-icon">📹</div><div class="row-content"><div class="row-title">Session 2 - Priya Patel</div><div class="row-subtitle">2:30 PM • 28 minutes</div></div><div class="row-badge badge-green">LIVE</div></div>
+            <div class="row"><div class="row-icon">📹</div><div class="row-content"><div class="row-title">Session 3 - Rahul Kumar</div><div class="row-subtitle">4:45 PM • 15 minutes</div></div><div class="row-badge badge-green">LIVE</div></div>
+            <div class="row"><div class="row-icon">📹</div><div class="row-content"><div class="row-title">Session 4 - Tech Round</div><div class="row-subtitle">5:00 PM • 5 minutes</div></div><div class="row-badge badge-green">LIVE</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vw" id="v-sessions">
+        <div class="ph"><div class="ph-t">📹 All Sessions</div></div>
+        <div class="card">
+          <div class="card-h">Session History</div>
+          <div class="card-b">
+            <div class="row"><div class="row-icon">✅</div><div class="row-content"><div class="row-title">TechCorp - Technical</div><div class="row-subtitle">Completed • 52 min</div></div><button class="btn" style="padding:4px 8px;">⬇️</button></div>
+            <div class="row"><div class="row-icon">✅</div><div class="row-content"><div class="row-title">StartupXYZ - HR Round</div><div class="row-subtitle">Completed • 28 min</div></div><button class="btn" style="padding:4px 8px;">⬇️</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="vw" id="v-candidates">
+        <div class="ph"><div class="ph-t">👥 All Candidates</div></div>
+        <div class="card">
+          <div class="card-h">Candidate Management</div>
+          <div class="card-b">
+            <div class="row"><div class="row-icon">👤</div><div class="row-content"><div class="row-title">Alex Sharma (128 candidates)</div><div class="row-subtitle">Senior Dev • Applied 5 days</div></div><button class="btn" style="padding:4px 8px;background:var(--purple);color:#fff;">View</button></div>
+            <div class="row"><div class="row-icon">👤</div><div class="row-content"><div class="row-title">Priya Patel (87 candidates)</div><div class="row-subtitle">Product Mgr • Applied 3 days</div></div><button class="btn" style="padding:4px 8px;background:var(--purple);color:#fff;">View</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="vw" id="v-hr-team">
+        <div class="ph"><div class="ph-t">👔 HR Team Management</div></div>
+        <div class="card">
+          <div class="card-h">Team Members</div>
+          <div class="card-b">
+            <div class="row"><div class="row-icon">👔</div><div class="row-content"><div class="row-title">Sarah Johnson</div><div class="row-subtitle">Lead HR • 24 interviews</div></div><div class="row-badge badge-green">Active</div></div>
+            <div class="row"><div class="row-icon">👔</div><div class="row-content"><div class="row-title">Mike Chen</div><div class="row-subtitle">Senior HR • 18 interviews</div></div><div class="row-badge badge-green">Active</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vw" id="v-reports">
+        <div class="ph"><div class="ph-t">📊 Reports & Analytics</div></div>
+        <div class="sgrid">
+          <div class="stat-card"><div class="stat-value">98%</div><div class="stat-label">System Uptime</div></div>
+          <div class="stat-card"><div class="stat-value">4.5GB</div><div class="stat-label">Storage Used</div></div>
+          <div class="stat-card"><div class="stat-value">156</div><div class="stat-label">Total Recordings</div></div>
+          <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">This Month</div></div>
+        </div>
+      </div>
+      <div class="vw" id="v-settings">
+        <div class="ph"><div class="ph-t">⚙️ System Settings</div></div>
+        <div class="card">
+          <div class="card-h">Configuration</div>
+          <div class="card-b">
+            <div class="row"><div class="row-content"><div class="row-title">Auto Recording</div><div class="row-subtitle">Automatically save all calls</div></div><input type="checkbox" checked></div>
+            <div class="row"><div class="row-content"><div class="row-title">Email Alerts</div><div class="row-subtitle">Send notifications</div></div><input type="checkbox" checked></div>
+            <div class="row"><div class="row-content"><div class="row-title">Backup Schedule</div><div class="row-subtitle">Daily backups at 2 AM</div></div><input type="checkbox" checked></div>
+          </div>
+        </div>
+      </div>
+      <div class="vw" id="v-logs">
+        <div class="ph"><div class="ph-t">📝 Activity Logs</div></div>
+        <div class="card">
+          <div class="card-h">System Activity</div>
+          <div class="card-b">
+            <div class="row"><div class="row-icon">📝</div><div class="row-content"><div class="row-title">Sarah Johnson logged in</div><div class="row-subtitle">5 minutes ago</div></div></div>
+            <div class="row"><div class="row-icon">📹</div><div class="row-content"><div class="row-title">Session recorded</div><div class="row-subtitle">10 minutes ago</div></div></div>
+            <div class="row"><div class="row-icon">👤</div><div class="row-content"><div class="row-title">New candidate registered</div><div class="row-subtitle">25 minutes ago</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+let currentUser=null;
+function updateTime(){
+  const now=new Date();
+  const time=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:false});
+  document.getElementById('time').textContent=time;
+}
+setInterval(updateTime,1000);
+updateTime();
+function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-error');
+  err.innerHTML='';
+  if(email==='admin@vit.edu' && pass==='admin123'){
+    currentUser={name:'Admin'};
+    document.getElementById('s-login').classList.remove('on');
+    document.getElementById('s-admin').classList.add('on');
+    toast('✅ Welcome Admin!');
+  } else {
+    err.innerHTML='<div class="error">❌ Invalid</div>';
+  }
+}
+function logout(){
+  currentUser=null;
+  document.getElementById('s-admin').classList.remove('on');
+  document.getElementById('s-login').classList.add('on');
+  document.getElementById('login-email').value='admin@vit.edu';
+  document.getElementById('login-pass').value='admin123';
+}
+function goView(v){
+  document.querySelectorAll('.vw').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+}
+function openMeetingPanel(){
+  document.getElementById('meetingPanel').style.display='block';
+  toast('👁️ Monitoring opened');
+}
+function closeMeetingPanel(){
+  document.getElementById('meetingPanel').style.display='none';
+}
+function toggleRecording(){
+  const btn=document.getElementById('mp-rec');
+  btn.className=btn.className==='mp-btn active'?'mp-btn':'mp-btn active';
+  toast(btn.className.includes('active')?'🔴 Recording...':'Recording stopped');
+}
+function toggleMonitoring(){
+  const btn=document.getElementById('mp-monitor');
+  btn.className=btn.className==='mp-btn active'?'mp-btn':'mp-btn active';
+}
+let tt=null;
+function toast(m){
+  const el=document.getElementById('toast');
+  el.textContent=m;
+  el.classList.add('on');
+  clearTimeout(tt);
+  tt=setTimeout(()=>el.classList.remove('on'),2800);
+}
+</script>
+</body>
+</html>

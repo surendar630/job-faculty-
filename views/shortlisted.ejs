@@ -185,15 +185,6 @@
               <a href="/interview/<%= app.id %>?mode=coding" class="btn btn-secondary">
                 <i class="fas fa-code"></i> Start Coding Round
               </a>
-
-              <% if (app.status !== 'shortlisted') { %>
-                <form action="/admin/application/<%= app.id %>/shortlist" method="POST" style="display:inline;">
-                  <input type="hidden" name="field" value="" />
-                  <button type="submit" class="btn btn-success">
-                    <i class="fas fa-check"></i> Shortlist
-                  </button>
-                </form>
-              <% } %>
             <% } else { %>
               <span class="btn btn-secondary" style="background: #f3f4f6; color: #9ca3af; cursor: not-allowed;">
                 <i class="fas fa-file"></i> No Resume

@@ -634,7 +634,7 @@ app.get('/office/shortlisted', verifyToken, (req, res) => {
           FROM applications a
           JOIN jobs j ON a.job_id = j.id
           JOIN users u ON a.user_id = u.id
-          WHERE a.status = 'shortlisted' OR u.resume_path IS NOT NULL OR u.resume_review_status IS NOT NULL
+          WHERE a.status = 'shortlisted'
           ORDER BY a.applied_at DESC`, [], (err, applications) => {
     if (err) return res.status(500).send('Error');
     res.render('shortlisted', { applications, user: req.user });
@@ -784,7 +784,7 @@ app.get('/shortlisted', verifyToken, (req, res) => {
           FROM applications a
           JOIN jobs j ON a.job_id = j.id
           JOIN users u ON a.user_id = u.id
-          WHERE a.status = 'shortlisted' OR u.resume_path IS NOT NULL OR u.resume_review_status IS NOT NULL
+          WHERE a.status = 'shortlisted'
           ORDER BY a.applied_at DESC`, [], (err, applications) => {
     if (err) return res.status(500).send('Error');
     res.render('shortlisted', { applications, user: req.user });
@@ -974,6 +974,11 @@ app.get('/admin', verifyToken, (req, res) => {
       });
     });
   });
+});
+
+app.get('/admin/portal', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  res.render('admin-portal');
 });
 
 // Admin review endpoint for standalone resume submissions
