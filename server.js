@@ -841,7 +841,12 @@ app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => 
       console.error('Resume upload error:', err);
       return res.status(500).send('Error uploading resume');
     }
-    res.redirect('/practice');
+    // Build a URL to the stored resume and redirect based on role
+    const resumeUrl = '/' + resumePath;
+    if (req.user.role === 'admin' || req.user.role === 'hr') {
+      return res.redirect('/shortlisted?open=' + encodeURIComponent(resumeUrl));
+    }
+    return res.redirect('/profile?open=' + encodeURIComponent(resumeUrl));
   });
 });
 

@@ -195,4 +195,19 @@
 </div>
 
 </body>
+<script>
+// If redirected with ?open=/path, open the resume in a new tab (admins/HR)
+;(function() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const openUrl = params.get('open');
+    if (openUrl && (openUrl.startsWith('/') || openUrl.startsWith(window.location.origin))) {
+      window.open(openUrl, '_blank');
+      history.replaceState(null, '', window.location.pathname);
+    }
+  } catch (e) {
+    console.error('Auto-open resume failed:', e);
+  }
+})();
+</script>
 </html>
