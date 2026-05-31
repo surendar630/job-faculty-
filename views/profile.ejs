@@ -412,6 +412,21 @@
   <div class="applications-section">
     <h2 style="font-size: 1.8rem; margin-bottom: 1rem;"><i class="fas fa-file-alt"></i> Your Resume</h2>
     
+    <% if (user.resume_review_status) { %>
+      <div class="application-status status-<%= user.resume_review_status %>" style="margin-bottom: 1rem; padding: 1rem 1.25rem; display: inline-flex; align-items: center; gap: 0.75rem; border-radius: 14px; font-size: 0.95rem;">
+        <i class="fas fa-info-circle"></i>
+        <% if (user.resume_review_status === 'pending') { %>
+          <span>Your resume is currently under admin review. You can still update it anytime and the latest version will be reviewed.</span>
+        <% } else if (user.resume_review_status === 'shortlisted') { %>
+          <span>Your resume has been approved by admin and is ready for applications.</span>
+        <% } else if (user.resume_review_status === 'rejected') { %>
+          <span>Your resume was rejected by admin. Please upload a new version to send it for review again.</span>
+        <% } else { %>
+          <span>Your resume review status is <strong><%= user.resume_review_status %></strong>.</span>
+        <% } %>
+      </div>
+    <% } %>
+
     <% if (user.resume_path) { %>
       <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: var(--shadow-md); border-left: 4px solid #10b981;">
         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">

@@ -305,6 +305,13 @@
                 <p style="color: #065f46; margin: 0.5rem 0 0; font-size: 0.9rem;">
                   Your resume from the dashboard will be used for this application. You can upload a different resume below if needed.
                 </p>
+                <% if (user.resume_review_status === 'pending') { %>
+                  <p style="color: #92400e; margin: 0.75rem 0 0; font-size: 0.9rem;"><strong>Note:</strong> Your resume is still pending admin review.</p>
+                <% } else if (user.resume_review_status === 'rejected') { %>
+                  <p style="color: #b91c1c; margin: 0.75rem 0 0; font-size: 0.9rem;"><strong>Note:</strong> Your current resume was rejected. Upload a new version to send it for review again.</p>
+                <% } else if (user.resume_review_status === 'shortlisted') { %>
+                  <p style="color: #065f46; margin: 0.75rem 0 0; font-size: 0.9rem;"><strong>Good news:</strong> Your resume has been approved by admin.</p>
+                <% } %>
               </div>
             <% } %>
             

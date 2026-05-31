@@ -204,6 +204,15 @@
         <button class="btn btn-primary card-btn" type="button"><i class="fas fa-upload"></i> Upload Resume</button>
       </div>
 
+      <% if (user.resume_review_status) { %>
+      <div class="dashboard-card" onclick="window.location.href='/profile'">
+        <i class="fas fa-file-alt"></i>
+        <h3>Resume Review Status</h3>
+        <p><%= user.resume_review_status === 'pending' ? 'Your resume is under admin review.' : user.resume_review_status === 'shortlisted' ? 'Your resume has been approved by admin.' : 'Your resume was rejected. Upload a fresh version for review.' %></p>
+        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> View Resume</button>
+      </div>
+      <% } %>
+
       <% if (user.role === 'admin') { %>
       <div class="dashboard-card" onclick="window.location.href='/admin'">
         <i class="fas fa-check-circle"></i>

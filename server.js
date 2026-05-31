@@ -727,7 +727,7 @@ app.post('/apply/:id', upload.single('resume'), verifyToken, (req, res) => {
         return res.status(400).send('Resume upload is required. Please upload a resume first or select one from your dashboard.');
       }
       
-      // Proceed with application using user's resume
+      // Proceed with application using user's existing resume
       db.run('INSERT INTO applications (user_id, job_id, resume_path) VALUES (?, ?, ?)', [req.user.id, jobId, resumePath], (err) => {
         if (err) {
           console.error('Apply error:', err);
@@ -737,13 +737,19 @@ app.post('/apply/:id', upload.single('resume'), verifyToken, (req, res) => {
       });
     });
   } else {
-    // User uploaded a new resume for this application
-    db.run('INSERT INTO applications (user_id, job_id, resume_path) VALUES (?, ?, ?)', [req.user.id, jobId, resumePath], (err) => {
+    // User uploaded a new resume for this application and send it for admin review
+    db.run('UPDATE users SET resume_path = ?, resume_review_status = ? WHERE id = ?', [resumePath, 'pending', req.user.id], (err) => {
       if (err) {
-        console.error('Apply error:', err);
+        console.error('Resume update error:', err);
         return res.status(500).send('Error applying');
       }
-      res.redirect('/candidate-interview/' + jobId);
+      db.run('INSERT INTO applications (user_id, job_id, resume_path) VALUES (?, ?, ?)', [req.user.id, jobId, resumePath], (err) => {
+        if (err) {
+          console.error('Apply error:', err);
+          return res.status(500).send('Error applying');
+        }
+        res.redirect('/candidate-interview/' + jobId);
+      });
     });
   }
 });
@@ -871,12 +877,15 @@ app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => 
       console.error('Resume upload error:', err);
       return res.status(500).send('Error uploading resume');
     }
-    // Redirect candidates straight into the MCQ / coding practice flow after resume upload
-    if (req.user.role === 'admin' || req.user.role === 'hr') {
-      const resumeUrl = '/' + resumePath;
-      return res.redirect('/shortlisted?open=' + encodeURIComponent(resumeUrl));
+    // Build a URL to the stored resume and redirect based on role
+    const resumeUrl = '/' + resumePath;
+    if (req.user.role === 'admin') {
+      return res.redirect('/admin?section=resumes');
     }
-    return res.redirect('/practice?tab=mcq');
+    if (req.user.role === 'hr') {
+      return res.redirect('/office');
+    }
+    return res.redirect('/profile?open=' + encodeURIComponent(resumeUrl));
   });
 });
 
@@ -981,24 +990,16 @@ app.get('/admin/portal', verifyToken, (req, res) => {
   res.render('admin-portal');
 });
 
-app.get('/resume-review', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
-  db.all('SELECT * FROM users WHERE resume_path IS NOT NULL', [], (err, resumeUsers) => {
-    if (err) return res.status(500).send('Error loading resume submissions');
-    res.render('resume-review', { user: req.user, resumeUsers });
-  });
-});
-
-// Admin/HR review endpoint for standalone resume submissions
+// Admin review endpoint for standalone resume submissions
 app.post('/admin/resume/:userId/review', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
   const action = req.body.action || 'pending';
   let status = action;
   if (action === 'shortlist') status = 'shortlisted';
   if (action === 'reject') status = 'rejected';
   db.run('UPDATE users SET resume_review_status = ? WHERE id = ?', [status, req.params.userId], (err) => {
     if (err) return res.status(500).send('Error updating review status');
-    res.redirect('/resume-review');
+    res.redirect('/admin');
   });
 });
 
