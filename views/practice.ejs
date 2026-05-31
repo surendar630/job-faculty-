@@ -114,6 +114,15 @@
         <li><a class="resource-link" href="https://www.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks</a> – deeper algorithm and computer science explanations.</li>
       </ul>
     </div>
+    <div class="info-card">
+      <h2>External assessment forms</h2>
+      <ul class="info-list">
+        <li><a class="resource-link" href="https://www.w3schools.com/quiztest/quiztest.asp?qtest=HTML" target="_blank" rel="noreferrer">W3Schools HTML Quiz</a> – quick MCQs for HTML basics.</li>
+        <li><a class="resource-link" href="https://www.w3schools.com/quiztest/quiztest.asp?qtest=CSS" target="_blank" rel="noreferrer">W3Schools CSS Quiz</a> – quick MCQs for CSS fundamentals.</li>
+        <li><a class="resource-link" href="https://practice.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks Practice Portal</a> – coding problems and task-based challenges.</li>
+        <li><a class="resource-link" href="https://www.geeksforgeeks.org/quizzes/" target="_blank" rel="noreferrer">GFG MCQ Quizzes</a> – multiple-choice quizzes on algorithms and data structures.</li>
+      </ul>
+    </div>
   </div>
 
   <div class="tabs">
@@ -211,6 +220,16 @@ function showResults() { const correct = ALL_Q.filter((q, i) => answered[i] === 
 function switchTab(name) { const tabs = document.querySelectorAll(".tab"); tabs.forEach((t, idx) => t.classList.toggle("active", ["mcq","code","results"][idx] === name)); const panes = document.querySelectorAll(".pane"); panes.forEach((p, idx) => p.classList.toggle("active", ["pane-mcq","pane-code","pane-results"][idx] === "pane-" + name)); if (name === "results") showResults(); }
 function resetAll() { answered = {}; selCQ = 0; codeRating = ""; codeFeedback = ""; curIdx = 0; curField = "All"; document.getElementById("editor").value = ""; renderFieldTabs(); renderQ(); renderCodingPane(); switchTab("mcq"); }
 renderFieldTabs(); renderQ(); renderCodingPane();
+
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get('tab');
+  if (tab === 'code' || tab === 'results') {
+    switchTab(tab);
+  } else {
+    switchTab('mcq');
+  }
+})();
 </script>
 </body>
 </html>

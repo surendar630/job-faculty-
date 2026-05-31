@@ -871,12 +871,12 @@ app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => 
       console.error('Resume upload error:', err);
       return res.status(500).send('Error uploading resume');
     }
-    // Build a URL to the stored resume and redirect based on role
-    const resumeUrl = '/' + resumePath;
+    // Redirect candidates straight into the MCQ / coding practice flow after resume upload
     if (req.user.role === 'admin' || req.user.role === 'hr') {
+      const resumeUrl = '/' + resumePath;
       return res.redirect('/shortlisted?open=' + encodeURIComponent(resumeUrl));
     }
-    return res.redirect('/profile?open=' + encodeURIComponent(resumeUrl));
+    return res.redirect('/practice?tab=mcq');
   });
 });
 
