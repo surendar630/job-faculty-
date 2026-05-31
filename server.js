@@ -634,7 +634,7 @@ app.get('/office/shortlisted', verifyToken, (req, res) => {
           FROM applications a
           JOIN jobs j ON a.job_id = j.id
           JOIN users u ON a.user_id = u.id
-          WHERE a.status = 'shortlisted'
+          WHERE a.status = 'shortlisted' OR u.resume_review_status = 'shortlisted'
           ORDER BY a.applied_at DESC`, [], (err, applications) => {
     if (err) return res.status(500).send('Error');
     res.render('shortlisted', { applications, user: req.user });
