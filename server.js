@@ -921,7 +921,8 @@ app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => 
     if (req.user.role === 'hr') {
       return res.redirect('/office');
     }
-    return res.redirect('/profile?open=' + encodeURIComponent(resumeUrl));
+    // Send regular users directly into the practice rounds after uploading a resume
+    return res.redirect('/practice');
   });
 });
 
