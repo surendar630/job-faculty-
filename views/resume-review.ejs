@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Review - AcademiaPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/styles.css" rel="stylesheet">
+<style>
+body { background: #f8fafc; color: #0f172a; font-family: 'DM Sans', sans-serif; }
+.container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; }
+nav .logo { font-size: 1.1rem; font-weight: 700; color: #1d4ed8; }
+nav .nav-links { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+nav .nav-links span, nav .nav-links a, nav .nav-links button { color: #475569; font-weight: 500; cursor: pointer; background: none; border: none; text-decoration: none; transition: color 0.2s ease; }
+nav .nav-links span:hover, nav .nav-links a:hover, nav .nav-links button:hover { color: #2563eb; }
+.resume-header { background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 16px; color: white; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 24px 48px rgba(15,23,42,0.08); }
+.resume-header h1 { margin: 0 0 0.75rem; font-size: 2.25rem; }
+.resume-header p { margin: 0; color: rgba(255,255,255,0.85); line-height: 1.8; }
+.resume-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+.review-card { background: white; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 12px 24px rgba(15,23,42,0.05); overflow: hidden; }
+.review-card .card-body { padding: 1.5rem; }
+.review-card h3 { margin: 0 0 0.75rem; font-size: 1.1rem; color: #0f172a; }
+.review-card p { margin: 0.35rem 0; color: #475569; line-height: 1.65; }
+.review-meta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0.75rem 0; color: #64748b; font-size: 0.95rem; }
+.review-meta span { display: flex; align-items: center; gap: 0.4rem; }
+.status-pill { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.82rem; font-weight: 600; }
+.status-pending { background: #f8fafc; color: #334155; border: 1px solid #cbd5e1; }
+.status-shortlisted { background: #dcfce7; color: #166534; }
+.status-rejected { background: #fee2e2; color: #b91c1c; }
+.review-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+.review-actions a, .review-actions button { border: none; border-radius: 10px; padding: 0.75rem 1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s ease, opacity 0.2s ease; }
+.review-actions a { background: #2563eb; color: white; text-decoration: none; }
+.review-actions button { background: #f8fafc; color: #334155; }
+.review-actions a:hover, .review-actions button:hover { opacity: 0.95; transform: translateY(-1px); }
+.empty-state { text-align: center; padding: 3rem; background: white; border: 1px solid #e2e8f0; border-radius: 16px; color: #64748b; }
+.empty-state i { font-size: 3rem; margin-bottom: 1rem; color: #cbd5e1; }
+.review-form { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-top: 1rem; }
+.review-form select { flex: 1; min-width: 170px; border-radius: 10px; border: 1px solid #cbd5e1; padding: 0.85rem 1rem; background: #f8fafc; color: #0f172a; }
+.review-form button { background: #16a34a; color: white; flex-shrink: 0; }
+@media (max-width: 768px) {
+  .resume-header h1 { font-size: 1.75rem; }
+  nav { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
+  <div class="nav-links">
+    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+    <% if (user.role === 'admin') { %>
+      <span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span>
+    <% } %>
+    <% if (user.role === 'hr') { %>
+      <span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span>
+    <% } %>
+    <a href="/shortlisted"><i class="fas fa-check-circle"></i> Shortlisted</a>
+    <form action="/logout" method="POST" style="display:inline;">
+      <button type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
+  </div>
+</nav>
+<div class="container">
+  <section class="resume-header">
+    <h1><i class="fas fa-file-search"></i> Resume Review</h1>
+    <p>Review uploaded resumes and update resume status for candidates. Admins and HR users can mark resumes as pending, shortlisted, or rejected.</p>
+  </section>
+
+  <% if (!resumeUsers || resumeUsers.length === 0) { %>
+    <div class="empty-state">
+      <i class="fas fa-inbox"></i>
+      <h2>No resumes submitted yet</h2>
+      <p>Once candidates upload resumes to their profiles, they will appear here for review.</p>
+    </div>
+  <% } else { %>
+    <div class="resume-grid">
+      <% resumeUsers.forEach(u => { %>
+        <div class="review-card">
+          <div class="card-body">
+            <h3><i class="fas fa-user"></i> <%= u.name %></h3>
+            <div class="review-meta">
+              <span><i class="fas fa-envelope"></i> <%= u.email %></span>
+              <span><i class="fas fa-calendar-alt"></i> Uploaded: <%= new Date(u.updated_at || u.created_at || Date.now()).toLocaleDateString() %></span>
+            </div>
+            <p><strong>Status:</strong>
+              <span class="status-pill status-<%= (u.resume_review_status || 'pending').toLowerCase() %>"><%= (u.resume_review_status || 'pending').charAt(0).toUpperCase() + (u.resume_review_status || 'pending').slice(1) %></span>
+            </p>
+            <p><strong>Resume:</strong>
+              <% if (u.resume_path) { %>
+                <a href="/<%= u.resume_path %>" target="_blank">View file</a>
+              <% } else { %>
+                Not available
+              <% } %>
+            </p>
+            <form action="/admin/resume/<%= u.id %>/review" method="POST" class="review-form">
+              <select name="action" aria-label="Select review action">
+                <option value="pending" <%= (!u.resume_review_status || u.resume_review_status === 'pending') ? 'selected' : '' %>>Pending</option>
+                <option value="shortlist">Shortlist</option>
+                <option value="reject">Reject</option>
+              </select>
+              <button type="submit">Update</button>
+            </form>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</div>
+</body>
+</html>

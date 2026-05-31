@@ -981,16 +981,24 @@ app.get('/admin/portal', verifyToken, (req, res) => {
   res.render('admin-portal');
 });
 
-// Admin review endpoint for standalone resume submissions
+app.get('/resume-review', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  db.all('SELECT * FROM users WHERE resume_path IS NOT NULL', [], (err, resumeUsers) => {
+    if (err) return res.status(500).send('Error loading resume submissions');
+    res.render('resume-review', { user: req.user, resumeUsers });
+  });
+});
+
+// Admin/HR review endpoint for standalone resume submissions
 app.post('/admin/resume/:userId/review', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const action = req.body.action || 'pending';
   let status = action;
   if (action === 'shortlist') status = 'shortlisted';
   if (action === 'reject') status = 'rejected';
   db.run('UPDATE users SET resume_review_status = ? WHERE id = ?', [status, req.params.userId], (err) => {
     if (err) return res.status(500).send('Error updating review status');
-    res.redirect('/admin');
+    res.redirect('/resume-review');
   });
 });
 
