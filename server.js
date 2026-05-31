@@ -630,7 +630,12 @@ app.get('/office', verifyToken, (req, res) => {
 
 app.get('/office/shortlisted', verifyToken, (req, res) => {
   if (req.user.role !== 'hr') return res.status(403).send('Access denied');
-  db.all('SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id WHERE a.status = "shortlisted"', [], (err, applications) => {
+  db.all(`SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email, u.resume_path, u.resume_review_status
+          FROM applications a
+          JOIN jobs j ON a.job_id = j.id
+          JOIN users u ON a.user_id = u.id
+          WHERE a.status = 'shortlisted' OR u.resume_path IS NOT NULL OR u.resume_review_status IS NOT NULL
+          ORDER BY a.applied_at DESC`, [], (err, applications) => {
     if (err) return res.status(500).send('Error');
     res.render('shortlisted', { applications, user: req.user });
   });
@@ -775,7 +780,12 @@ app.post('/compare', verifyToken, (req, res) => {
 
 app.get('/shortlisted', verifyToken, (req, res) => {
   if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
-  db.all('SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id WHERE a.status = "shortlisted"', [], (err, applications) => {
+  db.all(`SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email, u.resume_path, u.resume_review_status
+          FROM applications a
+          JOIN jobs j ON a.job_id = j.id
+          JOIN users u ON a.user_id = u.id
+          WHERE a.status = 'shortlisted' OR u.resume_path IS NOT NULL OR u.resume_review_status IS NOT NULL
+          ORDER BY a.applied_at DESC`, [], (err, applications) => {
     if (err) return res.status(500).send('Error');
     res.render('shortlisted', { applications, user: req.user });
   });
