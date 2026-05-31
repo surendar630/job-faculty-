@@ -228,6 +228,11 @@ db.serialize(() => {
   bcrypt.hash('admin123', 10, (err, hash) => {
     db.run(`INSERT OR IGNORE INTO users (name, email, password, role) VALUES ('Admin', 'admin@academiapro.com', ?, 'admin')`, [hash]);
   });
+
+  // Create permanent HR user
+  bcrypt.hash('hr123', 10, (err, hash) => {
+    db.run(`INSERT OR IGNORE INTO users (name, email, password, role) VALUES ('HR Manager', 'hr@academiapro.com', ?, 'hr')`, [hash]);
+  });
 });
 
 // Middleware to verify JWT and load full user data
