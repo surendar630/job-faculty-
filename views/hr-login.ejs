@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - AcademiaPro</title>
+<title>HR Login - AcademiaPro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
@@ -138,33 +138,6 @@
   box-shadow: var(--shadow-lg);
 }
 
-.btn-google {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 0.75rem;
-  background: #4285f4;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 1rem;
-  text-decoration: none;
-  box-shadow: var(--shadow-md);
-}
-
-.btn-google:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-
-.btn-google i {
-  margin-right: 0.75rem;
-}
-
 .alert {
   border-radius: 10px;
   padding: 1rem 1rem;
@@ -200,14 +173,6 @@
   font-size: 0.95rem;
 }
 
-.remember-row label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #475569;
-  font-size: 0.95rem;
-}
-
 .form p {
   text-align: center;
   margin-top: 1.5rem;
@@ -215,21 +180,15 @@
 }
 
 @media (max-width: 768px) {
-}
-
-@media (max-width: 768px) {
   nav {
     display: none;
   }
-  
   .login-content {
     grid-template-columns: 1fr;
   }
-  
   .login-info {
     display: none;
   }
-  
   .form {
     max-width: 100%;
     width: 100%;
@@ -241,28 +200,27 @@
 <div class="login-hero">
   <div class="login-content">
     <div class="login-info">
-      <h1>Welcome to AcademiaPro</h1>
-      <p>Find your perfect faculty or professor position with our advanced job portal.</p>
+      <h1>HR / Office Login</h1>
+      <p>Enter your HR credentials to access the office portal and verify resumes, shortlist candidates, and manage interviews.</p>
       <ul class="features">
-        <li><i class="fas fa-check-circle"></i> Browse top university positions</li>
-        <li><i class="fas fa-check-circle"></i> AI-powered interviews</li>
-        <li><i class="fas fa-check-circle"></i> Compare job offers</li>
-        <li><i class="fas fa-check-circle"></i> Expert matching algorithm</li>
+        <li><i class="fas fa-check-circle"></i> Secure HR-only access</li>
+        <li><i class="fas fa-check-circle"></i> Separate verification route</li>
+        <li><i class="fas fa-check-circle"></i> Resume shortlist control</li>
+        <li><i class="fas fa-check-circle"></i> Interview management panel</li>
       </ul>
     </div>
-    
     <div class="form">
-      <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+      <h2><i class="fas fa-user-shield"></i> HR Login</h2>
       <% if (error) { %>
         <div class="alert alert-error"><%= error %></div>
       <% } %>
       <% if (info) { %>
         <div class="alert alert-info"><%= info %></div>
       <% } %>
-      <form action="/login" method="POST">
+      <form action="/hr-login" method="POST">
         <div class="form-group">
-          <label for="email"><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" autofocus>
+          <label for="email"><i class="fas fa-id-badge"></i> HR Email</label>
+          <input type="email" id="email" name="email" placeholder="hr@example.com" required autocomplete="email" autofocus>
         </div>
         <div class="form-group">
           <label for="password"><i class="fas fa-lock"></i> Password</label>
@@ -273,60 +231,15 @@
           <label><input type="checkbox" id="showPassword"> Show password</label>
         </div>
         <div class="form-group">
-          <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+          <button type="submit"><i class="fas fa-sign-in-alt"></i> Login as HR</button>
         </div>
       </form>
-      <div class="form-group">
-        <button id="firebaseGoogleBtn" type="button" class="btn btn-google"><i class="fab fa-google"></i> Sign in with Google</button>
-      </div>
-      <p>Don't have an account? <a href="/register"><i class="fas fa-arrow-right"></i> Register now</a></p>
-      <p>Forgot your password? <a href="/reset"><i class="fas fa-key"></i> Reset it here</a></p>
-      <p>HR user? <a href="/hr-login"><i class="fas fa-arrow-right"></i> Login here</a></p>
+      <p>Need a candidate login? <a href="/login"><i class="fas fa-arrow-left"></i> Go to normal login</a></p>
     </div>
   </div>
 </div>
 </body>
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
-  import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
-
-  const firebaseConfig = {
-    apiKey: 'AIzaSyA54_DnlblEXm5mDMgOhwTG2dx7JAhWSHQ',
-    authDomain: 'acadimeapro.firebaseapp.com',
-    projectId: 'acadimeapro',
-    storageBucket: 'acadimeapro.firebasestorage.app',
-    messagingSenderId: '1037123729626',
-    appId: '1:1037123729626:web:5f07c7087f62e35da38de3',
-    measurementId: 'G-44FDYL437S'
-  };
-
-  const alternateFirebaseApiKey = 'AIzaSyBF8PsHnsoy4tfOH5URzp1ipTnH_bj08TE'; // Alternate auth key
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-
-  document.getElementById('firebaseGoogleBtn').addEventListener('click', async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const idToken = await result.user.getIdToken();
-      const response = await fetch('/auth/google-firebase', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken })
-      });
-      if (response.ok) {
-        window.location.href = '/dashboard';
-      } else {
-        const errorText = await response.text();
-        alert('Google sign-in failed: ' + errorText);
-      }
-    } catch (error) {
-      console.error('Firebase Google sign-in error:', error);
-      alert('Google sign-in failed. Please try again.');
-    }
-  });
-
+<script>
   document.getElementById('showPassword')?.addEventListener('change', (event) => {
     const passwordField = document.getElementById('password');
     if (passwordField) {

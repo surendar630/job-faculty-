@@ -288,6 +288,10 @@ app.get('/login', (req, res) => {
   res.render('login', { error: null, info: null });
 });
 
+app.get('/hr-login', (req, res) => {
+  res.render('hr-login', { error: null, info: null });
+});
+
 app.post('/login', (req, res) => {
   const { email, password, remember } = req.body;
   if (!email || !password) {
@@ -312,6 +316,33 @@ app.post('/login', (req, res) => {
       if (user.role === 'admin') return res.redirect('/admin');
       if (user.role === 'hr') return res.redirect('/office');
       return res.redirect('/dashboard');
+    });
+  });
+});
+
+app.post('/hr-login', (req, res) => {
+  const { email, password, remember } = req.body;
+  if (!email || !password) {
+    return res.render('hr-login', { error: 'Please enter both HR email and password.', info: null });
+  }
+
+  db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
+    if (err) return res.status(500).send('Server error');
+    if (!user) return res.render('hr-login', { error: 'No HR account found with that email.', info: null });
+    if (user.role !== 'hr') return res.render('hr-login', { error: 'This login is reserved for HR users only.', info: null });
+    if (!user.password) return res.render('hr-login', { error: 'Please sign in with Google or reset your password.', info: null });
+
+    bcrypt.compare(password, user.password, (err, result) => {
+      if (err) return res.status(500).send('Server error');
+      if (!result) return res.render('hr-login', { error: 'Incorrect password. Please try again.', info: null });
+
+      const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
+      const cookieOptions = {};
+      if (remember === 'on') {
+        cookieOptions.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
+      }
+      res.cookie('token', token, cookieOptions);
+      return res.redirect('/office');
     });
   });
 });
