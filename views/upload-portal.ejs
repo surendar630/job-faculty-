@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AICTE Faculty Upload Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/1.57.0/iconfont/tabler-icons.min.css" integrity="sha512-NpJCQSeU3P1KErQmKeVstpUvsoUlqsaH9vEyNC1mVJXg0hNzkhjBO2vBE6uoHGdNfEz7C0fHfQOAYInsLWf7Og==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0F172A;--sb:#1E293B;--sb2:#253447;--card:#1E293B;--card2:#253447;
+      --border:#334155;--border2:#475569;
+      --t1:#F1F5F9;--t2:#94A3B8;--t3:#64748B;
+      --acc:#6366F1;--acc2:#818CF8;--acc3:#E0E7FF;
+      --grn:#10B981;--grn2:#34D399;--grn3:#D1FAE5;
+      --amb:#F59E0B;--amb2:#FCD34D;--amb3:#FEF3C7;
+      --red:#EF4444;--red2:#FCA5A5;--red3:#FEE2E2;
+      --pur:#8B5CF6;--pur2:#C4B5FD;--pur3:#EDE9FE;
+      --tea:#14B8A6;--tea2:#5EEAD4;--tea3:#CCFBF1;
+      --cor:#F97316;--cor2:#FDBA74;--cor3:#FFEDD5;
+      --font-sans:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    body{font-family:var(--font-sans);background:var(--bg);color:var(--t1);font-size:13px;min-height:100vh;}
+    .app{display:flex;min-height:100vh}
+    .sidebar{width:220px;background:var(--sb);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+    .sb-brand{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
+    .sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .logo-box{width:36px;height:36px;background:var(--acc);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .logo-box i{color:#fff;font-size:18px}
+    .logo-name{font-size:14px;font-weight:600;color:var(--t1)}
+    .logo-tag{font-size:10px;color:var(--t2)}
+    .sb-kpis{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
+    .sk{background:var(--sb2);border-radius:12px;padding:10px 12px;text-align:center}
+    .sk-n{font-size:18px;font-weight:700;color:var(--t1)}
+    .sk-l{font-size:9px;color:var(--t3);margin-top:4px}
+    .sb-nav{padding:12px 10px;flex:1}
+    .sn-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;padding:0 8px;margin-bottom:6px}
+    .sn-item{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:12px;cursor:pointer;color:var(--t2);transition:all .12s;font-size:12px;margin-bottom:6px}
+    .sn-item:hover{background:var(--sb2);color:var(--t1)}
+    .sn-item.on{background:var(--acc);color:#fff}
+    .sn-item i{font-size:16px;flex-shrink:0}
+    .sn-badge{margin-left:auto;font-size:10px;background:rgba(255,255,255,.12);color:var(--t2);padding:1px 8px;border-radius:999px}
+    .sn-badge.lit{background:rgba(99,102,241,.3);color:var(--acc2)}
+    .topbar{background:var(--sb);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+    .tb-bc{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px}
+    .tb-bc span{color:var(--t1);font-weight:500}
+    .tb-r{display:flex;align-items:center;gap:8px}
+    .pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600}
+    .p-acc{background:rgba(99,102,241,.18);color:var(--acc2);border:1px solid rgba(99,102,241,.3)}
+    .p-grn{background:rgba(16,185,129,.15);color:var(--grn2);border:1px solid rgba(16,185,129,.3)}
+    .btn{font-family:var(--font-sans);padding:8px 14px;border-radius:10px;border:1px solid var(--border);background:var(--sb2);color:var(--t1);font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .12s}
+    .btn:hover{background:var(--border);color:var(--t1)}
+    .btn-acc{background:var(--acc);color:#fff;border-color:var(--acc)}
+    .btn-acc:hover{background:#4f46e5}
+    .btn-grn{background:var(--grn);color:#fff;border-color:var(--grn)}
+    .btn-grn:hover{background:#059669}
+    .btn-red{background:var(--red);color:#fff;border-color:var(--red)}
+    .btn-red:hover{background:#dc2626}
+    .btn-xs{padding:6px 12px;font-size:11px}
+    .workspace{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg)}
+    .main{flex:1;padding:18px;overflow-y:auto}
+    .page{display:none}.page.active{display:block}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px}
+    .card-hd{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+    .banner{background:var(--sb2);border:1px solid var(--acc);border-radius:16px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
+    .banner-ic{width:48px;height:48px;background:rgba(99,102,241,.2);border-radius:14px;display:flex;align-items:center;justify-content:center}
+    .banner-ic i{font-size:22px;color:var(--acc2)}
+    .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+    .kpi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px}
+    .kpi-n{font-size:22px;font-weight:700;color:var(--t1)}
+    .kpi-l{font-size:10px;color:var(--t2);margin-top:4px}
+    .pipe{display:flex;gap:0;border-radius:16px;overflow:hidden;border:1px solid var(--border);margin-bottom:18px}
+    .pp{flex:1;background:var(--card);padding:12px 14px;display:flex;align-items:center;gap:9px;border-right:1px solid var(--border);cursor:pointer;transition:background .12s}
+    .pp:last-child{border-right:none}
+    .pp:hover{background:var(--sb2)}
+    .pp.done{border-top:2px solid var(--grn);border-top-left-radius:0;border-top-right-radius:0}
+    .pp-n{width:26px;height:26px;border-radius:50%;background:var(--sb2);border:1px solid var(--border2);font-size:10px;font-weight:700;color:var(--t3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .pp-n.done{background:rgba(16,185,129,.2);color:var(--grn2);border-color:rgba(16,185,129,.4)}
+    .pp-lbl{font-size:11px;font-weight:600;color:var(--t2)}
+    .pp-lbl.done{color:var(--grn2)}
+    .pp-sub{font-size:10px;color:var(--t3)}
+    .empty-s{text-align:center;padding:30px;color:var(--t3)}
+    .empty-s i{font-size:32px;color:var(--border2);display:block;margin-bottom:10px}
+    .card h1{margin-bottom:10px;font-size:20px;line-height:1.2}
+    .card p{color:var(--t2);line-height:1.7}
+    .dz{border:1.5px dashed var(--border2);border-radius:16px;padding:32px 18px;text-align:center;cursor:pointer;transition:all .15s;background:var(--sb2)}
+    .dz:hover,.dz.drag{border-color:var(--acc);background:rgba(99,102,241,.08)}
+    .dz i{font-size:34px;color:var(--t3);display:block;margin-bottom:12px}
+    .dz-t{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:8px}
+    .dz-s{font-size:12px;color:var(--t3);margin-bottom:12px}
+    .fg{margin-bottom:12px}
+    .fg label{font-size:11px;color:var(--t2);display:block;margin-bottom:6px}
+    .input,select,textarea{width:100%;font-size:12.5px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--sb2);color:var(--t1);outline:none;transition:border .12s;font-family:var(--font-sans)}
+    .input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(99,102,241,.12)}
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    .bl-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--sb2);border-radius:12px;margin-bottom:8px}
+    .bl-ic{width:30px;height:30px;background:rgba(99,102,241,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--acc2);flex-shrink:0}
+    .prog-track{height:6px;background:var(--sb2);border-radius:999px;overflow:hidden}
+    .prog-fill{height:100%;border-radius:999px;background:var(--acc);transition:width .25s}
+    .bar{height:4px;border-radius:999px;background:var(--border);overflow:hidden;width:60px}
+    .bf{height:100%;border-radius:999px;background:var(--acc)}
+    .bar .bf.done{background:var(--grn)}
+    .filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+    .fb{padding:7px 12px;border-radius:999px;border:1px solid var(--border);background:var(--sb2);color:var(--t2);font-size:12px;cursor:pointer;transition:all .12s}
+    .fb:hover{background:var(--border);color:var(--t1)}
+    .fb.on{background:rgba(99,102,241,.2);color:var(--acc2);border-color:rgba(99,102,241,.35)}
+    .rt{width:100%;border-collapse:collapse}
+    .rt th{text-align:left;padding:10px;background:var(--sb2);font-size:11px;color:var(--t2);font-weight:600;border-bottom:1px solid var(--border)}
+    .rt td{padding:10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--t1);vertical-align:middle}
+    .rt tr:hover td{background:rgba(255,255,255,.03)}
+    .ava{width:28px;height:28px;border-radius:50%;background:rgba(99,102,241,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--acc2);flex-shrink:0}
+    .pulsing{display:flex;gap:3px;align-items:center}
+    .pulsing span{width:4px;height:4px;border-radius:50%;background:var(--t3);animation:pu 1.2s infinite}
+    .pulsing span:nth-child(2){animation-delay:.2s}.pulsing span:nth-child(3){animation-delay:.4s}
+    @keyframes pu{0%,80%,100%{opacity:.25;transform:scale(.7)}40%{opacity:1;transform:scale(1)}}
+    .detail-box{background:rgba(255,255,255,.04);border-radius:12px;padding:12px;font-size:12px;line-height:1.6;color:var(--t2)}
+    .badge{font-size:10px;font-weight:700;padding:4px 8px;border-radius:999px;text-transform:uppercase}
+    .badge-prof{background:rgba(99,102,241,.15);color:var(--acc2)}
+    .badge-cand{background:rgba(16,185,129,.15);color:var(--grn2)}
+    .controls-bar{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px;border-top:1px solid var(--border);background:var(--sb);}
+    .control-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:var(--sb2);color:var(--t1);cursor:pointer;transition:all .12s}
+    .control-btn:hover{border-color:var(--acc);color:var(--acc)}
+    .control-btn.end-call{background:var(--red);border-color:var(--red);color:#fff}
+    .control-btn .ctrl-label{display:none}
+    .sidebar-tabs{display:flex;gap:8px;margin-bottom:12px}
+    .stab{flex:1;padding:10px 12px;border-radius:12px;text-align:center;background:var(--sb2);color:var(--t2);cursor:pointer;transition:all .12s}
+    .stab.active{background:var(--acc);color:#fff}
+    .panel{display:none}
+    .panel.active{display:block}
+    .chat-messages{max-height:320px;overflow-y:auto;padding-right:8px}
+    .msg{margin-bottom:12px}
+    .msg.mine .msg-bubble{background:rgba(99,102,241,.15);color:#fff;align-self:flex-end}
+    .msg-header{display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:5px}
+    .msg-bubble{display:inline-block;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.05);font-size:12px;line-height:1.5}
+    .chat-input-area{display:flex;gap:8px;align-items:flex-end}
+    .chat-input{flex:1;min-height:38px;border-radius:12px;border:1px solid var(--border);background:var(--sb2);color:var(--t1);padding:10px;resize:none}
+    .send-btn{padding:10px 14px;border-radius:12px;border:none;background:var(--acc);color:#fff;cursor:pointer}
+    .notes-panel-inner{display:flex;flex-direction:column;gap:12px}
+    .notes-header-label{font-size:12px;font-weight:700;color:var(--t1)}
+    .notes-textarea{width:100%;min-height:120px;border-radius:12px;border:1px solid var(--border);background:var(--sb2);color:var(--t1);padding:10px}
+    .decision-btns{display:flex;gap:7px;flex-wrap:wrap}
+    .dec-btn{flex:1;padding:10px 12px;border-radius:12px;border:none;cursor:pointer;font-size:12px;color:#fff}
+    .dec-accept{background:var(--grn)}.dec-hold{background:var(--amb)}.dec-reject{background:var(--red)}
+    .info-panel{display:flex;flex-direction:column;gap:12px}
+    .info-block{background:var(--sb2);border:1px solid var(--border);border-radius:12px;padding:12px}
+    .info-block-label{font-size:11px;color:var(--t2);margin-bottom:6px}
+    .info-block-val{font-size:13px;font-weight:600;color:var(--t1)}
+    .room-topbar{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0}
+    .room-back-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;background:var(--sb2);border:1px solid var(--border);color:var(--t2);font-size:12px;cursor:pointer}
+    .room-back-btn:hover{border-color:var(--acc);color:var(--acc)}
+    .room-body{display:flex;gap:12px;flex-wrap:wrap}
+    .video-area{flex:2;display:flex;flex-direction:column;gap:10px;min-width:320px}
+    .video-tile{position:relative;border-radius:18px;background:var(--sb2);border:1px solid var(--border);overflow:hidden;min-height:220px;display:flex;align-items:center;justify-content:center;}
+    .video-off-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(15,23,42,.95);}
+    .tile-avatar{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-weight:800;font-size:1.4rem;background:rgba(99,102,241,.18);color:var(--acc2)}
+    .tile-bottom{position:absolute;left:0;right:0;bottom:0;padding:12px 14px;background:linear-gradient(180deg,transparent,rgba(15,23,42,.95));display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .tile-name{font-size:12px;font-weight:600;color:#fff}
+    .tile-badge{font-size:10px;font-weight:700;padding:4px 8px;border-radius:999px}
+    .badge-prof{background:rgba(99,102,241,.15);color:var(--acc2)}
+    .badge-cand{background:rgba(16,185,129,.15);color:var(--grn2)}
+    .room-sidebar{flex:1;min-width:280px;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+    .controls-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+    .controls-group{display:flex;gap:8px;align-items:center}
+    .ctrl-sep{width:1px;height:32px;background:var(--border)}
+    .control-btn .ctrl-label{font-size:10px}
+    .room-icon-btn{padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--sb2);color:var(--t2);font-size:12px}
+    .room-icon-btn:hover{border-color:var(--acc);color:var(--acc)}
+    .sidebar-tabs{display:flex;gap:8px}
+    .stab{flex:1;padding:10px 12px;border-radius:12px;text-align:center;background:var(--sb2);color:var(--t2);cursor:pointer}
+    .stab.active{background:var(--acc);color:#fff}
+    .chat-messages{max-height:260px;overflow-y:auto;padding-right:8px}
+    .chat-input{min-height:40px}
+    .notes-textarea{min-height:140px}
+    .send-btn{min-width:42px}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar">
+      <div class="sb-brand">
+        <div class="sb-logo">
+          <div class="logo-box"><i class="ti ti-school"></i></div>
+          <div>
+            <div class="logo-name">AICTE Faculty</div>
+            <div class="logo-tag">Bulk upload portal</div>
+          </div>
+        </div>
+        <div class="sb-kpis">
+          <div class="sk"><div class="sk-n" id="sk-total">0</div><div class="sk-l">total</div></div>
+          <div class="sk"><div class="sk-n" style="color:#34D399" id="sk-qual">0</div><div class="sk-l">qualified</div></div>
+          <div class="sk"><div class="sk-n" style="color:#818CF8" id="sk-sl">0</div><div class="sk-l">shortlisted</div></div>
+          <div class="sk"><div class="sk-n" style="color:#FCD34D" id="sk-ver">0</div><div class="sk-l">verified</div></div>
+        </div>
+      </div>
+      <div class="sb-nav">
+        <div class="sn-lbl">Quick links</div>
+        <div class="sn-item on" onclick="go('dash')"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+        <div class="sn-item" onclick="go('bulk')"><i class="ti ti-upload"></i>Bulk upload<span class="sn-badge" id="nb-bulk">0</span></div>
+        <div class="sn-item" onclick="go('results')"><i class="ti ti-table"></i>All results<span class="sn-badge" id="nb-results">0</span></div>
+        <div class="sn-item" onclick="go('sl')"><i class="ti ti-user-check"></i>Shortlisted<span class="sn-badge" id="nb-sl">0</span></div>
+        <div class="sn-item" onclick="go('vf')"><i class="ti ti-shield-check"></i>Verification<span class="sn-badge" id="nb-vf">0</span></div>
+        <div class="sn-item" onclick="go('cmp')"><i class="ti ti-columns"></i>Compare</div>
+        <div class="sn-item" onclick="go('fn')"><i class="ti ti-trophy"></i>Final shortlist<span class="sn-badge" id="nb-fn">0</span></div>
+        <div class="sn-item" onclick="go('norms')"><i class="ti ti-book"></i>AICTE norms</div>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <div class="topbar">
+        <div class="tb-bc"><i class="ti ti-school" style="font-size:13px;color:#818CF8"></i>&rsaquo;<span id="tb-pg">Dashboard</span></div>
+        <div class="tb-r">
+          <span class="pill p-acc"><i class="ti ti-certificate" style="font-size:11px"></i>AICTE 2024</span>
+          <span class="pill p-grn"><i class="ti ti-brain" style="font-size:11px"></i>AI powered</span>
+          <button class="btn btn-acc btn-xs" onclick="go('bulk')"><i class="ti ti-upload"></i>Upload resumes</button>
+        </div>
+      </div>
+
+      <div class="main">
+        <div id="pg-dash" class="page active">
+          <div class="banner">
+            <div class="banner-ic"><i class="ti ti-school"></i></div>
+            <div>
+              <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:4px">AICTE Faculty Shortlisting & Verification</div>
+              <div style="font-size:12px;color:#94A3B8;line-height:1.7">Upload up to <strong style="color:#818CF8">100 resumes</strong> (PDF / TXT). AI evaluates against AICTE norms, scores, shortlists, verifies suitability, compares and ranks for your selection committee.</div>
+            </div>
+            <div style="flex-shrink:0;display:flex;gap:8px">
+              <button class="btn btn-acc btn-xs" onclick="go('bulk')"><i class="ti ti-upload"></i>Start</button>
+              <button class="btn btn-xs" onclick="loadAllDemos()"><i class="ti ti-database"></i>12 demos</button>
+            </div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi" style="border-color:rgba(99,102,241,.3)"><div class="kpi-n" id="k-total">0</div><div class="kpi-l">Uploaded</div></div>
+            <div class="kpi" style="border-color:rgba(16,185,129,.3)"><div class="kpi-n" style="color:#34D399" id="k-qual">0</div><div class="kpi-l">Qualified</div></div>
+            <div class="kpi" style="border-color:rgba(245,158,11,.3)"><div class="kpi-n" style="color:#FCD34D" id="k-part">0</div><div class="kpi-l">Partial</div></div>
+            <div class="kpi" style="border-color:rgba(239,68,68,.3)"><div class="kpi-n" style="color:#FCA5A5" id="k-nq">0</div><div class="kpi-l">Not qualified</div></div>
+            <div class="kpi" style="border-color:rgba(139,92,246,.3)"><div class="kpi-n" style="color:#C4B5FD" id="k-sl">0</div><div class="kpi-l">Shortlisted</div></div>
+          </div>
+
+          <div class="pipe">
+            <div class="pp" id="pps1" onclick="go('bulk')"><div class="pp-n" id="ppn1">1</div><div><div class="pp-lbl" id="ppt1">Upload</div><div class="pp-sub">PDF/TXT/paste</div></div></div>
+            <div class="pp" id="pps2" onclick="go('results')"><div class="pp-n" id="ppn2">2</div><div><div class="pp-lbl" id="ppt2">AI analysis</div><div class="pp-sub">AICTE check</div></div></div>
+            <div class="pp" id="pps3" onclick="go('sl')"><div class="pp-n" id="ppn3">3</div><div><div class="pp-lbl" id="ppt3">Shortlist</div><div class="pp-sub">Approve/reject</div></div></div>
+            <div class="pp" id="pps4" onclick="go('vf')"><div class="pp-n" id="ppn4">4</div><div><div class="pp-lbl" id="ppt4">Verify</div><div class="pp-sub">Suitability</div></div></div>
+            <div class="pp" id="pps5" onclick="go('cmp')"><div class="pp-n" id="ppn5">5</div><div><div class="pp-lbl" id="ppt5">Compare</div><div class="pp-sub">Side by side</div></div></div>
+            <div class="pp" onclick="go('fn')"><div class="pp-n" id="ppn6">6</div><div><div class="pp-lbl" id="ppt6">Finalise</div><div class="pp-sub">Committee list</div></div></div>
+          </div>
+
+          <div id="seg-wrap" style="display:none">
+            <div class="card">
+              <div class="card-hd"><div class="card-hd-l"><i class="ti ti-chart-bar"></i>Results breakdown</div></div>
+              <div style="display:flex;gap:10px;font-size:11px;color:var(--t2);margin-bottom:8px">
+                <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--grn);display:inline-block"></span>Qualified</span>
+                <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--amb);display:inline-block"></span>Partial</span>
+                <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--red);display:inline-block"></span>Not qualified</span>
+                <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--border2);display:inline-block"></span>Pending</span>
+              </div>
+              <div class="seg-bar" id="seg-bar"></div>
+              <div style="font-size:11px;color:var(--t3)" id="seg-sum"></div>
+            </div>
+          </div>
+
+          <div id="dash-recent" style="display:none">
+            <div class="card"><div class="card-hd"><div class="card-hd-l"><i class="ti ti-clock"></i>Recent</div></div><div id="dash-rows"></div></div>
+          </div>
+        </div>
+
+        <div id="pg-bulk" class="page">
+          <div class="card">
+            <div class="card-hd"><div class="card-hd-l"><i class="ti ti-files"></i>Bulk upload — up to 100 resumes at once</div></div>
+            <div class="dz" id="dz" onclick="document.getElementById('fi').click()" ondragover="dov(event)" ondragleave="dlv()" ondrop="ddr(event)">
+              <i class="ti ti-file-upload"></i>
+              <div class="dz-t">Drop multiple PDF or TXT resume files here</div>
+              <div class="dz-s" style="margin-bottom:8px">Each file = one candidate. Supports .pdf and .txt</div>
+              <button class="btn btn-xs" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="ti ti-folder-open"></i>Browse files</button>
+              <input type="file" id="fi" multiple accept=".pdf,.txt" style="display:none" onchange="onFiles(this)">
+            </div>
+            <div id="file-preview"></div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><div class="card-hd-l"><i class="ti ti-user-plus"></i>Add candidate manually</div></div>
+            <div class="g2" style="margin-bottom:10px">
+              <div class="fg"><label>Full name</label><input id="mn-name" class="input" type="text" placeholder="Dr. Ramesh Kumar"></div>
+              <div class="fg"><label>Email</label><input id="mn-email" class="input" type="text" placeholder="ramesh@college.edu"></div>
+            </div>
+            <div class="g3" style="margin-bottom:10px">
+              <div class="fg"><label>Position</label>
+                <select id="mn-pos" class="input"><option value="">Select...</option><option>Assistant Professor</option><option>Associate Professor</option><option>Professor</option><option>Principal / Dean</option></select>
+              </div>
+              <div class="fg"><label>Department</label>
+                <select id="mn-dept" class="input"><option>Engineering & Technology</option><option>Architecture</option><option>Pharmacy</option><option>MBA / Management</option><option>MCA / Computer Applications</option><option>Town Planning</option></select>
+              </div>
+              <div class="fg"><label>Years experience</label><input id="mn-exp" class="input" type="number" min="0" max="50" placeholder="8"></div>
+            </div>
+            <div class="fg"><label>Resume text</label><textarea id="mn-resume" class="input" rows="5" placeholder="Paste full resume — qualifications, experience, publications, PhD, FDP..."></textarea></div>
+            <div class="brow">
+              <button class="btn btn-acc" onclick="addManual()"><i class="ti ti-plus"></i>Add to queue</button>
+              <button class="btn btn-red" onclick="loadAllDemos()"><i class="ti ti-database"></i>Load 12 demo resumes</button>
+              <button class="btn btn-xs" style="color:var(--t3)" onclick="clearManual()"><i class="ti ti-trash"></i>Clear</button>
+            </div>
+          </div>
+          <div class="card" id="queue-card">
+            <div class="card-hd"><div class="card-hd-l"><i class="ti ti-list"></i>Queue <span style="font-weight:400;color:var(--t3);font-size:12px" id="q-lbl"></span></div><div style="display:flex;gap:6px" id="q-btns"></div></div>
+            <div id="q-list"><div class="empty-s" style="padding:20px"><i class="ti ti-users-off"></i><p>No candidates yet</p></div></div>
+          </div>
+        </div>
+
+        <div id="pg-results" class="page">
+          <div id="analyzing-bar" style="display:none" class="card">
+            <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t3);margin-bottom:8px">
+              <div class="pulsing"><span></span><span></span><span></span></div>
+              Analyzing against AICTE norms… <span id="prog-lbl" style="color:var(--acc2);font-weight:500"></span>
+            </div>
+            <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+          </div>
+          <div class="filter-row">
+            <button class="fb on" onclick="setF(this,'all')">All</button>
+            <button class="fb" onclick="setF(this,'QUALIFIED')">Qualified</button>
+            <button class="fb" onclick="setF(this,'PARTIALLY_QUALIFIED')">Partial</button>
+            <button class="fb" onclick="setF(this,'NOT_QUALIFIED')">Not qualified</button>
+            <button class="fb" onclick="setF(this,'pending')">Pending</button>
+            <button class="fb" onclick="setF(this,'shortlisted')">Shortlisted</button>
+            <button class="fb" onclick="setF(this,'rejected')">Rejected</button>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden">
+            <div style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--sb2)">
+              <div style="font-size:12px;color:var(--t2)" id="tbl-cnt">0 candidates</div>
+              <div style="display:flex;gap:6px">
+                <button class="btn btn-grn btn-xs" onclick="bulkShortlist()"><i class="ti ti-user-check"></i>Shortlist top 60%+</button>
+                <button class="btn btn-xs" onclick="exportCSV()"><i class="ti ti-download"></i>Export CSV</button>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="rt" style="table-layout:fixed;width:100%">
+                <colgroup><col style="width:32px"><col style="width:145px"><col style="width:88px"><col style="width:95px"><col style="width:68px"><col style="width:68px"><col style="width:80px"><col style="width:84px"><col style="width:40px"></colgroup>
+                <thead><tr>
+                  <th style="padding:8px 4px 8px 10px"></th>
+                  <th onclick="srt('name')" style="cursor:pointer">Name <i class="ti ti-arrows-sort" style="font-size:11px"></i></th>
+                  <th onclick="srt('pos')" style="cursor:pointer">Position <i class="ti ti-arrows-sort" style="font-size:11px"></i></th>
+                  <th>Status</th>
+                  <th onclick="srt('comp')" style="cursor:pointer">Compliance <i class="ti ti-arrows-sort" style="font-size:11px"></i></th>
+                  <th onclick="srt('suit')" style="cursor:pointer">Suitability <i class="ti ti-arrows-sort" style="font-size:11px"></i></th>
+                  <th>Decision</th>
+                  <th style="text-align:center">Actions</th>
+                  <th></th>
+                </tr></thead>
+                <tbody id="tbl-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="pg-sl" class="page"></div>
+        <div id="pg-vf" class="page"></div>
+        <div id="pg-cmp" class="page"></div>
+        <div id="pg-fn" class="page"></div>
+        <div id="pg-norms" class="page"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DEMOS=[
+      {name:'Dr. Priya Venkataraman',email:'priya@psgitech.edu',pos:'Professor',dept:'Engineering & Technology',exp:18,resume:'B.E. Electronics Anna Univ 1997 First Class 72%. M.Tech VLSI IIT Madras 2000 Distinction 8.9 CGPA. PhD Computer Architecture IIT Bombay 2006. Teaching: Asst Prof SRM 2006-12 (6 yrs), Assoc Prof VIT 2012-18 (6 yrs), Prof PSG 2018-present (6 yrs). 18 yrs total. 12 SCI/Scopus journals IF 2-4.5, 3 IEEE Transactions, 2 patents. PhD: 4 awarded 3 ongoing. FDP: AICTE IIT Madras 2008 2wks, NITTTR 2014. HoD ECE 3 yrs.'},
+      {name:'Mr. Karthik Rajan',email:'karthik@gmail.com',pos:'Assistant Professor',dept:'Engineering & Technology',exp:0,resume:'B.Tech CS Anna Univ 2020 First Class 8.2 CGPA. M.Tech AI IIT Hyderabad 2022 Distinction 9.1 CGPA. Fresher. TCS internship 6 months. 1 IEEE conference paper 2022. NPTEL ML certification 8 weeks.'},
+      {name:'Dr. Meena Krishnaswamy',email:'meena@vit.ac.in',pos:'Associate Professor',dept:'Engineering & Technology',exp:16,resume:'B.E. Mechanical Bharathiar 1998 Second Class 55%. M.E. Manufacturing PSG Tech 2001 First Class 68%. PhD Thermal Engg Anna Univ 2008. Asst Prof KCT 2008-16 (8 yrs). Assoc Prof VIT 2016-present (8 yrs). 16 yrs total. 7 SCI journals, 4 Scopus, 1 patent. PhD: 2 awarded 1 ongoing. FDP: NITTTR 2010 2wks.'},
+      {name:'Dr. Arun Balakrishnan',email:'arun@nitk.edu',pos:'Professor',dept:'Engineering & Technology',exp:17,resume:'B.Tech EEE NIT Trichy 1999 First Class 75%. M.Tech Power Systems IIT Chennai 2001 First Class 8.5 CGPA. PhD Power Electronics IIT Madras 2007. Asst Prof NIT 2007-13 (6 yrs). Assoc Prof NIT 2013-19 (6 yrs). Prof NITK 2019-present (5 yrs). 17 yrs. 9 SCI journals, 15 conference papers, 3 patents. PhD: 3 awarded 4 ongoing. NAAC coordinator.'},
+      {name:'Ms. Divya Nair',email:'divya@gmail.com',pos:'Assistant Professor',dept:'MCA / Computer Applications',exp:2,resume:'BCA Kerala Univ 2018 First Class 78%. MCA Amrita Univ 2021 First Class 8.8 CGPA. 2 years developer Infosys. 1 Scopus paper. NPTEL Python cert. No PhD.'},
+      {name:'Dr. Suresh Patel',email:'suresh@ddu.edu',pos:'Principal / Dean',dept:'Engineering & Technology',exp:27,resume:'B.Tech Mech DDU 1990 First Class 72%. M.Tech Design IIT Delhi 1992 Distinction. PhD Manufacturing IIT Delhi 1997. Asst Prof 1997-04, Assoc Prof 2004-11, Prof 2011-20 (9 yrs). Principal DDU 2020-present. 27 yrs total. 18 SCI journals, 6 patents, 4 books. PhD: 9 awarded 3 ongoing. AICTE expert committee.'},
+      {name:'Dr. Lakshmi Raghavan',email:'lakshmi@anna.edu',pos:'Associate Professor',dept:'Engineering & Technology',exp:9,resume:'B.E. CSE Anna Univ 2006 First Class 68%. M.E. CSE CEG 2009 First Class 74%. PhD Data Mining Anna Univ 2015. Asst Prof 2015-21 (6 yrs). Assoc Prof Anna Univ 2021-present (3 yrs). 9 yrs total. 5 SCI journals, 3 Scopus, 1 patent. PhD: 1 awarded 2 ongoing. FDP: ISTE 2017.'},
+      {name:'Mr. Ravi Chandrasekaran',email:'ravi@srm.edu',pos:'Assistant Professor',dept:'MBA / Management',exp:3,resume:'BBA Madras 2014 First Class 72%. MBA Finance IIM Kozhikode 2016 Distinction 9.0 CGPA. CA intermediate. 3 yrs HDFC Bank managerial. UGC NET 2017. 2 Scopus papers. No PhD.'},
+      {name:'Dr. Padmaja Srinivasan',email:'padmaja@bits.edu',pos:'Professor',dept:'Engineering & Technology',exp:22,resume:'B.Tech Chemical NIT Calicut 1994 First Class 77%. M.Tech Chemical IIT Bombay 1996 First Class 8.7. PhD Chemical BITS Pilani 2002. Asst Prof 2002-10 (8 yrs). Assoc Prof 2010-16 (6 yrs). Prof BITS 2016-present (8 yrs). 22 yrs. 14 SCI journals, 2 books, 4 patents. PhD: 6 awarded 2 ongoing. Dean Research 3 yrs.'},
+      {name:'Mr. Vijay Kumar',email:'vijay@gmail.com',pos:'Associate Professor',dept:'Engineering & Technology',exp:4,resume:'B.Tech IT VIT 2010 Second Class 55%. M.Tech IT PSG Tech 2013 First Class 72%. No PhD. 4 yrs teaching. 2 Scopus papers. Applying for Assoc Prof but missing PhD and insufficient experience.'},
+      {name:'Dr. Ananya Bose',email:'ananya@jadavpur.edu',pos:'Associate Professor',dept:'Architecture',exp:11,resume:'B.Arch Jadavpur 2004 First Class 74%. M.Arch Urban Design SPA Delhi 2007 First Class 78%. PhD Urban Planning IIT Kharagpur 2013. CoA registered. Asst Prof 2013-18 (5 yrs). Assoc Prof 2018-present (6 yrs). 11 yrs. 6 architecture journals, 2 design awards. PhD: 1 ongoing. FDP: SPA Delhi 2016.'},
+      {name:'Dr. Mohan Iyer',email:'mohan@pharma.edu',pos:'Professor',dept:'Pharmacy',exp:21,resume:'B.Pharm Manipal 1995 First Class 70%. M.Pharm Pharmacology Manipal 1997 Distinction. PhD Drug Delivery NIPER 2003. Asst Prof 2003-10 (7 yrs). Assoc Prof 2010-17 (7 yrs). Prof Manipal 2017-present (7 yrs). 21 yrs. 11 SCI pharma journals, 3 patents. PhD: 4 awarded 2 ongoing. FDP: AICTE pharmacy workshop 2009 2wks.'}
+    ];
+
+    let cands=[], filt='all', sortF='comp', sortD=-1, openRow=null;
+    const PAGES=['dash','bulk','results','sl','vf','cmp','fn','norms'];
+    const LBLS={dash:'Dashboard',bulk:'Bulk upload',results:'All results',sl:'Shortlisted',vf:'Verification',cmp:'Compare candidates',fn:'Final shortlist',norms:'AICTE norms'};
+
+    function go(p){
+      PAGES.forEach(x=>{const e=document.getElementById('pg-'+x);if(e)e.classList.remove('active');const n=document.querySelector(`#pg-${x}`);});
+      document.querySelectorAll('.sn-item').forEach(x=>x.classList.remove('on'));
+      const page=document.getElementById('pg-'+p);
+      if(page) page.classList.add('active');
+      const nav = Array.from(document.querySelectorAll('.sn-item')).find(x=>x.textContent.toLowerCase().includes((p==='dash'?'dashboard':p).replace('-', ' ')));
+      if(nav) nav.classList.add('on');
+      document.getElementById('tb-pg').textContent=LBLS[p]||p;
+      if(p==='results')renderResults();
+      if(p==='sl')renderSL();
+      if(p==='vf')renderVF();
+      if(p==='cmp')renderCmp();
+      if(p==='fn')renderFn();
+    }
+
+    function normTab(el,id){
+      el.closest('.page').querySelectorAll('[id^="nt-"]').forEach(x=>x.style.display='none');
+      el.closest('.tab-row').querySelectorAll('.tr-t').forEach(x=>x.classList.remove('on'));
+      document.getElementById(id).style.display='block';
+      el.classList.add('on');
+    }
+
+    function dov(e){e.preventDefault();document.getElementById('dz').classList.add('drag')}
+    function dlv(){document.getElementById('dz').classList.remove('drag')}
+    function ddr(e){e.preventDefault();dlv();processFiles(Array.from(e.dataTransfer.files))}
+    function onFiles(inp){processFiles(Array.from(inp.files));inp.value=''}
+
+    function processFiles(files){
+      files=files.slice(0,100-cands.length);
+      if(!files.length){alert('Queue full (100 max).');return;}
+      let done=0;
+      files.forEach(f=>{
+        const ext=f.name.split('.').pop().toLowerCase();
+        const r=new FileReader();
+        r.onload=e=>{
+          let txt=e.target.result;
+          if(ext==='pdf'){txt=pdfEx(txt)||'[PDF text extraction limited — please add text manually below]';}
+          const nm=f.name.replace(/\.(pdf|txt)$/i,'').replace(/[-_]/g,' ');
+          cands.push({id:Date.now()+Math.random(),name:nm,email:'',pos:'',dept:'Engineering & Technology',exp:'',resume:txt,result:null,sl:false,rj:false,verified:false,vr:null});
+          done++;
+          if(done===files.length){renderQueue();renderFilePreview(files);sync();}
+        };
+        if(ext==='pdf')r.readAsBinaryString(f);else r.readAsText(f);
+      });
+    }
+
+    function pdfEx(bin){
+      try{
+        let t='';
+        const m=bin.match(/\(([^)]{3,300})\)/g)||[];
+        m.forEach(s=>{const x=s.slice(1,-1).replace(/\\n/g,'\n').replace(/\\\(/g,'(').replace(/\\\)/g,')');if(/[a-zA-Z]{2,}/.test(x))t+=x+' ';});
+        return t.replace(/\s+/g,' ').trim().substring(0,6000)||null;
+      }catch(e){return null}
+    }
+
+    function renderFilePreview(files){
+      const el=document.getElementById('file-preview');
+      el.innerHTML=`<div style="margin-top:10px;font-size:11px;color:var(--t3);margin-bottom:6px">${files.length} file(s) loaded:</div><div style="max-height:160px;overflow-y:auto">${files.map(f=>`<div class="bl-item"><div class="bl-ic"><i class="ti ti-file-text"></i></div><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.name}</span><span style="color:var(--t3);flex-shrink:0">${(f.size/1024).toFixed(1)} KB</span></div>`).join('')}</div>`;
+    }
+
+    function loadAllDemos(){
+      DEMOS.forEach(d=>{if(!cands.find(c=>c.name===d.name))cands.push({...d,id:Date.now()+Math.random(),result:null,sl:false,rj:false,verified:false,vr:null});});
+      renderQueue();sync();
+    }
+
+    function addManual(){
+      const name=document.getElementById('mn-name').value.trim();
+      const pos=document.getElementById('mn-pos').value;
+      const resume=document.getElementById('mn-resume').value.trim();
+      if(!name||!pos||!resume){alert('Fill name, position and resume.');return;}
+      cands.push({id:Date.now(),name,email:document.getElementById('mn-email').value.trim(),pos,dept:document.getElementById('mn-dept').value,exp:document.getElementById('mn-exp').value,resume,result:null,sl:false,rj:false,verified:false,vr:null});
+      clearManual();renderQueue();sync();
+    }
+
+    function clearManual(){['mn-name','mn-email','mn-exp','mn-resume'].forEach(x=>document.getElementById(x).value='');document.getElementById('mn-pos').value='';}
+    function clearAll(){if(confirm('Clear all?')){cands=[];renderQueue();sync();}}
+    function removeQ(id){cands=cands.filter(c=>c.id!==id);renderQueue();sync();}
+    function setPos(id,v){const c=cands.find(x=>x.id===id);if(c){c.pos=v;renderQueue();}}
+
+    function renderQueue(){
+      const el=document.getElementById('q-list');
+      const btns=document.getElementById('q-btns');
+      document.getElementById('q-lbl').textContent=cands.length?`(${cands.length}/100)`:'';
+      if(!cands.length){el.innerHTML='<div class="empty-s" style="padding:20px"><i class="ti ti-users-off"></i><p>No candidates yet</p></div>';if(btns)btns.style.display='none';return;}
+      if(btns)btns.style.display='flex';
+      el.innerHTML=cands.map(c=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)"><div class="ava">${ini(c.name)}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--t1)">${c.name}</div><div style="font-size:11px;color:var(--t3)">${c.pos||'<span style="color:#FCA5A5">No position</span>'} • ${c.dept}</div></div><div style="display:flex;align-items:center;gap:5px;flex-shrink:0">${c.result?`<span class="pill ${pc(c.result.overallVerdict)}" style="font-size:10px">${pl(c.result.overallVerdict)}</span>`:'<span style="font-size:10px;color:var(--t3)">pending</span>'}${!c.pos?`<select style="font-size:11px;padding:3px 6px;width:130px" onchange="setPos(${c.id},this.value)"><option value="">Set position...</option><option>Assistant Professor</option><option>Associate Professor</option><option>Professor</option><option>Principal / Dean</option></select>`:''}<button style="background:none;border:none;cursor:pointer;color:var(--t3);padding:3px" onclick="removeQ(${c.id})" aria-label="Remove"><i class="ti ti-x" style="font-size:13px"></i></button></div></div>`).join('');
+    }
+
+    const SYS=`You are an AICTE faculty recruitment expert. Evaluate strictly against official AICTE norms.
+ASSISTANT PROFESSOR: UG+PG relevant branch, First class(≥60%) in either, no exp required, PhD not mandatory, UGC-NET not needed for ME/MTech.
+ASSOCIATE PROFESSOR: Asst Prof quals + PhD mandatory + min 5 yrs exp + 2 yrs post-PhD desirable.
+PROFESSOR: PhD mandatory + (10 yrs/5 at Assoc Prof OR 13 yrs total) + post-PhD publications + PhD guidance.
+PRINCIPAL/DEAN: Professor quals + PhD + 10-13 yrs + 5 at Prof level + admin leadership mandatory.
+Respond ONLY valid JSON no markdown:
+{"overallVerdict":"QUALIFIED"|"PARTIALLY_QUALIFIED"|"NOT_QUALIFIED"|"NEEDS_REVIEW","complianceScore":0-100,"suitabilityScore":0-100,"criteria":[{"name":"string","status":"PASS"|"FAIL"|"PARTIAL"|"NA","detail":"brief"}],"strengths":["string"],"gaps":["string"],"riskFactors":["string"],"recommendation":"2 sentences","interviewQuestions":["string","string","string"]}
+criteria exactly: UG Qualification,PG Qualification,First Class,PhD Degree,Teaching Experience,Research Publications,FDP Training,PhD Guidance,Administrative Experience`;
+
+    async function analyzeAll(){
+      const todo=cands.filter(c=>!c.result&&c.pos);
+      const nop=cands.filter(c=>!c.pos);
+      if(nop.length){alert(`${nop.length} candidate(s) missing position. Please set positions.`);return;}
+      if(!todo.length){go('results');return;}
+      go('results');
+      document.getElementById('analyzing-bar').style.display='block';
+      for(let i=0;i<todo.length;i++){
+        document.getElementById('prog-lbl').textContent=`${i+1}/${todo.length}`;
+        document.getElementById('prog-fill').style.width=Math.round((i/todo.length)*100)+'%';
+        await analyzeOne(todo[i]);
+        renderResults();
+      }
+      document.getElementById('prog-fill').style.width='100%';
+      document.getElementById('prog-fill').classList.add('done');
+      setTimeout(()=>{document.getElementById('analyzing-bar').style.display='none';sync();renderResults();},400);
+    }
+
+    async function analyzeOne(c){
+      try{
+        const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:900,system:SYS,messages:[{role:'user',content:`Position: ${c.pos}\nDept: ${c.dept}\nYears exp: ${c.exp||'not stated'}\n\nRESUME:\n${c.resume.substring(0,3000)}`}]})});
+        const d=await r.json();
+        c.result=JSON.parse(d.content.map(x=>x.text||'').join('').replace(/```json|```/g,'').trim());
+      }catch(e){c.result={overallVerdict:'NEEDS_REVIEW',complianceScore:0,suitabilityScore:0,criteria:[],strengths:[],gaps:['Error'],riskFactors:[],recommendation:'Manual review required.',interviewQuestions:[]};}
+    }
+
+    function setF(el,f){filt=f;document.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));el.classList.add('on');renderResults();}
+    function srt(col){if(sortF===col)sortD*=-1;else{sortF=col;sortD=-1;}renderResults();}
+
+    function renderResults(){
+      const tbody=document.getElementById('tbl-body');
+      let list=[...cands];
+      if(filt==='shortlisted')list=list.filter(c=>c.sl);
+      else if(filt==='rejected')list=list.filter(c=>c.rj);
+      else if(filt==='pending')list=list.filter(c=>!c.result);
+      else if(filt!=='all')list=list.filter(c=>c.result&&c.result.overallVerdict===filt);
+      list.sort((a,b)=>{
+        if(sortF==='name')return sortD*(a.name.localeCompare(b.name));
+        if(sortF==='pos')return sortD*(a.pos||'').localeCompare(b.pos||'');
+        if(sortF==='comp')return sortD*((a.result?a.result.complianceScore:0)-(b.result?b.result.complianceScore:0));
+        if(sortF==='suit')return sortD*((a.result?a.result.suitabilityScore:0)-(b.result?b.result.suitabilityScore:0));
+        return 0;
+      });
+      document.getElementById('tbl-cnt').textContent=`${list.length} candidate${list.length!==1?'s':''}`;
+      if(!list.length){tbody.innerHTML=`<tr><td colspan="9"><div class="empty-s" style="padding:24px"><i class="ti ti-table"></i><p>No candidates match</p></div></td></tr>`;return;}
+      tbody.innerHTML=list.map(c=>{
+        const comp=c.result?c.result.complianceScore:0,suit=c.result?c.result.suitabilityScore:0;
+        return`<tr class="${c.sl?'sl-row':c.rj?'rj-row':''}" id="tr-${c.id}"><td style="padding:8px 3px 8px 10px"><div class="ava">${ini(c.name)}</div></td><td><div style="font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:135px;color:var(--t1)">${c.name}</div><div style="font-size:10px;color:var(--t3)">${c.email||''}</div></td><td style="font-size:11px;color:var(--t2)">${c.pos||'—'}</td><td>${c.result?`<span class="pill ${pc(c.result.overallVerdict)}" style="font-size:10px">${pl(c.result.overallVerdict)}</span>`:`<div class="pulsing"><span></span><span></span><span></span></div>`}</td><td><div style="font-size:12px;font-weight:500;color:var(--t1)">${comp}%</div><div class="bar"><div class="bf ${bc(comp)}" style="width:${comp}%"></div></div></td><td><div style="font-size:12px;font-weight:500;color:var(--t1)">${suit}%</div><div class="bar"><div class="bf ${bc(suit)}" style="width:${suit}%"></div></div></td><td>${c.sl?'<span class="pill p-pur" style="font-size:10px">Shortlisted</span>':c.rj?'<span class="pill p-red" style="font-size:10px">Rejected</span>':'<span style="font-size:10px;color:var(--t3)">—</span>'}</td><td style="text-align:center">${c.result&&!c.sl&&!c.rj?`<button class="btn btn-xs btn-grn" onclick="slOne(${c.id})" aria-label="Shortlist" style="margin-right:3px"><i class="ti ti-user-check"></i></button><button class="btn btn-xs btn-red" onclick="rjOne(${c.id})" aria-label="Reject"><i class="ti ti-user-x"></i></button>`:c.sl||c.rj?`<button class="btn btn-xs" onclick="undoOne(${c.id})"><i class="ti ti-rotate-left"></i></button>`:''}</td><td><button class="btn btn-xs" onclick="togRow(${c.id})" aria-label="Expand"><i class="ti ti-chevron-down"></i></button></td></tr><tr id="exp-${c.id}" style="display:none"><td colspan="9" class="expanded-bg" style="padding:10px 14px">${c.result?`<div class="chips">${(c.result.criteria||[]).map(cr=>`<span class="cp ${cr.status==='PASS'?'cp-p':cr.status==='FAIL'?'cp-f':cr.status==='PARTIAL'?'cp-w':'cp-n'}"><i class="ti ${cr.status==='PASS'?'ti-check':cr.status==='FAIL'?'ti-x':cr.status==='PARTIAL'?'ti-alert-circle':'ti-minus'}"></i>${cr.name}</span>`).join('')}</div>${c.result.riskFactors&&c.result.riskFactors.length?`<div style="font-size:11px;color:#FCA5A5;margin-bottom:5px"><i class="ti ti-alert-triangle"></i> ${c.result.riskFactors.join(' · ')}</div>`:''}${c.result.strengths&&c.result.strengths.length?`<div style="font-size:11.5px;margin-bottom:4px;color:var(--t2)"><span style="font-weight:500;color:var(--t1)">Strengths:</span> ${c.result.strengths.join('; ')}</div>`:''}${c.result.gaps&&c.result.gaps.length?`<div style="font-size:11.5px;margin-bottom:4px;color:#FCA5A5"><span style="font-weight:500">Gaps:</span> ${c.result.gaps.join('; ')}</div>`:''}<div class="detail-box">${c.result.recommendation||''}</div>`:'<div style="font-size:12px;color:var(--t3);padding:6px 0">Not yet analyzed.</div>'}</td></tr>`;}).join('');
+    }
+
+    function togRow(id){
+      const ex=document.getElementById('exp-'+id);if(!ex)return;
+      if(openRow&&openRow!==id){const p=document.getElementById('exp-'+openRow);if(p)p.style.display='none';}
+      const open=ex.style.display==='table-row';
+      ex.style.display=open?'none':'table-row';openRow=open?null:id;
+    }
+
+    function slOne(id){const c=cands.find(x=>x.id===id);if(c){c.sl=true;c.rj=false;}sync();renderResults();}
+    function rjOne(id){const c=cands.find(x=>x.id===id);if(c){c.rj=true;c.sl=false;}sync();renderResults();}
+    function undoOne(id){const c=cands.find(x=>x.id===id);if(c){c.sl=false;c.rj=false;}sync();renderResults();}
+
+    function bulkShortlist(){let n=0;cands.filter(c=>c.result&&!c.rj).forEach(c=>{if((c.result.complianceScore+c.result.suitabilityScore)/2>=60){c.sl=true;n++;}});sync();renderResults();alert(`${n} candidate(s) shortlisted (avg ≥60%).`);}
+
+    function exportCSV(){
+      const list=cands.filter(c=>c.result);
+      if(!list.length){alert('No analyzed candidates.');return;}
+      const rows=[['Name','Email','Position','Dept','Compliance%','Suitability%','Verdict','Decision','Recommendation']];
+      list.forEach(c=>rows.push([c.name,c.email,c.pos,c.dept,c.result.complianceScore,c.result.suitabilityScore,c.result.overallVerdict,c.sl?'Shortlisted':c.rj?'Rejected':'Pending',`"${(c.result.recommendation||'').replace(/"/g,"'")}"`]));
+      const blob=new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='aicte_shortlist.csv';a.click();
+    }
+
+    function renderSL(){
+      const el=document.getElementById('sl-body');
+      const list=cands.filter(c=>c.sl&&c.result).sort((a,b)=>(b.result.complianceScore+b.result.suitabilityScore)-(a.result.complianceScore+a.result.suitabilityScore));
+      if(!list.length){el.innerHTML='<div class="empty-s"><i class="ti ti-user-check"></i><p>No candidates shortlisted yet</p></div>';return;}
+      el.innerHTML=list.map(c=>`<div class="vcard"><div class="vc-hd"><div style="display:flex;align-items:center;gap:9px"><div class="ava">${ini(c.name)}</div><div><div style="font-size:13px;font-weight:500;color:var(--t1)">${c.name}</div><div style="font-size:11px;color:var(--t3)">${c.pos} • ${c.dept}</div></div></div><div style="display:flex;gap:7px;align-items:center"><span class="pill ${pc(c.result.overallVerdict)}">${pl(c.result.overallVerdict)}</span><span style="font-size:12px;font-weight:500;color:var(--t1)">${Math.round((c.result.complianceScore+c.result.suitabilityScore)/2)}%</span>${c.verified?'<span class="pill p-grn" style="font-size:10px"><i class="ti ti-shield-check" style="font-size:10px"></i>Verified</span>':''}<button class="btn btn-acc btn-xs" id="vbtn-${c.id}" onclick="runVerify(${c.id})">${c.verified?'<i class="ti ti-refresh"></i>Re-verify':'<i class="ti ti-shield-check"></i>Verify ↗'}</button></div></div><div class="vc-bd"><div id="vload-${c.id}" style="display:none;align-items:center;gap:7px;font-size:12px;color:var(--t2);margin-bottom:8px"><div class="pulsing"><span></span><span></span><span></span></div>Running deep suitability check…</div><div id="vres-${c.id}">${c.verified&&c.vr?renderVR(c):'<div style="font-size:11px;color:var(--t3)">Click verify for deep suitability analysis.</div>'}</div></div></div>`).join('');
+    }
+
+    function renderVR(c){
+      const v=c.vr;if(!v)return'';
+      const rmap={STRONGLY_RECOMMEND:['rgba(16,185,129,.15)','#34D399'],RECOMMEND:['rgba(99,102,241,.15)','#818CF8'],CONDITIONAL:['rgba(245,158,11,.15)','#FCD34D'],NOT_RECOMMENDED:['rgba(239,68,68,.15)','#FCA5A5']};
+      const [rb,rt]=rmap[v.finalRecommendation]||['rgba(245,158,11,.15)','#FCD34D'];
+      return`<div class="sg">${[['Overall',v.overallSuitability],['Teaching',v.teachingFitScore],['Research',v.researchScore]].map(([l,n])=>`<div class="sg-b"><div class="sg-n">${n}/10</div><div class="sg-l">${l}</div></div>`).join('')}</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:9px">${(v.verificationSteps||[]).map(s=>`<div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t2)"><div class="vs-ic ${s.passed?'vd':'vf'}">${s.passed?'<i class="ti ti-check" style="font-size:8px"></i>':'<i class="ti ti-x" style="font-size:8px"></i>'}</div>${s.step}</div>`).join('')}</div><div class="detail-box">${v.suitabilityNarrative||''}</div>${(c.result.interviewQuestions||[]).length?`<div style="margin-top:9px"><div style="font-size:11px;font-weight:500;color:var(--t1);margin-bottom:5px">Interview questions</div>${c.result.interviewQuestions.map((q,i)=>`<div style="font-size:11px;padding:5px 0;border-bottom:1px solid var(--border);color:var(--t2)"><span style="font-weight:500;color:var(--acc2)">Q${i+1}:</span> ${q}</div>`).join('')}</div>`:''}<div style="margin-top:9px;display:flex;align-items:center;gap:6px"><span style="font-size:11px;font-weight:500;color:var(--t1)">Recommendation:</span><span style="font-size:11px;padding:2px 10px;border-radius:20px;background:${rb};color:${rt};font-weight:500">${(v.finalRecommendation||'').replace(/_/g,' ')}</span></div>`;
+    }
+
+    async function runVerify(id){
+      const c=cands.find(x=>x.id===id);if(!c)return;
+      const vl=document.getElementById('vload-'+id),vr=document.getElementById('vres-'+id),vb=document.getElementById('vbtn-'+id);
+      vl.style.display='flex';vr.innerHTML='';vb.disabled=true;
+      try{
+        const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,system:`Senior academic recruitment committee member. Respond ONLY with JSON no markdown:{"overallSuitability":1-10,"teachingFitScore":1-10,"researchScore":1-10,"verificationSteps":[{"step":"string","passed":true|false,"note":"string"}],"suitabilityNarrative":"3 sentences","finalRecommendation":"STRONGLY_RECOMMEND"|"RECOMMEND"|"CONDITIONAL"|"NOT_RECOMMENDED"}verificationSteps exactly 5: "Academic qualification match","Experience adequacy","Research & publication quality","Teaching & mentoring potential","Leadership & administrative readiness"`,messages:[{role:'user',content:`Position: ${c.pos}\nCompliance: ${c.result.complianceScore}%\nVerdict: ${c.result.overallVerdict}\nStrengths: ${(c.result.strengths||[]).join('; ')}\nGaps: ${(c.result.gaps||[]).join('; ')}\nResume: ${c.resume.substring(0,2000)}`}]})});
+        const d=await r.json();
+        c.vr=JSON.parse(d.content.map(x=>x.text||'').join('').replace(/```json|```/g,'').trim());
+        c.verified=true;
+      }catch(e){c.vr={overallSuitability:0,teachingFitScore:0,researchScore:0,verificationSteps:[],suitabilityNarrative:'Verification failed. Retry.',finalRecommendation:'NOT_RECOMMENDED'};}
+      vl.style.display='none';vr.innerHTML=renderVR(c);vb.disabled=false;vb.innerHTML='<i class="ti ti-refresh"></i>Re-verify';sync();
+    }
+
+    function renderVF(){
+      const el=document.getElementById('vf-body');
+      const list=cands.filter(c=>c.sl&&c.result);
+      if(!list.length){el.innerHTML='<div class="empty-s"><i class="ti ti-shield-off"></i><p>Shortlist candidates first</p></div>';return;}
+      el.innerHTML=`<div style="font-size:12px;color:var(--t2);margin-bottom:12px">${list.length} shortlisted. Run suitability verification below or from the Shortlisted tab.</div><button class="btn btn-acc" onclick="go('sl')"><i class="ti ti-shield-check"></i>Go to shortlisted candidates ↗</button>`;
+    }
+
+    function renderCmp(){
+      const el=document.getElementById('cmp-body');
+      const list=cands.filter(c=>c.sl&&c.result).sort((a,b)=>(b.result.complianceScore+b.result.suitabilityScore)-(a.result.complianceScore+a.result.suitabilityScore)).slice(0,4);
+      if(list.length<2){el.innerHTML='<div class="empty-s"><i class="ti ti-columns"></i><p>Shortlist at least 2 candidates</p></div>';return;}
+      const CN=['UG Qualification','PG Qualification','First Class','PhD Degree','Teaching Experience','Research Publications','FDP Training','PhD Guidance','Administrative Experience'];
+      el.innerHTML=`<div class="cmp-grid">${list.map((c,i)=>`<div class="cmp-c${i===0?' top':''}">${i===0?'<div style="font-size:10px;font-weight:500;color:#34D399;background:rgba(16,185,129,.15);padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:7px"><i class="ti ti-crown" style="font-size:10px;margin-right:2px"></i>Top candidate</div>':''}<div style="display:flex;gap:7px;align-items:center;margin-bottom:9px"><div class="ava" style="width:26px;height:26px;font-size:9px">${ini(c.name)}</div><div style="min-width:0"><div style="font-size:11.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--t1)">${c.name}</div><div style="font-size:10px;color:var(--t3)">${c.pos}</div></div></div><div style="margin-bottom:6px"><div style="font-size:9px;color:var(--t3);margin-bottom:2px">Compliance ${c.result.complianceScore}%</div><div class="bar" style="width:100%"><div class="bf ${bc(c.result.complianceScore)}" style="width:${c.result.complianceScore}%"></div></div></div><div style="margin-bottom:9px"><div style="font-size:9px;color:var(--t3);margin-bottom:2px">Suitability ${c.result.suitabilityScore}%</div><div class="bar" style="width:100%"><div class="bf ${bc(c.result.suitabilityScore)}" style="width:${c.result.suitabilityScore}%"></div></div></div>${CN.map(n=>{const cr=(c.result.criteria||[]).find(x=>x.name===n);const s=cr?cr.status:'NA';return`<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid var(--border)"><span style="font-size:10px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:90px">${n}</span><i class="ti ${s==='PASS'?'ti-circle-check':s==='FAIL'?'ti-circle-x':s==='PARTIAL'?'ti-alert-circle':'ti-minus'}" style="font-size:12px;color:${s==='PASS'?'#34D399':s==='FAIL'?'#FCA5A5':s==='PARTIAL'?'#FCD34D':'#475569'};flex-shrink:0"></i></div>`}).join('')} ${c.verified&&c.vr?`<div style="margin-top:7px;font-size:11px;color:var(--t2)">Suitability: <strong style="color:var(--t1)">${c.vr.overallSuitability}/10</strong></div>`:''}</div>`).join('')}</div>`;
+    }
+
+    function renderFn(){
+      const el=document.getElementById('fn-body');
+      const list=cands.filter(c=>c.sl&&c.result).sort((a,b)=>{
+        const sa=(a.result.complianceScore+a.result.suitabilityScore)+(a.verified&&a.vr?a.vr.overallSuitability*5:0);
+        const sb=(b.result.complianceScore+b.result.suitabilityScore)+(b.verified&&b.vr?b.vr.overallSuitability*5:0);
+        return sb-sa;
+      });
+      if(!list.length){el.innerHTML='<div class="empty-s"><i class="ti ti-trophy"></i><p>No shortlisted candidates</p></div>';return;}
+      const rcs=['rk1','rk2','rk3'];
+      const rmap={STRONGLY_RECOMMEND:['rgba(16,185,129,.15)','#34D399'],RECOMMEND:['rgba(99,102,241,.15)','#818CF8'],CONDITIONAL:['rgba(245,158,11,.15)','#FCD34D']};
+      el.innerHTML=`<div class="card" style="margin-bottom:12px"><div class="card-hd"><div class="card-hd-l"><i class="ti ti-trophy" style="color:var(--amb2)"></i>Ranked shortlist — ${list.length} candidate(s)</div></div>${list.map((c,i)=>{const tot=Math.round((c.result.complianceScore+c.result.suitabilityScore)/2);const [rb,rt]=(c.verified&&c.vr&&rmap[c.vr.finalRecommendation])||['',''];return`<div class="fn-row"><div class="rk ${rcs[i]||'rkn'}">${i+1}</div><div class="ava">${ini(c.name)}</div><div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:500;color:var(--t1)">${c.name}</div><div style="font-size:11px;color:var(--t3)">${c.pos} • ${c.dept}</div><div class="bar" style="width:100px;margin-top:4px"><div class="bf ${bc(tot)}" style="width:${tot}%"></div></div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:19px;font-weight:500;color:var(--t1)">${tot}%</div><div style="font-size:10px;color:var(--t3)">score</div>${rb?`<div style="font-size:10px;margin-top:3px;padding:2px 8px;border-radius:20px;background:${rb};color:${rt}">${c.vr.finalRecommendation.replace(/_/g,' ')}</div>`:''}</div></div>`;}).join('')}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-grn" onclick="exportCSV()"><i class="ti ti-download"></i>Export shortlist CSV</button><button class="btn btn-acc" onclick="sendPrompt('Generate a formal AICTE faculty selection committee report for all shortlisted candidates with their ranks, scores, AICTE compliance, and verification outcomes')"><i class="ti ti-file-report"></i>Generate committee report ↗</button></div>`;
+    }
+
+    function sync(){
+      const total=cands.length,analyzed=cands.filter(c=>c.result),qual=analyzed.filter(c=>c.result.overallVerdict==='QUALIFIED').length,part=analyzed.filter(c=>c.result.overallVerdict==='PARTIALLY_QUALIFIED').length,nq=analyzed.filter(c=>c.result.overallVerdict==='NOT_QUALIFIED').length,sl=cands.filter(c=>c.sl).length,ver=cands.filter(c=>c.verified).length;
+      const st=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+      ['sk-total','k-total'].forEach(x=>st(x,total));
+      ['sk-qual','k-qual'].forEach(x=>st(x,qual));
+      st('k-part',part);st('k-nq',nq);
+      ['sk-sl','k-sl'].forEach(x=>st(x,sl));
+      st('sk-ver',ver);
+      const nb=(id,v)=>{const e=document.getElementById(id);if(e){e.textContent=v;e.className='sn-badge'+(v>0?' lit':'')}};
+      nb('nb-bulk',total);nb('nb-results',analyzed.length);nb('nb-sl',sl);nb('nb-vf',ver);nb('nb-fn',sl);
+      const mkd=(n,ok)=>{const pn=document.getElementById('ppn'+n),pt=document.getElementById('ppt'+n),ps=document.getElementById('pps'+n);if(pn&&pt){pn.className='pp-n'+(ok?' done':'');pt.className='pp-lbl'+(ok?' done':'');if(ps)ps.className='pp'+(ok?' done':'');if(ok)pn.innerHTML='<i class="ti ti-check" style="font-size:9px"></i>'}};
+      mkd(1,total>0);mkd(2,analyzed.length>0);mkd(3,sl>0);mkd(4,ver>0);mkd(5,sl>=2);mkd(6,sl>0);
+      if(analyzed.length>0){
+        const sb=document.getElementById('seg-bar');
+        if(sb){sb.innerHTML=`<div class="seg-q" style="flex:${qual}"></div><div class="seg-p" style="flex:${part}"></div><div class="seg-n" style="flex:${nq}"></div><div class="seg-r" style="flex:${total-analyzed.length}"></div>`;}
+        const ss=document.getElementById('seg-sum');if(ss)ss.textContent=`${qual} qualified · ${part} partial · ${nq} not qualified · ${total-analyzed.length-qual-part-nq} pending`;
+        document.getElementById('seg-wrap').style.display='block';
+      }
+      if(total>0){
+        document.getElementById('dash-recent').style.display='block';
+        document.getElementById('dash-rows').innerHTML=cands.filter(c=>c.result).slice(-6).reverse().map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)"><div style="display:flex;gap:7px;align-items:center"><div class="ava" style="width:24px;height:24px;font-size:9px">${ini(c.name)}</div><div><div style="font-size:12px;font-weight:500;color:var(--t1)">${c.name}</div><div style="font-size:10px;color:var(--t3)">${c.pos}</div></div></div><span class="pill ${pc(c.result.overallVerdict)}" style="font-size:10px">${pl(c.result.overallVerdict)}</span></div>`).join('');
+      }
+    }
+
+    function ini(n){return(n||'?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase()}
+    function pc(v){return{QUALIFIED:'p-grn',PARTIALLY_QUALIFIED:'p-amb',NOT_QUALIFIED:'p-red',NEEDS_REVIEW:'p-acc'}[v]||'p-acc'}
+    function pl(v){return{QUALIFIED:'Qualified',PARTIALLY_QUALIFIED:'Partial',NOT_QUALIFIED:'Not qualified',NEEDS_REVIEW:'Review'}[v]||v}
+    function bc(s){return s>=70?'bhi':s>=40?'bmd':'blo'}
+
+    function sendPrompt(msg){alert('Prompt generated: '+msg)}
+
+    document.addEventListener('DOMContentLoaded',()=>{go('dash');sync();});
+  </script>
+</body>
+</html>

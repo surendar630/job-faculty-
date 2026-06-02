@@ -664,6 +664,11 @@ app.get('/office', verifyToken, (req, res) => {
   });
 });
 
+app.get('/upload-portal', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  res.render('upload-portal');
+});
+
 app.get('/office/shortlisted', verifyToken, (req, res) => {
   if (req.user.role !== 'hr') return res.status(403).send('Access denied');
   db.all(`SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email, u.resume_path, u.resume_review_status
