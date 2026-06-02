@@ -852,6 +852,11 @@ app.get('/shortlisted', verifyToken, (req, res) => {
   });
 });
 
+app.get('/hr/shortlisted', verifyToken, (req, res) => {
+  if (req.user.role !== 'hr') return res.status(403).send('Access denied');
+  return res.redirect('/shortlisted');
+});
+
 app.post('/profile/update', verifyToken, (req, res) => {
   const { 
     name, 
@@ -1093,11 +1098,20 @@ app.post('/admin/job/:id/edit', verifyToken, (req, res) => {
 });
 
 app.post('/admin/application/:id/shortlist', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const field = req.body.field || null;
   db.run('UPDATE applications SET status = ?, shortlisted_field = ? WHERE id = ?', ['shortlisted', field, req.params.id], (err) => {
     if (err) return res.status(500).send('Error shortlisting application');
-    res.redirect('/admin');
+    const redirectUrl = req.user.role === 'hr' ? '/office' : '/admin';
+    res.redirect(redirectUrl);
+  });
+});
+
+app.post('/hr/application/:id/unshortlist', verifyToken, (req, res) => {
+  if (req.user.role !== 'hr' && req.user.role !== 'admin') return res.status(403).send('Access denied');
+  db.run('UPDATE applications SET status = ?, shortlisted_field = NULL WHERE id = ?', ['applied', req.params.id], (err) => {
+    if (err) return res.status(500).send('Error updating shortlist status');
+    res.redirect('/shortlisted');
   });
 });
 
