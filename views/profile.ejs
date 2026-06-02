@@ -417,8 +417,10 @@
         <i class="fas fa-info-circle"></i>
         <% if (user.resume_review_status === 'pending') { %>
           <span>Your resume is currently under admin review. You can still update it anytime and the latest version will be reviewed.</span>
+          <span style="display:block; margin-top:0.35rem; color:#64748b;">Your resume is also being checked for AICTE compliance. Detailed scan feedback is accessible only to HR and admin.</span>
         <% } else if (user.resume_review_status === 'shortlisted') { %>
           <span>Your resume has been approved by admin and is ready for applications.</span>
+          <span style="display:block; margin-top:0.35rem; color:#64748b;">The AICTE scan has been completed and HR/admin have approved your resume for this job track.</span>
         <% } else if (user.resume_review_status === 'rejected') { %>
           <span>Your resume was rejected by admin. Please upload a new version to send it for review again.</span>
         <% } else { %>

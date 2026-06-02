@@ -394,6 +394,16 @@
             <% } %>
           </p>
 
+          <% if (u.resume_scan_score || u.resume_scan_report) { %>
+            <div style="margin-top:0.75rem; background:#f8fafc; border-radius:12px; padding:1rem; color:#334155;">
+              <strong>AICTE Scan Summary:</strong>
+              <p style="margin:0.5rem 0 0;">Score: <strong><%= u.resume_scan_score || 'N/A' %>%</strong> | Status: <strong><%= u.resume_aicte_status || 'pending' %></strong></p>
+              <% if (u.resume_scan_report) { %>
+                <pre style="white-space:pre-wrap; margin-top:0.75rem; font-size:0.92rem; line-height:1.55; background:#ffffff; border:1px solid #e2e8f0; padding:0.9rem; border-radius:10px;"><%= u.resume_scan_report %></pre>
+              <% } %>
+            </div>
+          <% } %>
+
           <div style="margin-top:0.75rem;">
             <strong>Scores:</strong>
             <div style="margin-top:0.5rem; color:#475569;">
