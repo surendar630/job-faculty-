@@ -624,13 +624,27 @@ app.post('/register', (req, res) => {
 app.get('/candidate', verifyToken, (req, res) => {
   if (req.user.role === 'admin') return res.redirect('/admin');
   if (req.user.role === 'hr') return res.redirect('/office');
-  return res.redirect('/dashboard');
+  return res.redirect('/candidate/portal');
+});
+
+app.get('/candidate/portal', verifyToken, (req, res) => {
+  if (req.user.role === 'admin') return res.redirect('/admin');
+  if (req.user.role === 'hr') return res.redirect('/office');
+  return res.render('meeting-portal', { role: 'candidate', user: req.user });
 });
 
 app.get('/hr', verifyToken, (req, res) => {
   if (req.user.role === 'admin') return res.redirect('/admin');
   if (req.user.role !== 'hr') return res.redirect('/dashboard');
   return res.redirect('/office');
+});
+
+app.get('/hr/portal', verifyToken, (req, res) => {
+  if (req.user.role !== 'hr') {
+    if (req.user.role === 'admin') return res.redirect('/admin');
+    return res.redirect('/dashboard');
+  }
+  return res.render('meeting-portal', { role: 'hr', user: req.user });
 });
 
 app.get('/office', verifyToken, (req, res) => {
