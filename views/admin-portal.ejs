@@ -910,7 +910,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
             <div class="upcoming-meta">🕐 10:00 AM — 45 min · Code: IVW-2026-7836</div>
           </div>
           <div class="upcoming-actions">
-            <button class="sched-btn">Edit</button>
+            <button class="sched-btn" onclick="event.stopPropagation();openModal('scheduleModal')">Edit</button>
           </div>
         </div>
       </div>
@@ -920,12 +920,12 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-hei
     <div class="content-view" id="view-candidates">
       <div class="page-header">
         <div class="page-title">👥 Candidates</div>
-        <div class="page-sub">12 candidates across all positions</div>
+        <div class="page-sub" id="candidatePageSub">12 candidates across all positions</div>
       </div>
       <div class="search-filter">
-        <input class="search-input" placeholder="Search by name, position, email…">
-        <select class="filter-select"><option>All Positions</option><option>Full Stack</option><option>Backend</option><option>Frontend</option></select>
-        <select class="filter-select"><option>All Status</option><option>Accepted</option><option>Pending</option><option>On Hold</option><option>Rejected</option></select>
+        <input class="search-input" id="candidateSearchInput" placeholder="Search by name, position, email…" oninput="buildCandidates()">
+        <select class="filter-select" id="candidatePositionFilter" onchange="buildCandidates()"><option>All Positions</option><option>Full Stack</option><option>Backend</option><option>Frontend</option></select>
+        <select class="filter-select" id="candidateStatusFilter" onchange="buildCandidates()"><option>All Status</option><option>Accepted</option><option>Pending</option><option>On Hold</option><option>Rejected</option></select>
         <button class="sched-btn primary" onclick="openModal('scheduleModal')">+ Add Candidate</button>
       </div>
       <div class="candidates-table">
@@ -1547,7 +1547,7 @@ function sendChat(){
   input.value='';
   const container=document.getElementById('chatMessages');
   const div=document.createElement('div');div.className='msg mine';
-  div.innerHTML=`<div class="msg-header"><span>now</span><span class="msg-sender">You</span></div><div class="msg-bubble>${escHtml(text)}</div>`;
+  div.innerHTML=`<div class="msg-header"><span>now</span><span class="msg-sender">You</span></div><div class="msg-bubble">${escHtml(text)}</div>`;
   container.appendChild(div);container.scrollTop=container.scrollHeight;
   setTimeout(()=>simulateReply(container),1500);
 }
@@ -1562,7 +1562,7 @@ function simulateReply(container){
     "Describe your experience with CI/CD pipelines.",
   ];
   const div=document.createElement('div');div.className='msg';
-  div.innerHTML=`<div class="msg-header"><span class="msg-sender">Prof. Johnson</span><span>now</span></div><div class="msg-bubble>${replies[Math.floor(Math.random()*replies.length)]}</div>`;
+  div.innerHTML=`<div class="msg-header"><span class="msg-sender">Prof. Johnson</span><span>now</span></div><div class="msg-bubble">${replies[Math.floor(Math.random()*replies.length)]}</div>`;
   container.appendChild(div);container.scrollTop=container.scrollHeight;
 }
 function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -1636,12 +1636,30 @@ const candidateData=[
   {av:'DP',c:'av-blue',name:'Divya Pandey',email:'divya@email.com',pos:'Backend',score:4.0,date:'May 18',status:'pending'},
 ];
 function buildCandidates(){
+  const query=document.getElementById('candidateSearchInput').value.trim().toLowerCase();
+  const positionFilter=document.getElementById('candidatePositionFilter').value;
+  const statusFilter=document.getElementById('candidateStatusFilter').value;
   const body=document.getElementById('candidatesBody');body.innerHTML='';
-  candidateData.forEach(c=>{
+  const filtered=candidateData.filter(c=>{
+    const matchesQuery=!query||[c.name,c.email,c.pos].some(v=>v.toLowerCase().includes(query));
+    const matchesPosition=positionFilter==='All Positions'||c.pos===positionFilter;
+    const labelStatus=c.status==='hold'?'On Hold':c.status.charAt(0).toUpperCase()+c.status.slice(1);
+    const matchesStatus=statusFilter==='All Status'||labelStatus===statusFilter||c.status===statusFilter.toLowerCase();
+    return matchesQuery&&matchesPosition&&matchesStatus;
+  });
+  const subtitle = !query && positionFilter==='All Positions' && statusFilter==='All Status'
+    ? `${filtered.length} candidates across all positions`
+    : `${filtered.length} candidates matching your search`;
+  document.getElementById('candidatePageSub').textContent=subtitle;
+  if(!filtered.length){
+    body.innerHTML='<div class="table-row" style="grid-template-columns:1fr;justify-items:center;color:var(--muted);">No candidates found.</div>';
+    return;
+  }
+  filtered.forEach(c=>{
     const statusMap={accepted:['status-completed','✓ Accepted'],pending:['status-pending','Pending'],hold:['status-pending','On Hold'],rejected:['status-scheduled','✗ Rejected']};
     const [scls,slabel]=statusMap[c.status]||['status-pending','Pending'];
     const scoreClass=c.score>=4.2?'high':c.score>=3.5?'mid':'low';
-    const avStyle=c.sc?`background:${c.sc};color:${c.tc};`:'');
+    const avStyle=c.sc?`background:${c.sc};color:${c.tc};`:'';
     const row=document.createElement('div');row.className='table-row';
     row.innerHTML=`
       <div class="td"><div class="cand-info"><div class="cand-av ${c.c}" style="${avStyle}">${c.av}</div><div><div class="cand-name">${c.name}</div><div class="cand-email">${c.email}</div></div></div></div>
@@ -1658,7 +1676,7 @@ function buildReportEvals(){
   const div=document.getElementById('reportEvals');div.innerHTML='';
   candidateData.slice(0,4).forEach(c=>{
     const scoreClass=c.score>=4.2?'high':c.score>=3.5?'mid':'low';
-    const avStyle=c.sc?`background:${c.sc};color:${c.tc};`:'');
+    const avStyle=c.sc?`background:${c.sc};color:${c.tc};`:'';
     div.innerHTML+=`<div class="interview-row" style="padding:12px 20px;margin:0;" onclick="showToast('Opening ${c.name} evaluation…')">
       <div class="iv-av ${c.c}" style="${avStyle}">${c.av}</div>
       <div class="iv-info"><div class="iv-name">${c.name}</div><div class="iv-meta">${c.pos} · ${c.date}</div></div>
