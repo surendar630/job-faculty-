@@ -373,6 +373,11 @@ function analyzeResumeForAICTE(job, resumeText) {
   };
 }
 
+function getJitsiMeetingLink(seed) {
+  const roomName = `JobFaculty-${seed}-${Math.random().toString(36).slice(2, 8)}`;
+  return `https://meet.jit.si/${encodeURIComponent(roomName)}`;
+}
+
 function normalizeFilename(value) {
   return String(value || 'candidate').replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '').toLowerCase();
 }
@@ -1365,9 +1370,11 @@ app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
   if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const applicationId = req.params.id;
   const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled } = req.body;
+  const finalPlatform = platform ? platform.trim().toLowerCase() : '';
+  const finalMeetingLink = meeting_link && meeting_link.trim() ? meeting_link.trim() : (finalPlatform === 'jitsi' ? getJitsiMeetingLink(applicationId) : '');
 
-  if (!scheduled_at || !meeting_link || !platform) {
-    return res.status(400).send('Please provide meeting date/time, platform, and link.');
+  if (!scheduled_at || !finalPlatform || (!finalMeetingLink && finalPlatform !== 'jitsi')) {
+    return res.status(400).send('Please provide meeting date/time, platform, and link. For Jitsi you can leave the link blank and it will be auto-generated.');
   }
 
   const cameraVal = camera_enabled ? 1 : 0;
@@ -1377,14 +1384,14 @@ app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
     if (err) return res.status(500).send('Database error while checking existing meeting');
     if (existing) {
       db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, status = ?, camera_enabled = ?, mic_enabled = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-        [scheduled_at, platform, meeting_link, 'scheduled', cameraVal, micVal, req.user.id, existing.id], (err) => {
+        [scheduled_at, finalPlatform, finalMeetingLink, 'scheduled', cameraVal, micVal, req.user.id, existing.id], (err) => {
           if (err) return res.status(500).send('Error updating meeting');
           const redirectUrl = req.user.role === 'hr' ? '/office' : '/admin';
           res.redirect(redirectUrl);
         });
     } else {
       db.run('INSERT INTO meetings (application_id, scheduled_at, platform, meeting_link, status, camera_enabled, mic_enabled, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [applicationId, scheduled_at, platform, meeting_link, 'scheduled', cameraVal, micVal, req.user.id], (err) => {
+        [applicationId, scheduled_at, finalPlatform, finalMeetingLink, 'scheduled', cameraVal, micVal, req.user.id], (err) => {
           if (err) return res.status(500).send('Error scheduling meeting');
           const redirectUrl = req.user.role === 'hr' ? '/office' : '/admin';
           res.redirect(redirectUrl);
@@ -1406,15 +1413,17 @@ app.post('/meeting/:id/modify', verifyToken, (req, res) => {
 
     const cameraVal = camera_enabled ? 1 : 0;
     const micVal = mic_enabled ? 1 : 0;
+    const finalPlatform = platform ? platform.trim().toLowerCase() : meeting.platform;
+    const finalMeetingLink = meeting_link && meeting_link.trim() ? meeting_link.trim() : (meeting.meeting_link || (finalPlatform === 'jitsi' ? getJitsiMeetingLink(meetingId) : ''));
 
     db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, camera_enabled = ?, mic_enabled = ?, status = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-      [scheduled_at || meeting.scheduled_at, platform || meeting.platform, meeting_link || meeting.meeting_link, cameraVal, micVal, status || meeting.status, req.user.id, meetingId], (err) => {
+      [scheduled_at || meeting.scheduled_at, finalPlatform, finalMeetingLink, cameraVal, micVal, status || meeting.status, req.user.id, meetingId], (err) => {
         if (err) return res.status(500).send('Error updating meeting');
         io.to(`meeting_${meetingId}`).emit('meeting:details', {
           meetingId,
           scheduled_at: scheduled_at || meeting.scheduled_at,
-          platform: platform || meeting.platform,
-          meeting_link: meeting_link || meeting.meeting_link,
+          platform: finalPlatform,
+          meeting_link: finalMeetingLink,
           camera_enabled: cameraVal,
           mic_enabled: micVal,
           status: status || meeting.status
