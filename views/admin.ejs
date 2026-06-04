@@ -496,9 +496,20 @@
                 <div><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></div>
                 <div><i class="fas fa-video"></i> <%= meeting.platform %></div>
                 <div><strong>Link:</strong> <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#1d4ed8; text-decoration:underline;"><%= meeting.meeting_link %></a></div>
+                <div style="margin-top:0.5rem;">
+                  <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.5rem;">
+                    <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'Camera ON' : 'Camera OFF' %>
+                  </span>
+                  <span style="<%= meeting.mic_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem;">
+                    <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'Mic ON' : 'Mic OFF' %>
+                  </span>
+                </div>
               </div>
-              <div style="margin-top:0.75rem;">
-                <a href="/meeting/<%= meeting.id %>/join" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+              <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+                <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+                <button class="btn btn-secondary" onclick="openEditMeetingModal(<%= meeting.id %>, '<%= meeting.scheduled_at %>', '<%= meeting.platform %>', '<%= meeting.meeting_link %>', <%= meeting.camera_enabled %>, <%= meeting.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer;">
+                  <i class="fas fa-edit"></i> Edit
+                </button>
               </div>
             </div>
           <% } else { %>
@@ -506,6 +517,14 @@
               <input type="datetime-local" name="scheduled_at" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; min-width:220px;">
               <input type="text" name="platform" placeholder="Platform (Zoom/Teams)" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; min-width:180px;">
               <input type="url" name="meeting_link" placeholder="Meeting link" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; flex:1; min-width:220px;">
+              <label style="display:flex; align-items:center; gap:0.5rem; padding:0.5rem;">
+                <input type="checkbox" name="camera_enabled" checked>
+                <i class="fas fa-camera"></i> Camera
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; padding:0.5rem;">
+                <input type="checkbox" name="mic_enabled" checked>
+                <i class="fas fa-microphone"></i> Mic
+              </label>
               <button type="submit" class="btn btn-primary" style="white-space:nowrap;">Schedule</button>
             </form>
           <% } %>
@@ -562,6 +581,82 @@ function filterApplications() {
 
 // Initialize filter
 filterApplications();
+
+// Edit Meeting Modal Functions
+function openEditMeetingModal(meetingId, scheduledAt, platform, meetingLink, cameraEnabled, micEnabled) {
+  const modal = document.createElement('div');
+  modal.id = 'editMeetingModal';
+  modal.innerHTML = `
+    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+      <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #1e40af;">Edit Meeting</h3>
+        <form id="editMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
+            <input type="datetime-local" id="editScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
+            <input type="text" id="editPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
+            <input type="url" id="editMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+          </div>
+          <div style="display: flex; gap: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+              <input type="checkbox" id="editCameraEnabled" ${cameraEnabled ? 'checked' : ''}>
+              <i class="fas fa-camera"></i> Camera Enabled
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+              <input type="checkbox" id="editMicEnabled" ${micEnabled ? 'checked' : ''}>
+              <i class="fas fa-microphone"></i> Mic Enabled
+            </label>
+          </div>
+          <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+            <button type="button" onclick="closeEditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 600;">Cancel</button>
+            <button type="button" onclick="submitEditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #3b82f6; color: white; cursor: pointer; font-weight: 600;">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function closeEditMeetingModal() {
+  const modal = document.getElementById('editMeetingModal');
+  if (modal) modal.remove();
+}
+
+function submitEditMeeting(meetingId) {
+  const scheduledAt = document.getElementById('editScheduledAt').value;
+  const platform = document.getElementById('editPlatform').value;
+  const meetingLink = document.getElementById('editMeetingLink').value;
+  const cameraEnabled = document.getElementById('editCameraEnabled').checked;
+  const micEnabled = document.getElementById('editMicEnabled').checked;
+
+  if (!scheduledAt || !platform || !meetingLink) {
+    alert('Please fill all fields');
+    return;
+  }
+
+  fetch(`/meeting/${meetingId}/modify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ scheduled_at: scheduledAt, platform, meeting_link: meetingLink, camera_enabled: cameraEnabled, mic_enabled: micEnabled })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('Meeting updated successfully');
+      location.reload();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  })
+  .catch(err => alert('Error updating meeting: ' + err));
+}
 </script>
 
 </body>

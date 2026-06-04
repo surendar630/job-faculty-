@@ -154,7 +154,8 @@
               <th>Job</th>
               <th>Date</th>
               <th>Platform</th>
-              <th>Join</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -164,7 +165,20 @@
                 <td><%= meeting.job_title %></td>
                 <td><%= new Date(meeting.scheduled_at).toLocaleString() %></td>
                 <td><%= meeting.platform %></td>
-                <td><a href="/meeting/<%= meeting.id %>/join" class="btn btn-primary" style="text-decoration:none;">Join</a></td>
+                <td>
+                  <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.25rem; display:inline-block;">
+                    <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'ON' : 'OFF' %>
+                  </span>
+                  <span style="<%= meeting.mic_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; display:inline-block;">
+                    <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'ON' : 'OFF' %>
+                  </span>
+                </td>
+                <td style="display:flex; gap:0.5rem;">
+                  <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none; font-size:0.9rem; padding:0.5rem 0.75rem;">Join</a>
+                  <button class="btn btn-secondary" onclick="openHREditMeetingModal(<%= meeting.id %>, '<%= meeting.scheduled_at %>', '<%= meeting.platform %>', '<%= meeting.meeting_link %>', <%= meeting.camera_enabled %>, <%= meeting.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.5rem 0.75rem; border-radius:6px; cursor:pointer; font-size:0.9rem;">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                </td>
               </tr>
             <% }); %>
           </tbody>
@@ -217,5 +231,82 @@
     </div>
   </div>
 </div>
-</body>
-</html>
+
+<script>
+// HR Edit Meeting Modal Functions
+function openHREditMeetingModal(meetingId, scheduledAt, platform, meetingLink, cameraEnabled, micEnabled) {
+  const modal = document.createElement('div');
+  modal.id = 'hrEditMeetingModal';
+  modal.innerHTML = `
+    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+      <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #1e40af;">Edit Meeting</h3>
+        <form id="hrEditMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
+            <input type="datetime-local" id="hrEditScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
+            <input type="text" id="hrEditPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
+            <input type="url" id="hrEditMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+          </div>
+          <div style="display: flex; gap: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+              <input type="checkbox" id="hrEditCameraEnabled" ${cameraEnabled ? 'checked' : ''}>
+              <i class="fas fa-camera"></i> Camera Enabled
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+              <input type="checkbox" id="hrEditMicEnabled" ${micEnabled ? 'checked' : ''}>
+              <i class="fas fa-microphone"></i> Mic Enabled
+            </label>
+          </div>
+          <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+            <button type="button" onclick="closeHREditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 600;">Cancel</button>
+            <button type="button" onclick="submitHREditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #3b82f6; color: white; cursor: pointer; font-weight: 600;">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function closeHREditMeetingModal() {
+  const modal = document.getElementById('hrEditMeetingModal');
+  if (modal) modal.remove();
+}
+
+function submitHREditMeeting(meetingId) {
+  const scheduledAt = document.getElementById('hrEditScheduledAt').value;
+  const platform = document.getElementById('hrEditPlatform').value;
+  const meetingLink = document.getElementById('hrEditMeetingLink').value;
+  const cameraEnabled = document.getElementById('hrEditCameraEnabled').checked;
+  const micEnabled = document.getElementById('hrEditMicEnabled').checked;
+
+  if (!scheduledAt || !platform || !meetingLink) {
+    alert('Please fill all fields');
+    return;
+  }
+
+  fetch(`/meeting/${meetingId}/modify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ scheduled_at: scheduledAt, platform, meeting_link: meetingLink, camera_enabled: cameraEnabled, mic_enabled: micEnabled })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('Meeting updated successfully');
+      location.reload();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  })
+  .catch(err => alert('Error updating meeting: ' + err));
+}
+</script>
+

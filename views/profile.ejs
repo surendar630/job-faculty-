@@ -474,11 +474,19 @@
             <div style="min-width:220px;">
               <strong><%= meeting.job_title %></strong><br>
               <span style="color:#475569;"><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
+              <div style="margin-top:0.5rem;">
+                <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.25rem; display:inline-block;">
+                  <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'ON' : 'OFF' %>
+                </span>
+                <span style="<%= meeting.mic_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; display:inline-block;">
+                  <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'ON' : 'OFF' %>
+                </span>
+              </div>
             </div>
             <div style="min-width:180px; color:#475569;"><i class="fas fa-video"></i> <%= meeting.platform %></div>
             <div style="flex:1; color:#475569; overflow-wrap: anywhere;"><strong>Link:</strong> <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#1d4ed8; text-decoration:underline;"><%= meeting.meeting_link %></a></div>
             <div>
-              <a href="/meeting/<%= meeting.id %>/join" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+              <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
             </div>
           </div>
         <% }); %>

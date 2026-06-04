@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting - <%= meeting.job_title %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .meeting-header {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meeting-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+        }
+
+        .meeting-container {
+            display: flex;
+            flex: 1;
+            gap: 1rem;
+            padding: 1rem;
+            overflow: hidden;
+        }
+
+        .video-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .video-section {
+            flex: 1;
+            background: #1e293b;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        .video-section h4 {
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+
+        .controls-panel {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .control-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: #334155;
+            border: 2px solid #475569;
+            color: #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            min-width: 90px;
+        }
+
+        .control-btn:hover {
+            background: #475569;
+            border-color: #64748b;
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: #10b981;
+            border-color: #059669;
+        }
+
+        .control-btn.inactive {
+            background: #dc2626;
+            border-color: #b91c1c;
+        }
+
+        .control-btn i {
+            font-size: 1.25rem;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #1e293b;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .sidebar-section h4 {
+            color: #1d4ed8;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 0.5rem;
+        }
+
+        .info-item {
+            background: #0f172a;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border-left: 3px solid #1d4ed8;
+            font-size: 0.9rem;
+        }
+
+        .info-item strong {
+            color: #1d4ed8;
+            display: block;
+        }
+
+        .meeting-link-btn {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .meeting-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4);
+        }
+
+        .end-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .end-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .status-on {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-off {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        @media (max-width: 1024px) {
+            .meeting-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="meeting-header">
+        <h2><i class="fas fa-video"></i> <%= meeting.job_title %></h2>
+        <div style="font-size: 0.9rem; color: #cbd5e1;">
+            <i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %>
+        </div>
+    </div>
+
+    <div class="meeting-container">
+        <div class="video-area">
+            <div class="video-section">
+                <h4><i class="fas fa-camera"></i> Video Feed</h4>
+                <div style="text-align: center; color: #94a3b8;">
+                    <p style="margin-bottom: 1rem;">
+                        <% if (participant && participant.camera_on) { %>
+                            Camera is enabled - Video feed would appear here
+                        <% } else { %>
+                            <i class="fas fa-video-slash" style="font-size: 3rem; opacity: 0.5;"></i>
+                            <p>Camera is disabled</p>
+                        <% } %>
+                    </p>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <button class="control-btn <%= (participant && participant.camera_on) ? 'active' : 'inactive' %>" id="cameraBtn" onclick="toggleCamera()">
+                    <i class="fas fa-camera"></i>
+                    <span style="font-size: 0.8rem;">Camera</span>
+                </button>
+
+                <button class="control-btn <%= (participant && participant.mic_on) ? 'active' : 'inactive' %>" id="micBtn" onclick="toggleMic()">
+                    <i class="fas fa-microphone"></i>
+                    <span style="font-size: 0.8rem;">Mic</span>
+                </button>
+
+                <button class="control-btn" onclick="openMeetingLink()">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span style="font-size: 0.8rem;">Open Link</span>
+                </button>
+
+                <button class="control-btn" onclick="endMeeting()" style="background: #dc2626; border-color: #b91c1c;">
+                    <i class="fas fa-phone-slash"></i>
+                    <span style="font-size: 0.8rem;">End</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h4><i class="fas fa-briefcase"></i> Job Details</h4>
+                <div class="info-item">
+                    <strong><%= meeting.job_title %></strong>
+                    <% if (meeting.candidate_name !== user.name) { %>
+                        Candidate: <%= meeting.candidate_name %>
+                    <% } else { %>
+                        Your Interview
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h4><i class="fas fa-cogs"></i> Meeting Settings</h4>
+                <div class="info-item">
+                    <strong>Camera Status</strong>
+                    <span class="status-badge <%= meeting.camera_enabled ? 'status-on' : 'status-off' %>">
+                        <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'Enabled' : 'Disabled' %>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <strong>Microphone Status</strong>
+                    <span class="status-badge <%= meeting.mic_enabled ? 'status-on' : 'status-off' %>">
+                        <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'Enabled' : 'Disabled' %>
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h4><i class="fas fa-link"></i> Meeting Link</h4>
+                <button class="meeting-link-btn" onclick="openMeetingLink()">
+                    <i class="fas fa-external-link-alt"></i> Open Meeting Link
+                </button>
+            </div>
+
+            <div class="sidebar-section">
+                <h4><i class="fas fa-info-circle"></i> Meeting Info</h4>
+                <div class="info-item">
+                    <strong>Platform</strong>
+                    <%= meeting.platform %>
+                </div>
+                <div class="info-item">
+                    <strong>Scheduled</strong>
+                    <%= new Date(meeting.scheduled_at).toLocaleString() %>
+                </div>
+            </div>
+
+            <button class="end-btn" onclick="endMeeting()">
+                <i class="fas fa-door-open"></i> Leave Meeting
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const meetingId = '<%= meeting.id %>';
+        let currentCameraState = <%= (participant && participant.camera_on) ? 'true' : 'false' %>;
+        let currentMicState = <%= (participant && participant.mic_on) ? 'true' : 'false' %>;
+
+        function toggleCamera() {
+            currentCameraState = !currentCameraState;
+            updateControl('camera', currentCameraState);
+        }
+
+        function toggleMic() {
+            currentMicState = !currentMicState;
+            updateControl('mic', currentMicState);
+        }
+
+        function updateControl(type, state) {
+            const endpoint = type === 'camera' ? 'camera' : 'mic';
+            const stateKey = type === 'camera' ? 'camera_on' : 'mic_on';
+            
+            fetch(`/meeting/${meetingId}/${endpoint}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ [stateKey]: state })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const btn = type === 'camera' ? document.getElementById('cameraBtn') : document.getElementById('micBtn');
+                    btn.classList.toggle('active', state);
+                    btn.classList.toggle('inactive', !state);
+                } else {
+                    alert('Failed to update ' + type + ' status');
+                }
+            })
+            .catch(err => alert('Error: ' + err));
+        }
+
+        function openMeetingLink() {
+            window.open('<%= meeting.meeting_link %>', '_blank');
+        }
+
+        function endMeeting() {
+            if (confirm('Are you sure you want to leave this meeting?')) {
+                // Record left_at time
+                fetch(`/meeting/${meetingId}/join`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ left: true })
+                })
+                .then(() => {
+                    // Redirect based on user role
+                    <% if (user.role === 'hr') { %>
+                        window.location.href = '/office';
+                    <% } else if (user.role === 'admin') { %>
+                        window.location.href = '/admin';
+                    <% } else { %>
+                        window.location.href = '/profile';
+                    <% } %>
+                })
+                .catch(err => console.error('Error:', err));
+            }
+        }
+
+        // Auto-update participant status on page load
+        function updateParticipantStatus() {
+            fetch(`/meeting/${meetingId}/join`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ joined: true })
+            })
+            .catch(err => console.error('Error updating participant:', err));
+        }
+
+        // Update on load
+        updateParticipantStatus();
+
+        // Update every 30 seconds to keep session active
+        setInterval(updateParticipantStatus, 30000);
+    </script>
+</body>
+</html>

@@ -188,10 +188,27 @@ db.serialize(() => {
     platform TEXT,
     meeting_link TEXT,
     status TEXT DEFAULT 'scheduled',
+    camera_enabled INTEGER DEFAULT 1,
+    mic_enabled INTEGER DEFAULT 1,
     created_by INTEGER,
+    updated_by INTEGER,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (application_id) REFERENCES applications(id),
-    FOREIGN KEY (created_by) REFERENCES users(id)
+    FOREIGN KEY (created_by) REFERENCES users(id),
+    FOREIGN KEY (updated_by) REFERENCES users(id)
+  )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS meeting_participants (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    meeting_id INTEGER,
+    user_id INTEGER,
+    camera_on INTEGER DEFAULT 1,
+    mic_on INTEGER DEFAULT 1,
+    joined_at DATETIME,
+    left_at DATETIME,
+    FOREIGN KEY (meeting_id) REFERENCES meetings(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
   )`);
 
   db.run(`CREATE TABLE IF NOT EXISTS password_resets (
@@ -1198,33 +1215,128 @@ app.post('/hr/application/:id/unshortlist', verifyToken, (req, res) => {
 });
 
 app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const applicationId = req.params.id;
-  const { scheduled_at, platform, meeting_link } = req.body;
+  const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled } = req.body;
 
   if (!scheduled_at || !meeting_link || !platform) {
     return res.status(400).send('Please provide meeting date/time, platform, and link.');
   }
 
+  const cameraVal = camera_enabled ? 1 : 0;
+  const micVal = mic_enabled ? 1 : 0;
+
   db.get('SELECT * FROM meetings WHERE application_id = ?', [applicationId], (err, existing) => {
     if (err) return res.status(500).send('Database error while checking existing meeting');
     if (existing) {
-      db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, status = ?, created_by = ? WHERE id = ?',
-        [scheduled_at, platform, meeting_link, 'scheduled', req.user.id, existing.id], (err) => {
+      db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, status = ?, camera_enabled = ?, mic_enabled = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+        [scheduled_at, platform, meeting_link, 'scheduled', cameraVal, micVal, req.user.id, existing.id], (err) => {
           if (err) return res.status(500).send('Error updating meeting');
-          res.redirect('/admin');
+          const redirectUrl = req.user.role === 'hr' ? '/office' : '/admin';
+          res.redirect(redirectUrl);
         });
     } else {
-      db.run('INSERT INTO meetings (application_id, scheduled_at, platform, meeting_link, status, created_by) VALUES (?, ?, ?, ?, ?, ?)',
-        [applicationId, scheduled_at, platform, meeting_link, 'scheduled', req.user.id], (err) => {
+      db.run('INSERT INTO meetings (application_id, scheduled_at, platform, meeting_link, status, camera_enabled, mic_enabled, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [applicationId, scheduled_at, platform, meeting_link, 'scheduled', cameraVal, micVal, req.user.id], (err) => {
           if (err) return res.status(500).send('Error scheduling meeting');
-          res.redirect('/admin');
+          const redirectUrl = req.user.role === 'hr' ? '/office' : '/admin';
+          res.redirect(redirectUrl);
         });
     }
   });
 });
 
-app.get('/meeting/:id/join', verifyToken, (req, res) => {
+app.post('/meeting/:id/modify', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  const meetingId = req.params.id;
+  const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled, status } = req.body;
+
+  db.get('SELECT * FROM meetings WHERE id = ?', [meetingId], (err, meeting) => {
+    if (err || !meeting) return res.status(404).send('Meeting not found');
+    if (meeting.created_by !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).send('Access denied');
+    }
+
+    const cameraVal = camera_enabled ? 1 : 0;
+    const micVal = mic_enabled ? 1 : 0;
+
+    db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, camera_enabled = ?, mic_enabled = ?, status = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+      [scheduled_at || meeting.scheduled_at, platform || meeting.platform, meeting_link || meeting.meeting_link, cameraVal, micVal, status || meeting.status, req.user.id, meetingId], (err) => {
+        if (err) return res.status(500).send('Error updating meeting');
+        res.json({ success: true, message: 'Meeting updated successfully' });
+      });
+  });
+});
+
+app.get('/meeting/:id', verifyToken, (req, res) => {
+  const meetingId = req.params.id;
+  db.get(`SELECT m.*, a.user_id, a.job_id, j.title as job_title, u.name as candidate_name, u.email as candidate_email
+          FROM meetings m 
+          JOIN applications a ON m.application_id = a.id 
+          JOIN jobs j ON a.job_id = j.id
+          JOIN users u ON a.user_id = u.id
+          WHERE m.id = ?`, [meetingId], (err, meeting) => {
+    if (err || !meeting) return res.status(404).send('Meeting not found');
+    if (req.user.role === 'hr' || req.user.role === 'admin' || req.user.id === meeting.user_id) {
+      db.get('SELECT * FROM meeting_participants WHERE meeting_id = ? AND user_id = ?', [meetingId, req.user.id], (err, participant) => {
+        res.render('meeting-room', { meeting, participant, user: req.user });
+      });
+    } else {
+      return res.status(403).send('Access denied');
+    }
+  });
+});
+
+app.post('/meeting/:id/join', verifyToken, (req, res) => {
+  const meetingId = req.params.id;
+  db.get(`SELECT m.*, a.user_id FROM meetings m JOIN applications a ON m.application_id = a.id WHERE m.id = ?`, [meetingId], (err, meeting) => {
+    if (err || !meeting) return res.status(404).send('Meeting not found');
+    if (req.user.role !== 'hr' && req.user.role !== 'admin' && req.user.id !== meeting.user_id) {
+      return res.status(403).send('Access denied');
+    }
+
+    db.get('SELECT * FROM meeting_participants WHERE meeting_id = ? AND user_id = ?', [meetingId, req.user.id], (err, participant) => {
+      if (participant) {
+        db.run('UPDATE meeting_participants SET joined_at = CURRENT_TIMESTAMP WHERE id = ?', [participant.id], (err) => {
+          res.json({ success: true, meeting_link: meeting.meeting_link });
+        });
+      } else {
+        db.run('INSERT INTO meeting_participants (meeting_id, user_id, camera_on, mic_on, joined_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)',
+          [meetingId, req.user.id, meeting.camera_enabled, meeting.mic_enabled], (err) => {
+            res.json({ success: true, meeting_link: meeting.meeting_link });
+          });
+      }
+    });
+  });
+});
+
+app.post('/meeting/:id/camera', verifyToken, (req, res) => {
+  const meetingId = req.params.id;
+  const { camera_on } = req.body;
+
+  db.get('SELECT * FROM meeting_participants WHERE meeting_id = ? AND user_id = ?', [meetingId, req.user.id], (err, participant) => {
+    if (err || !participant) return res.status(404).json({ error: 'Participant not found' });
+    db.run('UPDATE meeting_participants SET camera_on = ? WHERE id = ?', [camera_on ? 1 : 0, participant.id], (err) => {
+      if (err) return res.status(500).json({ error: 'Update failed' });
+      res.json({ success: true });
+    });
+  });
+});
+
+app.post('/meeting/:id/mic', verifyToken, (req, res) => {
+  const meetingId = req.params.id;
+  const { mic_on } = req.body;
+
+  db.get('SELECT * FROM meeting_participants WHERE meeting_id = ? AND user_id = ?', [meetingId, req.user.id], (err, participant) => {
+    if (err || !participant) return res.status(404).json({ error: 'Participant not found' });
+    db.run('UPDATE meeting_participants SET mic_on = ? WHERE id = ?', [mic_on ? 1 : 0, participant.id], (err) => {
+      if (err) return res.status(500).json({ error: 'Update failed' });
+      res.json({ success: true });
+    });
+  });
+});
+
+app.get('/meeting/:id/join-redirect', verifyToken, (req, res) => {
   const meetingId = req.params.id;
   db.get(`SELECT m.*, a.user_id FROM meetings m JOIN applications a ON m.application_id = a.id WHERE m.id = ?`, [meetingId], (err, meeting) => {
     if (err || !meeting) return res.status(404).send('Meeting not found');
