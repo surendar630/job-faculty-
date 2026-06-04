@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const fs = require('fs');
+const http = require('http');
+const { Server } = require('socket.io');
 const openai = require('openai');
 const multer = require('multer');
 
@@ -20,6 +22,13 @@ const openaiClient = new openai.OpenAI({
 });
 
 const app = express();
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
 const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key'; // In production, use environment variable
 
@@ -1401,6 +1410,15 @@ app.post('/meeting/:id/modify', verifyToken, (req, res) => {
     db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, camera_enabled = ?, mic_enabled = ?, status = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
       [scheduled_at || meeting.scheduled_at, platform || meeting.platform, meeting_link || meeting.meeting_link, cameraVal, micVal, status || meeting.status, req.user.id, meetingId], (err) => {
         if (err) return res.status(500).send('Error updating meeting');
+        io.to(`meeting_${meetingId}`).emit('meeting:details', {
+          meetingId,
+          scheduled_at: scheduled_at || meeting.scheduled_at,
+          platform: platform || meeting.platform,
+          meeting_link: meeting_link || meeting.meeting_link,
+          camera_enabled: cameraVal,
+          mic_enabled: micVal,
+          status: status || meeting.status
+        });
         res.json({ success: true, message: 'Meeting updated successfully' });
       });
   });
@@ -1417,7 +1435,9 @@ app.get('/meeting/:id', verifyToken, (req, res) => {
     if (err || !meeting) return res.status(404).send('Meeting not found');
     if (req.user.role === 'hr' || req.user.role === 'admin' || req.user.id === meeting.user_id) {
       db.get('SELECT * FROM meeting_participants WHERE meeting_id = ? AND user_id = ?', [meetingId, req.user.id], (err, participant) => {
-        res.render('meeting-room', { meeting, participant, user: req.user });
+        db.all('SELECT mp.*, u.name, u.email, u.role FROM meeting_participants mp JOIN users u ON mp.user_id = u.id WHERE mp.meeting_id = ?', [meetingId], (err, participants) => {
+          res.render('meeting-room', { meeting, participant, user: req.user, participants: participants || [] });
+        });
       });
     } else {
       return res.status(403).send('Access denied');
@@ -1434,14 +1454,33 @@ app.post('/meeting/:id/join', verifyToken, (req, res) => {
     }
 
     db.get('SELECT * FROM meeting_participants WHERE meeting_id = ? AND user_id = ?', [meetingId, req.user.id], (err, participant) => {
+      const emitParticipantUpdate = (participantRow) => {
+        io.to(`meeting_${meetingId}`).emit('meeting:participant', {
+          meetingId,
+          userId: req.user.id,
+          name: req.user.name,
+          email: req.user.email,
+          camera_on: participantRow.camera_on,
+          mic_on: participantRow.mic_on,
+          joined_at: participantRow.joined_at,
+          left: !!req.body.left
+        });
+      };
+
       if (participant) {
         db.run('UPDATE meeting_participants SET joined_at = CURRENT_TIMESTAMP WHERE id = ?', [participant.id], (err) => {
-          res.json({ success: true, meeting_link: meeting.meeting_link });
+          db.get('SELECT * FROM meeting_participants WHERE id = ?', [participant.id], (err, participantRow) => {
+            if (!err && participantRow) emitParticipantUpdate(participantRow);
+            res.json({ success: true, meeting_link: meeting.meeting_link });
+          });
         });
       } else {
         db.run('INSERT INTO meeting_participants (meeting_id, user_id, camera_on, mic_on, joined_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)',
           [meetingId, req.user.id, meeting.camera_enabled, meeting.mic_enabled], (err) => {
-            res.json({ success: true, meeting_link: meeting.meeting_link });
+            db.get('SELECT * FROM meeting_participants WHERE meeting_id = ? AND user_id = ?', [meetingId, req.user.id], (err, participantRow) => {
+              if (!err && participantRow) emitParticipantUpdate(participantRow);
+              res.json({ success: true, meeting_link: meeting.meeting_link });
+            });
           });
       }
     });
@@ -1456,6 +1495,14 @@ app.post('/meeting/:id/camera', verifyToken, (req, res) => {
     if (err || !participant) return res.status(404).json({ error: 'Participant not found' });
     db.run('UPDATE meeting_participants SET camera_on = ? WHERE id = ?', [camera_on ? 1 : 0, participant.id], (err) => {
       if (err) return res.status(500).json({ error: 'Update failed' });
+      io.to(`meeting_${meetingId}`).emit('meeting:participant', {
+        meetingId,
+        userId: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        camera_on: camera_on ? 1 : 0,
+        mic_on: participant.mic_on
+      });
       res.json({ success: true });
     });
   });
@@ -1469,6 +1516,14 @@ app.post('/meeting/:id/mic', verifyToken, (req, res) => {
     if (err || !participant) return res.status(404).json({ error: 'Participant not found' });
     db.run('UPDATE meeting_participants SET mic_on = ? WHERE id = ?', [mic_on ? 1 : 0, participant.id], (err) => {
       if (err) return res.status(500).json({ error: 'Update failed' });
+      io.to(`meeting_${meetingId}`).emit('meeting:participant', {
+        meetingId,
+        userId: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        camera_on: participant.camera_on,
+        mic_on: mic_on ? 1 : 0
+      });
       res.json({ success: true });
     });
   });
@@ -1670,7 +1725,26 @@ app.use((err, req, res, next) => {
   res.status(500).send('Internal server error');
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+io.on('connection', (socket) => {
+  const meetingId = socket.handshake.query.meetingId;
+  if (meetingId) {
+    socket.join(`meeting_${meetingId}`);
+  }
+
+  socket.on('meeting:update', (payload) => {
+    if (payload && payload.meetingId) {
+      io.to(`meeting_${payload.meetingId}`).emit('meeting:details', payload);
+    }
+  });
+
+  socket.on('participant:update', (payload) => {
+    if (payload && payload.meetingId) {
+      io.to(`meeting_${payload.meetingId}`).emit('meeting:participant', payload);
+    }
+  });
+});
+
+httpServer.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
 

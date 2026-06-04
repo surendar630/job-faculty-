@@ -284,14 +284,21 @@
                 <div class="info-item">
                     <strong>Camera Status</strong>
                     <span class="status-badge <%= meeting.camera_enabled ? 'status-on' : 'status-off' %>">
-                        <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'Enabled' : 'Disabled' %>
+                        <i class="fas fa-camera"></i> <span id="meetingCameraStatus"><%= meeting.camera_enabled ? 'Enabled' : 'Disabled' %></span>
                     </span>
                 </div>
                 <div class="info-item">
                     <strong>Microphone Status</strong>
                     <span class="status-badge <%= meeting.mic_enabled ? 'status-on' : 'status-off' %>">
-                        <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'Enabled' : 'Disabled' %>
+                        <i class="fas fa-microphone"></i> <span id="meetingMicStatus"><%= meeting.mic_enabled ? 'Enabled' : 'Disabled' %></span>
                     </span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h4><i class="fas fa-users"></i> Live Participants</h4>
+                <div class="info-item" id="participantList">
+                    <div style="font-size:0.95rem;color:#cbd5e1">Loading participants…</div>
                 </div>
             </div>
 
@@ -320,10 +327,63 @@
         </div>
     </div>
 
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
     <script>
         const meetingId = '<%= meeting.id %>';
         let currentCameraState = <%= (participant && participant.camera_on) ? 'true' : 'false' %>;
         let currentMicState = <%= (participant && participant.mic_on) ? 'true' : 'false' %>;
+        let participants = <%- JSON.stringify(participants || []) %>;
+        const socket = io({ query: { meetingId } });
+
+        function renderParticipants() {
+            const container = document.getElementById('participantList');
+            if (!participants || !participants.length) {
+                container.innerHTML = '<div style="font-size:0.95rem;color:#cbd5e1">No one has joined yet.</div>';
+                return;
+            }
+            container.innerHTML = participants.map(p => {
+                const camera = p.camera_on ? 'Camera on' : 'Camera off';
+                const mic = p.mic_on ? 'Mic on' : 'Mic off';
+                return `<div style="padding:10px 0;border-bottom:1px solid #334155;font-size:0.9rem;"><strong>${p.name}</strong><br><span style="color:#94a3b8">${p.email || 'No email provided'}</span><div style="margin-top:4px;font-size:0.82rem;color:#cbd5e1">${camera} · ${mic}</div></div>`;
+            }).join('');
+        }
+
+        function updateMeetingDetails(details) {
+            if (!details) return;
+            const cameraStatus = document.getElementById('meetingCameraStatus');
+            const micStatus = document.getElementById('meetingMicStatus');
+            const cameraBadge = cameraStatus?.closest('.status-badge');
+            const micBadge = micStatus?.closest('.status-badge');
+            if (cameraStatus) cameraStatus.textContent = details.camera_enabled ? 'Enabled' : 'Disabled';
+            if (micStatus) micStatus.textContent = details.mic_enabled ? 'Enabled' : 'Disabled';
+            if (cameraBadge) cameraBadge.className = `status-badge ${details.camera_enabled ? 'status-on' : 'status-off'}`;
+            if (micBadge) micBadge.className = `status-badge ${details.mic_enabled ? 'status-on' : 'status-off'}`;
+        }
+
+        socket.on('meeting:participant', (payload) => {
+            if (!payload || payload.meetingId !== meetingId) return;
+            const existing = participants.find(p => p.user_id === payload.userId || p.userId === payload.userId);
+            if (existing) {
+                existing.camera_on = payload.camera_on;
+                existing.mic_on = payload.mic_on;
+                existing.joined_at = payload.joined_at || existing.joined_at;
+            } else {
+                participants.push({
+                    user_id: payload.userId,
+                    name: payload.name,
+                    email: payload.email,
+                    camera_on: payload.camera_on,
+                    mic_on: payload.mic_on,
+                    joined_at: payload.joined_at
+                });
+            }
+            renderParticipants();
+        });
+
+        socket.on('meeting:details', (payload) => {
+            if (!payload || payload.meetingId !== meetingId) return;
+            updateMeetingDetails(payload);
+        });
 
         function toggleCamera() {
             currentCameraState = !currentCameraState;
@@ -394,6 +454,7 @@
         }
 
         // Update on load
+        renderParticipants();
         updateParticipantStatus();
 
         // Update every 30 seconds to keep session active
