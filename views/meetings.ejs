@@ -109,6 +109,22 @@
           <div class="form-group">
             <label><input type="checkbox" name="mic_enabled" checked> Enable microphone</label>
           </div>
+          <div class="form-group">
+            <label for="meetingPassword">Meeting password (optional)</label>
+            <input id="meetingPassword" type="text" name="meeting_password" placeholder="Optional meeting password">
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" name="recording_enabled"> Enable recording</label>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" name="require_moderator"> Require moderator</label>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" name="mute_on_join"> Mute participants on join</label>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" name="lobby_enabled"> Enable lobby / waiting room</label>
+          </div>
         </div>
         <div class="meeting-actions">
           <button class="btn-primary" type="submit"><i class="fas fa-calendar-check"></i> Schedule Meeting</button>
@@ -118,7 +134,7 @@
       </form>
       <% } else { %>
       <div class="helper">No candidate applications were found yet. Please add applications or use the admin view to manage candidates first.</div>
-      <button class="btn-primary" type="button" id="generateJitsiOnlyBtn" style="margin-top:1rem;"><i class="fas fa-link"></i> Generate Jitsi Meeting Link</button>
+      <button class="btn-primary" type="button" id="generateJitsiOnlyBtn" style="margin-top:1rem;"><i class="fas fa-link"></i> Generate & Schedule Jitsi Meeting</button>
       <div id="generatedJitsiLink" class="helper" style="margin-top:0.75rem; word-wrap:break-word;"></div>
       <% } %>
     </div>
@@ -236,13 +252,24 @@
         const scheduled_at = prompt('Enter scheduled date/time (YYYY-MM-DDTHH:MM)', isoLocal);
         if (!scheduled_at) return;
 
-        const payload = {
-          scheduled_at,
-          platform: 'jitsi',
-          meeting_link: data.meeting_link,
-          camera_enabled: true,
-          mic_enabled: true
-        };
+          const requireModerator = confirm('Require moderator to start the meeting?');
+          const recording = confirm('Enable recording for this meeting?');
+          const muteOnJoin = confirm('Mute participants on join?');
+          const lobby = confirm('Enable lobby / waiting room?');
+          const password = prompt('Optional meeting password (leave blank for none)', '');
+
+          const payload = {
+            scheduled_at,
+            platform: 'jitsi',
+            meeting_link: data.meeting_link,
+            camera_enabled: true,
+            mic_enabled: true,
+            meeting_password: password || null,
+            require_moderator: requireModerator,
+            recording_enabled: recording,
+            mute_on_join: muteOnJoin,
+            lobby_enabled: lobby
+          };
 
         const createRes = await fetch('/meetings/create', {
           method: 'POST',

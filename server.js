@@ -213,6 +213,19 @@ db.serialize(() => {
     FOREIGN KEY (updated_by) REFERENCES users(id)
   )`);
 
+  // Ensure advanced meeting columns exist (safe on startup)
+  db.all("PRAGMA table_info(meetings)", [], (err, cols) => {
+    if (err) return;
+    const names = (cols || []).map(c => c.name);
+    const alterStmts = [];
+    if (!names.includes('meeting_password')) alterStmts.push("ALTER TABLE meetings ADD COLUMN meeting_password TEXT");
+    if (!names.includes('require_moderator')) alterStmts.push("ALTER TABLE meetings ADD COLUMN require_moderator INTEGER DEFAULT 0");
+    if (!names.includes('recording_enabled')) alterStmts.push("ALTER TABLE meetings ADD COLUMN recording_enabled INTEGER DEFAULT 0");
+    if (!names.includes('mute_on_join')) alterStmts.push("ALTER TABLE meetings ADD COLUMN mute_on_join INTEGER DEFAULT 0");
+    if (!names.includes('lobby_enabled')) alterStmts.push("ALTER TABLE meetings ADD COLUMN lobby_enabled INTEGER DEFAULT 0");
+    alterStmts.forEach(sql => { try { db.run(sql); } catch (e) { } });
+  });
+
   db.run(`CREATE TABLE IF NOT EXISTS meeting_participants (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     meeting_id INTEGER,
@@ -1506,9 +1519,9 @@ app.post('/hr/application/:id/unshortlist', verifyToken, (req, res) => {
 app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
   if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const applicationId = req.params.id;
-  const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled } = req.body;
-  const finalPlatform = platform ? platform.trim().toLowerCase() : '';
-  const finalMeetingLink = meeting_link && meeting_link.trim() ? meeting_link.trim() : (finalPlatform === 'jitsi' ? getJitsiMeetingLink(applicationId) : '');
+  const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled, meeting_password, require_moderator, recording_enabled, mute_on_join, lobby_enabled } = req.body;
+  const finalPlatform = platform ? String(platform).trim().toLowerCase() : '';
+  const finalMeetingLink = meeting_link && String(meeting_link).trim() ? String(meeting_link).trim() : (finalPlatform === 'jitsi' ? getJitsiMeetingLink(applicationId) : '');
 
   if (!scheduled_at || !finalPlatform || (!finalMeetingLink && finalPlatform !== 'jitsi')) {
     return res.status(400).send('Please provide meeting date/time, platform, and link. For Jitsi you can leave the link blank and it will be auto-generated.');
@@ -1516,19 +1529,23 @@ app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
 
   const cameraVal = camera_enabled ? 1 : 0;
   const micVal = mic_enabled ? 1 : 0;
+  const requireModeratorVal = require_moderator ? 1 : 0;
+  const recordingVal = recording_enabled ? 1 : 0;
+  const muteVal = mute_on_join ? 1 : 0;
+  const lobbyVal = lobby_enabled ? 1 : 0;
 
   db.get('SELECT * FROM meetings WHERE application_id = ?', [applicationId], (err, existing) => {
     if (err) return res.status(500).send('Database error while checking existing meeting');
     if (existing) {
-      db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, status = ?, camera_enabled = ?, mic_enabled = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-        [scheduled_at, finalPlatform, finalMeetingLink, 'scheduled', cameraVal, micVal, req.user.id, existing.id], (err) => {
+      db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, status = ?, camera_enabled = ?, mic_enabled = ?, meeting_password = ?, require_moderator = ?, recording_enabled = ?, mute_on_join = ?, lobby_enabled = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+        [scheduled_at, finalPlatform, finalMeetingLink, 'scheduled', cameraVal, micVal, meeting_password || null, requireModeratorVal, recordingVal, muteVal, lobbyVal, req.user.id, existing.id], (err) => {
           if (err) return res.status(500).send('Error updating meeting');
           const redirectUrl = req.user.role === 'hr' ? '/office' : '/admin';
           res.redirect(redirectUrl);
         });
     } else {
-      db.run('INSERT INTO meetings (application_id, scheduled_at, platform, meeting_link, status, camera_enabled, mic_enabled, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [applicationId, scheduled_at, finalPlatform, finalMeetingLink, 'scheduled', cameraVal, micVal, req.user.id], (err) => {
+      db.run('INSERT INTO meetings (application_id, scheduled_at, platform, meeting_link, status, camera_enabled, mic_enabled, meeting_password, require_moderator, recording_enabled, mute_on_join, lobby_enabled, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [applicationId, scheduled_at, finalPlatform, finalMeetingLink, 'scheduled', cameraVal, micVal, meeting_password || null, requireModeratorVal, recordingVal, muteVal, lobbyVal, req.user.id], (err) => {
           if (err) return res.status(500).send('Error scheduling meeting');
           const redirectUrl = req.user.role === 'hr' ? '/office' : '/admin';
           res.redirect(redirectUrl);
@@ -1540,7 +1557,7 @@ app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
       // Create a standalone meeting (not tied to an application) — HR/Admin only
       app.post('/meetings/create', verifyToken, (req, res) => {
         if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
-        const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled } = req.body;
+        const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled, meeting_password, require_moderator, recording_enabled, mute_on_join, lobby_enabled } = req.body;
         const finalPlatform = platform ? String(platform).trim().toLowerCase() : '';
         const finalMeetingLink = meeting_link && String(meeting_link).trim() ? String(meeting_link).trim() : (finalPlatform === 'jitsi' ? getJitsiMeetingLink(`user-${req.user.id}-${Date.now()}`) : '');
 
@@ -1550,9 +1567,13 @@ app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
 
         const cameraVal = camera_enabled ? 1 : 0;
         const micVal = mic_enabled ? 1 : 0;
+        const requireModeratorVal = require_moderator ? 1 : 0;
+        const recordingVal = recording_enabled ? 1 : 0;
+        const muteVal = mute_on_join ? 1 : 0;
+        const lobbyVal = lobby_enabled ? 1 : 0;
 
-        db.run('INSERT INTO meetings (application_id, scheduled_at, platform, meeting_link, status, camera_enabled, mic_enabled, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-          [null, scheduled_at, finalPlatform, finalMeetingLink, 'scheduled', cameraVal, micVal, req.user.id], function (err) {
+        db.run('INSERT INTO meetings (application_id, scheduled_at, platform, meeting_link, status, camera_enabled, mic_enabled, meeting_password, require_moderator, recording_enabled, mute_on_join, lobby_enabled, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          [null, scheduled_at, finalPlatform, finalMeetingLink, 'scheduled', cameraVal, micVal, meeting_password || null, requireModeratorVal, recordingVal, muteVal, lobbyVal, req.user.id], function (err) {
             if (err) return res.status(500).json({ error: 'Error creating meeting' });
             const meetingId = this.lastID;
             db.get('SELECT * FROM meetings WHERE id = ?', [meetingId], (err, meeting) => {
@@ -1565,7 +1586,7 @@ app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
 app.post('/meeting/:id/modify', verifyToken, (req, res) => {
   if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const meetingId = req.params.id;
-  const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled, status } = req.body;
+  const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled, status, meeting_password, require_moderator, recording_enabled, mute_on_join, lobby_enabled } = req.body;
 
   db.get('SELECT * FROM meetings WHERE id = ?', [meetingId], (err, meeting) => {
     if (err || !meeting) return res.status(404).send('Meeting not found');
@@ -1575,11 +1596,16 @@ app.post('/meeting/:id/modify', verifyToken, (req, res) => {
 
     const cameraVal = camera_enabled ? 1 : 0;
     const micVal = mic_enabled ? 1 : 0;
-    const finalPlatform = platform ? platform.trim().toLowerCase() : meeting.platform;
-    const finalMeetingLink = meeting_link && meeting_link.trim() ? meeting_link.trim() : (meeting.meeting_link || (finalPlatform === 'jitsi' ? getJitsiMeetingLink(meetingId) : ''));
+    const requireModeratorVal = require_moderator ? 1 : 0;
+    const recordingVal = recording_enabled ? 1 : 0;
+    const muteVal = mute_on_join ? 1 : 0;
+    const lobbyVal = lobby_enabled ? 1 : 0;
 
-    db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, camera_enabled = ?, mic_enabled = ?, status = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-      [scheduled_at || meeting.scheduled_at, finalPlatform, finalMeetingLink, cameraVal, micVal, status || meeting.status, req.user.id, meetingId], (err) => {
+    const finalPlatform = platform ? String(platform).trim().toLowerCase() : meeting.platform;
+    const finalMeetingLink = meeting_link && String(meeting_link).trim() ? String(meeting_link).trim() : (meeting.meeting_link || (finalPlatform === 'jitsi' ? getJitsiMeetingLink(meetingId) : ''));
+
+    db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, camera_enabled = ?, mic_enabled = ?, meeting_password = ?, require_moderator = ?, recording_enabled = ?, mute_on_join = ?, lobby_enabled = ?, status = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+      [scheduled_at || meeting.scheduled_at, finalPlatform, finalMeetingLink, cameraVal, micVal, meeting_password || null, requireModeratorVal, recordingVal, muteVal, lobbyVal, status || meeting.status, req.user.id, meetingId], (err) => {
         if (err) return res.status(500).send('Error updating meeting');
         io.to(`meeting_${meetingId}`).emit('meeting:details', {
           meetingId,
@@ -1588,6 +1614,11 @@ app.post('/meeting/:id/modify', verifyToken, (req, res) => {
           meeting_link: finalMeetingLink,
           camera_enabled: cameraVal,
           mic_enabled: micVal,
+          meeting_password: meeting_password || meeting.meeting_password,
+          require_moderator: requireModeratorVal,
+          recording_enabled: recordingVal,
+          mute_on_join: muteVal,
+          lobby_enabled: lobbyVal,
           status: status || meeting.status
         });
         res.json({ success: true, message: 'Meeting updated successfully' });
