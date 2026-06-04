@@ -102,12 +102,125 @@
   border-top-color: #8b5cf6;
 }
 
-.dashboard-card i {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  .meeting-panel {
+    margin-top: 2rem;
+    background: white;
+    border-radius: 18px;
+    box-shadow: var(--shadow-md);
+    padding: 1.75rem;
+  }
+
+  .meeting-panel-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .meeting-tabs {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .meeting-tab {
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #0f172a;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 700;
+  }
+
+  .meeting-tab.active {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border-color: transparent;
+  }
+
+  .meeting-panel-content {
+    display: none;
+    gap: 1.5rem;
+  }
+
+  .meeting-panel-content.active {
+    display: block;
+  }
+
+  .meeting-card {
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 1rem;
+  }
+
+  .meeting-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .meeting-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .participant-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1rem;
+    text-align: left;
+  }
+
+  .participant-card h4 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+  }
+
+  .participant-status {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: #16a34a;
+  }
+
+  .meeting-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .meeting-actions .btn {
+    min-width: 140px;
+  }
+
+  .meeting-create-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .meeting-create-info {
+    background: #eef2ff;
+    padding: 1.25rem;
+    border-radius: 14px;
+    border: 1px solid #e0e7ff;
+  }
+
+  .meeting-create-info h3 {
+    margin-top: 0;
+  }
+
   background-clip: text;
 }
 
@@ -269,53 +382,102 @@
     </div>
   </div>
 
-  <% if (meetings && meetings.length) { %>
   <div class="meeting-panel">
-    <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:center; margin-bottom:1rem;">
+    <div class="meeting-panel-header">
       <div>
-        <h2><i class="fas fa-video"></i> Upcoming Jitsi Interview Meetings</h2>
-        <p>Live meeting links for your next interview session with up to three members.</p>
+        <h2><i class="fas fa-video"></i> Interview Meetings</h2>
+        <p>Attend scheduled sessions or create a new meeting link from the dashboard.</p>
       </div>
-      <span style="background:#ecfdf5; color:#166534; padding:0.75rem 1rem; border-radius:999px; font-weight:700;">3-member session support</span>
+      <div class="meeting-tabs">
+        <button class="meeting-tab active" data-target="attend">Attend Meeting</button>
+        <button class="meeting-tab" data-target="create">Create Meeting Link</button>
+      </div>
     </div>
 
-    <% meetings.forEach(meeting => { %>
-    <div class="meeting-card">
-      <div class="meeting-card-header">
-        <div>
-          <h3><%= meeting.job_title || 'Interview Meeting' %> <span style="font-size:0.9rem; color:#64748b; display:block;">(<%= meeting.university || 'University' %>)</span></h3>
-          <p><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></p>
-          <p><strong>Platform:</strong> <%= meeting.platform ? meeting.platform.toUpperCase() : 'JITSI' %></p>
-        </div>
-        <div class="attendance-actions">
-          <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
-          <% if (meeting.meeting_link) { %>
-          <a href="<%= meeting.meeting_link %>" target="_blank" class="btn btn-secondary" style="text-decoration:none;">Open Jitsi</a>
-          <% } %>
-        </div>
-      </div>
+    <div id="meeting-panel-attend" class="meeting-panel-content active">
+      <% if (meetings && meetings.length) { %>
+        <% meetings.forEach(meeting => { %>
+          <div class="meeting-card">
+            <div class="meeting-card-header">
+              <div>
+                <h3><%= meeting.job_title || 'Interview Meeting' %> <span style="font-size:0.9rem; color:#64748b; display:block;">(<%= meeting.university || 'University' %>)</span></h3>
+                <p><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></p>
+                <p><strong>Platform:</strong> <%= meeting.platform ? meeting.platform.toUpperCase() : 'JITSI' %></p>
+              </div>
+              <div class="attendance-actions">
+                <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+                <% if (meeting.meeting_link) { %>
+                <a href="<%= meeting.meeting_link %>" target="_blank" class="btn btn-secondary" style="text-decoration:none;">Open Jitsi</a>
+                <% } %>
+              </div>
+            </div>
 
-      <div class="meeting-row">
-        <% const attendees = meeting.participants && meeting.participants.length ? meeting.participants.slice(0, 3) : [
-             { name: meeting.candidate_name || 'Candidate', role: 'candidate', email: meeting.candidate_email },
-             { name: 'HR Representative', role: 'hr' },
-             { name: 'Admin', role: 'admin' }
-           ];
-           while (attendees.length < 3) attendees.push({ name: 'Pending participant', role: 'participant' });
-        %>
-        <% attendees.forEach(member => { %>
-        <div class="participant-card">
-          <h4><i class="fas fa-user-circle"></i> <%= member.name %></h4>
-          <p><strong>Role:</strong> <%= member.role ? member.role.charAt(0).toUpperCase() + member.role.slice(1) : 'Participant' %></p>
-          <% if (member.email) { %><p><strong>Email:</strong> <%= member.email %></p><% } %>
-          <div class="participant-status"><i class="fas fa-circle"></i> Active</div>
-        </div>
+            <div class="meeting-row">
+              <% const attendees = meeting.participants && meeting.participants.length ? meeting.participants.slice(0, 3) : [
+                   { name: meeting.candidate_name || 'Candidate', role: 'candidate', email: meeting.candidate_email },
+                   { name: 'HR Representative', role: 'hr' },
+                   { name: 'Admin', role: 'admin' }
+                 ];
+                 while (attendees.length < 3) attendees.push({ name: 'Pending participant', role: 'participant' });
+              %>
+              <% attendees.forEach(member => { %>
+              <div class="participant-card">
+                <h4><i class="fas fa-user-circle"></i> <%= member.name %></h4>
+                <p><strong>Role:</strong> <%= member.role ? member.role.charAt(0).toUpperCase() + member.role.slice(1) : 'Participant' %></p>
+                <% if (member.email) { %><p><strong>Email:</strong> <%= member.email %></p><% } %>
+                <div class="participant-status"><i class="fas fa-circle"></i> Active</div>
+              </div>
+              <% }); %>
+            </div>
+          </div>
         <% }); %>
+      <% } else { %>
+        <div class="meeting-create-info">
+          <h3>No scheduled meetings found</h3>
+          <p>There are currently no upcoming interview meetings for your account. Use the create tab to start a new session or check your portal.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <div id="meeting-panel-create" class="meeting-panel-content">
+      <div class="meeting-create-panel">
+        <% if (user.role === 'hr' || user.role === 'admin') { %>
+          <div class="meeting-create-info">
+            <h3>Create a new meeting link</h3>
+            <p>Schedule a Jitsi or custom meeting from your portal. Create and share links with candidates directly from the HR/Admin workspace.</p>
+          </div>
+          <div class="meeting-actions">
+            <% if (user.role === 'hr') { %>
+            <button class="btn btn-primary" onclick="window.location.href='/office'">Open HR Office</button>
+            <% } else { %>
+            <button class="btn btn-primary" onclick="window.location.href='/admin'">Open Admin Portal</button>
+            <% } %>
+            <button class="btn btn-secondary" onclick="window.location.href='/candidate/portal'">View Candidate Portal</button>
+          </div>
+        <% } else { %>
+          <div class="meeting-create-info">
+            <h3>Request a meeting link</h3>
+            <p>You can join existing meetings from the attend tab. If you don’t have a scheduled interview yet, ask HR or admin to create a meeting link for you.</p>
+          </div>
+          <div class="meeting-actions">
+            <button class="btn btn-primary" onclick="window.location.href='/candidate/portal'">Open Interview Portal</button>
+          </div>
+        <% } %>
       </div>
     </div>
-    <% }); %>
   </div>
-  <% } %>
+
+  <script>
+    document.querySelectorAll('.meeting-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.meeting-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.meeting-panel-content').forEach(panel => panel.classList.remove('active'));
+        tab.classList.add('active');
+        const target = tab.getAttribute('data-target');
+        document.getElementById(`meeting-panel-${target}`).classList.add('active');
+      });
+    });
+  </script>
 
   <!-- FEATURED OPPORTUNITIES -->
   <div class="section" style="margin-top: 3rem; margin-bottom: 3rem;">
