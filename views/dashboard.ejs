@@ -386,12 +386,14 @@
     <div class="meeting-panel-header">
       <div>
         <h2><i class="fas fa-video"></i> Interview Meetings</h2>
-        <p>Attend scheduled sessions or create a new meeting link from the dashboard.</p>
+        <p>Attend scheduled sessions from your dashboard.</p>
       </div>
+      <% if (user.role === 'hr' || user.role === 'admin') { %>
       <div class="meeting-tabs">
         <button class="meeting-tab active" data-target="attend">Attend Meeting</button>
         <button class="meeting-tab" data-target="create">Create Meeting Link</button>
       </div>
+      <% } %>
     </div>
 
     <div id="meeting-panel-attend" class="meeting-panel-content active">
@@ -439,32 +441,24 @@
       <% } %>
     </div>
 
+    <% if (user.role === 'hr' || user.role === 'admin') { %>
     <div id="meeting-panel-create" class="meeting-panel-content">
       <div class="meeting-create-panel">
-        <% if (user.role === 'hr' || user.role === 'admin') { %>
-          <div class="meeting-create-info">
-            <h3>Create a new meeting link</h3>
-            <p>Schedule a Jitsi or custom meeting from your portal. Create and share links with candidates directly from the HR/Admin workspace.</p>
-          </div>
-          <div class="meeting-actions">
-            <% if (user.role === 'hr') { %>
-            <button class="btn btn-primary" onclick="window.location.href='/office'">Open HR Office</button>
-            <% } else { %>
-            <button class="btn btn-primary" onclick="window.location.href='/admin'">Open Admin Portal</button>
-            <% } %>
-            <button class="btn btn-secondary" onclick="window.location.href='/candidate/portal'">View Candidate Portal</button>
-          </div>
-        <% } else { %>
-          <div class="meeting-create-info">
-            <h3>Request a meeting link</h3>
-            <p>You can join existing meetings from the attend tab. If you don’t have a scheduled interview yet, ask HR or admin to create a meeting link for you.</p>
-          </div>
-          <div class="meeting-actions">
-            <button class="btn btn-primary" onclick="window.location.href='/candidate/portal'">Open Interview Portal</button>
-          </div>
-        <% } %>
+        <div class="meeting-create-info">
+          <h3>Create a new meeting link</h3>
+          <p>Schedule a Jitsi or custom meeting from your portal. Create and share links with candidates directly from the HR/Admin workspace.</p>
+        </div>
+        <div class="meeting-actions">
+          <% if (user.role === 'hr') { %>
+          <button class="btn btn-primary" onclick="window.location.href='/office'">Open HR Office</button>
+          <% } else { %>
+          <button class="btn btn-primary" onclick="window.location.href='/admin'">Open Admin Portal</button>
+          <% } %>
+          <button class="btn btn-secondary" onclick="window.location.href='/candidate/portal'">View Candidate Portal</button>
+        </div>
       </div>
     </div>
+    <% } %>
   </div>
 
   <script>
