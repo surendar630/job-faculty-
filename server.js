@@ -1537,6 +1537,31 @@ app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
   });
 });
 
+      // Create a standalone meeting (not tied to an application) — HR/Admin only
+      app.post('/meetings/create', verifyToken, (req, res) => {
+        if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+        const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled } = req.body;
+        const finalPlatform = platform ? String(platform).trim().toLowerCase() : '';
+        const finalMeetingLink = meeting_link && String(meeting_link).trim() ? String(meeting_link).trim() : (finalPlatform === 'jitsi' ? getJitsiMeetingLink(`user-${req.user.id}-${Date.now()}`) : '');
+
+        if (!scheduled_at || !finalPlatform || (!finalMeetingLink && finalPlatform !== 'jitsi')) {
+          return res.status(400).json({ error: 'Please provide meeting date/time and platform. For Jitsi you can leave the link blank and it will be auto-generated.' });
+        }
+
+        const cameraVal = camera_enabled ? 1 : 0;
+        const micVal = mic_enabled ? 1 : 0;
+
+        db.run('INSERT INTO meetings (application_id, scheduled_at, platform, meeting_link, status, camera_enabled, mic_enabled, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+          [null, scheduled_at, finalPlatform, finalMeetingLink, 'scheduled', cameraVal, micVal, req.user.id], function (err) {
+            if (err) return res.status(500).json({ error: 'Error creating meeting' });
+            const meetingId = this.lastID;
+            db.get('SELECT * FROM meetings WHERE id = ?', [meetingId], (err, meeting) => {
+              if (err) return res.status(500).json({ error: 'Error fetching meeting' });
+              res.json(meeting);
+            });
+          });
+      });
+
 app.post('/meeting/:id/modify', verifyToken, (req, res) => {
   if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const meetingId = req.params.id;

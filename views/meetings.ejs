@@ -225,7 +225,43 @@
     generateJitsiBtn.addEventListener('click', generateJitsiLink);
   }
   if (generateJitsiOnlyBtn) {
-    generateJitsiOnlyBtn.addEventListener('click', generateJitsiLink);
+    // Generate a Jitsi link then prompt for a date/time and create a standalone scheduled meeting
+    generateJitsiOnlyBtn.addEventListener('click', async () => {
+      try {
+        const resp = await fetch('/meetings/jitsi-link');
+        if (!resp.ok) throw new Error('Unable to generate link');
+        const data = await resp.json();
+        const defaultDt = new Date(Date.now() + 15 * 60000); // 15 minutes from now
+        const isoLocal = defaultDt.toISOString().slice(0,16);
+        const scheduled_at = prompt('Enter scheduled date/time (YYYY-MM-DDTHH:MM)', isoLocal);
+        if (!scheduled_at) return;
+
+        const payload = {
+          scheduled_at,
+          platform: 'jitsi',
+          meeting_link: data.meeting_link,
+          camera_enabled: true,
+          mic_enabled: true
+        };
+
+        const createRes = await fetch('/meetings/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!createRes.ok) {
+          const err = await createRes.json().catch(()=>({}));
+          generatedJitsiLink.textContent = 'Failed to schedule meeting: ' + (err.error || createRes.statusText);
+          return;
+        }
+
+        const meeting = await createRes.json();
+        generatedJitsiLink.innerHTML = `Scheduled Jitsi link: <a href="${meeting.meeting_link}" target="_blank" style="color:#1d4ed8; text-decoration:underline;">${meeting.meeting_link}</a> — ${new Date(meeting.scheduled_at).toLocaleString()}`;
+      } catch (err) {
+        generatedJitsiLink.textContent = 'Unable to generate/schedule Jitsi meeting. Please try again.';
+      }
+    });
   }
 </script>
 </body>
