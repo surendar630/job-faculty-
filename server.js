@@ -836,7 +836,29 @@ app.get('/candidate', verifyToken, (req, res) => {
 app.get('/candidate/portal', verifyToken, (req, res) => {
   if (req.user.role === 'admin') return res.redirect('/admin');
   if (req.user.role === 'hr') return res.redirect('/office');
-  return res.render('meeting-portal', { role: 'candidate', user: req.user });
+
+  db.all(`SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+          FROM meetings m
+          JOIN applications a ON m.application_id = a.id
+          JOIN jobs j ON a.job_id = j.id
+          JOIN users u ON a.user_id = u.id
+          WHERE a.user_id = ? AND m.status = 'scheduled'
+          ORDER BY m.scheduled_at DESC`, [req.user.id], (err, meetings) => {
+    if (err) return res.status(500).send('Error loading candidate portal meetings');
+    if (!meetings || meetings.length === 0) {
+      return res.render('meeting-portal', { role: 'candidate', user: req.user, meetings: [] });
+    }
+
+    let pending = meetings.length;
+    meetings.forEach((meeting) => {
+      db.all('SELECT mp.*, u.name, u.email, u.role FROM meeting_participants mp JOIN users u ON mp.user_id = u.id WHERE mp.meeting_id = ?', [meeting.id], (err, participants) => {
+        meeting.participants = participants || [];
+        if (--pending === 0) {
+          res.render('meeting-portal', { role: 'candidate', user: req.user, meetings });
+        }
+      });
+    });
+  });
 });
 
 app.get('/hr', verifyToken, (req, res) => {
@@ -850,7 +872,29 @@ app.get('/hr/portal', verifyToken, (req, res) => {
     if (req.user.role === 'admin') return res.redirect('/admin');
     return res.redirect('/dashboard');
   }
-  return res.render('meeting-portal', { role: 'hr', user: req.user });
+
+  db.all(`SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+          FROM meetings m
+          JOIN applications a ON m.application_id = a.id
+          JOIN jobs j ON a.job_id = j.id
+          JOIN users u ON a.user_id = u.id
+          WHERE m.status = 'scheduled'
+          ORDER BY m.scheduled_at DESC`, [], (err, meetings) => {
+    if (err) return res.status(500).send('Error loading HR portal meetings');
+    if (!meetings || meetings.length === 0) {
+      return res.render('meeting-portal', { role: 'hr', user: req.user, meetings: [] });
+    }
+
+    let pending = meetings.length;
+    meetings.forEach((meeting) => {
+      db.all('SELECT mp.*, u.name, u.email, u.role FROM meeting_participants mp JOIN users u ON mp.user_id = u.id WHERE mp.meeting_id = ?', [meeting.id], (err, participants) => {
+        meeting.participants = participants || [];
+        if (--pending === 0) {
+          res.render('meeting-portal', { role: 'hr', user: req.user, meetings });
+        }
+      });
+    });
+  });
 });
 
 app.get('/office', verifyToken, (req, res) => {
@@ -862,10 +906,12 @@ app.get('/office', verifyToken, (req, res) => {
       if (err) return res.status(500).send('Error loading office dashboard');
       db.get('SELECT COUNT(*) as total_resumes FROM users WHERE resume_path IS NOT NULL', [], (err, resumeCount) => {
         if (err) return res.status(500).send('Error loading office dashboard');
-        db.all(`SELECT a.*, u.name as candidate_name, u.email as candidate_email, j.title as job_title, j.university, j.location
+        db.all(`SELECT a.*, u.name as candidate_name, u.email as candidate_email, j.title as job_title, j.university, j.location,
+                m.id as meeting_id, m.scheduled_at as meeting_scheduled_at, m.platform as meeting_platform, m.meeting_link, m.camera_enabled, m.mic_enabled
                 FROM applications a
                 JOIN users u ON a.user_id = u.id
                 JOIN jobs j ON a.job_id = j.id
+                LEFT JOIN meetings m ON m.application_id = a.id AND m.status = 'scheduled'
                 ORDER BY a.applied_at DESC
                 LIMIT 6`, [], (err, recentApps) => {
           if (err) return res.status(500).send('Error loading office dashboard');

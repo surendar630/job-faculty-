@@ -515,8 +515,14 @@
           <% } else { %>
             <form action="/admin/application/<%= app.id %>/meeting" method="POST" class="meeting-schedule-form" style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin-bottom:1rem;">
               <input type="datetime-local" name="scheduled_at" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; min-width:220px;">
-              <input type="text" name="platform" placeholder="Platform (Zoom/Teams)" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; min-width:180px;">
-              <input type="url" name="meeting_link" placeholder="Meeting link" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; flex:1; min-width:220px;">
+              <select name="platform" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; min-width:180px; background:#ffffff; color:#0f172a;">
+                <option value="">Select platform</option>
+                <option value="jitsi">Jitsi</option>
+                <option value="zoom">Zoom</option>
+                <option value="teams">Teams</option>
+                <option value="other">Other</option>
+              </select>
+              <input type="url" name="meeting_link" placeholder="Meeting link (optional for Jitsi)" style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; flex:1; min-width:220px;">
               <label style="display:flex; align-items:center; gap:0.5rem; padding:0.5rem;">
                 <input type="checkbox" name="camera_enabled" checked>
                 <i class="fas fa-camera"></i> Camera
@@ -636,8 +642,8 @@ function submitEditMeeting(meetingId) {
   const cameraEnabled = document.getElementById('editCameraEnabled').checked;
   const micEnabled = document.getElementById('editMicEnabled').checked;
 
-  if (!scheduledAt || !platform || !meetingLink) {
-    alert('Please fill all fields');
+  if (!scheduledAt || !platform || (platform.toLowerCase() !== 'jitsi' && !meetingLink)) {
+    alert('Please fill all fields. Leave the link blank if using Jitsi and it will be generated automatically.');
     return;
   }
 

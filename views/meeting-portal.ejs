@@ -23,6 +23,16 @@ body{font-family:var(--font-body);background:#020617;color:var(--text);min-heigh
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;}
 .card h2{font-family:var(--font-head);font-size:1.2rem;margin-bottom:12px;}
 .card p{color:var(--muted);line-height:1.7;font-size:0.95rem;}
+.meeting-card{background:rgba(59,130,246,0.06);border:1px solid rgba(96,165,250,0.18);border-radius:20px;padding:18px;margin-top:16px;}
+.meeting-card h3{font-size:1rem;margin-bottom:8px;}
+.meeting-meta{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;}
+.meeting-meta span{background:rgba(255,255,255,0.05);padding:10px 14px;border-radius:14px;font-size:0.88rem;color:var(--muted);}
+.participant-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px;}
+.participant-card{background:rgba(255,255,255,0.05);border:1px solid rgba(148,163,184,0.18);border-radius:16px;padding:12px;}
+.participant-card strong{display:block;margin-bottom:6px;font-size:0.95rem;}
+.participant-card span{font-size:0.82rem;color:var(--muted);}
+.meeting-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;}
+.meeting-actions button{flex:1 1 140px;}
 .lobby-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
 .action-panel{display:flex;flex-direction:column;gap:16px;}
 .field{display:flex;flex-direction:column;gap:6px;}
@@ -99,6 +109,46 @@ body{font-family:var(--font-body);background:#020617;color:var(--text);min-heigh
         <input id="candidateNameInput" type="text" value="Alex Sharma" placeholder="Candidate name">
       </div>
       <% } %>
+
+      <% if (meetings && meetings.length) { %>
+      <div class="card">
+        <h2>Upcoming interview sessions</h2>
+        <% meetings.forEach((meeting, index) => { %>
+          <div class="meeting-card">
+            <h3><%= meeting.job_title %> — <%= meeting.university || 'AcademiaPro Interview' %></h3>
+            <div class="meeting-meta">
+              <span><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
+              <span><strong>Platform:</strong> <%= meeting.platform || 'Jitsi' %></span>
+              <span><strong>Status:</strong> <%= meeting.status || 'Scheduled' %></span>
+            </div>
+            <div class="participant-list">
+              <% if (meeting.participants && meeting.participants.length) { %>
+                <% meeting.participants.slice(0, 3).forEach((participant) => { %>
+                  <div class="participant-card">
+                    <strong><%= participant.name %></strong>
+                    <span><%= participant.role || 'Participant' %></span>
+                    <span><%= participant.email || 'No email' %></span>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <div class="participant-card">
+                  <strong><%= role === 'hr' ? 'HR / Interviewer' : 'Candidate' %></strong>
+                  <span>Live interview participant</span>
+                  <span>Waiting to join</span>
+                </div>
+              <% } %>
+            </div>
+            <div class="meeting-actions">
+              <button class="btn" onclick="openScheduledMeeting('<%= meeting.id %>', <%- JSON.stringify(meeting.meeting_link || '') %>)">
+                <% if (role === 'hr') { %>Open live room<% } else { %>Join meeting<% } %>
+              </button>
+              <button class="control-btn" onclick="copyInviteLink(<%- JSON.stringify(meeting.meeting_link || '') %>)">Copy link</button>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+      <% } %>
+
       <div class="controls">
         <% if (role === 'hr') { %>
           <button class="btn" onclick="hostMeeting()">🎥 Start Interview</button>
@@ -183,12 +233,52 @@ body{font-family:var(--font-body);background:#020617;color:var(--text);min-heigh
 </div>
 <div id="toast" class="toast"></div>
 <script>
+const scheduledMeetings = <%- JSON.stringify(meetings || []) %>;
+let activeMeetingId = scheduledMeetings.length ? String(scheduledMeetings[0].id) : '';
+let activeMeetingLink = scheduledMeetings.length ? scheduledMeetings[0].meeting_link || '' : '';
 let localStream=null; let micOn=true; let camOn=true; let screenSharing=false; let recording=false; let timerInterval=null; let seconds=0;
 function navigateTo(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active'); if(page==='room') startTimer();}
 function switchPanel(name){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('panel-'+name).classList.add('active');document.getElementById('tab-'+name).classList.add('active');}
-function hostMeeting(){const name=document.getElementById('participantName').value.trim()||'<%= user.name %>'; const pos=document.getElementById('sessionPosition').value.trim()||'Faculty Interview'; enterRoom(name,'interviewer',pos);} 
-function joinMeeting(){const name=document.getElementById('participantName').value.trim()||'<%= user.name %>'; const pos=document.getElementById('sessionPosition').value.trim()||'Faculty Interview'; enterRoom(name,'candidate',pos);} 
-function enterRoom(name, role, position){navigateTo('room'); document.getElementById('room-title').textContent=position; document.getElementById('localNameDisplay').textContent=name; document.getElementById('localBadge').textContent=role==='interviewer'?'INTERVIEWER':'CANDIDATE'; if(role==='candidate'){document.getElementById('remoteName').textContent='Interviewer';} else {const candidateName=document.getElementById('candidateNameInput')?document.getElementById('candidateNameInput').value.trim()||'Candidate':'Candidate';document.getElementById('remoteName').textContent=candidateName;} document.getElementById('remotePlaceholder').style.display='flex'; document.getElementById('remoteCanvas').style.display='none'; showToast('Entering live interview room'); initCamera(); if(role==='interviewer') setTimeout(simulateRemoteArrival,2200); else setTimeout(() => {document.getElementById('remotePlaceholder').textContent='Interviewer is ready';},2200);} 
+function hostMeeting(){
+  if (activeMeetingLink) {
+    window.open(activeMeetingLink, '_blank');
+    return;
+  }
+  const name=document.getElementById('participantName').value.trim()||'<%= user.name %>';
+  const pos=document.getElementById('sessionPosition').value.trim()||'Faculty Interview';
+  enterRoom(name,'interviewer',pos);
+}
+function joinMeeting(){
+  if (activeMeetingLink) {
+    window.open(activeMeetingLink, '_blank');
+    return;
+  }
+  if (activeMeetingId) {
+    window.open(`/meeting/${activeMeetingId}`, '_blank');
+    return;
+  }
+  const name=document.getElementById('participantName').value.trim()||'<%= user.name %>';
+  const pos=document.getElementById('sessionPosition').value.trim()||'Faculty Interview';
+  enterRoom(name,'candidate',pos);
+}
+function openScheduledMeeting(meetingId, meetingLink) {
+  if (meetingLink) {
+    activeMeetingId = meetingId;
+    activeMeetingLink = meetingLink;
+    window.open(meetingLink, '_blank');
+    return;
+  }
+  if (meetingId) {
+    activeMeetingId = meetingId;
+    window.open(`/meeting/${meetingId}`, '_blank');
+  }
+}
+function copyInviteLink(meetingLink) {
+  const linkToCopy = meetingLink || activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : 'https://academiapro.app/join/IVW-2026-7834');
+  navigator.clipboard.writeText(linkToCopy).catch(()=>{});
+  showToast('Meeting link copied');
+}
+function enterRoom(name, role, position){navigateTo('room'); document.getElementById('room-title').textContent=position; document.getElementById('localNameDisplay').textContent=name; document.getElementById('localBadge').textContent=role==='interviewer'?'INTERVIEWER':'CANDIDATE'; if(role==='candidate'){document.getElementById('remoteName').textContent='Interviewer';} else {const candidateName=document.getElementById('candidateNameInput')?document.getElementById('candidateNameInput').value.trim()||'Candidate':'Candidate';document.getElementById('remoteName').textContent=candidateName;} document.getElementById('remotePlaceholder').style.display='flex'; document.getElementById('remoteCanvas').style.display='none'; showToast('Entering live interview room'); initCamera(); if(role==='interviewer') setTimeout(simulateRemoteArrival,2200); else setTimeout(() => {document.getElementById('remotePlaceholder').textContent='Interviewer is ready';},2200);}
 function simulateRemoteArrival(){document.getElementById('remotePlaceholder').style.display='none'; document.getElementById('remoteCanvas').style.display='block'; const canvas=document.getElementById('remoteCanvas'); const ctx=canvas.getContext('2d'); let hue=160; const draw=()=>{hue=(hue+0.4)%360; const grad=ctx.createLinearGradient(0,0,640,360); grad.addColorStop(0,`hsl(${hue},30%,20%)`); grad.addColorStop(1,`hsl(${hue+50},25%,12%)`); ctx.fillStyle=grad; ctx.fillRect(0,0,640,360); ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.fillRect(60,80,520,200); ctx.fillStyle='#fff'; ctx.font='bold 30px var(--font-head)'; ctx.fillText('Live candidate feed',80,175); requestAnimationFrame(draw);}; draw();}
 async function initCamera(){try{localStream=await navigator.mediaDevices.getUserMedia({video:true,audio:true}); const video=document.getElementById('localVideo'); video.srcObject=localStream; document.getElementById('localPlaceholder').style.display='none'; camOn=true; } catch(e){document.getElementById('localPlaceholder').style.display='flex'; showToast('Camera unavailable — using avatar fallback');}}
 function toggleMic(){micOn=!micOn; if(localStream) localStream.getAudioTracks().forEach(t=>t.enabled=micOn); const btn=document.getElementById('micBtn'); btn.classList.toggle('off',!micOn); btn.textContent=micOn?'🎤 Microphone':'🔇 Muted'; showToast(micOn?'Microphone on':'Microphone muted');}
@@ -201,7 +291,16 @@ function handleChatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();se
 function sendChat(){const input=document.getElementById('chatInput'); const text=input.value.trim(); if(!text) return; input.value=''; const container=document.getElementById('chatMessages'); const div=document.createElement('div'); div.className='msg mine'; div.innerHTML=`<div class="msg-header"><span>now</span><span class="msg-sender">You</span></div><div class="msg-bubble">${escHtml(text)}</div>`; container.appendChild(div); container.scrollTop=container.scrollHeight; setTimeout(()=>simulateReply(container),1400);} 
 function simulateReply(container){const replies=['Great question, let me clarify that further.','Can you walk me through your experience with this topic?','How would you handle a deadline under pressure?','That sounds solid — tell me more about your last project.']; const div=document.createElement('div'); div.className='msg'; div.innerHTML=`<div class="msg-header"><span class="msg-sender">Interviewer</span><span>now</span></div><div class="msg-bubble">${replies[Math.floor(Math.random()*replies.length)]}</div>`; container.appendChild(div); container.scrollTop=container.scrollHeight;}
 function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function copyInvite(){navigator.clipboard.writeText('https://academiapro.app/join/IVW-2026-7834').catch(()=>{}); showToast('Meeting code copied');}
+function copyInvite(){
+  if (activeMeetingLink) {
+    navigator.clipboard.writeText(activeMeetingLink).catch(()=>{});
+  } else if (activeMeetingId) {
+    navigator.clipboard.writeText(`${window.location.origin}/meeting/${activeMeetingId}`).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText('https://academiapro.app/join/IVW-2026-7834').catch(()=>{});
+  }
+  showToast('Meeting code copied');
+}
 function startTimer(){clearInterval(timerInterval); seconds=0; timerInterval=setInterval(()=>{seconds++; const m=String(Math.floor(seconds/60)).padStart(2,'0'); const s=String(seconds%60).padStart(2,'0'); document.getElementById('room-timer').textContent=`${m}:${s}`;},1000);}
 let toastTimer=null; function showToast(msg){const t=document.getElementById('toast'); t.textContent=msg; t.style.opacity='1'; clearTimeout(toastTimer); toastTimer=setTimeout(()=>{t.style.opacity='0';},2600);} 
 (function init(){navigateTo('lobby');})();
