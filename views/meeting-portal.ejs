@@ -221,10 +221,10 @@ body{font-family:var(--font-body);background:#020617;color:var(--text);min-heigh
       </div>
     </div>
     <div class="panel" id="panel-info">
-      <div class="info-block"><strong>Meeting link:</strong> <a id="meetingLink" href="https://meet.jit.si/JobFaculty-IVW-2026-7834" target="_blank" rel="noreferrer">https://meet.jit.si/JobFaculty-IVW-2026-7834</a></div>
-      <div class="info-block"><strong>Meeting code:</strong> IVW-2026-7834</div>
+      <div class="info-block"><strong>Meeting link:</strong> <a id="meetingLink" href="" target="_blank" rel="noreferrer"></a></div>
+      <div class="info-block"><strong>Meeting code:</strong> <span id="meetingCode">IVW-2026-7834</span></div>
       <div class="info-block"><strong>Role:</strong> <%= role === 'hr' ? 'HR interviewer' : 'Candidate' %></div>
-      <div class="info-block"><strong>Session:</strong> Faculty Interview — Fall 2026</div>
+      <div class="info-block"><strong>Session:</strong> <span id="sessionLabel">Faculty Interview — Fall 2026</span></div>
       <div class="info-block"><strong>Support:</strong> Use the meeting controls to manage audio, camera, screen share, chat, and recording.</div>
     </div>
   </div>
@@ -235,7 +235,11 @@ body{font-family:var(--font-body);background:#020617;color:var(--text);min-heigh
 const scheduledMeetings = <%- JSON.stringify(meetings || []) %>;
 let activeMeetingId = scheduledMeetings.length ? String(scheduledMeetings[0].id) : '';
 let activeMeetingLink = scheduledMeetings.length ? scheduledMeetings[0].meeting_link || '' : '';
-let localStream=null; let micOn=true; let camOn=true; let screenSharing=false; let recording=false; let timerInterval=null; let seconds=0; let jitsiApi=null; const meetingCode='IVW-2026-7834'; const jitsiRoomName='JobFaculty-'+meetingCode;
+let localStream=null; let micOn=true; let camOn=true; let screenSharing=false; let recording=false; let timerInterval=null; let seconds=0; let jitsiApi=null;
+const defaultMeetingCode='IVW-2026-7834';
+const defaultSessionLabel='Faculty Interview — Fall 2026';
+let meetingCode = defaultMeetingCode;
+let jitsiRoomName = 'JobFaculty-'+meetingCode;
 function navigateTo(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active'); if(page==='room') startTimer();}
 function switchPanel(name){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('panel-'+name).classList.add('active');document.getElementById('tab-'+name).classList.add('active');}
 function hostMeeting(){
@@ -261,14 +265,17 @@ function joinMeeting(){
   enterRoom(name,'candidate',pos);
 }
 function openScheduledMeeting(meetingId, meetingLink) {
-  if (meetingLink) {
+  if (meetingId) {
     activeMeetingId = meetingId;
+  }
+  if (meetingLink) {
     activeMeetingLink = meetingLink;
+    updateMeetingInfo();
     window.open(meetingLink, '_blank');
     return;
   }
   if (meetingId) {
-    activeMeetingId = meetingId;
+    updateMeetingInfo();
     window.open(`/meeting/${meetingId}`, '_blank');
   }
 }
@@ -291,9 +298,25 @@ function sendChat(){const input=document.getElementById('chatInput'); const text
 function simulateReply(container){const replies=['Great question, let me clarify that further.','Can you walk me through your experience with this topic?','How would you handle a deadline under pressure?','That sounds solid — tell me more about your last project.']; const div=document.createElement('div'); div.className='msg'; div.innerHTML=`<div class="msg-header"><span class="msg-sender">Interviewer</span><span>now</span></div><div class="msg-bubble">${replies[Math.floor(Math.random()*replies.length)]}</div>`; container.appendChild(div); container.scrollTop=container.scrollHeight;}
 function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function copyInvite(){const inviteLink = activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : 'https://meet.jit.si/'+jitsiRoomName); navigator.clipboard.writeText(inviteLink).catch(()=>{}); showToast('Meeting link copied');}
+function updateMeetingInfo(){
+  const linkElement = document.getElementById('meetingLink');
+  const codeElement = document.getElementById('meetingCode');
+  const sessionElement = document.getElementById('sessionLabel');
+  if (linkElement) {
+    const href = activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : `https://meet.jit.si/${jitsiRoomName}`);
+    linkElement.href = href;
+    linkElement.textContent = href;
+  }
+  if (codeElement) {
+    codeElement.textContent = meetingCode || defaultMeetingCode;
+  }
+  if (sessionElement) {
+    sessionElement.textContent = defaultSessionLabel;
+  }
+}
 function startTimer(){clearInterval(timerInterval); seconds=0; timerInterval=setInterval(()=>{seconds++; const m=String(Math.floor(seconds/60)).padStart(2,'0'); const s=String(seconds%60).padStart(2,'0'); document.getElementById('room-timer').textContent=`${m}:${s}`;},1000);}
 let toastTimer=null; function showToast(msg){const t=document.getElementById('toast'); t.textContent=msg; t.style.opacity='1'; clearTimeout(toastTimer); toastTimer=setTimeout(()=>{t.style.opacity='0';},2600);} 
-(function init(){navigateTo('lobby');})();
+(function init(){navigateTo('lobby'); updateMeetingInfo();})();
 </script>
 </body>
 </html>
