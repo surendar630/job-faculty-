@@ -181,6 +181,19 @@ db.serialize(() => {
     FOREIGN KEY (session_id) REFERENCES interview_sessions(id)
   )`);
 
+  db.run(`CREATE TABLE IF NOT EXISTS meetings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    application_id INTEGER UNIQUE,
+    scheduled_at DATETIME,
+    platform TEXT,
+    meeting_link TEXT,
+    status TEXT DEFAULT 'scheduled',
+    created_by INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (application_id) REFERENCES applications(id),
+    FOREIGN KEY (created_by) REFERENCES users(id)
+  )`);
+
   db.run(`CREATE TABLE IF NOT EXISTS password_resets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT,
@@ -634,7 +647,15 @@ app.get('/dashboard', verifyToken, (req, res) => {
 app.get('/profile', verifyToken, (req, res) => {
   db.all('SELECT a.*, j.title as job_title, j.university, j.location FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.user_id = ?', [req.user.id], (err, applications) => {
     if (err) return res.status(500).send('Error loading profile applications');
-    res.render('profile', { user: req.user, applications });
+    db.all(`SELECT m.*, j.title as job_title, j.university, a.id as application_id
+            FROM meetings m
+            JOIN applications a ON m.application_id = a.id
+            JOIN jobs j ON a.job_id = j.id
+            WHERE a.user_id = ?
+            ORDER BY m.scheduled_at DESC`, [req.user.id], (err, meetings) => {
+      if (err) return res.status(500).send('Error loading meeting information');
+      res.render('profile', { user: req.user, applications, meetings });
+    });
   });
 });
 
@@ -691,14 +712,23 @@ app.get('/office', verifyToken, (req, res) => {
                 ORDER BY a.applied_at DESC
                 LIMIT 6`, [], (err, recentApps) => {
           if (err) return res.status(500).send('Error loading office dashboard');
-          res.render('office', {
-            user: req.user,
-            stats: {
-              applications: appCount.total_applications || 0,
-              shortlisted: shortlistCount.total_shortlisted || 0,
-              resumes: resumeCount.total_resumes || 0
-            },
-            recentApps
+          db.all(`SELECT m.*, a.id as application_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+                  FROM meetings m
+                  JOIN applications a ON m.application_id = a.id
+                  JOIN jobs j ON a.job_id = j.id
+                  JOIN users u ON a.user_id = u.id
+                  ORDER BY m.scheduled_at DESC`, [], (err, meetings) => {
+            if (err) return res.status(500).send('Error loading scheduled meetings');
+            res.render('office', {
+              user: req.user,
+              stats: {
+                applications: appCount.total_applications || 0,
+                shortlisted: shortlistCount.total_shortlisted || 0,
+                resumes: resumeCount.total_resumes || 0
+              },
+              recentApps,
+              meetings
+            });
           });
         });
       });
@@ -1081,7 +1111,13 @@ app.get('/admin', verifyToken, (req, res) => {
                 db.all('SELECT i.*, a.user_id FROM interviews i JOIN applications a ON i.application_id = a.id', [], (err, interviews) => {
                   // Fetch all responses and pass to view for detailed session display
                   db.all('SELECT * FROM interview_responses', [], (err, responses) => {
-                    res.render('admin', { jobs, applications, resumeUsers, sessions, interviews, responses });
+                    db.all('SELECT * FROM meetings', [], (err, meetings) => {
+                      const meetingByApp = {};
+                      if (!err && Array.isArray(meetings)) {
+                        meetings.forEach(m => { meetingByApp[m.application_id] = m; });
+                      }
+                      res.render('admin', { jobs, applications, resumeUsers, sessions, interviews, responses, meetingByApp });
+                    });
                   });
                 });
             });
@@ -1158,6 +1194,45 @@ app.post('/hr/application/:id/unshortlist', verifyToken, (req, res) => {
   db.run('UPDATE applications SET status = ?, shortlisted_field = NULL WHERE id = ?', ['applied', req.params.id], (err) => {
     if (err) return res.status(500).send('Error updating shortlist status');
     res.redirect('/shortlisted');
+  });
+});
+
+app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  const applicationId = req.params.id;
+  const { scheduled_at, platform, meeting_link } = req.body;
+
+  if (!scheduled_at || !meeting_link || !platform) {
+    return res.status(400).send('Please provide meeting date/time, platform, and link.');
+  }
+
+  db.get('SELECT * FROM meetings WHERE application_id = ?', [applicationId], (err, existing) => {
+    if (err) return res.status(500).send('Database error while checking existing meeting');
+    if (existing) {
+      db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, status = ?, created_by = ? WHERE id = ?',
+        [scheduled_at, platform, meeting_link, 'scheduled', req.user.id, existing.id], (err) => {
+          if (err) return res.status(500).send('Error updating meeting');
+          res.redirect('/admin');
+        });
+    } else {
+      db.run('INSERT INTO meetings (application_id, scheduled_at, platform, meeting_link, status, created_by) VALUES (?, ?, ?, ?, ?, ?)',
+        [applicationId, scheduled_at, platform, meeting_link, 'scheduled', req.user.id], (err) => {
+          if (err) return res.status(500).send('Error scheduling meeting');
+          res.redirect('/admin');
+        });
+    }
+  });
+});
+
+app.get('/meeting/:id/join', verifyToken, (req, res) => {
+  const meetingId = req.params.id;
+  db.get(`SELECT m.*, a.user_id FROM meetings m JOIN applications a ON m.application_id = a.id WHERE m.id = ?`, [meetingId], (err, meeting) => {
+    if (err || !meeting) return res.status(404).send('Meeting not found');
+    if (req.user.role === 'hr' || req.user.role === 'admin' || req.user.id === meeting.user_id) {
+      if (!meeting.meeting_link) return res.status(400).send('Meeting link is not available');
+      return res.redirect(meeting.meeting_link);
+    }
+    return res.status(403).send('Access denied');
   });
 });
 

@@ -138,6 +138,41 @@
     </div>
   </div>
 
+  <% if (meetings && meetings.length > 0) { %>
+    <div class="office-card">
+      <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:1rem;">
+        <div>
+          <h3>Upcoming Interview Meetings</h3>
+          <p>Review upcoming candidate interviews and join the scheduled conference links.</p>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="office-table">
+          <thead>
+            <tr>
+              <th>Candidate</th>
+              <th>Job</th>
+              <th>Date</th>
+              <th>Platform</th>
+              <th>Join</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% meetings.forEach(meeting => { %>
+              <tr>
+                <td><%= meeting.candidate_name %><br><small style="color:#64748b;"><%= meeting.candidate_email %></small></td>
+                <td><%= meeting.job_title %></td>
+                <td><%= new Date(meeting.scheduled_at).toLocaleString() %></td>
+                <td><%= meeting.platform %></td>
+                <td><a href="/meeting/<%= meeting.id %>/join" class="btn btn-primary" style="text-decoration:none;">Join</a></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% } %>
+
   <div class="office-card">
     <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:1rem;">
       <div>
@@ -148,6 +183,7 @@
         <a href="/upload-portal"><i class="fas fa-upload"></i> Open Upload Portal</a>
         <a href="/hr/portal"><i class="fas fa-video"></i> Open Live Interview Portal</a>
         <a href="/hr/shortlisted"><i class="fas fa-file-alt"></i> View Shortlisted Candidates</a>
+        <a href="/office/shortlisted"><i class="fas fa-file-alt"></i> View Shortlisted Resumes</a>
         <a href="/shortlisted"><i class="fas fa-check-circle"></i> Shared Resume Shortlist</a>
       </div>
     </div>

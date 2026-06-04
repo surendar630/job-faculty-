@@ -466,6 +466,25 @@
   <div class="applications-section">
     <h2 style="font-size: 1.8rem; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> Your Applications</h2>
     
+    <% if (meetings && meetings.length > 0) { %>
+      <div class="meeting-section" style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:14px; padding:1.25rem; margin-bottom:1.5rem;">
+        <h3 style="margin-top:0; color:#1d4ed8;"><i class="fas fa-video"></i> Scheduled Interview Meetings</h3>
+        <% meetings.forEach(meeting => { %>
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:0.75rem; align-items:center; padding:0.9rem 0; border-bottom:1px solid #dbeafe;">
+            <div style="min-width:220px;">
+              <strong><%= meeting.job_title %></strong><br>
+              <span style="color:#475569;"><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
+            </div>
+            <div style="min-width:180px; color:#475569;"><i class="fas fa-video"></i> <%= meeting.platform %></div>
+            <div style="flex:1; color:#475569; overflow-wrap: anywhere;"><strong>Link:</strong> <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#1d4ed8; text-decoration:underline;"><%= meeting.meeting_link %></a></div>
+            <div>
+              <a href="/meeting/<%= meeting.id %>/join" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+
     <% if (applications.length === 0) { %>
       <div class="empty-state">
         <i class="fas fa-inbox"></i>

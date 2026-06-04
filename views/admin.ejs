@@ -488,6 +488,28 @@
             <p style="margin:0.35rem 0 1rem; color:#0f766e;"><strong>Shortlisted Field:</strong> <%= app.shortlisted_field %></p>
           <% } %>
 
+          <% const meeting = (meetingByApp || {})[app.id]; %>
+          <% if (meeting) { %>
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 0.95rem; margin-bottom: 1rem;">
+              <strong style="display:block; margin-bottom:0.5rem; color:#1e40af;">Scheduled Interview Meeting</strong>
+              <div style="color:#334155; line-height:1.5;">
+                <div><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></div>
+                <div><i class="fas fa-video"></i> <%= meeting.platform %></div>
+                <div><strong>Link:</strong> <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#1d4ed8; text-decoration:underline;"><%= meeting.meeting_link %></a></div>
+              </div>
+              <div style="margin-top:0.75rem;">
+                <a href="/meeting/<%= meeting.id %>/join" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+              </div>
+            </div>
+          <% } else { %>
+            <form action="/admin/application/<%= app.id %>/meeting" method="POST" class="meeting-schedule-form" style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin-bottom:1rem;">
+              <input type="datetime-local" name="scheduled_at" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; min-width:220px;">
+              <input type="text" name="platform" placeholder="Platform (Zoom/Teams)" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; min-width:180px;">
+              <input type="url" name="meeting_link" placeholder="Meeting link" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; flex:1; min-width:220px;">
+              <button type="submit" class="btn btn-primary" style="white-space:nowrap;">Schedule</button>
+            </form>
+          <% } %>
+
           <% if (app.interview_score !== null) { %>
             <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; text-align: center;">
               <strong>Interview Score: <%= app.interview_score %>%</strong>
