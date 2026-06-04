@@ -154,6 +154,7 @@
               <th>Job</th>
               <th>Date</th>
               <th>Platform</th>
+              <th>Meeting Link</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -166,6 +167,13 @@
                 <td><%= new Date(meeting.scheduled_at).toLocaleString() %></td>
                 <td><%= meeting.platform %></td>
                 <td>
+                  <% if (meeting.meeting_link) { %>
+                    <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#1d4ed8; text-decoration:underline;">Open Link</a>
+                  <% } else { %>
+                    <span style="color:#64748b;">No link</span>
+                  <% } %>
+                </td>
+                <td>
                   <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.25rem; display:inline-block;">
                     <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'ON' : 'OFF' %>
                   </span>
@@ -174,7 +182,7 @@
                   </span>
                 </td>
                 <td style="display:flex; gap:0.5rem;">
-                  <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none; font-size:0.9rem; padding:0.5rem 0.75rem;">Join</a>
+                  <a href="<%= meeting.meeting_link || ('/meeting/' + meeting.id + '/join-redirect') %>" class="btn btn-primary" target="_blank" style="text-decoration:none; font-size:0.9rem; padding:0.5rem 0.75rem;">Join</a>
                   <button class="btn btn-secondary" onclick="openHREditMeetingModal(<%= meeting.id %>, '<%= meeting.scheduled_at %>', '<%= meeting.platform %>', '<%= meeting.meeting_link %>', <%= meeting.camera_enabled %>, <%= meeting.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.5rem 0.75rem; border-radius:6px; cursor:pointer; font-size:0.9rem;">
                     <i class="fas fa-edit"></i> Edit
                   </button>
@@ -226,7 +234,10 @@
                 <td><%= new Date(app.applied_at).toLocaleDateString('en-IN') %></td>
                 <td style="display:flex; gap:0.5rem; flex-wrap:wrap;">
                   <% if (app.meeting_id) { %>
-                    <a href="/meeting/<%= app.meeting_id %>/join-redirect" class="btn btn-primary" style="text-decoration:none; font-size:0.85rem; padding:0.4rem 0.65rem;">Join</a>
+                    <a href="<%= app.meeting_link || ('/meeting/' + app.meeting_id + '/join-redirect') %>" target="_blank" class="btn btn-primary" style="text-decoration:none; font-size:0.85rem; padding:0.4rem 0.65rem;">Join</a>
+                    <% if (app.meeting_link) { %>
+                      <a href="<%= app.meeting_link %>" target="_blank" class="btn btn-secondary" style="background:#1d4ed8; color:white; border:none; padding:0.4rem 0.65rem; border-radius:6px; cursor:pointer; font-size:0.85rem; text-decoration:none;">Open Link</a>
+                    <% } %>
                     <button class="btn btn-secondary" onclick="openHREditMeetingModal(<%= app.meeting_id %>, '<%= app.meeting_scheduled_at %>', '<%= app.meeting_platform %>', '<%= app.meeting_link %>', <%= app.camera_enabled %>, <%= app.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.4rem 0.65rem; border-radius:6px; cursor:pointer; font-size:0.85rem;">
                       <i class="fas fa-edit"></i> Edit
                     </button>
