@@ -328,6 +328,7 @@
               <div style="font-size:12px;color:var(--t2)" id="tbl-cnt">0 candidates</div>
               <div style="display:flex;gap:6px">
                 <button class="btn btn-grn btn-xs" onclick="bulkShortlist()"><i class="ti ti-user-check"></i>Shortlist top 60%+</button>
+                <button class="btn btn-acc btn-xs" onclick="saveBackups()"><i class="ti ti-database"></i>Save backups</button>
                 <button class="btn btn-xs" onclick="exportCSV()"><i class="ti ti-download"></i>Export CSV</button>
               </div>
             </div>
@@ -524,7 +525,7 @@ criteria exactly: UG Qualification,PG Qualification,First Class,PhD Degree,Teach
       if(!list.length){tbody.innerHTML=`<tr><td colspan="9"><div class="empty-s" style="padding:24px"><i class="ti ti-table"></i><p>No candidates match</p></div></td></tr>`;return;}
       tbody.innerHTML=list.map(c=>{
         const comp=c.result?c.result.complianceScore:0,suit=c.result?c.result.suitabilityScore:0;
-        return`<tr class="${c.sl?'sl-row':c.rj?'rj-row':''}" id="tr-${c.id}"><td style="padding:8px 3px 8px 10px"><div class="ava">${ini(c.name)}</div></td><td><div style="font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:135px;color:var(--t1)">${c.name}</div><div style="font-size:10px;color:var(--t3)">${c.email||''}</div></td><td style="font-size:11px;color:var(--t2)">${c.pos||'—'}</td><td>${c.result?`<span class="pill ${pc(c.result.overallVerdict)}" style="font-size:10px">${pl(c.result.overallVerdict)}</span>`:`<div class="pulsing"><span></span><span></span><span></span></div>`}</td><td><div style="font-size:12px;font-weight:500;color:var(--t1)">${comp}%</div><div class="bar"><div class="bf ${bc(comp)}" style="width:${comp}%"></div></div></td><td><div style="font-size:12px;font-weight:500;color:var(--t1)">${suit}%</div><div class="bar"><div class="bf ${bc(suit)}" style="width:${suit}%"></div></div></td><td>${c.sl?'<span class="pill p-pur" style="font-size:10px">Shortlisted</span>':c.rj?'<span class="pill p-red" style="font-size:10px">Rejected</span>':'<span style="font-size:10px;color:var(--t3)">—</span>'}</td><td style="text-align:center">${c.result&&!c.sl&&!c.rj?`<button class="btn btn-xs btn-grn" onclick="slOne(${c.id})" aria-label="Shortlist" style="margin-right:3px"><i class="ti ti-user-check"></i></button><button class="btn btn-xs btn-red" onclick="rjOne(${c.id})" aria-label="Reject"><i class="ti ti-user-x"></i></button>`:c.sl||c.rj?`<button class="btn btn-xs" onclick="undoOne(${c.id})"><i class="ti ti-rotate-left"></i></button>`:''}</td><td><button class="btn btn-xs" onclick="togRow(${c.id})" aria-label="Expand"><i class="ti ti-chevron-down"></i></button></td></tr><tr id="exp-${c.id}" style="display:none"><td colspan="9" class="expanded-bg" style="padding:10px 14px">${c.result?`<div class="chips">${(c.result.criteria||[]).map(cr=>`<span class="cp ${cr.status==='PASS'?'cp-p':cr.status==='FAIL'?'cp-f':cr.status==='PARTIAL'?'cp-w':'cp-n'}"><i class="ti ${cr.status==='PASS'?'ti-check':cr.status==='FAIL'?'ti-x':cr.status==='PARTIAL'?'ti-alert-circle':'ti-minus'}"></i>${cr.name}</span>`).join('')}</div>${c.result.riskFactors&&c.result.riskFactors.length?`<div style="font-size:11px;color:#FCA5A5;margin-bottom:5px"><i class="ti ti-alert-triangle"></i> ${c.result.riskFactors.join(' · ')}</div>`:''}${c.result.strengths&&c.result.strengths.length?`<div style="font-size:11.5px;margin-bottom:4px;color:var(--t2)"><span style="font-weight:500;color:var(--t1)">Strengths:</span> ${c.result.strengths.join('; ')}</div>`:''}${c.result.gaps&&c.result.gaps.length?`<div style="font-size:11.5px;margin-bottom:4px;color:#FCA5A5"><span style="font-weight:500">Gaps:</span> ${c.result.gaps.join('; ')}</div>`:''}<div class="detail-box">${c.result.recommendation||''}</div>`:'<div style="font-size:12px;color:var(--t3);padding:6px 0">Not yet analyzed.</div>'}</td></tr>`;}).join('');
+        return`<tr class="${c.sl?'sl-row':c.rj?'rj-row':''}" id="tr-${c.id}"><td style="padding:8px 3px 8px 10px"><div class="ava">${ini(c.name)}</div></td><td><div style="font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:135px;color:var(--t1)">${c.name}</div><div style="font-size:10px;color:var(--t3)">${c.email||''}</div></td><td style="font-size:11px;color:var(--t2)">${c.pos||'—'}</td><td>${c.result?`<span class="pill ${pc(c.result.overallVerdict)}" style="font-size:10px">${pl(c.result.overallVerdict)}</span>`:`<div class="pulsing"><span></span><span></span><span></span></div>`}</td><td><div style="font-size:12px;font-weight:500;color:var(--t1)">${comp}%</div><div class="bar"><div class="bf ${bc(comp)}" style="width:${comp}%"></div></div></td><td><div style="font-size:12px;font-weight:500;color:var(--t1)">${suit}%</div><div class="bar"><div class="bf ${bc(suit)}" style="width:${suit}%"></div></div></td><td>${c.sl?'<span class="pill p-pur" style="font-size:10px">Shortlisted</span>':c.rj?'<span class="pill p-red" style="font-size:10px">Rejected</span>':'<span style="font-size:10px;color:var(--t3)">—</span>'}</td><td style="text-align:center">${c.result&&!c.sl&&!c.rj?`<button class="btn btn-xs btn-grn" onclick="slOne(${c.id})" aria-label="Shortlist" style="margin-right:3px"><i class="ti ti-user-check"></i></button><button class="btn btn-xs btn-red" onclick="rjOne(${c.id})" aria-label="Reject"><i class="ti ti-user-x"></i></button>${c.backedUp?'<span class="pill p-grn" style="font-size:10px;margin-left:4px">Saved</span>':''}`:c.sl||c.rj?`<button class="btn btn-xs" onclick="undoOne(${c.id})"><i class="ti ti-rotate-left"></i></button>${c.backedUp?'<span class="pill p-grn" style="font-size:10px;margin-left:4px">Saved</span>':''}`:''}</td><td><button class="btn btn-xs" onclick="togRow(${c.id})" aria-label="Expand"><i class="ti ti-chevron-down"></i></button></td></tr><tr id="exp-${c.id}" style="display:none"><td colspan="9" class="expanded-bg" style="padding:10px 14px">${c.result?`<div class="chips">${(c.result.criteria||[]).map(cr=>`<span class="cp ${cr.status==='PASS'?'cp-p':cr.status==='FAIL'?'cp-f':cr.status==='PARTIAL'?'cp-w':'cp-n'}"><i class="ti ${cr.status==='PASS'?'ti-check':cr.status==='FAIL'?'ti-x':cr.status==='PARTIAL'?'ti-alert-circle':'ti-minus'}"></i>${cr.name}</span>`).join('')}</div>${c.result.riskFactors&&c.result.riskFactors.length?`<div style="font-size:11px;color:#FCA5A5;margin-bottom:5px"><i class="ti ti-alert-triangle"></i> ${c.result.riskFactors.join(' · ')}</div>`:''}${c.result.strengths&&c.result.strengths.length?`<div style="font-size:11.5px;margin-bottom:4px;color:var(--t2)"><span style="font-weight:500;color:var(--t1)">Strengths:</span> ${c.result.strengths.join('; ')}</div>`:''}${c.result.gaps&&c.result.gaps.length?`<div style="font-size:11.5px;margin-bottom:4px;color:#FCA5A5"><span style="font-weight:500">Gaps:</span> ${c.result.gaps.join('; ')}</div>`:''}<div class="detail-box">${c.result.recommendation||''}</div>`:'<div style="font-size:12px;color:var(--t3);padding:6px 0">Not yet analyzed.</div>'}</td></tr>`;}).join('');
     }
 
     function togRow(id){
@@ -539,6 +540,45 @@ criteria exactly: UG Qualification,PG Qualification,First Class,PhD Degree,Teach
     function undoOne(id){const c=cands.find(x=>x.id===id);if(c){c.sl=false;c.rj=false;}sync();renderResults();}
 
     function bulkShortlist(){let n=0;cands.filter(c=>c.result&&!c.rj).forEach(c=>{if((c.result.complianceScore+c.result.suitabilityScore)/2>=60){c.sl=true;n++;}});sync();renderResults();alert(`${n} candidate(s) shortlisted (avg ≥60%).`);}
+
+    async function saveBackups(){
+      if(!cands.length){alert('No candidates available to save.');return;}
+      const payload = cands.map(c=>({
+        id: c.id,
+        name: c.name,
+        email: c.email,
+        pos: c.pos,
+        dept: c.dept,
+        experience: c.experience,
+        resume: c.resume || ''
+      }));
+      try{
+        const res = await fetch('/upload-portal/process', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ candidates: payload })
+        });
+        if(!res.ok){
+          const err = await res.json().catch(()=>({ error: 'Unable to save backups' }));
+          throw new Error(err.error || 'Unable to save backups');
+        }
+        const data = await res.json();
+        data.results.forEach(result => {
+          const candidate = cands.find(c => c.id === result.id);
+          if(candidate){
+            candidate.backupId = result.backupId;
+            candidate.backupPath = result.backupPath;
+            candidate.backedUp = true;
+            candidate.resume_aicte_status = result.aicteStatus;
+            candidate.resume_score = result.complianceScore;
+          }
+        });
+        renderResults();
+        alert(`${data.results.length} candidate(s) saved to backup storage.`);
+      } catch(e){
+        alert(e.message || 'Failed to save backups');
+      }
+    }
 
     function exportCSV(){
       const list=cands.filter(c=>c.result);

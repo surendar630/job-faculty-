@@ -45,6 +45,11 @@ if (!fs.existsSync(path.join(__dirname, 'uploads'))) {
   fs.mkdirSync(path.join(__dirname, 'uploads'), { recursive: true });
 }
 
+const backupDir = path.join(__dirname, 'uploads', 'backups');
+if (!fs.existsSync(backupDir)) {
+  fs.mkdirSync(backupDir, { recursive: true });
+}
+
 const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
@@ -272,6 +277,25 @@ db.serialize(() => {
     }
   });
 
+  db.run(`CREATE TABLE IF NOT EXISTS resume_backups (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT,
+    position TEXT,
+    department TEXT,
+    experience_years REAL,
+    resume_path TEXT,
+    resume_text TEXT,
+    aicte_status TEXT,
+    compliance_score REAL,
+    suitability_score REAL,
+    recommended_position TEXT,
+    suitability_reason TEXT,
+    created_by INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(id)
+  )`);
+
   // Create admin user
   bcrypt.hash('admin123', 10, (err, hash) => {
     db.run(`INSERT OR IGNORE INTO users (name, email, password, role) VALUES ('Admin', 'admin@academiapro.com', ?, 'admin')`, [hash]);
@@ -297,14 +321,81 @@ function verifyToken(req, res, next) {
   });
 }
 
-function analyzeResumeForAICTE(job, resumePath) {
+function analyzeResumeForAICTE(job, resumeText) {
   const category = (job && job.category) ? job.category : 'General';
   const title = (job && job.title) ? job.title : 'Faculty role';
-  const experienceHint = resumePath.length % 2 === 0 ? 'strong teaching and research experience' : 'good academic credentials with room for HR review';
-  const score = Math.min(100, Math.max(55, 70 + ((category.length % 15) - (resumePath.length % 10))));
+  const text = String(resumeText || '').toLowerCase();
+  const hasPhD = /ph\.?d|doctorate|doctoral|phd/i.test(text);
+  const hasPublications = /publication|journal|conference|scopus|ieee|springer|sciencedirect|research paper/i.test(text);
+  const hasTeaching = /teaching|lecturer|professor|assistant professor|associate professor|faculty|course instructor|academy/i.test(text);
+  const hasAdmin = /hod|head of department|dean|director|coordinator|chairperson|advisor/i.test(text);
+  const degreeMatch = /(ph\.?d|doctorate|doctoral|master's|masters|bachelor's|first class|distinction|cgpa|percentage)/i.test(text);
+  const experienceScore = Math.min(20, Math.max(0, (text.match(/\d+\s+years?|\d+yrs?/g) || []).length * 5));
+  const publicationScore = hasPublications ? 15 : 0;
+  const teachingScore = hasTeaching ? 15 : 0;
+  const adminScore = hasAdmin ? 10 : 0;
+  const qualificationScore = degreeMatch ? 20 : 10;
+  const phdScore = hasPhD ? 20 : 0;
+  const score = Math.min(100, qualificationScore + phdScore + experienceScore + publicationScore + teachingScore + adminScore);
   const aicteStatus = score >= 70 ? 'AICTE-compliant' : 'AICTE-review-needed';
-  const report = `AICTE resume scan for ${title} (${category}).\n- Compliance score: ${score}%\n- Resume has been evaluated for education, experience, publications, and job alignment.\n- Preliminary finding: ${experienceHint}.\n- Recommendation: this resume should be reviewed by HR/admin for final AICTE approval.\n- Note: detailed scan information is visible only to HR and admin.`;
-  return { report, score, aicteStatus };
+  const suggestedPosition = (() => {
+    const titleLower = title.toLowerCase();
+    if (hasPhD && /assistant professor|associate professor|professor|lecturer/.test(titleLower)) return title;
+    if (hasPhD && experienceScore >= 10) return 'Associate Professor';
+    if (hasPhD) return 'Assistant Professor';
+    if (/lecturer|instructor|faculty/.test(titleLower)) return 'Lecturer';
+    return 'Assistant Professor';
+  })();
+  const suitability = Math.min(100, Math.max(45, score + (hasPublications ? 5 : 0)));
+  const report = `AICTE resume scan for ${title} (${category}).\n- Compliance score: ${score}%\n- Suitability score: ${suitability}%\n- AICTE status: ${aicteStatus}.\n- Suggested position: ${suggestedPosition}.\n- Key strengths: ${hasPhD ? 'Strong academic qualification' : 'Academic qualification requires closer review'}; ${hasPublications ? 'Research publications detected' : 'Few publication signals'}; ${hasTeaching ? 'Teaching experience visible' : 'Teaching experience not clearly highlighted'}.`;
+  return {
+    report,
+    score,
+    aicteStatus,
+    suggestedPosition,
+    suitabilityScore: suitability,
+    complianceScore: score,
+    overallVerdict: score >= 60 ? 'QUALIFIED' : (score >= 50 ? 'PARTIALLY_QUALIFIED' : 'NOT_QUALIFIED'),
+    recommendation: score >= 70 ? 'STRONGLY_RECOMMEND' : score >= 55 ? 'RECOMMEND' : 'CONDITIONAL',
+    strengths: [hasPhD ? 'PhD or equivalent academic qualiﬁcation' : 'Relevant academic background', hasPublications ? 'Research output indicative of faculty readiness' : 'Limited publication evidence', hasTeaching ? 'Teaching or instructional experience' : 'Teaching experience needs emphasis'].filter(Boolean),
+    gaps: [!hasPhD ? 'PhD not clearly identified' : '', !hasPublications ? 'Insufficient publication evidence' : '', !hasTeaching ? 'Teaching experience not highlighted' : ''].filter(Boolean),
+    suggestedPosition,
+    suitabilityReason: hasPhD ? 'Resume aligns well with academic faculty standards' : 'Resume needs further review for academic suitability'
+  };
+}
+
+function normalizeFilename(value) {
+  return String(value || 'candidate').replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '').toLowerCase();
+}
+
+function saveResumeBackupEntry(candidate, analysis, reqUser, callback) {
+  const name = candidate.name || 'Unknown Candidate';
+  const email = candidate.email || '';
+  const position = candidate.pos || candidate.position || 'General Faculty';
+  const department = candidate.dept || candidate.department || 'General';
+  const experienceYears = parseFloat(candidate.experience || candidate.experience_years || 0) || 0;
+  const resumeText = candidate.resume || '';
+  const fileName = `${normalizeFilename(name)}_${Date.now()}.txt`;
+  const resumePath = path.join('uploads', 'backups', fileName);
+  fs.writeFile(path.join(__dirname, resumePath), resumeText, (err) => {
+    if (err) return callback(err);
+    db.run(`INSERT INTO resume_backups (name, email, position, department, experience_years, resume_path, resume_text, aicte_status, compliance_score, suitability_score, recommended_position, suitability_reason, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [name, email, position, department, experienceYears, resumePath, resumeText, analysis.aicteStatus, analysis.complianceScore, analysis.suitabilityScore, analysis.suggestedPosition, analysis.suitabilityReason, reqUser.id],
+      function (err) {
+        if (err) return callback(err);
+        callback(null, {
+          backupId: this.lastID,
+          resumePath,
+          aicteStatus: analysis.aicteStatus,
+          complianceScore: analysis.complianceScore,
+          suitabilityScore: analysis.suitabilityScore,
+          recommendedPosition: analysis.suggestedPosition,
+          suitabilityReason: analysis.suitabilityReason,
+          id: candidate.id
+        });
+      }
+    );
+  });
 }
 
 function sanitizeForHistory(body) {
@@ -756,6 +847,53 @@ app.get('/office', verifyToken, (req, res) => {
 app.get('/upload-portal', verifyToken, (req, res) => {
   if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   res.render('upload-portal');
+});
+
+app.post('/upload-portal/process', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  const candidates = Array.isArray(req.body.candidates) ? req.body.candidates : [];
+  if (!candidates.length) return res.status(400).json({ error: 'No candidates provided' });
+
+  const processedResults = [];
+  let processedCount = 0;
+  const errors = [];
+
+  candidates.forEach((candidate) => {
+    const analysis = analyzeResumeForAICTE({ title: candidate.pos || candidate.position, category: candidate.dept || candidate.department }, candidate.resume || '');
+    saveResumeBackupEntry(candidate, analysis, req.user, (err, result) => {
+      processedCount += 1;
+      if (err) {
+        errors.push({ candidate: candidate.name || 'Unknown', error: err.message });
+      } else {
+        processedResults.push({
+          id: candidate.id,
+          name: candidate.name,
+          email: candidate.email,
+          backupId: result.backupId,
+          backupPath: result.resumePath,
+          aicteStatus: result.aicteStatus,
+          complianceScore: result.complianceScore,
+          suitabilityScore: result.suitabilityScore,
+          recommendedPosition: result.recommendedPosition,
+          suitabilityReason: result.suitabilityReason
+        });
+      }
+      if (processedCount === candidates.length) {
+        if (errors.length) {
+          return res.status(500).json({ error: 'Some candidates failed to save', details: errors, results: processedResults });
+        }
+        return res.json({ results: processedResults });
+      }
+    });
+  });
+});
+
+app.get('/upload-portal/backups', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  db.all(`SELECT id, name, email, position, department, experience_years as experienceYears, resume_path as resumePath, aicte_status as aicteStatus, compliance_score as complianceScore, suitability_score as suitabilityScore, recommended_position as recommendedPosition, suitability_reason as suitabilityReason, created_at as createdAt FROM resume_backups ORDER BY created_at DESC LIMIT 200`, [], (err, rows) => {
+    if (err) return res.status(500).json({ error: 'Unable to load backups' });
+    res.json({ backups: rows });
+  });
 });
 
 app.get('/office/shortlisted', verifyToken, (req, res) => {
