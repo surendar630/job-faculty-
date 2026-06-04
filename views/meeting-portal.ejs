@@ -180,18 +180,15 @@ body{font-family:var(--font-body);background:#020617;color:var(--text);min-heigh
 
     <div class="video-grid">
       <div class="video-panel">
+        <div class="video-preview" id="jitsiContainer" style="min-height:380px;"></div>
+        <div class="video-meta"><span id="jitsiStatus">Jitsi meeting room</span><span class="room-badge">JITSI</span></div>
+      </div>
+      <div class="video-panel">
         <div class="video-preview" id="localPreview">
           <video id="localVideo" autoplay muted playsinline></video>
           <div id="localPlaceholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:rgba(15,23,42,0.85);color:var(--muted);font-size:1.1rem;">Camera off</div>
         </div>
         <div class="video-meta"><span id="localNameDisplay"><%= user.name %></span><span id="localBadge">YOU</span></div>
-      </div>
-      <div class="video-panel">
-        <div class="video-preview" id="remotePreview">
-          <canvas id="remoteCanvas" width="640" height="360" style="display:none;width:100%;height:100%;object-fit:cover;"></canvas>
-          <div id="remotePlaceholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:rgba(15,23,42,0.85);color:var(--muted);font-size:1.1rem;">Waiting for other participant</div>
-        </div>
-        <div class="video-meta"><span id="remoteName">Interviewer</span><span class="room-badge" style="background:rgba(16,185,129,0.12);color:#a7f3d0;">REMOTE</span></div>
       </div>
     </div>
 
@@ -224,19 +221,21 @@ body{font-family:var(--font-body);background:#020617;color:var(--text);min-heigh
       </div>
     </div>
     <div class="panel" id="panel-info">
+      <div class="info-block"><strong>Meeting link:</strong> <a id="meetingLink" href="https://meet.jit.si/JobFaculty-IVW-2026-7834" target="_blank" rel="noreferrer">https://meet.jit.si/JobFaculty-IVW-2026-7834</a></div>
       <div class="info-block"><strong>Meeting code:</strong> IVW-2026-7834</div>
       <div class="info-block"><strong>Role:</strong> <%= role === 'hr' ? 'HR interviewer' : 'Candidate' %></div>
       <div class="info-block"><strong>Session:</strong> Faculty Interview — Fall 2026</div>
-      <div class="info-block"><strong>Support:</strong> Use the meeting controls to manage audio, camera, and screen share.</div>
+      <div class="info-block"><strong>Support:</strong> Use the meeting controls to manage audio, camera, screen share, chat, and recording.</div>
     </div>
   </div>
 </div>
 <div id="toast" class="toast"></div>
+<script src="https://meet.jit.si/external_api.js"></script>
 <script>
 const scheduledMeetings = <%- JSON.stringify(meetings || []) %>;
 let activeMeetingId = scheduledMeetings.length ? String(scheduledMeetings[0].id) : '';
 let activeMeetingLink = scheduledMeetings.length ? scheduledMeetings[0].meeting_link || '' : '';
-let localStream=null; let micOn=true; let camOn=true; let screenSharing=false; let recording=false; let timerInterval=null; let seconds=0;
+let localStream=null; let micOn=true; let camOn=true; let screenSharing=false; let recording=false; let timerInterval=null; let seconds=0; let jitsiApi=null; const meetingCode='IVW-2026-7834'; const jitsiRoomName='JobFaculty-'+meetingCode;
 function navigateTo(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active'); if(page==='room') startTimer();}
 function switchPanel(name){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('panel-'+name).classList.add('active');document.getElementById('tab-'+name).classList.add('active');}
 function hostMeeting(){
@@ -274,33 +273,24 @@ function openScheduledMeeting(meetingId, meetingLink) {
   }
 }
 function copyInviteLink(meetingLink) {
-  const linkToCopy = meetingLink || activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : 'https://academiapro.app/join/IVW-2026-7834');
+  const linkToCopy = meetingLink || activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : 'https://meet.jit.si/'+jitsiRoomName);
   navigator.clipboard.writeText(linkToCopy).catch(()=>{});
   showToast('Meeting link copied');
 }
-function enterRoom(name, role, position){navigateTo('room'); document.getElementById('room-title').textContent=position; document.getElementById('localNameDisplay').textContent=name; document.getElementById('localBadge').textContent=role==='interviewer'?'INTERVIEWER':'CANDIDATE'; if(role==='candidate'){document.getElementById('remoteName').textContent='Interviewer';} else {const candidateName=document.getElementById('candidateNameInput')?document.getElementById('candidateNameInput').value.trim()||'Candidate':'Candidate';document.getElementById('remoteName').textContent=candidateName;} document.getElementById('remotePlaceholder').style.display='flex'; document.getElementById('remoteCanvas').style.display='none'; showToast('Entering live interview room'); initCamera(); if(role==='interviewer') setTimeout(simulateRemoteArrival,2200); else setTimeout(() => {document.getElementById('remotePlaceholder').textContent='Interviewer is ready';},2200);}
+function enterRoom(name, role, position){navigateTo('room'); document.getElementById('room-title').textContent=position; document.getElementById('localNameDisplay').textContent=name; document.getElementById('localBadge').textContent=role==='interviewer'?'INTERVIEWER':'CANDIDATE'; if(role==='candidate'){document.getElementById('remoteName').textContent='Interviewer';} else {const candidateName=document.getElementById('candidateNameInput')?document.getElementById('candidateNameInput').value.trim()||'Candidate':'Candidate';document.getElementById('remoteName').textContent=candidateName;} document.getElementById('remotePlaceholder').style.display='flex'; document.getElementById('remoteCanvas').style.display='none'; showToast('Entering live interview room'); initCamera(); initJitsi(name);}
 function simulateRemoteArrival(){document.getElementById('remotePlaceholder').style.display='none'; document.getElementById('remoteCanvas').style.display='block'; const canvas=document.getElementById('remoteCanvas'); const ctx=canvas.getContext('2d'); let hue=160; const draw=()=>{hue=(hue+0.4)%360; const grad=ctx.createLinearGradient(0,0,640,360); grad.addColorStop(0,`hsl(${hue},30%,20%)`); grad.addColorStop(1,`hsl(${hue+50},25%,12%)`); ctx.fillStyle=grad; ctx.fillRect(0,0,640,360); ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.fillRect(60,80,520,200); ctx.fillStyle='#fff'; ctx.font='bold 30px var(--font-head)'; ctx.fillText('Live candidate feed',80,175); requestAnimationFrame(draw);}; draw();}
 async function initCamera(){try{localStream=await navigator.mediaDevices.getUserMedia({video:true,audio:true}); const video=document.getElementById('localVideo'); video.srcObject=localStream; document.getElementById('localPlaceholder').style.display='none'; camOn=true; } catch(e){document.getElementById('localPlaceholder').style.display='flex'; showToast('Camera unavailable — using avatar fallback');}}
-function toggleMic(){micOn=!micOn; if(localStream) localStream.getAudioTracks().forEach(t=>t.enabled=micOn); const btn=document.getElementById('micBtn'); btn.classList.toggle('off',!micOn); btn.textContent=micOn?'🎤 Microphone':'🔇 Muted'; showToast(micOn?'Microphone on':'Microphone muted');}
-function toggleCamera(){camOn=!camOn; if(localStream) localStream.getVideoTracks().forEach(t=>t.enabled=camOn); document.getElementById('localVideo').style.display=camOn?'block':'none'; document.getElementById('localPlaceholder').style.display=camOn?'none':'flex'; const btn=document.getElementById('camBtn'); btn.classList.toggle('off',!camOn); btn.textContent=camOn?'📹 Camera':'📷 Camera off'; showToast(camOn?'Camera on':'Camera off');}
-async function toggleScreenShare(){if(!screenSharing){try{const ss=await navigator.mediaDevices.getDisplayMedia({video:true}); document.getElementById('localVideo').srcObject=ss; screenSharing=true; document.getElementById('screenBtn').classList.add('off'); showToast('Screen sharing started'); ss.getVideoTracks()[0].onended=stopScreenShare;}catch(e){showToast('Screen share cancelled');}}else stopScreenShare();}
+function toggleMic(){micOn=!micOn; if(jitsiApi){jitsiApi.executeCommand('toggleAudio');} if(localStream) localStream.getAudioTracks().forEach(t=>t.enabled=micOn); const btn=document.getElementById('micBtn'); btn.classList.toggle('off',!micOn); btn.textContent=micOn?'🎤 Microphone':'🔇 Muted'; showToast(micOn?'Microphone on':'Microphone muted');}
+function toggleCamera(){camOn=!camOn; if(jitsiApi){jitsiApi.executeCommand('toggleVideo');} if(localStream) localStream.getVideoTracks().forEach(t=>t.enabled=camOn); document.getElementById('localVideo').style.display=camOn?'block':'none'; document.getElementById('localPlaceholder').style.display=camOn?'none':'flex'; const btn=document.getElementById('camBtn'); btn.classList.toggle('off',!camOn); btn.textContent=camOn?'📹 Camera':'📷 Camera off'; showToast(camOn?'Camera on':'Camera off');}
+async function toggleScreenShare(){if(jitsiApi){try{jitsiApi.executeCommand('toggleShareScreen'); screenSharing=!screenSharing; document.getElementById('screenBtn').classList.toggle('off',screenSharing); showToast(screenSharing?'Screen sharing started':'Screen sharing stopped'); return;}catch(e){showToast('Screen share unavailable');}} if(!screenSharing){try{const ss=await navigator.mediaDevices.getDisplayMedia({video:true}); document.getElementById('localVideo').srcObject=ss; screenSharing=true; document.getElementById('screenBtn').classList.add('off'); showToast('Screen sharing started'); ss.getVideoTracks()[0].onended=stopScreenShare;}catch(e){showToast('Screen share cancelled');}}else stopScreenShare();}
 function stopScreenShare(){screenSharing=false; document.getElementById('screenBtn').classList.remove('off'); if(localStream) document.getElementById('localVideo').srcObject=localStream; showToast('Screen sharing stopped');}
-function toggleRecording(){recording=!recording; const btn=document.getElementById('recordBtn'); btn.classList.toggle('off',!recording); btn.textContent=recording?'⏹ Stop':'🔴 Record'; showToast(recording?'Recording started':'Recording stopped');}
-function leaveRoom(){if(confirm('Leave the interview room?')){if(localStream){localStream.getTracks().forEach(t=>t.stop());} clearInterval(timerInterval); navigateTo('lobby'); showToast('Left the interview room');}}
+function toggleRecording(){recording=!recording; const btn=document.getElementById('recordBtn'); btn.classList.toggle('off',!recording); btn.textContent=recording?'⏹ Stop':'🔴 Record'; if(jitsiApi){try{jitsiApi.executeCommand('toggleRecording'); showToast(recording?'Recording started':'Recording stopped'); return;}catch(e){showToast('Recording feature may not be available on this Jitsi instance');}} else {showToast(recording?'Recording started':'Recording stopped');}}
+function leaveRoom(){if(confirm('Leave the interview room?')){if(localStream){localStream.getTracks().forEach(t=>t.stop());} if(jitsiApi){jitsiApi.dispose(); jitsiApi=null;} clearInterval(timerInterval); navigateTo('lobby'); showToast('Left the interview room');}}
 function handleChatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}}
 function sendChat(){const input=document.getElementById('chatInput'); const text=input.value.trim(); if(!text) return; input.value=''; const container=document.getElementById('chatMessages'); const div=document.createElement('div'); div.className='msg mine'; div.innerHTML=`<div class="msg-header"><span>now</span><span class="msg-sender">You</span></div><div class="msg-bubble">${escHtml(text)}</div>`; container.appendChild(div); container.scrollTop=container.scrollHeight; setTimeout(()=>simulateReply(container),1400);} 
 function simulateReply(container){const replies=['Great question, let me clarify that further.','Can you walk me through your experience with this topic?','How would you handle a deadline under pressure?','That sounds solid — tell me more about your last project.']; const div=document.createElement('div'); div.className='msg'; div.innerHTML=`<div class="msg-header"><span class="msg-sender">Interviewer</span><span>now</span></div><div class="msg-bubble">${replies[Math.floor(Math.random()*replies.length)]}</div>`; container.appendChild(div); container.scrollTop=container.scrollHeight;}
 function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function copyInvite(){
-  if (activeMeetingLink) {
-    navigator.clipboard.writeText(activeMeetingLink).catch(()=>{});
-  } else if (activeMeetingId) {
-    navigator.clipboard.writeText(`${window.location.origin}/meeting/${activeMeetingId}`).catch(()=>{});
-  } else {
-    navigator.clipboard.writeText('https://academiapro.app/join/IVW-2026-7834').catch(()=>{});
-  }
-  showToast('Meeting code copied');
-}
+function copyInvite(){const inviteLink = activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : 'https://meet.jit.si/'+jitsiRoomName); navigator.clipboard.writeText(inviteLink).catch(()=>{}); showToast('Meeting link copied');}
 function startTimer(){clearInterval(timerInterval); seconds=0; timerInterval=setInterval(()=>{seconds++; const m=String(Math.floor(seconds/60)).padStart(2,'0'); const s=String(seconds%60).padStart(2,'0'); document.getElementById('room-timer').textContent=`${m}:${s}`;},1000);}
 let toastTimer=null; function showToast(msg){const t=document.getElementById('toast'); t.textContent=msg; t.style.opacity='1'; clearTimeout(toastTimer); toastTimer=setTimeout(()=>{t.style.opacity='0';},2600);} 
 (function init(){navigateTo('lobby');})();

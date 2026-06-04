@@ -894,6 +894,12 @@ app.get('/candidate/portal', verifyToken, (req, res) => {
   });
 });
 
+app.get('/meetings', verifyToken, (req, res) => {
+  if (req.user.role === 'admin') return res.redirect('/admin');
+  if (req.user.role === 'hr') return res.render('meeting-portal', { role: 'hr', user: req.user });
+  return res.render('meeting-portal', { role: 'candidate', user: req.user });
+});
+
 app.get('/hr', verifyToken, (req, res) => {
   if (req.user.role === 'admin') return res.redirect('/admin');
   if (req.user.role !== 'hr') return res.redirect('/dashboard');
