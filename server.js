@@ -996,12 +996,12 @@ app.get('/office', verifyToken, (req, res) => {
 });
 
 app.get('/upload-portal', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  if (req.user.role !== 'hr') return res.status(403).send('Access denied');
   res.render('upload-portal');
 });
 
 app.post('/upload-portal/process', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  if (req.user.role !== 'hr') return res.status(403).send('Access denied');
   const candidates = Array.isArray(req.body.candidates) ? req.body.candidates : [];
   if (!candidates.length) return res.status(400).json({ error: 'No candidates provided' });
 
@@ -1040,7 +1040,7 @@ app.post('/upload-portal/process', verifyToken, (req, res) => {
 });
 
 app.get('/upload-portal/backups', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  if (req.user.role !== 'hr') return res.status(403).send('Access denied');
   db.all(`SELECT id, name, email, position, department, experience_years as experienceYears, resume_path as resumePath, aicte_status as aicteStatus, compliance_score as complianceScore, suitability_score as suitabilityScore, recommended_position as recommendedPosition, suitability_reason as suitabilityReason, created_at as createdAt FROM resume_backups ORDER BY created_at DESC LIMIT 200`, [], (err, rows) => {
     if (err) return res.status(500).json({ error: 'Unable to load backups' });
     res.json({ backups: rows });
