@@ -92,6 +92,81 @@
   flex-direction: column;
 }
 
+.tab-header {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.tab-button {
+  padding: 0.85rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #475569;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.tab-button.active {
+  background: #6366f1;
+  color: white;
+  border-color: #6366f1;
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+.attendance-panel {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+}
+
+.attendance-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.attendance-member {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.attendance-member h4 {
+  margin: 0 0 0.5rem;
+  color: #0f172a;
+}
+
+.attendance-member p {
+  margin: 0.5rem 0;
+  color: #475569;
+}
+
+.attendance-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.attendance-actions .btn {
+  min-width: 160px;
+}
+
 .dashboard-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
@@ -171,11 +246,16 @@
     </div>
   </div>
 
-  <!-- DASHBOARD CARDS -->
+  <!-- DASHBOARD TABS -->
   <div style="padding: 0 0 2rem;">
-    <h2 style="font-size: 1.8rem; margin-bottom: 2rem;"><i class="fas fa-th-large"></i> What would you like to do?</h2>
-    
-    <div class="dashboard-grid">
+    <div class="tab-header">
+      <button class="tab-button active" id="overviewTab" onclick="switchDashboardTab('overview')">Overview</button>
+      <button class="tab-button" id="attendanceTab" onclick="switchDashboardTab('attendance')">Jitsi Attendance</button>
+    </div>
+
+    <div id="overviewPane" class="tab-pane active">
+      <h2 style="font-size: 1.8rem; margin-bottom: 2rem;"><i class="fas fa-th-large"></i> What would you like to do?</h2>
+      <div class="dashboard-grid">
       <div class="dashboard-card" onclick="window.location.href='/jobs'">
         <i class="fas fa-briefcase"></i>
         <h3>Browse Jobs</h3>
@@ -267,6 +347,66 @@
     </div>
   </div>
 
+  <div id="attendancePane" class="tab-pane">
+    <div class="attendance-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
+        <div>
+          <h2 style="font-size: 1.8rem; margin: 0;"><i class="fas fa-users"></i> Jitsi Meeting Attendance</h2>
+          <p style="color:#64748b; margin:0.5rem 0 0;">Track and join your upcoming live meeting with up to three participant roles.</p>
+        </div>
+        <span style="background:#eef2ff; color:#4338ca; padding:0.75rem 1rem; border-radius:999px; font-weight:600;">3-member session ready</span>
+      </div>
+
+      <% if (meetings && meetings.length) { %>
+      <% meetings.forEach(meeting => { %>
+      <div style="margin-top: 1.75rem; padding: 1.5rem; border-radius: 16px; border: 1px solid #e2e8f0; background:#ffffff;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap;">
+          <div>
+            <h3 style="margin:0 0 0.5rem; color:#0f172a;"><i class="fas fa-video"></i> <%= meeting.job_title %> - <%= meeting.university %></h3>
+            <p style="margin:0; color:#64748b;">Scheduled: <strong><%= new Date(meeting.scheduled_at).toLocaleString() %></strong></p>
+            <p style="margin:0.5rem 0 0; color:#475569;">Meeting code: <strong><%= meeting.meeting_link ? meeting.meeting_link.split('/').pop() : 'N/A' %></strong></p>
+          </div>
+          <div class="attendance-actions">
+            <button class="btn btn-primary" onclick="window.location.href='/meeting/<%= meeting.id %>'"><i class="fas fa-sign-in-alt"></i> Join Meeting</button>
+            <% if (meeting.meeting_link) { %>
+            <button class="btn btn-secondary" onclick="window.open('<%= meeting.meeting_link %>', '_blank')"><i class="fas fa-external-link-alt"></i> Open Jitsi</button>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="attendance-row">
+          <% let attendees = meeting.participants && meeting.participants.length ? meeting.participants.slice(0, 3) : [];
+             if (!attendees.length) {
+               attendees = [
+                 { name: meeting.candidate_name || 'Candidate', role: 'Candidate' },
+                 { name: 'HR Representative', role: 'HR' },
+                 { name: 'Admin', role: 'Admin' }
+               ];
+             }
+             while (attendees.length < 3) {
+               attendees.push({ name: 'Pending participant', role: 'Participant' });
+             }
+          %>
+          <% attendees.forEach(member => { %>
+          <div class="attendance-member">
+            <h4><i class="fas fa-user-circle"></i> <%= member.name %></h4>
+            <p><strong>Role:</strong> <%= member.role.charAt(0).toUpperCase() + member.role.slice(1) %></p>
+            <% if (member.email) { %><p><strong>Email:</strong> <%= member.email %></p><% } %>
+            <p style="margin-top:0.75rem;color:#2563eb;font-weight:600;"><i class="fas fa-circle" style="font-size:0.75rem;color:#10b981;margin-right:0.4rem;"></i> Active</p>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+      <% }); %>
+      <% } else { %>
+      <div style="padding: 2rem; margin-top:1rem; border-radius:16px; background:#f8fafc; border:1px solid #c7d2fe;">
+        <h3 style="margin-top:0; color:#0f172a;">No scheduled Jitsi meetings yet</h3>
+        <p style="margin:0.75rem 0 0; color:#475569;">Once a meeting is scheduled, it will appear here with up to three participants you can join live.</p>
+      </div>
+      <% } %>
+    </div>
+  </div>
+
   <!-- FEATURED OPPORTUNITIES -->
   <div class="section" style="margin-top: 3rem; margin-bottom: 3rem;">
     <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;"><i class="fas fa-star"></i> Featured Opportunities</h2>
@@ -341,13 +481,25 @@ window.onclick = function(event) {
 }
 
 // File input styling
-document.getElementById('resume').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (file) {
-    // You could add file validation here
-    console.log('Selected file:', file.name);
-  }
-});
+const resumeInput = document.getElementById('resume');
+if (resumeInput) {
+  resumeInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      // You could add file validation here
+      console.log('Selected file:', file.name);
+    }
+  });
+}
+
+function switchDashboardTab(tab) {
+  document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+  const tabButton = document.getElementById(`${tab}Tab`);
+  const tabPane = document.getElementById(`${tab}Pane`);
+  if (tabButton) tabButton.classList.add('active');
+  if (tabPane) tabPane.classList.add('active');
+}
 </script>
 
 </body>

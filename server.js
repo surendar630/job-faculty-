@@ -759,7 +759,42 @@ app.get('/dashboard', verifyToken, (req, res) => {
             offers: completedStats ? completedStats.completed_interview_count : 0, // Using completed interviews as proxy for offers
             favorites: favoriteStats ? favoriteStats.favorite_count : 0
           };
-          res.render('dashboard', { user: req.user, stats: stats });
+
+          const meetingQuery = req.user.role === 'admin' || req.user.role === 'hr'
+            ? `SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+               FROM meetings m
+               JOIN applications a ON m.application_id = a.id
+               JOIN jobs j ON a.job_id = j.id
+               JOIN users u ON a.user_id = u.id
+               WHERE m.status = 'scheduled'
+               ORDER BY m.scheduled_at DESC
+               LIMIT 5`
+            : `SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+               FROM meetings m
+               JOIN applications a ON m.application_id = a.id
+               JOIN jobs j ON a.job_id = j.id
+               JOIN users u ON a.user_id = u.id
+               WHERE a.user_id = ? AND m.status = 'scheduled'
+               ORDER BY m.scheduled_at DESC
+               LIMIT 5`;
+          const params = req.user.role === 'admin' || req.user.role === 'hr' ? [] : [req.user.id];
+
+          db.all(meetingQuery, params, (err, meetings) => {
+            if (err) return res.status(500).send('Error loading dashboard meetings');
+            if (!meetings || !meetings.length) {
+              return res.render('dashboard', { user: req.user, stats: stats, meetings: [] });
+            }
+
+            let pending = meetings.length;
+            meetings.forEach((meeting) => {
+              db.all('SELECT mp.*, u.name, u.email, u.role FROM meeting_participants mp JOIN users u ON mp.user_id = u.id WHERE mp.meeting_id = ?', [meeting.id], (err, participants) => {
+                meeting.participants = participants || [];
+                if (--pending === 0) {
+                  res.render('dashboard', { user: req.user, stats: stats, meetings });
+                }
+              });
+            });
+          });
         });
       });
     });
