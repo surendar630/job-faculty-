@@ -333,7 +333,24 @@ function verifyToken(req, res, next) {
 function analyzeResumeForAICTE(job, resumeText) {
   const category = (job && job.category) ? job.category : 'General';
   const title = (job && job.title) ? job.title : 'Faculty role';
-  const text = String(resumeText || '').toLowerCase();
+  let text = String(resumeText || '');
+
+  // If resumeText looks like a file path under uploads, try to read file contents
+  try {
+    if (typeof resumeText === 'string' && (resumeText.includes('/') || resumeText.startsWith('uploads') || resumeText.match(/\.(pdf|docx?|txt|md)$/i))) {
+      const possiblePath = path.isAbsolute(resumeText) ? resumeText : path.join(__dirname, resumeText);
+      if (fs.existsSync(possiblePath)) {
+        const buf = fs.readFileSync(possiblePath);
+        // Attempt to convert buffer to utf8 text. For binary formats this will be noisy
+        // but often contains searchable text fragments (PDFs/text-based DOCX). This
+        // is a pragmatic fallback when specialized parsers are not available.
+        text = buf.toString('utf8');
+      }
+    }
+  } catch (e) {
+    // ignore file read errors and fall back to raw input
+  }
+  text = String(text || '').toLowerCase();
   const hasPhD = /ph\.?d|doctorate|doctoral|phd/i.test(text);
   const hasPublications = /publication|journal|conference|scopus|ieee|springer|sciencedirect|research paper/i.test(text);
   const hasTeaching = /teaching|lecturer|professor|assistant professor|associate professor|faculty|course instructor|academy/i.test(text);
