@@ -101,7 +101,7 @@
           <div class="form-group">
             <label for="meetingLink">Meeting link (optional for Jitsi)</label>
             <input id="meetingLink" type="url" name="meeting_link" placeholder="https://meet.jit.si/ParticularRegretsKissNervously">
-            <span class="helper">Leave blank for Jitsi to auto-generate the meeting room link.</span>
+            <span class="helper">Leave blank for Jitsi to auto-generate the meeting room link, or click Generate Jitsi Link.</span>
           </div>
           <div class="form-group">
             <label><input type="checkbox" name="camera_enabled" checked> Enable camera</label>
@@ -112,11 +112,14 @@
         </div>
         <div class="meeting-actions">
           <button class="btn-primary" type="submit"><i class="fas fa-calendar-check"></i> Schedule Meeting</button>
+          <button class="btn-secondary" type="button" id="generateJitsiBtn"><i class="fas fa-link"></i> Generate Jitsi Link</button>
           <button class="btn-secondary" type="button" onclick="window.location.href='/admin'">Open Admin Portal</button>
         </div>
       </form>
       <% } else { %>
       <div class="helper">No candidate applications were found yet. Please add applications or use the admin view to manage candidates first.</div>
+      <button class="btn-primary" type="button" id="generateJitsiOnlyBtn" style="margin-top:1rem;"><i class="fas fa-link"></i> Generate Jitsi Meeting Link</button>
+      <div id="generatedJitsiLink" class="helper" style="margin-top:0.75rem; word-wrap:break-word;"></div>
       <% } %>
     </div>
 
@@ -187,10 +190,42 @@
 <script>
   const applicationSelect = document.getElementById('applicationSelect');
   const createMeetingForm = document.getElementById('createMeetingForm');
+  const generateJitsiBtn = document.getElementById('generateJitsiBtn');
+  const generateJitsiOnlyBtn = document.getElementById('generateJitsiOnlyBtn');
+  const meetingLinkInput = document.getElementById('meetingLink');
+  const generatedJitsiLink = document.getElementById('generatedJitsiLink');
+
   if (applicationSelect && createMeetingForm) {
     applicationSelect.addEventListener('change', () => {
       createMeetingForm.action = `/admin/application/${applicationSelect.value}/meeting`;
     });
+  }
+
+  async function generateJitsiLink() {
+    try {
+      const response = await fetch('/meetings/jitsi-link');
+      if (!response.ok) throw new Error('Unable to generate link');
+      const data = await response.json();
+      if (meetingLinkInput) {
+        meetingLinkInput.value = data.meeting_link;
+      }
+      if (generatedJitsiLink) {
+        generatedJitsiLink.textContent = `Generated Jitsi link: ${data.meeting_link}`;
+      }
+    } catch (error) {
+      if (generatedJitsiLink) {
+        generatedJitsiLink.textContent = 'Unable to generate Jitsi meeting link. Please try again.';
+      } else {
+        alert('Unable to generate Jitsi meeting link.');
+      }
+    }
+  }
+
+  if (generateJitsiBtn) {
+    generateJitsiBtn.addEventListener('click', generateJitsiLink);
+  }
+  if (generateJitsiOnlyBtn) {
+    generateJitsiOnlyBtn.addEventListener('click', generateJitsiLink);
   }
 </script>
 </body>

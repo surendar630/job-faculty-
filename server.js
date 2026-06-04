@@ -834,6 +834,12 @@ app.get('/meetings', verifyToken, (req, res) => {
   }
 });
 
+app.get('/meetings/jitsi-link', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+  const link = getJitsiMeetingLink(`user-${req.user.id}-${Date.now()}`);
+  res.json({ meeting_link: link });
+});
+
 app.get('/profile', verifyToken, (req, res) => {
   db.all('SELECT a.*, j.title as job_title, j.university, j.location FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.user_id = ?', [req.user.id], (err, applications) => {
     if (err) return res.status(500).send('Error loading profile applications');
@@ -892,12 +898,6 @@ app.get('/candidate/portal', verifyToken, (req, res) => {
       });
     });
   });
-});
-
-app.get('/meetings', verifyToken, (req, res) => {
-  if (req.user.role === 'admin') return res.redirect('/admin');
-  if (req.user.role === 'hr') return res.render('meeting-portal', { role: 'hr', user: req.user });
-  return res.render('meeting-portal', { role: 'candidate', user: req.user });
 });
 
 app.get('/hr', verifyToken, (req, res) => {
