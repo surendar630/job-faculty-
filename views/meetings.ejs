@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Center - AcademiaPro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="/styles.css" rel="stylesheet">
+<style>
+  body { font-family: 'DM Sans', sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 0; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: white; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; }
+  nav .logo { font-size: 1.25rem; font-weight: 700; color: #4f46e5; }
+  nav .nav-links { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  nav .nav-links span, nav .nav-links a { color: #475569; cursor: pointer; text-decoration: none; font-weight: 500; }
+  .container { max-width: 1180px; margin: 2rem auto; padding: 0 1.5rem; }
+  .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+  .header-title { max-width: 780px; }
+  .header-title h1 { margin: 0 0 0.5rem; font-size: 2rem; }
+  .header-title p { margin: 0; color: #64748b; }
+  .panel { display: grid; gap: 1.5rem; }
+  .card { background: white; border: 1px solid #e2e8f0; border-radius: 18px; padding: 1.5rem; box-shadow: 0 20px 30px rgba(15,23,42,0.04); }
+  .grid-2 { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 1rem; }
+  .meeting-card { border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.25rem; background: #f8fafc; }
+  .meeting-card h3 { margin: 0 0 0.75rem; font-size: 1.05rem; }
+  .meeting-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .meeting-meta span { display: block; color: #475569; font-size: 0.95rem; }
+  .meeting-meta strong { color: #0f172a; }
+  .meeting-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+  .meeting-actions a, .meeting-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.9rem 1rem; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; text-decoration: none; }
+  .btn-primary { background: #4f46e5; color: white; }
+  .btn-secondary { background: #e2e8f0; color: #0f172a; }
+  .form-group { display: grid; gap: 0.5rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.85rem; color: #475569; font-weight: 600; }
+  .form-group input, .form-group select { width: 100%; border: 1px solid #cbd5e1; border-radius: 12px; padding: 0.95rem 1rem; font-size: 0.95rem; color: #0f172a; background: white; }
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+  .badge { background: #eef2ff; color: #3730a3; padding: 0.4rem 0.75rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.85rem; }
+  .helper { color: #64748b; font-size: 0.9rem; line-height: 1.6; }
+  .section-title { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+  .section-title h2 { margin: 0; font-size: 1.4rem; }
+  .meeting-grid { display: grid; gap: 1rem; }
+  @media(max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+  @media(max-width: 640px) { nav { flex-direction: column; align-items: flex-start; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
+  <div class="nav-links">
+    <a href="/dashboard"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="/jobs"><i class="fas fa-briefcase"></i> Jobs</a>
+    <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+    <% if (user.role === 'hr') { %><a href="/office"><i class="fas fa-building"></i> Office</a><% } %>
+    <% if (user.role === 'admin') { %><a href="/admin"><i class="fas fa-cog"></i> Admin</a><% } %>
+    <form action="/logout" method="POST" style="display:inline;">
+      <button type="submit" style="background:none;border:none;color:#475569;cursor:pointer;font-weight:600;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
+  </div>
+</nav>
+<div class="container">
+  <div class="header">
+    <div class="header-title">
+      <h1><i class="fas fa-video"></i> Interview Meeting Center</h1>
+      <p>Manage meetings in one dedicated workspace. HR/Admin can create Jitsi meeting links, and candidates can view and join scheduled sessions directly.</p>
+    </div>
+    <div>
+      <div class="badge"><i class="fas fa-user"></i> <%= user.name %> — <%= user.role.toUpperCase() %></div>
+    </div>
+  </div>
+
+  <% if (user.role === 'hr' || user.role === 'admin') { %>
+  <div class="panel">
+    <div class="card">
+      <div class="section-title">
+        <h2><i class="fas fa-plus-circle"></i> Create or update a meeting</h2>
+        <span class="badge">HR/Admin only</span>
+      </div>
+      <% if (applications && applications.length) { %>
+      <form id="createMeetingForm" action="/admin/application/<%= applications[0].id %>/meeting" method="POST">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="applicationSelect">Candidate application</label>
+            <select id="applicationSelect" name="application_id" required>
+              <% applications.forEach(app => { %>
+              <option value="<%= app.id %>"><%= app.candidate_name %> — <%= app.job_title %> (<%= app.university %>)</option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="scheduledAt">Date and time</label>
+            <input id="scheduledAt" type="datetime-local" name="scheduled_at" required>
+          </div>
+          <div class="form-group">
+            <label for="platform">Platform</label>
+            <select id="platform" name="platform" required>
+              <option value="jitsi">Jitsi</option>
+              <option value="custom">Custom URL</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="meetingLink">Meeting link (optional for Jitsi)</label>
+            <input id="meetingLink" type="url" name="meeting_link" placeholder="https://meet.jit.si/ParticularRegretsKissNervously">
+            <span class="helper">Leave blank for Jitsi to auto-generate the meeting room link.</span>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" name="camera_enabled" checked> Enable camera</label>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" name="mic_enabled" checked> Enable microphone</label>
+          </div>
+        </div>
+        <div class="meeting-actions">
+          <button class="btn-primary" type="submit"><i class="fas fa-calendar-check"></i> Schedule Meeting</button>
+          <button class="btn-secondary" type="button" onclick="window.location.href='/admin'">Open Admin Portal</button>
+        </div>
+      </form>
+      <% } else { %>
+      <div class="helper">No candidate applications were found yet. Please add applications or use the admin view to manage candidates first.</div>
+      <% } %>
+    </div>
+
+    <div class="card">
+      <div class="section-title">
+        <h2><i class="fas fa-calendar-day"></i> Scheduled meetings</h2>
+        <span class="badge"><%= meetings && meetings.length ? meetings.length + ' upcoming' : 'None scheduled' %></span>
+      </div>
+      <% if (meetings && meetings.length) { %>
+        <div class="meeting-grid">
+          <% meetings.forEach(meeting => { %>
+          <div class="meeting-card">
+            <h3><%= meeting.job_title %> — <%= meeting.university %></h3>
+            <div class="meeting-meta">
+              <span><strong>Candidate:</strong> <%= meeting.candidate_name %></span>
+              <span><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
+              <span><strong>Platform:</strong> <%= meeting.platform ? meeting.platform.toUpperCase() : 'JITSI' %></span>
+            </div>
+            <div class="meeting-meta">
+              <span><strong>Meeting link:</strong></span>
+              <span style="overflow-wrap:anywhere;"><a href="<%= meeting.meeting_link %>" target="_blank" style="color:#4f46e5;text-decoration:underline;"><%= meeting.meeting_link %></a></span>
+            </div>
+            <div class="meeting-actions">
+              <a href="<%= meeting.meeting_link %>" target="_blank" class="btn-primary"><i class="fas fa-video"></i> Open Jitsi</a>
+              <a href="/meeting/<%= meeting.id %>/join-redirect" target="_blank" class="btn-secondary"><i class="fas fa-arrow-right"></i> Join Redirect</a>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="helper">No scheduled meetings are available yet. Use the form above to create a new interview link for a candidate.</div>
+      <% } %>
+    </div>
+  </div>
+  <% } else { %>
+  <div class="panel">
+    <div class="card">
+      <div class="section-title">
+        <h2><i class="fas fa-door-open"></i> Your scheduled meetings</h2>
+      </div>
+      <% if (meetings && meetings.length) { %>
+        <div class="meeting-grid">
+          <% meetings.forEach(meeting => { %>
+          <div class="meeting-card">
+            <h3><%= meeting.job_title %> — <%= meeting.university %></h3>
+            <div class="meeting-meta">
+              <span><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
+              <span><strong>Platform:</strong> <%= meeting.platform ? meeting.platform.toUpperCase() : 'JITSI' %></span>
+            </div>
+            <div class="meeting-meta">
+              <span><strong>Meeting link:</strong></span>
+              <span style="overflow-wrap:anywhere;"><a href="<%= meeting.meeting_link %>" target="_blank" style="color:#4f46e5;text-decoration:underline;"><%= meeting.meeting_link %></a></span>
+            </div>
+            <div class="meeting-actions">
+              <a href="<%= meeting.meeting_link %>" target="_blank" class="btn-primary"><i class="fas fa-video"></i> Open Jitsi</a>
+              <a href="/meeting/<%= meeting.id %>/join-redirect" target="_blank" class="btn-secondary"><i class="fas fa-arrow-right"></i> Join Meeting</a>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="helper">You don't have any scheduled interview meetings yet. Check back once HR or admin schedules a meeting for you.</div>
+      <% } %>
+    </div>
+  </div>
+  <% } %>
+</div>
+<script>
+  const applicationSelect = document.getElementById('applicationSelect');
+  const createMeetingForm = document.getElementById('createMeetingForm');
+  if (applicationSelect && createMeetingForm) {
+    applicationSelect.addEventListener('change', () => {
+      createMeetingForm.action = `/admin/application/${applicationSelect.value}/meeting`;
+    });
+  }
+</script>
+</body>
+</html>

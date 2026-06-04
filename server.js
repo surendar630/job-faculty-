@@ -801,6 +801,39 @@ app.get('/dashboard', verifyToken, (req, res) => {
   });
 });
 
+app.get('/meetings', verifyToken, (req, res) => {
+  if (req.user.role === 'hr' || req.user.role === 'admin') {
+    db.all(`SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+            FROM meetings m
+            JOIN applications a ON m.application_id = a.id
+            JOIN jobs j ON a.job_id = j.id
+            JOIN users u ON a.user_id = u.id
+            WHERE m.status = 'scheduled'
+            ORDER BY m.scheduled_at DESC`, [], (err, meetings) => {
+      if (err) return res.status(500).send('Error loading meetings');
+      db.all(`SELECT a.id, u.name as candidate_name, u.email as candidate_email, j.title as job_title, j.university
+              FROM applications a
+              JOIN users u ON a.user_id = u.id
+              JOIN jobs j ON a.job_id = j.id
+              ORDER BY a.applied_at DESC`, [], (err, applications) => {
+        if (err) return res.status(500).send('Error loading applications');
+        res.render('meetings', { user: req.user, meetings: meetings || [], applications: applications || [] });
+      });
+    });
+  } else {
+    db.all(`SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+            FROM meetings m
+            JOIN applications a ON m.application_id = a.id
+            JOIN jobs j ON a.job_id = j.id
+            JOIN users u ON a.user_id = u.id
+            WHERE a.user_id = ? AND m.status = 'scheduled'
+            ORDER BY m.scheduled_at DESC`, [req.user.id], (err, meetings) => {
+      if (err) return res.status(500).send('Error loading meetings');
+      res.render('meetings', { user: req.user, meetings: meetings || [] });
+    });
+  }
+});
+
 app.get('/profile', verifyToken, (req, res) => {
   db.all('SELECT a.*, j.title as job_title, j.university, j.location FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.user_id = ?', [req.user.id], (err, applications) => {
     if (err) return res.status(500).send('Error loading profile applications');
