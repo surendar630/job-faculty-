@@ -269,6 +269,54 @@
     </div>
   </div>
 
+  <% if (meetings && meetings.length) { %>
+  <div class="meeting-panel">
+    <div style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:center; margin-bottom:1rem;">
+      <div>
+        <h2><i class="fas fa-video"></i> Upcoming Jitsi Interview Meetings</h2>
+        <p>Live meeting links for your next interview session with up to three members.</p>
+      </div>
+      <span style="background:#ecfdf5; color:#166534; padding:0.75rem 1rem; border-radius:999px; font-weight:700;">3-member session support</span>
+    </div>
+
+    <% meetings.forEach(meeting => { %>
+    <div class="meeting-card">
+      <div class="meeting-card-header">
+        <div>
+          <h3><%= meeting.job_title || 'Interview Meeting' %> <span style="font-size:0.9rem; color:#64748b; display:block;">(<%= meeting.university || 'University' %>)</span></h3>
+          <p><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></p>
+          <p><strong>Platform:</strong> <%= meeting.platform ? meeting.platform.toUpperCase() : 'JITSI' %></p>
+        </div>
+        <div class="attendance-actions">
+          <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+          <% if (meeting.meeting_link) { %>
+          <a href="<%= meeting.meeting_link %>" target="_blank" class="btn btn-secondary" style="text-decoration:none;">Open Jitsi</a>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="meeting-row">
+        <% const attendees = meeting.participants && meeting.participants.length ? meeting.participants.slice(0, 3) : [
+             { name: meeting.candidate_name || 'Candidate', role: 'candidate', email: meeting.candidate_email },
+             { name: 'HR Representative', role: 'hr' },
+             { name: 'Admin', role: 'admin' }
+           ];
+           while (attendees.length < 3) attendees.push({ name: 'Pending participant', role: 'participant' });
+        %>
+        <% attendees.forEach(member => { %>
+        <div class="participant-card">
+          <h4><i class="fas fa-user-circle"></i> <%= member.name %></h4>
+          <p><strong>Role:</strong> <%= member.role ? member.role.charAt(0).toUpperCase() + member.role.slice(1) : 'Participant' %></p>
+          <% if (member.email) { %><p><strong>Email:</strong> <%= member.email %></p><% } %>
+          <div class="participant-status"><i class="fas fa-circle"></i> Active</div>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+  <% } %>
+
   <!-- FEATURED OPPORTUNITIES -->
   <div class="section" style="margin-top: 3rem; margin-bottom: 3rem;">
     <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;"><i class="fas fa-star"></i> Featured Opportunities</h2>
