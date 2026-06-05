@@ -138,6 +138,34 @@
   box-shadow: var(--shadow-lg);
 }
 
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.75rem;
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-google:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: #3367d6;
+}
+
+.btn-google i {
+  margin-right: 0.75rem;
+}
+
 .alert {
   border-radius: 10px;
   padding: 1rem 1rem;
@@ -234,12 +262,58 @@
           <button type="submit"><i class="fas fa-sign-in-alt"></i> Login as HR</button>
         </div>
       </form>
+      <div style="margin: 1.5rem 0; display: flex; align-items: center; gap: 1rem;">
+        <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+        <span style="color: #64748b; font-size: 0.85rem;">OR</span>
+        <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+      </div>
+      <div class="form-group">
+        <button id="firebaseGoogleBtn" type="button" class="btn-google"><i class="fab fa-google"></i> Sign in with Google</button>
+      </div>
       <p>Need a candidate login? <a href="/login"><i class="fas fa-arrow-left"></i> Go to normal login</a></p>
     </div>
   </div>
 </div>
 </body>
-<script>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+  import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: 'AIzaSyB_PLqF1qcEEhnrYaUA1k5Tsi61MW0xZS8',
+    authDomain: 'job-faculty.firebaseapp.com',
+    projectId: 'job-faculty',
+    storageBucket: 'job-faculty.firebasestorage.app',
+    messagingSenderId: '62016617558',
+    appId: '1:62016617558:web:014890807abc948a928ff7',
+    measurementId: 'G-EM3X896YYN'
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  document.getElementById('firebaseGoogleBtn').addEventListener('click', async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
+      const response = await fetch('/auth/google-firebase', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken })
+      });
+      if (response.ok) {
+        window.location.href = '/office';
+      } else {
+        const errorText = await response.text();
+        alert('HR Google sign-in failed: ' + errorText);
+      }
+    } catch (error) {
+      console.error('Firebase Google sign-in error:', error);
+      alert('Google sign-in failed. Please try again.');
+    }
+  });
+
   document.getElementById('showPassword')?.addEventListener('change', (event) => {
     const passwordField = document.getElementById('password');
     if (passwordField) {
