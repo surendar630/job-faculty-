@@ -14,9 +14,11 @@ const multer = require('multer');
 require('dotenv').config();
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+const GOOGLE_CLIENT_ID_ALT = process.env.GOOGLE_CLIENT_ID_ALT || '';
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
 const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback';
 const FIREBASE_CLIENT_ID = process.env.FIREBASE_CLIENT_ID || '';
+const FIREBASE_CLIENT_ID_ALT = process.env.FIREBASE_CLIENT_ID_ALT || '';
 
 const isValidFirebaseClientId = (id) => typeof id === 'string' && id.includes('.apps.googleusercontent.com');
 
@@ -47,6 +49,11 @@ const requireRoles = (...allowedRoles) => (req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -672,7 +679,7 @@ app.post('/auth/google-firebase', async (req, res) => {
       return res.status(400).send('Invalid Firebase token');
     }
 
-    const expectedClientIds = [FIREBASE_CLIENT_ID, GOOGLE_CLIENT_ID]
+    const expectedClientIds = [FIREBASE_CLIENT_ID, FIREBASE_CLIENT_ID_ALT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_ID_ALT]
       .map((id) => (typeof id === 'string' ? id.trim() : ''))
       .filter((id) => id.length > 0 && isValidFirebaseClientId(id));
 
