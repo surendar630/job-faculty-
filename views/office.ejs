@@ -350,13 +350,14 @@ function openScheduleMeetingModal(applicationId, candidateName, jobTitle) {
               <option value="">Select platform</option>
               <option value="jitsi">Jitsi</option>
               <option value="zoom">Zoom</option>
+              <option value="google-meet">Google Meet</option>
               <option value="teams">Teams</option>
               <option value="other">Other</option>
             </select>
           </div>
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
-            <input type="url" name="meeting_link" placeholder="Meeting link (optional for Jitsi)" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <input type="url" name="meeting_link" placeholder="Meeting link (required for Zoom/Google Meet/Teams)" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
           </div>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
             <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
