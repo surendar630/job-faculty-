@@ -11,6 +11,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const openai = require('openai');
 const multer = require('multer');
+require('dotenv').config();
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id';
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'your-google-client-secret';

@@ -1,0 +1,91 @@
+<!-- Google Authentication Module -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script type="module">
+  import { auth, googleProvider } from './firebase-config.js';
+  import { signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+  // Initialize Google Sign-In
+  window.onload = function() {
+    google.accounts.id.initialize({
+      client_id: '62016617558',
+      callback: handleCredentialResponse
+    });
+  };
+
+  // Handle Google Sign-In response
+  window.handleCredentialResponse = function(response) {
+    console.log("Google Token:", response.credential);
+    // Send token to backend for verification
+    fetch('/auth/google', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: response.credential
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        console.log("Authentication successful");
+        window.location.href = '/dashboard';
+      }
+    })
+    .catch(err => console.error('Error:', err));
+  };
+
+  // Firebase Google Sign-In
+  window.signInWithGoogle = async function() {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      console.log("Signed in user:", user.email);
+      
+      // Get ID token and send to backend
+      const idToken = await user.getIdToken();
+      
+      fetch('/auth/google-firebase', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          idToken: idToken,
+          email: user.email,
+          displayName: user.displayName
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = '/dashboard';
+        }
+      });
+    } catch (error) {
+      console.error("Error signing in:", error);
+    }
+  };
+
+  // Sign out
+  window.signOutUser = async function() {
+    try {
+      await signOut(auth);
+      window.location.href = '/';
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+</script>
+
+<!-- Google Sign-In Button -->
+<div id="g_id_onload"
+     data-client_id="62016617558"
+     data-callback="handleCredentialResponse">
+</div>
+<div class="g_id_signin" data-type="standard"></div>
+
+<!-- Firebase Sign-In Button -->
+<button onclick="signInWithGoogle()" class="btn btn-primary">
+  Sign in with Google (Firebase)
+</button>
