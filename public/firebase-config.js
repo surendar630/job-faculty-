@@ -1,17 +1,17 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+// Import the Firebase SDKs directly from the CDN to work in the browser.
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js';
+import { getAuth, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyA54_DnlblEXm5mDMgOhwTG2dx7JAhWSHQ",
-  authDomain: "acadimeapro.firebaseapp.com",
-  projectId: "acadimeapro",
-  storageBucket: "acadimeapro.firebasestorage.app",
-  messagingSenderId: "1037123729626",
-  appId: "1:1037123729626:web:5f07c7087f62e35da38de3",
-  measurementId: "G-44FDYL437S"
+// Firebase configuration for the active project used by this app.
+export const firebaseConfig = {
+  apiKey: "AIzaSyB_PLqF1qcEEhnrYaUA1k5Tsi61MW0xZS8",
+  authDomain: "job-faculty.firebaseapp.com",
+  projectId: "job-faculty",
+  storageBucket: "job-faculty.firebasestorage.app",
+  messagingSenderId: "62016617558",
+  appId: "1:62016617558:web:014890807abc948a928ff7",
+  measurementId: "G-EM3X896YYN"
 };
 
 // Initialize Firebase
@@ -21,5 +21,6 @@ const analytics = getAnalytics(app);
 // Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 export default app;

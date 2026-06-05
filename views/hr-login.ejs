@@ -276,26 +276,12 @@
 </div>
 </body>
 <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
-  import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
-
-  const firebaseConfig = {
-    apiKey: 'AIzaSyA54_DnlblEXm5mDMgOhwTG2dx7JAhWSHQ',
-    authDomain: 'acadimeapro.firebaseapp.com',
-    projectId: 'acadimeapro',
-    storageBucket: 'acadimeapro.firebasestorage.app',
-    messagingSenderId: '1037123729626',
-    appId: '1:1037123729626:web:5f07c7087f62e35da38de3',
-    measurementId: 'G-44FDYL437S'
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
+  import { signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+  import { auth, googleProvider } from '/firebase-config.js';
 
   document.getElementById('firebaseGoogleBtn').addEventListener('click', async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
       const response = await fetch('/auth/google-firebase', {
         method: 'POST',

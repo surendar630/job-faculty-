@@ -13,8 +13,8 @@ const openai = require('openai');
 const multer = require('multer');
 require('dotenv').config();
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id';
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'your-google-client-secret';
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
 const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback';
 const FIREBASE_CLIENT_ID = process.env.FIREBASE_CLIENT_ID || '';
 
@@ -583,6 +583,10 @@ app.post('/hr-login', (req, res) => {
 });
 
 app.get('/auth/google', (req, res) => {
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+    return res.status(500).send('Google OAuth is not configured on this server.');
+  }
+
   const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth' +
     '?response_type=code' +
     `&client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}` +
@@ -668,9 +672,12 @@ app.post('/auth/google-firebase', async (req, res) => {
       return res.status(400).send('Invalid Firebase token');
     }
 
-    const expectedFirebaseClientId = isValidFirebaseClientId(FIREBASE_CLIENT_ID) ? FIREBASE_CLIENT_ID : (isValidFirebaseClientId(GOOGLE_CLIENT_ID) ? GOOGLE_CLIENT_ID : null);
-    if (expectedFirebaseClientId && tokenInfo.aud !== expectedFirebaseClientId) {
-      console.error('Firebase token audience mismatch:', tokenInfo.aud, 'expected', expectedFirebaseClientId);
+    const expectedClientIds = [FIREBASE_CLIENT_ID, GOOGLE_CLIENT_ID]
+      .map((id) => (typeof id === 'string' ? id.trim() : ''))
+      .filter((id) => id.length > 0 && isValidFirebaseClientId(id));
+
+    if (expectedClientIds.length > 0 && !expectedClientIds.includes(tokenInfo.aud)) {
+      console.error('Firebase token audience mismatch:', tokenInfo.aud, 'expected one of', expectedClientIds);
       return res.status(400).send('Token audience mismatch');
     }
     if (tokenInfo.iss !== 'https://accounts.google.com' && tokenInfo.iss !== 'accounts.google.com') {
