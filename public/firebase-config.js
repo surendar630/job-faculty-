@@ -14,6 +14,9 @@ const firebaseConfig = {
   measurementId: 'G-EM3X896YYN'
 };
 
+// Google sign-in client ID used by Firebase popup authentication.
+export const GOOGLE_CLIENT_ID = '511476416933-ldnl6dlnmpkidc8boqnhckcjspouut9t.apps.googleusercontent.com';
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
