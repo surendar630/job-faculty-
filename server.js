@@ -16,6 +16,9 @@ require('dotenv').config();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id';
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'your-google-client-secret';
 const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback';
+const FIREBASE_CLIENT_ID = process.env.FIREBASE_CLIENT_ID || '';
+
+const isValidFirebaseClientId = (id) => typeof id === 'string' && id.includes('.apps.googleusercontent.com');
 
 // Initialize OpenAI (in production, use environment variable for API key)
 const openaiClient = new openai.OpenAI({
@@ -632,8 +635,9 @@ app.post('/auth/google-firebase', async (req, res) => {
       return res.status(400).send('Invalid Firebase token');
     }
 
-    if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== 'your-google-client-id' && tokenInfo.aud !== GOOGLE_CLIENT_ID) {
-      console.error('Firebase token audience mismatch:', tokenInfo.aud, 'expected', GOOGLE_CLIENT_ID);
+    const expectedFirebaseClientId = isValidFirebaseClientId(FIREBASE_CLIENT_ID) ? FIREBASE_CLIENT_ID : (isValidFirebaseClientId(GOOGLE_CLIENT_ID) ? GOOGLE_CLIENT_ID : null);
+    if (expectedFirebaseClientId && tokenInfo.aud !== expectedFirebaseClientId) {
+      console.error('Firebase token audience mismatch:', tokenInfo.aud, 'expected', expectedFirebaseClientId);
       return res.status(400).send('Token audience mismatch');
     }
     if (tokenInfo.iss !== 'https://accounts.google.com' && tokenInfo.iss !== 'accounts.google.com') {

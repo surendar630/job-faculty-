@@ -316,7 +316,8 @@
         body: JSON.stringify({ idToken })
       });
       if (response.ok) {
-        window.location.href = '/dashboard';
+        const data = await response.json();
+        window.location.href = data.redirect || '/dashboard';
       } else {
         const errorText = await response.text();
         alert('Google sign-in failed: ' + errorText);

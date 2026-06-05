@@ -303,7 +303,8 @@
         body: JSON.stringify({ idToken })
       });
       if (response.ok) {
-        window.location.href = '/office';
+        const data = await response.json();
+        window.location.href = data.redirect || '/office';
       } else {
         const errorText = await response.text();
         alert('HR Google sign-in failed: ' + errorText);
