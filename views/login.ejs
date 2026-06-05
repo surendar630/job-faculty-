@@ -288,6 +288,7 @@
 </body>
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+  import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js';
   import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
   const firebaseConfig = {
@@ -300,9 +301,8 @@
     measurementId: 'G-EM3X896YYN'
   };
 
-  const alternateFirebaseApiKey = 'AIzaSyBF8PsHnsoy4tfOH5URzp1ipTnH_bj08TE'; // Alternate auth key
-
   const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
