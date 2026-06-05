@@ -589,6 +589,23 @@ app.post('/hr-login', (req, res) => {
   });
 });
 
+app.get('/auth/config', (req, res) => {
+  res.json({
+    firebaseConfig: {
+      apiKey: process.env.FIREBASE_API_KEY || 'AIzaSyB_PLqF1qcEEhnrYaUA1k5Tsi61MW0xZS8',
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN || 'job-faculty.firebaseapp.com',
+      projectId: process.env.FIREBASE_PROJECT_ID || 'job-faculty',
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'job-faculty.firebasestorage.app',
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || '62016617558',
+      appId: process.env.FIREBASE_APP_ID || '1:62016617558:web:014890807abc948a928ff7',
+      measurementId: process.env.FIREBASE_MEASUREMENT_ID || 'G-EM3X896YYN'
+    },
+    googleClientId: process.env.GOOGLE_CLIENT_ID || '62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com',
+    googleClientIdAlt: process.env.GOOGLE_CLIENT_ID_ALT || '62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com',
+    firebaseApiKey: process.env.FIREBASE_API_KEY || 'AIzaSyB_PLqF1qcEEhnrYaUA1k5Tsi61MW0xZS8'
+  });
+});
+
 app.get('/auth/google', (req, res) => {
   if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
     return res.status(500).send('Google OAuth is not configured on this server.');

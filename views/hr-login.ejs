@@ -276,11 +276,11 @@
 </div>
 </body>
 <script type="module">
-  import { signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
-  import { auth, googleProvider } from '/firebase-config.js';
+  import { initFirebaseAuth, signInWithPopup } from '/firebase-config.js';
 
   document.getElementById('firebaseGoogleBtn').addEventListener('click', async () => {
     try {
+      const { auth, googleProvider } = await initFirebaseAuth();
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
       const response = await fetch('/auth/google-firebase', {
