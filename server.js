@@ -412,6 +412,32 @@ function getJitsiMeetingLink(seed) {
   return `https://meet.jit.si/${encodeURIComponent(roomName)}`;
 }
 
+function getZoomMeetingLink(seed) {
+  const meetingId = Math.random().toString(36).slice(2, 10).toUpperCase();
+  const passcode = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `https://zoom.us/j/${meetingId}?pwd=${passcode}`;
+}
+
+function getGoogleMeetLink(seed) {
+  const partA = Math.random().toString(36).slice(2, 6).toLowerCase();
+  const partB = Math.random().toString(36).slice(2, 6).toLowerCase();
+  const partC = Math.random().toString(36).slice(2, 6).toLowerCase();
+  return `https://meet.google.com/${partA}-${partB}-${partC}`;
+}
+
+function getGeneratedMeetingLink(platform, seed) {
+  switch (platform) {
+    case 'jitsi':
+      return getJitsiMeetingLink(seed);
+    case 'zoom':
+      return getZoomMeetingLink(seed);
+    case 'google-meet':
+      return getGoogleMeetLink(seed);
+    default:
+      return '';
+  }
+}
+
 function normalizeFilename(value) {
   return String(value || 'candidate').replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '').toLowerCase();
 }
@@ -1526,10 +1552,12 @@ app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
   const applicationId = req.params.id;
   const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled, meeting_password, require_moderator, recording_enabled, mute_on_join, lobby_enabled } = req.body;
   const finalPlatform = platform ? String(platform).trim().toLowerCase() : '';
-  const finalMeetingLink = meeting_link && String(meeting_link).trim() ? String(meeting_link).trim() : (finalPlatform === 'jitsi' ? getJitsiMeetingLink(applicationId) : '');
+  const finalMeetingLink = meeting_link && String(meeting_link).trim()
+    ? String(meeting_link).trim()
+    : getGeneratedMeetingLink(finalPlatform, applicationId);
 
-  if (!scheduled_at || !finalPlatform || (!finalMeetingLink && finalPlatform !== 'jitsi')) {
-    return res.status(400).send('Please provide meeting date/time, platform, and link. For Jitsi you can leave the link blank and it will be auto-generated.');
+  if (!scheduled_at || !finalPlatform || (!finalMeetingLink && !['jitsi', 'zoom', 'google-meet'].includes(finalPlatform))) {
+    return res.status(400).send('Please provide meeting date/time, platform, and link. For Jitsi, Zoom, and Google Meet you can leave the link blank and it will be auto-generated.');
   }
 
   const cameraVal = camera_enabled ? 1 : 0;
@@ -1564,10 +1592,12 @@ app.post('/admin/application/:id/meeting', verifyToken, (req, res) => {
         if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
         const { scheduled_at, platform, meeting_link, camera_enabled, mic_enabled, meeting_password, require_moderator, recording_enabled, mute_on_join, lobby_enabled } = req.body;
         const finalPlatform = platform ? String(platform).trim().toLowerCase() : '';
-        const finalMeetingLink = meeting_link && String(meeting_link).trim() ? String(meeting_link).trim() : (finalPlatform === 'jitsi' ? getJitsiMeetingLink(`user-${req.user.id}-${Date.now()}`) : '');
+        const finalMeetingLink = meeting_link && String(meeting_link).trim()
+          ? String(meeting_link).trim()
+          : getGeneratedMeetingLink(finalPlatform, `user-${req.user.id}-${Date.now()}`);
 
-        if (!scheduled_at || !finalPlatform || (!finalMeetingLink && finalPlatform !== 'jitsi')) {
-          return res.status(400).json({ error: 'Please provide meeting date/time and platform. For Jitsi you can leave the link blank and it will be auto-generated.' });
+        if (!scheduled_at || !finalPlatform || (!finalMeetingLink && !['jitsi', 'zoom', 'google-meet'].includes(finalPlatform))) {
+          return res.status(400).json({ error: 'Please provide meeting date/time and platform. For Jitsi, Zoom, and Google Meet you can leave the link blank and it will be auto-generated.' });
         }
 
         const cameraVal = camera_enabled ? 1 : 0;
@@ -1607,7 +1637,9 @@ app.post('/meeting/:id/modify', verifyToken, (req, res) => {
     const lobbyVal = lobby_enabled ? 1 : 0;
 
     const finalPlatform = platform ? String(platform).trim().toLowerCase() : meeting.platform;
-    const finalMeetingLink = meeting_link && String(meeting_link).trim() ? String(meeting_link).trim() : (meeting.meeting_link || (finalPlatform === 'jitsi' ? getJitsiMeetingLink(meetingId) : ''));
+    const finalMeetingLink = meeting_link && String(meeting_link).trim()
+      ? String(meeting_link).trim()
+      : (meeting.meeting_link || getGeneratedMeetingLink(finalPlatform, meetingId));
 
     db.run('UPDATE meetings SET scheduled_at = ?, platform = ?, meeting_link = ?, camera_enabled = ?, mic_enabled = ?, meeting_password = ?, require_moderator = ?, recording_enabled = ?, mute_on_join = ?, lobby_enabled = ?, status = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
       [scheduled_at || meeting.scheduled_at, finalPlatform, finalMeetingLink, cameraVal, micVal, meeting_password || null, requireModeratorVal, recordingVal, muteVal, lobbyVal, status || meeting.status, req.user.id, meetingId], (err) => {

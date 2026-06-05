@@ -643,8 +643,9 @@ function submitEditMeeting(meetingId) {
   const cameraEnabled = document.getElementById('editCameraEnabled').checked;
   const micEnabled = document.getElementById('editMicEnabled').checked;
 
-  if (!scheduledAt || !platform || (platform.toLowerCase() !== 'jitsi' && !meetingLink)) {
-    alert('Please fill all fields. Leave the link blank if using Jitsi and it will be generated automatically.');
+  const normalizedPlatform = String(platform || '').toLowerCase();
+  if (!scheduledAt || !platform || (!['jitsi', 'zoom', 'google-meet'].includes(normalizedPlatform) && !meetingLink)) {
+    alert('Please fill all fields. Leave the link blank for Jitsi, Zoom, or Google Meet and it will be generated automatically.');
     return;
   }
 
