@@ -36,6 +36,13 @@ const io = new Server(httpServer, {
 const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key'; // In production, use environment variable
 
+const requireRoles = (...allowedRoles) => (req, res, next) => {
+  if (!req.user || !allowedRoles.includes(req.user.role)) {
+    return res.status(403).send('Access denied');
+  }
+  next();
+};
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -1265,8 +1272,7 @@ app.post('/compare', verifyToken, (req, res) => {
   });
 });
 
-app.get('/shortlisted', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+app.get('/shortlisted', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
   db.all(`SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email, u.resume_path, u.resume_review_status
           FROM applications a
           JOIN jobs j ON a.job_id = j.id
@@ -1426,8 +1432,7 @@ app.post('/practice/submit', verifyToken, express.json(), (req, res) => {
   );
 });
 
-app.get('/admin', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+app.get('/admin', verifyToken, requireRoles('admin'), (req, res) => {
   db.all('SELECT * FROM jobs', [], (err, jobs) => {
     if (err) return res.status(500).send('Error fetching jobs');
     db.all('SELECT a.*, j.title as job_title, u.name as candidate_name, u.skills as candidate_skills, i.score as interview_score FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id LEFT JOIN interviews i ON a.id = i.application_id', [], (err, applications) => {
