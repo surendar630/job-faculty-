@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .detail-header {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
   color: white;
   padding: 3rem 2rem;
   border-radius: 12px;
@@ -70,7 +70,7 @@
   border-radius: 12px;
   margin-bottom: 2rem;
   box-shadow: var(--shadow-md);
-  border-left: 4px solid #6366f1;
+  border-left: 4px solid #2563eb;
 }
 
 .section-header {
@@ -81,12 +81,12 @@
   font-size: 1.3rem;
   font-weight: 600;
   color: #0f172a;
-  border-bottom: 2px solid #6366f1;
+  border-bottom: 2px solid #2563eb;
   padding-bottom: 1rem;
 }
 
 .section-header i {
-  color: #6366f1;
+  color: #2563eb;
   font-size: 1.5rem;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .salary-badge {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
   color: white;
   padding: 1rem 1.5rem;
   border-radius: 8px;
@@ -152,11 +152,11 @@
   background: #f0f4ff;
   padding: 1rem;
   border-radius: 8px;
-  border-left: 4px solid #6366f1;
+  border-left: 4px solid #2563eb;
 }
 
 .requirement-item i {
-  color: #6366f1;
+  color: #2563eb;
   margin-right: 0.5rem;
 }
 
@@ -170,12 +170,12 @@
 }
 
 .breadcrumb a {
-  color: #6366f1;
+  color: #2563eb;
   transition: var(--transition);
 }
 
 .breadcrumb a:hover {
-  color: #8b5cf6;
+  color: #1e40af;
 }
 
 .breadcrumb-separator {
@@ -220,7 +220,7 @@
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>

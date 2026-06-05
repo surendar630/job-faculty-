@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .page-header {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
   color: white;
   padding: 2rem;
   text-align: center;
@@ -32,7 +32,7 @@
   margin: 2rem;
   border-radius: 12px;
   box-shadow: var(--shadow-md);
-  border-left: 4px solid #6366f1;
+  border-left: 4px solid #2563eb;
 }
 
 .filters-header h3 {
@@ -64,13 +64,13 @@
 .filters input:focus,
 .filters select:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .filters button {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
   color: white;
   border: none;
   border-radius: 8px;
@@ -113,7 +113,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-left: 4px solid #6366f1;
+  border-left: 4px solid #2563eb;
 }
 
 .compare-btn {
@@ -134,7 +134,7 @@
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
   transition: var(--transition);
-  border-left: 4px solid #6366f1;
+  border-left: 4px solid #2563eb;
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -143,14 +143,14 @@
 .job-card-wrapper:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-left-color: #8b5cf6;
+  border-left-color: #1e40af;
 }
 
 .job-card-wrapper input[type="checkbox"] {
   width: 22px;
   height: 22px;
   cursor: pointer;
-  accent-color: #6366f1;
+  accent-color: #2563eb;
 }
 
 .job-card-content {
@@ -165,7 +165,7 @@
 }
 
 .job-university {
-  color: #6366f1;
+  color: #2563eb;
   font-weight: 500;
   margin-bottom: 0.75rem;
   display: flex;
@@ -191,7 +191,7 @@
 .job-salary {
   font-size: 1.2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -262,7 +262,7 @@
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>

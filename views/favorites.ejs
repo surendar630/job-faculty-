@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .page-header {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
   color: white;
   padding: 2rem;
   text-align: center;
@@ -40,7 +40,7 @@
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
   transition: var(--transition);
-  border-left: 4px solid #6366f1;
+  border-left: 4px solid #2563eb;
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -48,7 +48,7 @@
 .job-card-wrapper:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-left-color: #8b5cf6;
+  border-left-color: #1e40af;
 }
 .job-card-content {
   flex: 1;
@@ -60,7 +60,7 @@
   margin-bottom: 0.5rem;
 }
 .job-university {
-  color: #6366f1;
+  color: #2563eb;
   font-weight: 500;
   margin-bottom: 0.75rem;
   display: flex;
@@ -116,7 +116,7 @@
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#0f172a;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='#0f172a'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#0f172a;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#0f172a'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
