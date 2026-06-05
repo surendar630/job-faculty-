@@ -16,7 +16,7 @@ services:
       - key: JWT_SECRET
         value: your-jwt-secret-key-here  # Required for secure authentication
       - key: GOOGLE_CLIENT_ID
-        value: 511476416933-ldnl6dlnmpkidc8boqnhckcjspouut9t.apps.googleusercontent.com
+        value: 62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com
       - key: GOOGLE_CLIENT_ID_ALT
         value: 62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com
       - key: GOOGLE_CLIENT_SECRET
@@ -24,7 +24,7 @@ services:
       - key: GOOGLE_REDIRECT_URI
         value: https://job-faculty.onrender.com/auth/google/callback
       - key: FIREBASE_CLIENT_ID
-        value: 511476416933-ldnl6dlnmpkidc8boqnhckcjspouut9t.apps.googleusercontent.com
+        value: 62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com
       - key: FIREBASE_CLIENT_ID_ALT
         value: 62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com
       - key: FIREBASE_API_KEY
