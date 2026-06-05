@@ -1478,11 +1478,6 @@ app.get('/admin', verifyToken, (req, res) => {
   });
 });
 
-app.get('/admin/portal', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
-  res.render('admin-portal');
-});
-
 // Admin review endpoint for standalone resume submissions
 app.post('/admin/resume/:userId/review', verifyToken, (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).send('Access denied');
