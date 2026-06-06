@@ -16,11 +16,14 @@ require('dotenv').config();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
 const GOOGLE_CLIENT_ID_ALT = process.env.GOOGLE_CLIENT_ID_ALT || '';
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
-const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback';
 const FIREBASE_CLIENT_ID = process.env.FIREBASE_CLIENT_ID || '';
 const FIREBASE_CLIENT_ID_ALT = process.env.FIREBASE_CLIENT_ID_ALT || '';
 
 const isValidFirebaseClientId = (id) => typeof id === 'string' && id.includes('.apps.googleusercontent.com');
+
+function getGoogleRedirectUri(req) {
+  return (process.env.GOOGLE_CALLBACK_URL || process.env.GOOGLE_REDIRECT_URI || `${req.protocol}://${req.get('host')}/auth/google/callback`).trim();
+}
 
 // Initialize OpenAI (in production, use environment variable for API key)
 const openaiClient = new openai.OpenAI({
@@ -611,10 +614,11 @@ app.get('/auth/google', (req, res) => {
     return res.status(500).send('Google OAuth is not configured on this server.');
   }
 
+  const redirectUri = getGoogleRedirectUri(req);
   const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth' +
     '?response_type=code' +
     `&client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}` +
-    `&redirect_uri=${encodeURIComponent(GOOGLE_REDIRECT_URI)}` +
+    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
     '&scope=openid%20email%20profile' +
     '&prompt=select_account';
   res.redirect(authUrl);
@@ -622,6 +626,7 @@ app.get('/auth/google', (req, res) => {
 
 app.get('/auth/google/callback', async (req, res) => {
   const code = req.query.code;
+  const redirectUri = getGoogleRedirectUri(req);
   if (!code) return res.redirect('/login');
 
   try {
@@ -632,7 +637,7 @@ app.get('/auth/google/callback', async (req, res) => {
         code,
         client_id: GOOGLE_CLIENT_ID,
         client_secret: GOOGLE_CLIENT_SECRET,
-        redirect_uri: GOOGLE_REDIRECT_URI,
+        redirect_uri: redirectUri,
         grant_type: 'authorization_code'
       })
     });

@@ -2,7 +2,7 @@
 # Features: AI-powered interviews, resume shortlisting, job applications
 services:
   - type: web
-    name: job-faculty
+    name: job-fa
     runtime: node
     autoDeploy: true
     # Updated to trigger redeploy: 2026-05-20T00:00:00Z
@@ -22,7 +22,9 @@ services:
       - key: GOOGLE_CLIENT_SECRET
         value: your-google-client-secret-here
       - key: GOOGLE_REDIRECT_URI
-        value: https://job-faculty.onrender.com/auth/google/callback
+        value: https://job-fa.onrender.com/auth/google/callback
+      - key: GOOGLE_CALLBACK_URL
+        value: https://job-fa.onrender.com/auth/google/callback
       - key: FIREBASE_CLIENT_ID
         value: 62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com
       - key: FIREBASE_CLIENT_ID_ALT
