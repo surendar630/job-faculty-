@@ -853,7 +853,6 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/dashboard', verifyToken, (req, res) => {
-  // Get user statistics
   db.get('SELECT COUNT(*) as application_count FROM applications WHERE user_id = ?', [req.user.id], (err, appStats) => {
     db.get('SELECT COUNT(*) as interview_count FROM interviews i JOIN applications a ON i.application_id = a.id WHERE a.user_id = ?', [req.user.id], (err, interviewStats) => {
       db.get('SELECT COUNT(*) as completed_interview_count FROM interviews i JOIN applications a ON i.application_id = a.id WHERE a.user_id = ? AND i.status = "completed"', [req.user.id], (err, completedStats) => {
@@ -861,42 +860,105 @@ app.get('/dashboard', verifyToken, (req, res) => {
           const stats = {
             applications: appStats ? appStats.application_count : 0,
             interviews: interviewStats ? interviewStats.interview_count : 0,
-            offers: completedStats ? completedStats.completed_interview_count : 0, // Using completed interviews as proxy for offers
+            offers: completedStats ? completedStats.completed_interview_count : 0,
             favorites: favoriteStats ? favoriteStats.favorite_count : 0
           };
 
-          const meetingQuery = req.user.role === 'admin' || req.user.role === 'hr'
-            ? `SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
-               FROM meetings m
-               JOIN applications a ON m.application_id = a.id
-               JOIN jobs j ON a.job_id = j.id
-               JOIN users u ON a.user_id = u.id
-               WHERE m.status = 'scheduled'
-               ORDER BY m.scheduled_at DESC
-               LIMIT 5`
-            : `SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
-               FROM meetings m
-               JOIN applications a ON m.application_id = a.id
-               JOIN jobs j ON a.job_id = j.id
-               JOIN users u ON a.user_id = u.id
-               WHERE a.user_id = ? AND m.status = 'scheduled'
-               ORDER BY m.scheduled_at DESC
-               LIMIT 5`;
-          const params = req.user.role === 'admin' || req.user.role === 'hr' ? [] : [req.user.id];
+          const profileFields = [req.user.name, req.user.email, req.user.phone, req.user.address, req.user.education, req.user.experience, req.user.skills, req.user.linkedin, req.user.bio, req.user.current_position];
+          const profileCompletion = Math.min(100, Math.round((profileFields.filter(field => field && String(field).trim()).length / profileFields.length) * 100));
 
-          db.all(meetingQuery, params, (err, meetings) => {
-            if (err) return res.status(500).send('Error loading dashboard meetings');
-            if (!meetings || !meetings.length) {
-              return res.render('dashboard', { user: req.user, stats: stats, meetings: [] });
-            }
+          let nextAction = {
+            title: 'Explore new opportunities',
+            description: 'Browse faculty roles that match your background and interests.',
+            icon: 'search'
+          };
 
-            let pending = meetings.length;
-            meetings.forEach((meeting) => {
-              db.all('SELECT mp.*, u.name, u.email, u.role FROM meeting_participants mp JOIN users u ON mp.user_id = u.id WHERE mp.meeting_id = ?', [meeting.id], (err, participants) => {
-                meeting.participants = participants || [];
-                if (--pending === 0) {
-                  res.render('dashboard', { user: req.user, stats: stats, meetings });
-                }
+          if (!req.user.resume_path) {
+            nextAction = {
+              title: 'Upload your resume',
+              description: 'Add a polished resume so employers can discover your profile faster.',
+              icon: 'upload'
+            };
+          } else if (stats.applications === 0) {
+            nextAction = {
+              title: 'Apply to your first role',
+              description: 'Start with a few strong applications to build momentum.',
+              icon: 'briefcase'
+            };
+          } else if (stats.interviews === 0) {
+            nextAction = {
+              title: 'Prepare for interviews',
+              description: 'Practice with AI-powered questions and sharpen your response style.',
+              icon: 'robot'
+            };
+          } else {
+            nextAction = {
+              title: 'Keep momentum going',
+              description: 'Review saved positions and follow up on your active opportunities.',
+              icon: 'sparkles'
+            };
+          }
+
+          db.all('SELECT DISTINCT j.category FROM applications a JOIN jobs j ON a.job_id = j.id WHERE a.user_id = ? AND j.category IS NOT NULL AND j.category != ""', [req.user.id], (err, appliedCategories) => {
+            db.all('SELECT DISTINCT j.category FROM favorited_jobs f JOIN jobs j ON f.job_id = j.id WHERE f.user_id = ? AND j.category IS NOT NULL AND j.category != ""', [req.user.id], (err, favoriteCategories) => {
+              const preferredCategories = [...new Set([...(appliedCategories || []).map(item => item.category), ...(favoriteCategories || []).map(item => item.category)].filter(Boolean))];
+              const recommendationQuery = preferredCategories.length
+                ? `SELECT * FROM jobs WHERE id NOT IN (SELECT job_id FROM applications WHERE user_id = ?) AND id NOT IN (SELECT job_id FROM favorited_jobs WHERE user_id = ?) AND category IN (${preferredCategories.map(() => '?').join(', ')}) ORDER BY id DESC LIMIT 3`
+                : `SELECT * FROM jobs WHERE id NOT IN (SELECT job_id FROM applications WHERE user_id = ?) AND id NOT IN (SELECT job_id FROM favorited_jobs WHERE user_id = ?) ORDER BY id DESC LIMIT 3`;
+              const recommendationParams = preferredCategories.length
+                ? [req.user.id, req.user.id, ...preferredCategories]
+                : [req.user.id, req.user.id];
+
+              db.all(recommendationQuery, recommendationParams, (err, recommendations) => {
+                const meetingQuery = req.user.role === 'admin' || req.user.role === 'hr'
+                  ? `SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+                     FROM meetings m
+                     JOIN applications a ON m.application_id = a.id
+                     JOIN jobs j ON a.job_id = j.id
+                     JOIN users u ON a.user_id = u.id
+                     WHERE m.status = 'scheduled'
+                     ORDER BY m.scheduled_at DESC
+                     LIMIT 5`
+                  : `SELECT m.*, a.user_id as candidate_id, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+                     FROM meetings m
+                     JOIN applications a ON m.application_id = a.id
+                     JOIN jobs j ON a.job_id = j.id
+                     JOIN users u ON a.user_id = u.id
+                     WHERE a.user_id = ? AND m.status = 'scheduled'
+                     ORDER BY m.scheduled_at DESC
+                     LIMIT 5`;
+                const params = req.user.role === 'admin' || req.user.role === 'hr' ? [] : [req.user.id];
+
+                db.all(meetingQuery, params, (err, meetings) => {
+                  if (err) return res.status(500).send('Error loading dashboard meetings');
+                  if (!meetings || !meetings.length) {
+                    return res.render('dashboard', {
+                      user: req.user,
+                      stats,
+                      meetings: [],
+                      recommendations: recommendations || [],
+                      nextAction,
+                      profileCompletion
+                    });
+                  }
+
+                  let pending = meetings.length;
+                  meetings.forEach((meeting) => {
+                    db.all('SELECT mp.*, u.name, u.email, u.role FROM meeting_participants mp JOIN users u ON mp.user_id = u.id WHERE mp.meeting_id = ?', [meeting.id], (err, participants) => {
+                      meeting.participants = participants || [];
+                      if (--pending === 0) {
+                        res.render('dashboard', {
+                          user: req.user,
+                          stats,
+                          meetings,
+                          recommendations: recommendations || [],
+                          nextAction,
+                          profileCompletion
+                        });
+                      }
+                    });
+                  });
+                });
               });
             });
           });
