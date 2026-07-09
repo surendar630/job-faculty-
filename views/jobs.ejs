@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .page-header {
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #2f4f4f 0%, #455a64 100%);
   color: white;
   padding: 2rem;
   text-align: center;
@@ -32,7 +32,7 @@
   margin: 2rem;
   border-radius: 12px;
   box-shadow: var(--shadow-md);
-  border-left: 4px solid #2563eb;
+  border-left: 4px solid #2f4f4f;
 }
 
 .filters-header h3 {
@@ -40,7 +40,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #0f172a;
+  color: #24333d;
 }
 
 .filters form {
@@ -64,13 +64,13 @@
 .filters input:focus,
 .filters select:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #2f4f4f;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .filters button {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #2563eb, #1e40af);
+  background: linear-gradient(135deg, #2f4f4f, #455a64);
   color: white;
   border: none;
   border-radius: 8px;
@@ -113,11 +113,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-left: 4px solid #2563eb;
+  border-left: 4px solid #2f4f4f;
 }
 
 .compare-btn {
-  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  background: linear-gradient(135deg, #b9955b, #8f6b33) !important;
   padding: 0.75rem 1.5rem !important;
 }
 
@@ -134,7 +134,7 @@
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
   transition: var(--transition);
-  border-left: 4px solid #2563eb;
+  border-left: 4px solid #2f4f4f;
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -143,14 +143,14 @@
 .job-card-wrapper:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-left-color: #1e40af;
+  border-left-color: #455a64;
 }
 
 .job-card-wrapper input[type="checkbox"] {
   width: 22px;
   height: 22px;
   cursor: pointer;
-  accent-color: #2563eb;
+  accent-color: #2f4f4f;
 }
 
 .job-card-content {
@@ -160,12 +160,12 @@
 .job-title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #0f172a;
+  color: #24333d;
   margin-bottom: 0.5rem;
 }
 
 .job-university {
-  color: #2563eb;
+  color: #2f4f4f;
   font-weight: 500;
   margin-bottom: 0.75rem;
   display: flex;
@@ -191,7 +191,7 @@
 .job-salary {
   font-size: 1.2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #2563eb, #1e40af);
+  background: linear-gradient(135deg, #2f4f4f, #455a64);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -233,7 +233,7 @@
   padding: 1rem 1.15rem;
   border-radius: 14px;
   box-shadow: var(--shadow-md);
-  border-left: 4px solid #2563eb;
+  border-left: 4px solid #2f4f4f;
   display: flex;
   gap: 0.8rem;
   align-items: flex-start;
@@ -244,14 +244,14 @@
   height: 40px;
   border-radius: 50%;
   background: #eff6ff;
-  color: #2563eb;
+  color: #2f4f4f;
   display: grid;
   place-items: center;
 }
 
 .insight-card h3 {
   margin: 0 0 0.3rem;
-  color: #0f172a;
+  color: #24333d;
   font-size: 1rem;
 }
 
@@ -302,7 +302,7 @@
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>

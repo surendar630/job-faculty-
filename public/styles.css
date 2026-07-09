@@ -4,17 +4,17 @@
 
 /* ROOT VARIABLES */
 :root {
-  --primary-color: #2563eb;
-  --secondary-color: #1e40af;
-  --accent-color: #0ea5e9;
-  --dark-bg: #0f172a;
+  --primary-color: #2f4f4f;
+  --secondary-color: #455a64;
+  --accent-color: #b9955b;
+  --dark-bg: #24333d;
   --light-bg: #f8fafc;
   --card-bg: #ffffff;
   --text-dark: #1e293b;
   --text-light: #64748b;
   --border-color: #e2e8f0;
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
+  --success-color: #6e7d65;
+  --warning-color: #b9955b;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
@@ -168,7 +168,7 @@ a:hover {
    NAVIGATION
    ============================================ */
 nav {
-  background: linear-gradient(135deg, var(--dark-bg) 0%, #1a2332 50%, rgba(15, 23, 42, 0.95) 100%);
+  background: linear-gradient(135deg, var(--dark-bg) 0%, #303f49 50%, rgba(15, 23, 42, 0.95) 100%);
   backdrop-filter: blur(10px);
   color: white;
   padding: 1rem 2rem;
@@ -287,7 +287,7 @@ nav {
    HERO SECTION
    ============================================ */
 .hero {
-  background: linear-gradient(135deg, var(--dark-bg) 0%, #1a2332 50%, var(--primary-color) 100%);
+  background: linear-gradient(135deg, var(--dark-bg) 0%, #303f49 50%, var(--primary-color) 100%);
   color: white;
   padding: 5rem 2rem;
   text-align: center;
@@ -607,7 +607,7 @@ input[type="file"]:focus {
 }
 
 .btn-compare {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background: linear-gradient(135deg, #b9955b, #8f6b33);
   color: white;
 }
 

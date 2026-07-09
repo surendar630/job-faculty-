@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .welcome-section {
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #2f4f4f 0%, #455a64 100%);
   color: white;
   padding: 3rem 2rem;
   border-radius: 12px;
@@ -35,12 +35,12 @@
   box-shadow: var(--shadow-md);
   padding: 1.5rem;
   margin-bottom: 2rem;
-  border-left: 4px solid #2563eb;
+  border-left: 4px solid #2f4f4f;
 }
 
 .dashboard-sidebar h3 {
   margin-top: 0;
-  color: #0f172a;
+  color: #24333d;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -63,7 +63,7 @@
 .quick-stat-number {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #2563eb;
+  color: #2f4f4f;
 }
 
 .quick-stat-label {
@@ -86,7 +86,7 @@
   box-shadow: var(--shadow-md);
   text-align: center;
   transition: var(--transition);
-  border-top: 4px solid #2563eb;
+  border-top: 4px solid #2f4f4f;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -99,7 +99,7 @@
 .dashboard-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
-  border-top-color: #1e40af;
+  border-top-color: #455a64;
 }
 
   .insight-strip {
@@ -124,7 +124,7 @@
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: #2563eb;
+    background: #2f4f4f;
     color: white;
     display: grid;
     place-items: center;
@@ -133,7 +133,7 @@
 
   .insight-card h3 {
     margin: 0 0 0.35rem;
-    color: #0f172a;
+    color: #24333d;
     font-size: 1rem;
   }
 
@@ -148,7 +148,7 @@
     padding: 1.35rem;
     border-radius: 12px;
     box-shadow: var(--shadow-md);
-    border-left: 4px solid #10b981;
+    border-left: 4px solid #6e7d65;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
@@ -156,7 +156,7 @@
 
   .recommendation-card h4 {
     margin: 0;
-    color: #0f172a;
+    color: #24333d;
     font-size: 1.05rem;
   }
 
@@ -195,7 +195,7 @@
   .meeting-tab {
     border: 1px solid #e2e8f0;
     background: #f8fafc;
-    color: #0f172a;
+    color: #24333d;
     padding: 0.75rem 1rem;
     border-radius: 999px;
     cursor: pointer;
@@ -204,7 +204,7 @@
   }
 
   .meeting-tab.active {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
+    background: linear-gradient(135deg, #2f4f4f, #455a64);
     color: white;
     border-color: transparent;
   }
@@ -293,7 +293,7 @@
 
 .dashboard-card h3 {
   margin: 1rem 0 0.5rem;
-  color: #0f172a;
+  color: #24333d;
 }
 
 .dashboard-card p {
@@ -321,7 +321,7 @@
     <% if (user.role === 'hr') { %><span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span><% } %>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
@@ -584,27 +584,27 @@
   <div class="section" style="margin-top: 3rem; margin-bottom: 3rem;">
     <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;"><i class="fas fa-star"></i> Featured Opportunities</h2>
     <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #2563eb;">
-        <h4 style="color: #2563eb; margin-top: 0;">Senior Professor - Computer Science</h4>
+      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #2f4f4f;">
+        <h4 style="color: #2f4f4f; margin-top: 0;">Senior Professor - Computer Science</h4>
         <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-school"></i> Stanford University</p>
         <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-map-marker-alt"></i> California, USA</p>
-        <p style="font-weight: 600; margin: 1rem 0; color: #2563eb;"><i class="fas fa-indian-rupee"></i> ₹12,00,000 - ₹18,00,000</p>
+        <p style="font-weight: 600; margin: 1rem 0; color: #2f4f4f;"><i class="fas fa-indian-rupee"></i> ₹12,00,000 - ₹18,00,000</p>
         <button class="btn btn-primary" style="width: 100%;"><i class="fas fa-arrow-right"></i> View Details</button>
       </div>
 
-      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #1e40af;">
-        <h4 style="color: #1e40af; margin-top: 0;">Associate Professor - Data Science</h4>
+      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #455a64;">
+        <h4 style="color: #455a64; margin-top: 0;">Associate Professor - Data Science</h4>
         <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-school"></i> MIT</p>
         <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-map-marker-alt"></i> Massachusetts, USA</p>
-        <p style="font-weight: 600; margin: 1rem 0; color: #1e40af;"><i class="fas fa-indian-rupee"></i> ₹10,00,000 - ₹16,00,000</p>
+        <p style="font-weight: 600; margin: 1rem 0; color: #455a64;"><i class="fas fa-indian-rupee"></i> ₹10,00,000 - ₹16,00,000</p>
         <button class="btn btn-primary" style="width: 100%;"><i class="fas fa-arrow-right"></i> View Details</button>
       </div>
 
-      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #10b981;">
-        <h4 style="color: #10b981; margin-top: 0;">Lecturer - Engineering</h4>
+      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #6e7d65;">
+        <h4 style="color: #6e7d65; margin-top: 0;">Lecturer - Engineering</h4>
         <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-school"></i> Cambridge University</p>
         <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-map-marker-alt"></i> Cambridge, UK</p>
-        <p style="font-weight: 600; margin: 1rem 0; color: #10b981;"><i class="fas fa-indian-rupee"></i> ₹6,00,000 - ₹9,00,000</p>
+        <p style="font-weight: 600; margin: 1rem 0; color: #6e7d65;"><i class="fas fa-indian-rupee"></i> ₹6,00,000 - ₹9,00,000</p>
         <button class="btn btn-primary" style="width: 100%;"><i class="fas fa-arrow-right"></i> View Details</button>
       </div>
     </div>
@@ -615,7 +615,7 @@
 <div id="resumeModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
   <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-2xl); width: 90%; max-width: 500px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-      <h3 style="margin: 0; color: #0f172a;"><i class="fas fa-file-upload"></i> Upload Your Resume</h3>
+      <h3 style="margin: 0; color: #24333d;"><i class="fas fa-file-upload"></i> Upload Your Resume</h3>
       <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
     </div>
     

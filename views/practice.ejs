@@ -8,7 +8,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: #f8fafc; color: #111; min-height: 100vh; }
-  nav { background: #0f172a; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+  nav { background: #24333d; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
   .logo { font-size: 20px; font-weight: 700; }
   .nav-links { display: flex; gap: 18px; align-items: center; }
   .nav-links span, .nav-links a { color: white; cursor: pointer; text-decoration: none; font-size: 14px; }
@@ -20,7 +20,7 @@
   .info-card h2 { font-size: 16px; margin-bottom: 10px; color: #111827; }
   .info-card p, .info-list li { font-size: 14px; color: #475569; line-height: 1.7; }
   .info-list { list-style: none; padding-left: 0; margin: 0; display: grid; gap: 10px; }
-  .resource-link { color: #2563eb; text-decoration: none; }
+  .resource-link { color: #2f4f4f; text-decoration: none; }
   .resource-link:hover { text-decoration: underline; }
   .tabs { display: flex; gap: 8px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
   .tab { padding: 12px 18px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: #64748b; border-bottom: 2px solid transparent; transition: all 0.15s ease; }
@@ -42,11 +42,11 @@
   .opts { display: grid; gap: 10px; }
   .opt { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.15s ease; background: white; }
   .opt:hover { border-color: #94a3b8; }
-  .opt.sel { border-color: #2563eb; background: #eff6ff; }
+  .opt.sel { border-color: #2f4f4f; background: #eff6ff; }
   .opt.ok { border-color: #16a34a; background: #dcfce7; }
   .opt.bad { border-color: #dc2626; background: #fee2e2; }
   .okey { width: 26px; height: 26px; min-width: 26px; border-radius: 999px; border: 1px solid #d1d5db; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280; font-weight: 700; }
-  .opt.sel .okey { background: #2563eb; color: white; border-color: #2563eb; }
+  .opt.sel .okey { background: #2f4f4f; color: white; border-color: #2f4f4f; }
   .opt.ok .okey { background: #16a34a; color: white; border-color: #16a34a; }
   .opt.bad .okey { background: #dc2626; color: white; border-color: #dc2626; }
   .otext { font-size: 14px; color: #111827; line-height: 1.7; }
@@ -55,7 +55,7 @@
   .fb.bad { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
   .tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
   .tag-HTML { background: #ffedd5; color: #c2410c; }
-  .tag-CSS { background: #dbeafe; color: #1d4ed8; }
+  .tag-CSS { background: #dbeafe; color: #425b65; }
   .tag-JavaScript { background: #fef3c7; color: #a16207; }
   .tag-Python { background: #dcfce7; color: #15803d; }
   .tag-DSA { background: #f5d0fe; color: #6b21a8; }
@@ -195,7 +195,7 @@ const ALL_Q = [
   {f:"CS",q:"What does RAM stand for?",o:["Read Access Memory","Random Access Memory","Rapid Application Memory","Remote Access Module"],a:1,e:"RAM stands for Random Access Memory — fast, volatile memory the CPU uses to store data it's actively using."},
 ];
 const CODING_Q = [
-  {id:0,f:"HTML",label:"Profile card",prompt:"Build a profile card using HTML & CSS. Show an avatar circle with initials, a name, job title, and a skill badge.",ex:`<style>\n.card{font-family:sans-serif;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:24px;max-width:240px;text-align:center}\n.av{width:60px;height:60px;border-radius:50%;background:#3b82f6;color:#fff;font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}\nh2{font-size:17px;margin:0 0 4px;color:#111}p{color:#6b7280;font-size:13px;margin:0 0 10px}\n.badge{background:#eff6ff;color:#1d4ed8;font-size:11px;padding:3px 10px;border-radius:20px}\n</style>\n<div class="card"><div class="av">AR</div><h2>Anya Rao</h2><p>Frontend Developer</p><span class="badge">React · CSS</span></div>`},
+  {id:0,f:"HTML",label:"Profile card",prompt:"Build a profile card using HTML & CSS. Show an avatar circle with initials, a name, job title, and a skill badge.",ex:`<style>\n.card{font-family:sans-serif;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:24px;max-width:240px;text-align:center}\n.av{width:60px;height:60px;border-radius:50%;background:#6f8090;color:#fff;font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}\nh2{font-size:17px;margin:0 0 4px;color:#111}p{color:#6b7280;font-size:13px;margin:0 0 10px}\n.badge{background:#eff6ff;color:#425b65;font-size:11px;padding:3px 10px;border-radius:20px}\n</style>\n<div class="card"><div class="av">AR</div><h2>Anya Rao</h2><p>Frontend Developer</p><span class="badge">React · CSS</span></div>`},
   {id:1,f:"JavaScript",label:"Counter app",prompt:"Build a counter app using HTML, CSS & JavaScript. Show a number with + and − buttons. The counter should not go below 0.",ex:`<style>\nbody{font-family:sans-serif;display:flex;justify-content:center;padding:40px}\n.c{text-align:center}.num{font-size:56px;font-weight:700;color:#111;margin:8px 0}.btns{display:flex;gap:12px;justify-content:center}button{width:48px;height:48px;border-radius:50%;border:1px solid #d1d5db;background:#f9fafb;font-size:22px;cursor:pointer}button:hover{background:#e5e7eb}\n</style>\n<div class="c"><div class="num" id="n">0</div><div class="btns"><button onclick="update(-1)">−</button><button onclick="update(1)">+</button></div></div>\n<script>let v=0;function update(d){v=Math.max(0,v+d);document.getElementById('n').textContent=v} <\/script>`},
   {id:2,f:"CSS",label:"Flexbox nav",prompt:"Build a responsive nav bar using CSS Flexbox. Logo left, three nav links right. Dark background with hover effects.",ex:`<style>\n*{box-sizing:border-box;margin:0;padding:0}\nnav{background:#1e293b;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:54px}\n.brand{color:#f8fafc;font-size:17px;font-weight:700}.links{display:flex;gap:4px}.links a{color:#94a3b8;text-decoration:none;font-size:13px;padding:6px 12px;border-radius:6px;transition:background .15s,color .15s}.links a:hover{background:#334155;color:#f8fafc}\n</style>\n<nav><span class="brand">DevCo</span><div class="links"><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></div></nav>`},
   {id:3,f:"Python",label:"FizzBuzz",prompt:"Write a Python function fizzbuzz(n) that prints numbers 1 to n. Multiples of 3 → 'Fizz', multiples of 5 → 'Buzz', both → 'FizzBuzz'. (Paste your Python code — AI will review it.)",ex:`def fizzbuzz(n):\n    for i in range(1, n + 1):\n        if i % 15 == 0:\n            print("FizzBuzz")\n        elif i % 3 == 0:\n            print("Fizz")\n        elif i % 5 == 0:\n            print("Buzz")\n        else:\n            print(i)\n\nfizzbuzz(20)`},

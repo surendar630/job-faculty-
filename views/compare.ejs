@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .compare-header {
-  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #2f4f4f 0%, #455a64 100%);
   color: white;
   padding: 2rem;
   text-align: center;
@@ -42,7 +42,7 @@
 }
 
 .compare-table th {
-  background: linear-gradient(135deg, #2563eb, #1e40af);
+  background: linear-gradient(135deg, #2f4f4f, #455a64);
   color: white;
   padding: 1.5rem;
   text-align: left;
@@ -62,7 +62,7 @@
 
 .attribute-name {
   font-weight: 600;
-  color: #0f172a;
+  color: #24333d;
   background: #f8fafc;
   width: 150px;
   min-width: 150px;
@@ -71,18 +71,18 @@
 .job-column {
   background: #f8fafc;
   font-weight: 500;
-  color: #2563eb;
+  color: #2f4f4f;
 }
 
 .salary-cell {
-  color: #10b981;
+  color: #6e7d65;
   font-weight: 700;
   font-size: 1.1rem;
 }
 
 .category-badge {
   background: #f0f4ff;
-  color: #2563eb;
+  color: #2f4f4f;
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
   font-weight: 500;
@@ -128,12 +128,12 @@
     padding: 1.5rem;
     box-shadow: var(--shadow-md);
     margin-bottom: 1.5rem;
-    border-left: 4px solid #2563eb;
+    border-left: 4px solid #2f4f4f;
   }
 
   .mobile-job-card h3 {
     margin-top: 0;
-    color: #2563eb;
+    color: #2f4f4f;
   }
 
   .mobile-job-row {
@@ -149,7 +149,7 @@
 
   .mobile-job-label {
     font-weight: 600;
-    color: #0f172a;
+    color: #24333d;
   }
 
   .mobile-job-value {
@@ -170,7 +170,7 @@
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
@@ -262,7 +262,7 @@
 
         <div class="mobile-job-row">
           <span class="mobile-job-label"><i class="fas fa-indian-rupee"></i> Salary</span>
-          <span class="mobile-job-value" style="color: #10b981; font-weight: 700;"><%= job.salary %></span>
+          <span class="mobile-job-value" style="color: #6e7d65; font-weight: 700;"><%= job.salary %></span>
         </div>
 
         <div class="mobile-job-row">
@@ -281,7 +281,7 @@
 
   <!-- ACTION BUTTONS -->
   <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: #f8fafc; border-radius: 12px;">
-    <h3 style="color: #0f172a; margin-top: 0;">Need more options?</h3>
+    <h3 style="color: #24333d; margin-top: 0;">Need more options?</h3>
     <a href="/jobs" class="btn btn-primary"><i class="fas fa-briefcase"></i> Browse More Jobs</a>
     <a href="/dashboard" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
   </div>

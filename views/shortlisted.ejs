@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .shortlisted-header {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #6e7d65 0%, #059669 100%);
   color: white;
   padding: 3rem 2rem;
   border-radius: 12px;
@@ -58,7 +58,7 @@
 .resume-title {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #0f172a;
+  color: #24333d;
   margin-bottom: 0.5rem;
 }
 
@@ -132,7 +132,7 @@
     <% if (user.role === 'hr') { %><span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span><% } %>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
@@ -168,7 +168,7 @@
           <div class="resume-content">
             <p style="color: #64748b; margin: 0;">
               <strong>Status:</strong> 
-              <span style="background: #dbeafe; color: #1e40af; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">
+              <span style="background: #dbeafe; color: #455a64; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">
                 <i class="fas fa-check"></i> Shortlisted
               </span>
             </p>
