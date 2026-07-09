@@ -31,6 +31,7 @@ const openaiClient = new openai.OpenAI({
 });
 
 const app = express();
+app.set('trust proxy', 1);
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -280,14 +281,14 @@ db.serialize(() => {
 
   // Insert sample jobs
   db.run(`INSERT OR IGNORE INTO jobs (title, university, location, salary, description, requirements, category) VALUES
-    ('Professor - AI', 'MIT', 'USA', '$200k', 'Teaching AI courses and conducting research', 'PhD in AI, 5+ years experience', 'Computer Science'),
-    ('Assistant Professor - Data Science', 'Stanford', 'USA', '$150k', 'Data Science teaching and research', 'PhD in Data Science', 'Data Science'),
-    ('Lecturer - Computer Science', 'Harvard', 'USA', '$120k', 'CS fundamentals teaching', 'Masters in CS', 'Computer Science'),
-    ('Research Professor - Machine Learning', 'Berkeley', 'USA', '$180k', 'ML research and publications', 'PhD in ML, publications', 'Machine Learning'),
-    ('Associate Professor - Cybersecurity', 'Caltech', 'USA', '$170k', 'Cybersecurity courses and labs', 'PhD in Cybersecurity', 'Cybersecurity'),
-    ('Professor - Software Engineering', 'CMU', 'USA', '$190k', 'Software engineering education', 'PhD in SE, industry experience', 'Software Engineering'),
-    ('Assistant Professor - Robotics', 'MIT', 'USA', '$160k', 'Robotics research and teaching', 'PhD in Robotics', 'Engineering'),
-    ('Lecturer - Mathematics', 'Princeton', 'USA', '$110k', 'Advanced mathematics courses', 'PhD in Mathematics', 'Mathematics')`);
+    ('Professor - AI', 'MIT', 'USA', '₹20,00,000', 'Teaching AI courses and conducting research', 'PhD in AI, 5+ years experience', 'Computer Science'),
+    ('Assistant Professor - Data Science', 'Stanford', 'USA', '₹15,00,000', 'Data Science teaching and research', 'PhD in Data Science', 'Data Science'),
+    ('Lecturer - Computer Science', 'Harvard', 'USA', '₹12,00,000', 'CS fundamentals teaching', 'Masters in CS', 'Computer Science'),
+    ('Research Professor - Machine Learning', 'Berkeley', 'USA', '₹18,00,000', 'ML research and publications', 'PhD in ML, publications', 'Machine Learning'),
+    ('Associate Professor - Cybersecurity', 'Caltech', 'USA', '₹17,00,000', 'Cybersecurity courses and labs', 'PhD in Cybersecurity', 'Cybersecurity'),
+    ('Professor - Software Engineering', 'CMU', 'USA', '₹19,00,000', 'Software engineering education', 'PhD in SE, industry experience', 'Software Engineering'),
+    ('Assistant Professor - Robotics', 'MIT', 'USA', '₹16,00,000', 'Robotics research and teaching', 'PhD in Robotics', 'Engineering'),
+    ('Lecturer - Mathematics', 'Princeton', 'USA', '₹11,00,000', 'Advanced mathematics courses', 'PhD in Mathematics', 'Mathematics')`);
 
   db.all("PRAGMA table_info(applications)", (err, columns) => {
     if (!err && !columns.some(column => column.name === 'shortlisted_field')) {
@@ -645,7 +646,7 @@ app.get('/auth/google/callback', async (req, res) => {
     const tokenData = await tokenResponse.json();
     if (!tokenResponse.ok) {
       console.error('Google token error:', tokenData);
-      return res.status(500).send('Google sign-in failed');
+      return res.status(500).json({ error: tokenData });
     }
 
     const userInfoResponse = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
