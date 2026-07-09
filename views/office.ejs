@@ -120,6 +120,30 @@
     <p>Welcome, <%= user.name %>. Manage shortlisted candidates, review resumes, and coordinate interview workflows from the HR portal.</p>
   </div>
 
+  <div class="insight-strip">
+    <div class="insight-card">
+      <div class="insight-icon"><i class="fas fa-bolt"></i></div>
+      <div>
+        <h3>Action center</h3>
+        <p>Review outreach, interviews, and shortlist decisions from one place.</p>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon"><i class="fas fa-users"></i></div>
+      <div>
+        <h3><%= recentApps.length %> recent applications</h3>
+        <p>Stay on top of the latest candidate activity without missing a step.</p>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon"><i class="fas fa-video"></i></div>
+      <div>
+        <h3><%= meetings.length %> scheduled interviews</h3>
+        <p>Coordinate hybrid or remote panels with quick access to meeting links.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="office-grid">
     <div class="office-card">
       <h3>Total Applications</h3>

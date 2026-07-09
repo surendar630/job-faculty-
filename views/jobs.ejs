@@ -221,6 +221,46 @@
   margin-bottom: 1rem;
 }
 
+.insight-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.insight-card {
+  background: white;
+  padding: 1rem 1.15rem;
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  border-left: 4px solid #2563eb;
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+}
+
+.insight-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #2563eb;
+  display: grid;
+  place-items: center;
+}
+
+.insight-card h3 {
+  margin: 0 0 0.3rem;
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.insight-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.92rem;
+}
+
 @media (max-width: 768px) {
   .job-card-wrapper {
     flex-direction: column;
@@ -298,7 +338,31 @@
   </div>
 </div>
 
+<% const featuredCategories = [...new Set(jobs.map(job => job.category).filter(Boolean))].slice(0,3); %>
 <div class="jobs-container">
+  <div class="insight-strip">
+    <div class="insight-card">
+      <div class="insight-icon"><i class="fas fa-briefcase"></i></div>
+      <div>
+        <h3><%= jobs.length %> open roles</h3>
+        <p>Browse academic and research positions from trusted institutions.</p>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon"><i class="fas fa-heart"></i></div>
+      <div>
+        <h3><%= favoriteIds.length %> saved positions</h3>
+        <p>Keep your shortlist ready for review and application.</p>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon"><i class="fas fa-tags"></i></div>
+      <div>
+        <h3><%= featuredCategories.length ? featuredCategories.join(', ') : 'Fresh updates' %></h3>
+        <p>These categories are currently most active on the platform.</p>
+      </div>
+    </div>
+  </div>
   <!-- COMPARE SECTION -->
   <form action="/compare" method="POST" id="compareForm">
     <div class="compare-section">

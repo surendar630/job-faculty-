@@ -307,6 +307,30 @@
         </button>
       </div>
     </form>
+    <% const profileFields = [user.name, user.current_position, user.institution, user.education, user.experience, user.skills, user.linkedin, user.bio]; const profileCompletion = Math.round((profileFields.filter(field => field && String(field).trim()).length / profileFields.length) * 100); %>
+    <div class="insight-strip" style="margin-top: 1.5rem;">
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-percent"></i></div>
+        <div>
+          <h3><%= profileCompletion %>% profile complete</h3>
+          <p>Stronger profiles attract better matching opportunities.</p>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-file-alt"></i></div>
+        <div>
+          <h3><%= applications.length %> active applications</h3>
+          <p>Track your current status without leaving the profile page.</p>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div>
+          <h3><%= user.resume_path ? 'Resume uploaded' : 'Resume pending' %></h3>
+          <p><%= user.resume_path ? 'Your resume is ready for employers and reviewers.' : 'Upload your resume to speed up applications.' %></p>
+        </div>
+      </div>
+    </div>
     <div id="profileDisplay" class="profile-info" style="margin-top: 1.5rem;">
       <!-- Basic Information -->
       <div style="grid-column: span 2; margin-bottom: 1rem;">
