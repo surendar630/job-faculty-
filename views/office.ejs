@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .office-header {
-  background: linear-gradient(135deg, #2f4f4f 0%, #425b65 100%);
+  background: linear-gradient(135deg, #04AA6D 0%, #425b65 100%);
   color: white;
   padding: 2.5rem 2rem;
   border-radius: 14px;
@@ -33,14 +33,14 @@
 .office-card {
   background: white;
   border-radius: 14px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ddd;
   box-shadow: var(--shadow-md);
   padding: 1.5rem;
 }
 .office-card h3 {
   font-size: 1.1rem;
   margin-bottom: 0.75rem;
-  color: #24333d;
+  color: #282A35;
 }
 .office-card p {
   color: #475569;
@@ -49,7 +49,7 @@
 .office-card .stat-number {
   font-size: 2rem;
   font-weight: 700;
-  color: #2f4f4f;
+  color: #04AA6D;
 }
 .office-actions {
   display: flex;
@@ -58,7 +58,7 @@
 }
 .office-actions a,
 .office-actions button {
-  background: #2f4f4f;
+  background: #04AA6D;
   color: white;
   padding: 0.85rem 1rem;
   border-radius: 10px;
@@ -80,7 +80,7 @@
 .office-table td {
   padding: 0.95rem 0.8rem;
   text-align: left;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #ddd;
 }
 .office-table th {
   color: #334155;
@@ -88,11 +88,11 @@
   font-size: 0.9rem;
 }
 .office-table tbody tr:hover {
-  background: #f8fafc;
+  background: #f1f1f1;
 }
 .office-nav span {
   cursor: pointer;
-  color: #cbd5e1;
+  color: #ddd;
   transition: color 0.2s ease;
 }
 .office-nav span:hover {
@@ -109,7 +109,7 @@
     <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
@@ -186,7 +186,7 @@
           <tbody>
             <% meetings.forEach(meeting => { %>
               <tr>
-                <td><%= meeting.candidate_name %><br><small style="color:#64748b;"><%= meeting.candidate_email %></small></td>
+                <td><%= meeting.candidate_name %><br><small style="color:#666;"><%= meeting.candidate_email %></small></td>
                 <td><%= meeting.job_title %></td>
                 <td><%= new Date(meeting.scheduled_at).toLocaleString() %></td>
                 <td><%= meeting.platform %></td>
@@ -194,7 +194,7 @@
                   <% if (meeting.meeting_link) { %>
                     <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#425b65; text-decoration:underline;">Open Link</a>
                   <% } else { %>
-                    <span style="color:#64748b;">No link</span>
+                    <span style="color:#666;">No link</span>
                   <% } %>
                 </td>
                 <td>
@@ -247,11 +247,11 @@
         </thead>
         <tbody>
           <% if (recentApps.length === 0) { %>
-            <tr><td colspan="5" style="color:#64748b; padding:1.5rem; text-align:center;">No recent applications yet.</td></tr>
+            <tr><td colspan="5" style="color:#666; padding:1.5rem; text-align:center;">No recent applications yet.</td></tr>
           <% } else { %>
             <% recentApps.forEach(app => { %>
               <tr>
-                <td><%= app.candidate_name %> <span style="color:#64748b; font-size:0.85rem;"><%= app.candidate_email %></span></td>
+                <td><%= app.candidate_name %> <span style="color:#666; font-size:0.85rem;"><%= app.candidate_email %></span></td>
                 <td><%= app.job_title %></td>
                 <td><%= app.university %></td>
                 <td><%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %></td>
@@ -286,19 +286,19 @@ function openHREditMeetingModal(meetingId, scheduledAt, platform, meetingLink, c
   modal.innerHTML = `
     <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
       <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #455a64;">Edit Meeting</h3>
+        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Edit Meeting</h3>
         <form id="hrEditMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
-            <input type="datetime-local" id="hrEditScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <input type="datetime-local" id="hrEditScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
           </div>
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
-            <input type="text" id="hrEditPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <input type="text" id="hrEditPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
           </div>
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
-            <input type="url" id="hrEditMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <input type="url" id="hrEditMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
           </div>
           <div style="display: flex; gap: 1rem;">
             <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
@@ -311,7 +311,7 @@ function openHREditMeetingModal(meetingId, scheduledAt, platform, meetingLink, c
             </label>
           </div>
           <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-            <button type="button" onclick="closeHREditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 600;">Cancel</button>
+            <button type="button" onclick="closeHREditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
             <button type="button" onclick="submitHREditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #6f8090; color: white; cursor: pointer; font-weight: 600;">Save</button>
           </div>
         </form>
@@ -362,16 +362,16 @@ function openScheduleMeetingModal(applicationId, candidateName, jobTitle) {
   modal.innerHTML = `
     <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
       <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 520px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #455a64;">Schedule Interview Meeting</h3>
+        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Schedule Interview Meeting</h3>
         <p style="margin:0 0 1rem; color:#475569;">Candidate: <strong>${candidateName}</strong><br>Job: <strong>${jobTitle}</strong></p>
         <form id="hrScheduleMeetingForm" action="/admin/application/${applicationId}/meeting" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
-            <input type="datetime-local" name="scheduled_at" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <input type="datetime-local" name="scheduled_at" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
           </div>
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
-            <select name="platform" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #24333d;">
+            <select name="platform" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #ffffff; color: #282A35;">
               <option value="">Select platform</option>
               <option value="jitsi">Jitsi</option>
               <option value="zoom">Zoom</option>
@@ -382,7 +382,7 @@ function openScheduleMeetingModal(applicationId, candidateName, jobTitle) {
           </div>
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
-            <input type="url" name="meeting_link" placeholder="Meeting link (required for Zoom/Google Meet/Teams)" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <input type="url" name="meeting_link" placeholder="Meeting link (required for Zoom/Google Meet/Teams)" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
           </div>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
             <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
@@ -395,7 +395,7 @@ function openScheduleMeetingModal(applicationId, candidateName, jobTitle) {
             </label>
           </div>
           <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
-            <button type="button" onclick="closeHRScheduleMeetingModal()" style="flex: 1; padding: 0.85rem 1rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 600;">Cancel</button>
+            <button type="button" onclick="closeHRScheduleMeetingModal()" style="flex: 1; padding: 0.85rem 1rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
             <button type="submit" class="btn btn-primary" style="flex: 1; padding: 0.85rem 1rem; border-radius: 8px; border: none; cursor: pointer;">Schedule</button>
           </div>
         </form>

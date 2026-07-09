@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .welcome-section {
-  background: linear-gradient(135deg, #2f4f4f 0%, #455a64 100%);
+  background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
   color: white;
   padding: 3rem 2rem;
   border-radius: 12px;
@@ -35,12 +35,12 @@
   box-shadow: var(--shadow-md);
   padding: 1.5rem;
   margin-bottom: 2rem;
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
 }
 
 .dashboard-sidebar h3 {
   margin-top: 0;
-  color: #24333d;
+  color: #282A35;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -54,7 +54,7 @@
 }
 
 .quick-stat {
-  background: #f0f4ff;
+  background: #f1f1f1;
   padding: 1rem;
   border-radius: 8px;
   text-align: center;
@@ -63,12 +63,12 @@
 .quick-stat-number {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #2f4f4f;
+  color: #04AA6D;
 }
 
 .quick-stat-label {
   font-size: 0.85rem;
-  color: #64748b;
+  color: #666;
   margin-top: 0.5rem;
 }
 
@@ -86,7 +86,7 @@
   box-shadow: var(--shadow-md);
   text-align: center;
   transition: var(--transition);
-  border-top: 4px solid #2f4f4f;
+  border-top: 4px solid #04AA6D;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -99,7 +99,7 @@
 .dashboard-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
-  border-top-color: #455a64;
+  border-top-color: #059862;
 }
 
   .insight-strip {
@@ -110,8 +110,8 @@
   }
 
   .insight-card {
-    background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
-    border: 1px solid #dbeafe;
+    background: linear-gradient(135deg, #f1f1f1 0%, #f1f1f1 100%);
+    border: 1px solid #e8f5e9;
     border-radius: 14px;
     padding: 1.2rem 1.25rem;
     display: flex;
@@ -124,7 +124,7 @@
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: #2f4f4f;
+    background: #04AA6D;
     color: white;
     display: grid;
     place-items: center;
@@ -133,7 +133,7 @@
 
   .insight-card h3 {
     margin: 0 0 0.35rem;
-    color: #24333d;
+    color: #282A35;
     font-size: 1rem;
   }
 
@@ -148,7 +148,7 @@
     padding: 1.35rem;
     border-radius: 12px;
     box-shadow: var(--shadow-md);
-    border-left: 4px solid #6e7d65;
+    border-left: 4px solid #04AA6D;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
@@ -156,12 +156,12 @@
 
   .recommendation-card h4 {
     margin: 0;
-    color: #24333d;
+    color: #282A35;
     font-size: 1.05rem;
   }
 
   .recommendation-meta {
-    color: #64748b;
+    color: #666;
     font-size: 0.95rem;
   }
 
@@ -193,9 +193,9 @@
   }
 
   .meeting-tab {
-    border: 1px solid #e2e8f0;
-    background: #f8fafc;
-    color: #24333d;
+    border: 1px solid #ddd;
+    background: #f1f1f1;
+    color: #282A35;
     padding: 0.75rem 1rem;
     border-radius: 999px;
     cursor: pointer;
@@ -204,7 +204,7 @@
   }
 
   .meeting-tab.active {
-    background: linear-gradient(135deg, #2f4f4f, #455a64);
+    background: linear-gradient(135deg, #04AA6D, #059862);
     color: white;
     border-color: transparent;
   }
@@ -221,8 +221,8 @@
   .meeting-card {
     padding: 1.5rem;
     border-radius: 16px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: #f1f1f1;
+    border: 1px solid #ddd;
     margin-bottom: 1rem;
   }
 
@@ -243,7 +243,7 @@
 
   .participant-card {
     background: white;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #ddd;
     border-radius: 14px;
     padding: 1rem;
     text-align: left;
@@ -281,7 +281,7 @@
     background: #eef2ff;
     padding: 1.25rem;
     border-radius: 14px;
-    border: 1px solid #e0e7ff;
+    border: 1px solid #f3f3f3;
   }
 
   .meeting-create-info h3 {
@@ -293,11 +293,11 @@
 
 .dashboard-card h3 {
   margin: 1rem 0 0.5rem;
-  color: #24333d;
+  color: #282A35;
 }
 
 .dashboard-card p {
-  color: #64748b;
+  color: #666;
   font-size: 0.95rem;
   margin: 0.5rem 0 1.5rem;
   flex-grow: 1;
@@ -321,7 +321,7 @@
     <% if (user.role === 'hr') { %><span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span><% } %>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
@@ -513,7 +513,7 @@
           <div class="meeting-card">
             <div class="meeting-card-header">
               <div>
-                <h3><%= meeting.job_title || 'Interview Meeting' %> <span style="font-size:0.9rem; color:#64748b; display:block;">(<%= meeting.university || 'University' %>)</span></h3>
+                <h3><%= meeting.job_title || 'Interview Meeting' %> <span style="font-size:0.9rem; color:#666; display:block;">(<%= meeting.university || 'University' %>)</span></h3>
                 <p><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></p>
                 <p><strong>Platform:</strong> <%= meeting.platform ? meeting.platform.toUpperCase() : 'JITSI' %></p>
               </div>
@@ -584,27 +584,27 @@
   <div class="section" style="margin-top: 3rem; margin-bottom: 3rem;">
     <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;"><i class="fas fa-star"></i> Featured Opportunities</h2>
     <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #2f4f4f;">
-        <h4 style="color: #2f4f4f; margin-top: 0;">Senior Professor - Computer Science</h4>
-        <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-school"></i> Stanford University</p>
-        <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-map-marker-alt"></i> California, USA</p>
-        <p style="font-weight: 600; margin: 1rem 0; color: #2f4f4f;"><i class="fas fa-indian-rupee"></i> ₹12,00,000 - ₹18,00,000</p>
+      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
+        <h4 style="color: #04AA6D; margin-top: 0;">Senior Professor - Computer Science</h4>
+        <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-school"></i> Stanford University</p>
+        <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-map-marker-alt"></i> California, USA</p>
+        <p style="font-weight: 600; margin: 1rem 0; color: #04AA6D;"><i class="fas fa-indian-rupee"></i> ₹12,00,000 - ₹18,00,000</p>
         <button class="btn btn-primary" style="width: 100%;"><i class="fas fa-arrow-right"></i> View Details</button>
       </div>
 
-      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #455a64;">
-        <h4 style="color: #455a64; margin-top: 0;">Associate Professor - Data Science</h4>
-        <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-school"></i> MIT</p>
-        <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-map-marker-alt"></i> Massachusetts, USA</p>
-        <p style="font-weight: 600; margin: 1rem 0; color: #455a64;"><i class="fas fa-indian-rupee"></i> ₹10,00,000 - ₹16,00,000</p>
+      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #059862;">
+        <h4 style="color: #059862; margin-top: 0;">Associate Professor - Data Science</h4>
+        <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-school"></i> MIT</p>
+        <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-map-marker-alt"></i> Massachusetts, USA</p>
+        <p style="font-weight: 600; margin: 1rem 0; color: #059862;"><i class="fas fa-indian-rupee"></i> ₹10,00,000 - ₹16,00,000</p>
         <button class="btn btn-primary" style="width: 100%;"><i class="fas fa-arrow-right"></i> View Details</button>
       </div>
 
-      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #6e7d65;">
-        <h4 style="color: #6e7d65; margin-top: 0;">Lecturer - Engineering</h4>
-        <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-school"></i> Cambridge University</p>
-        <p style="margin: 0.5rem 0; color: #64748b;"><i class="fas fa-map-marker-alt"></i> Cambridge, UK</p>
-        <p style="font-weight: 600; margin: 1rem 0; color: #6e7d65;"><i class="fas fa-indian-rupee"></i> ₹6,00,000 - ₹9,00,000</p>
+      <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
+        <h4 style="color: #04AA6D; margin-top: 0;">Lecturer - Engineering</h4>
+        <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-school"></i> Cambridge University</p>
+        <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-map-marker-alt"></i> Cambridge, UK</p>
+        <p style="font-weight: 600; margin: 1rem 0; color: #04AA6D;"><i class="fas fa-indian-rupee"></i> ₹6,00,000 - ₹9,00,000</p>
         <button class="btn btn-primary" style="width: 100%;"><i class="fas fa-arrow-right"></i> View Details</button>
       </div>
     </div>
@@ -615,18 +615,18 @@
 <div id="resumeModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
   <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-2xl); width: 90%; max-width: 500px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-      <h3 style="margin: 0; color: #24333d;"><i class="fas fa-file-upload"></i> Upload Your Resume</h3>
-      <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+      <h3 style="margin: 0; color: #282A35;"><i class="fas fa-file-upload"></i> Upload Your Resume</h3>
+      <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">&times;</button>
     </div>
     
     <form action="/profile/resume" method="POST" enctype="multipart/form-data">
       <div style="margin-bottom: 1.5rem;">
-        <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;">
+        <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #111;">
           <i class="fas fa-file-upload"></i> Select Resume File
         </label>
         <input type="file" id="resume" name="resume" accept=".pdf,image/*" required 
-               style="width: 100%; padding: 1rem; border: 2px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; transition: var(--transition); cursor: pointer;">
-        <small style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+               style="width: 100%; padding: 1rem; border: 2px dashed #ddd; border-radius: 8px; background: #f1f1f1; transition: var(--transition); cursor: pointer;">
+        <small style="color: #666; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
           <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, JPG, PNG
         </small>
       </div>

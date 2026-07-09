@@ -8,8 +8,8 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
-  body { font-family: 'DM Sans', sans-serif; background: #f8fafc; color: #24333d; margin: 0; padding: 0; }
-  nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: white; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; }
+  body { font-family: 'DM Sans', sans-serif; background: #f1f1f1; color: #282A35; margin: 0; padding: 0; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: white; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 10; }
   nav .logo { font-size: 1.25rem; font-weight: 700; color: #4b5d6b; }
   nav .nav-links { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
   nav .nav-links span, nav .nav-links a { color: #475569; cursor: pointer; text-decoration: none; font-weight: 500; }
@@ -17,26 +17,26 @@
   .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
   .header-title { max-width: 780px; }
   .header-title h1 { margin: 0 0 0.5rem; font-size: 2rem; }
-  .header-title p { margin: 0; color: #64748b; }
+  .header-title p { margin: 0; color: #666; }
   .panel { display: grid; gap: 1.5rem; }
-  .card { background: white; border: 1px solid #e2e8f0; border-radius: 18px; padding: 1.5rem; box-shadow: 0 20px 30px rgba(15,23,42,0.04); }
+  .card { background: white; border: 1px solid #ddd; border-radius: 18px; padding: 1.5rem; box-shadow: 0 20px 30px rgba(15,23,42,0.04); }
   .grid-2 { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 1.5rem; }
   .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 1rem; }
-  .meeting-card { border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.25rem; background: #f8fafc; }
+  .meeting-card { border: 1px solid #ddd; border-radius: 16px; padding: 1.25rem; background: #f1f1f1; }
   .meeting-card h3 { margin: 0 0 0.75rem; font-size: 1.05rem; }
   .meeting-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
   .meeting-meta span { display: block; color: #475569; font-size: 0.95rem; }
-  .meeting-meta strong { color: #24333d; }
+  .meeting-meta strong { color: #282A35; }
   .meeting-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
   .meeting-actions a, .meeting-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.9rem 1rem; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; text-decoration: none; }
   .btn-primary { background: #4b5d6b; color: white; }
-  .btn-secondary { background: #e2e8f0; color: #24333d; }
+  .btn-secondary { background: #ddd; color: #282A35; }
   .form-group { display: grid; gap: 0.5rem; margin-bottom: 1rem; }
   .form-group label { font-size: 0.85rem; color: #475569; font-weight: 600; }
-  .form-group input, .form-group select { width: 100%; border: 1px solid #cbd5e1; border-radius: 12px; padding: 0.95rem 1rem; font-size: 0.95rem; color: #24333d; background: white; }
+  .form-group input, .form-group select { width: 100%; border: 1px solid #ddd; border-radius: 12px; padding: 0.95rem 1rem; font-size: 0.95rem; color: #282A35; background: white; }
   .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
   .badge { background: #eef2ff; color: #3730a3; padding: 0.4rem 0.75rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.85rem; }
-  .helper { color: #64748b; font-size: 0.9rem; line-height: 1.6; }
+  .helper { color: #666; font-size: 0.9rem; line-height: 1.6; }
   .section-title { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
   .section-title h2 { margin: 0; font-size: 1.4rem; }
   .meeting-grid { display: grid; gap: 1rem; }
@@ -44,7 +44,7 @@
   .insight-card { background: white; border-radius: 16px; padding: 1rem 1.15rem; box-shadow: 0 12px 24px rgba(15,23,42,0.05); border-left: 4px solid #4b5d6b; display: flex; gap: 0.8rem; align-items: flex-start; }
   .insight-icon { width: 40px; height: 40px; border-radius: 50%; background: #eef2ff; color: #4b5d6b; display: grid; place-items: center; }
   .insight-card h3 { margin: 0 0 0.3rem; font-size: 1rem; }
-  .insight-card p { margin: 0; color: #64748b; font-size: 0.92rem; }
+  .insight-card p { margin: 0; color: #666; font-size: 0.92rem; }
   @media(max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
   @media(max-width: 640px) { nav { flex-direction: column; align-items: flex-start; } }
 </style>

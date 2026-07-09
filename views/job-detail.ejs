@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .detail-header {
-  background: linear-gradient(135deg, #2f4f4f 0%, #455a64 100%);
+  background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
   color: white;
   padding: 3rem 2rem;
   border-radius: 12px;
@@ -70,7 +70,7 @@
   border-radius: 12px;
   margin-bottom: 2rem;
   box-shadow: var(--shadow-md);
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
 }
 
 .section-header {
@@ -80,18 +80,18 @@
   margin-bottom: 1.5rem;
   font-size: 1.3rem;
   font-weight: 600;
-  color: #24333d;
-  border-bottom: 2px solid #2f4f4f;
+  color: #282A35;
+  border-bottom: 2px solid #04AA6D;
   padding-bottom: 1rem;
 }
 
 .section-header i {
-  color: #2f4f4f;
+  color: #04AA6D;
   font-size: 1.5rem;
 }
 
 .section-content {
-  color: #64748b;
+  color: #666;
   line-height: 1.8;
   font-size: 0.95rem;
 }
@@ -106,7 +106,7 @@
 }
 
 .salary-badge {
-  background: linear-gradient(135deg, #2f4f4f, #455a64);
+  background: linear-gradient(135deg, #04AA6D, #059862);
   color: white;
   padding: 1rem 1.5rem;
   border-radius: 8px;
@@ -149,14 +149,14 @@
 }
 
 .requirement-item {
-  background: #f0f4ff;
+  background: #f1f1f1;
   padding: 1rem;
   border-radius: 8px;
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
 }
 
 .requirement-item i {
-  color: #2f4f4f;
+  color: #04AA6D;
   margin-right: 0.5rem;
 }
 
@@ -165,21 +165,21 @@
   gap: 0.5rem;
   align-items: center;
   margin-bottom: 2rem;
-  color: #64748b;
+  color: #666;
   font-size: 0.95rem;
 }
 
 .breadcrumb a {
-  color: #2f4f4f;
+  color: #04AA6D;
   transition: var(--transition);
 }
 
 .breadcrumb a:hover {
-  color: #455a64;
+  color: #059862;
 }
 
 .breadcrumb-separator {
-  color: #cbd5e1;
+  color: #ddd;
 }
 
 @media (max-width: 768px) {
@@ -220,7 +220,7 @@
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
@@ -297,7 +297,7 @@
           </div>
           <form action="/apply/<%= job.id %>" method="POST" enctype="multipart/form-data">
             <% if (hasResume) { %>
-              <div style="background: #d1fae5; border: 1px solid #6e7d65; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+              <div style="background: #d1fae5; border: 1px solid #04AA6D; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
                 <div style="display: flex; align-items: center; gap: 0.5rem; color: #065f46; font-weight: 600;">
                   <i class="fas fa-check-circle"></i>
                   Resume Available
@@ -316,12 +316,12 @@
             <% } %>
             
             <div style="margin-bottom: 1.5rem;">
-              <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;">
+              <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #111;">
                 <i class="fas fa-file-upload"></i> <%= hasResume ? 'Upload Different Resume (Optional)' : 'Upload Your Resume (PDF, DOC, DOCX or Image)' %>
               </label>
               <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,image/*" <%= hasResume ? '' : 'required' %>
-                     style="width: 100%; padding: 0.75rem; border: 2px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; transition: var(--transition);">
-              <small style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+                     style="width: 100%; padding: 0.75rem; border: 2px dashed #ddd; border-radius: 8px; background: #f1f1f1; transition: var(--transition);">
+              <small style="color: #666; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
                 <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, DOC, DOCX, JPG, PNG
                 <%= hasResume ? 'Leave empty to use your uploaded resume.' : '' %>
                 <br>
@@ -342,8 +342,8 @@
           <% } %>
           
           <% if (!hasResume) { %>
-            <div style="text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
-              <p style="color: #64748b; margin-bottom: 1rem;">Don't have a resume ready?</p>
+            <div style="text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #ddd;">
+              <p style="color: #666; margin-bottom: 1rem;">Don't have a resume ready?</p>
               <button onclick="window.location.href='/dashboard'" class="btn btn-secondary">
                 <i class="fas fa-upload"></i> Upload Resume to Dashboard First
               </button>
@@ -361,9 +361,9 @@
     </div>
 
     <!-- MORE VACANCIES -->
-    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f8fafc; border-radius: 12px;">
-      <h3 style="color: #24333d; margin-top: 0;">Looking for more opportunities?</h3>
-      <p style="color: #64748b; margin-bottom: 1.5rem;">Explore other available positions from universities worldwide.</p>
+    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f1f1f1; border-radius: 12px;">
+      <h3 style="color: #282A35; margin-top: 0;">Looking for more opportunities?</h3>
+      <p style="color: #666; margin-bottom: 1.5rem;">Explore other available positions from universities worldwide.</p>
       <a href="/jobs" class="btn btn-primary"><i class="fas fa-briefcase"></i> View All Vacancies</a>
     </div>
   </div>

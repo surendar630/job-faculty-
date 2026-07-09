@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .shortlisted-header {
-  background: linear-gradient(135deg, #6e7d65 0%, #059669 100%);
+  background: linear-gradient(135deg, #04AA6D 0%, #059669 100%);
   color: white;
   padding: 3rem 2rem;
   border-radius: 12px;
@@ -41,7 +41,7 @@
   box-shadow: var(--shadow-md);
   overflow: hidden;
   transition: var(--transition);
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ddd;
 }
 
 .resume-card:hover {
@@ -50,15 +50,15 @@
 }
 
 .resume-header {
-  background: linear-gradient(135deg, #f0f4ff, #f5f3ff);
+  background: linear-gradient(135deg, #f1f1f1, #f5f3ff);
   padding: 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #ddd;
 }
 
 .resume-title {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #24333d;
+  color: #282A35;
   margin-bottom: 0.5rem;
 }
 
@@ -66,7 +66,7 @@
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  color: #64748b;
+  color: #666;
   font-size: 0.9rem;
 }
 
@@ -82,7 +82,7 @@
 
 .resume-actions {
   padding: 1rem 1.5rem 1.5rem;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid #f1f1f1;
   display: flex;
   gap: 0.75rem;
 }
@@ -96,7 +96,7 @@
 .empty-state {
   text-align: center;
   padding: 3rem;
-  color: #64748b;
+  color: #666;
   background: white;
   border-radius: 12px;
   box-shadow: var(--shadow-md);
@@ -104,7 +104,7 @@
 
 .empty-state i {
   font-size: 3rem;
-  color: #cbd5e1;
+  color: #ddd;
   margin-bottom: 1rem;
 }
 
@@ -132,7 +132,7 @@
     <% if (user.role === 'hr') { %><span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span><% } %>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
@@ -166,14 +166,14 @@
           </div>
 
           <div class="resume-content">
-            <p style="color: #64748b; margin: 0;">
+            <p style="color: #666; margin: 0;">
               <strong>Status:</strong> 
-              <span style="background: #dbeafe; color: #455a64; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">
+              <span style="background: #e8f5e9; color: #059862; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">
                 <i class="fas fa-check"></i> Shortlisted
               </span>
             </p>
             <% if (app.resume_scan_score || app.resume_scan_report) { %>
-              <div style="margin-top:0.85rem; padding:0.9rem; background:#f8fafc; border-radius:10px; color:#334155;">
+              <div style="margin-top:0.85rem; padding:0.9rem; background:#f1f1f1; border-radius:10px; color:#334155;">
                 <strong>AICTE scan:</strong> <%= app.resume_scan_score || 'N/A' %>% | <%= app.resume_aicte_status || 'pending' %>
                 <% if (app.resume_scan_report) { %>
                   <div style="margin-top:0.65rem; white-space:pre-wrap; font-size:0.92rem; line-height:1.5;"><%= app.resume_scan_report %></div>

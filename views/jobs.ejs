@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .page-header {
-  background: linear-gradient(135deg, #2f4f4f 0%, #455a64 100%);
+  background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
   color: white;
   padding: 2rem;
   text-align: center;
@@ -32,7 +32,7 @@
   margin: 2rem;
   border-radius: 12px;
   box-shadow: var(--shadow-md);
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
 }
 
 .filters-header h3 {
@@ -40,7 +40,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #24333d;
+  color: #282A35;
 }
 
 .filters form {
@@ -54,7 +54,7 @@
 .filters select {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ddd;
   border-radius: 8px;
   font-family: inherit;
   font-size: 0.95rem;
@@ -64,13 +64,13 @@
 .filters input:focus,
 .filters select:focus {
   outline: none;
-  border-color: #2f4f4f;
+  border-color: #04AA6D;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .filters button {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #2f4f4f, #455a64);
+  background: linear-gradient(135deg, #04AA6D, #059862);
   color: white;
   border: none;
   border-radius: 8px;
@@ -101,23 +101,23 @@
 }
 
 .jobs-count {
-  color: #64748b;
+  color: #666;
   font-size: 0.95rem;
 }
 
 .compare-section {
-  background: #f0f4ff;
+  background: #f1f1f1;
   padding: 1rem 1.5rem;
   border-radius: 8px;
   margin-bottom: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
 }
 
 .compare-btn {
-  background: linear-gradient(135deg, #b9955b, #8f6b33) !important;
+  background: linear-gradient(135deg, #ff9800, #8f6b33) !important;
   padding: 0.75rem 1.5rem !important;
 }
 
@@ -134,7 +134,7 @@
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
   transition: var(--transition);
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -143,14 +143,14 @@
 .job-card-wrapper:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-left-color: #455a64;
+  border-left-color: #059862;
 }
 
 .job-card-wrapper input[type="checkbox"] {
   width: 22px;
   height: 22px;
   cursor: pointer;
-  accent-color: #2f4f4f;
+  accent-color: #04AA6D;
 }
 
 .job-card-content {
@@ -160,12 +160,12 @@
 .job-title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #24333d;
+  color: #282A35;
   margin-bottom: 0.5rem;
 }
 
 .job-university {
-  color: #2f4f4f;
+  color: #04AA6D;
   font-weight: 500;
   margin-bottom: 0.75rem;
   display: flex;
@@ -179,7 +179,7 @@
   flex-wrap: wrap;
   margin-bottom: 0.75rem;
   font-size: 0.95rem;
-  color: #64748b;
+  color: #666;
 }
 
 .job-meta-item {
@@ -191,7 +191,7 @@
 .job-salary {
   font-size: 1.2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #2f4f4f, #455a64);
+  background: linear-gradient(135deg, #04AA6D, #059862);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -212,12 +212,12 @@
 .empty-state {
   text-align: center;
   padding: 3rem;
-  color: #64748b;
+  color: #666;
 }
 
 .empty-state i {
   font-size: 3rem;
-  color: #cbd5e1;
+  color: #ddd;
   margin-bottom: 1rem;
 }
 
@@ -233,7 +233,7 @@
   padding: 1rem 1.15rem;
   border-radius: 14px;
   box-shadow: var(--shadow-md);
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
   display: flex;
   gap: 0.8rem;
   align-items: flex-start;
@@ -243,21 +243,21 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #eff6ff;
-  color: #2f4f4f;
+  background: #f1f1f1;
+  color: #04AA6D;
   display: grid;
   place-items: center;
 }
 
 .insight-card h3 {
   margin: 0 0 0.3rem;
-  color: #24333d;
+  color: #282A35;
   font-size: 1rem;
 }
 
 .insight-card p {
   margin: 0;
-  color: #64748b;
+  color: #666;
   font-size: 0.92rem;
 }
 
@@ -302,7 +302,7 @@
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>

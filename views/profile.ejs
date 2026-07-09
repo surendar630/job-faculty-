@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .profile-header {
-  background: linear-gradient(135deg, #2f4f4f 0%, #455a64 100%);
+  background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
   color: white;
   padding: 3rem 2rem;
   border-radius: 12px;
@@ -62,7 +62,7 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
   transition: var(--transition);
 }
 
@@ -74,12 +74,12 @@
 .app-title {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #24333d;
+  color: #282A35;
   margin-top: 0;
 }
 
 .app-university {
-  color: #2f4f4f;
+  color: #04AA6D;
   font-weight: 500;
   font-size: 0.95rem;
 }
@@ -90,7 +90,7 @@
   margin: 1rem 0;
   flex-wrap: wrap;
   font-size: 0.9rem;
-  color: #64748b;
+  color: #666;
 }
 
 .app-status {
@@ -108,8 +108,8 @@
 }
 
 .status-shortlisted {
-  background: #dbeafe;
-  color: #455a64;
+  background: #e8f5e9;
+  color: #059862;
 }
 
 .status-accepted {
@@ -123,7 +123,7 @@
 }
 
 .interview-score {
-  background: linear-gradient(135deg, #2f4f4f, #455a64);
+  background: linear-gradient(135deg, #04AA6D, #059862);
   color: white;
   padding: 1rem;
   border-radius: 8px;
@@ -142,17 +142,17 @@
 }
 
 .empty-state {
-  background: #f8fafc;
-  border: 2px dashed #cbd5e1;
+  background: #f1f1f1;
+  border: 2px dashed #ddd;
   border-radius: 12px;
   padding: 3rem;
   text-align: center;
-  color: #64748b;
+  color: #666;
 }
 
 .empty-state i {
   font-size: 3rem;
-  color: #cbd5e1;
+  color: #ddd;
   margin-bottom: 1rem;
 }
 
@@ -213,7 +213,7 @@
     <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
     <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
@@ -402,13 +402,13 @@
       <% if (user.linkedin) { %>
       <div class="profile-info-card">
         <div class="profile-info-label"><i class="fab fa-linkedin"></i> LinkedIn</div>
-        <div class="profile-info-value"><a href="<%= user.linkedin %>" target="_blank" style="color: #b9955b; text-decoration: none;"><%= user.linkedin %></a></div>
+        <div class="profile-info-value"><a href="<%= user.linkedin %>" target="_blank" style="color: #ff9800; text-decoration: none;"><%= user.linkedin %></a></div>
       </div>
       <% } %>
       <% if (user.website) { %>
       <div class="profile-info-card">
         <div class="profile-info-label"><i class="fas fa-link"></i> Website</div>
-        <div class="profile-info-value"><a href="<%= user.website %>" target="_blank" style="color: #b9955b; text-decoration: none;"><%= user.website %></a></div>
+        <div class="profile-info-value"><a href="<%= user.website %>" target="_blank" style="color: #ff9800; text-decoration: none;"><%= user.website %></a></div>
       </div>
       <% } %>
       <% } %>
@@ -441,10 +441,10 @@
         <i class="fas fa-info-circle"></i>
         <% if (user.resume_review_status === 'pending') { %>
           <span>Your resume is currently under admin review. You can still update it anytime and the latest version will be reviewed.</span>
-          <span style="display:block; margin-top:0.35rem; color:#64748b;">Your resume is also being checked for AICTE compliance. Detailed scan feedback is accessible only to HR and admin.</span>
+          <span style="display:block; margin-top:0.35rem; color:#666;">Your resume is also being checked for AICTE compliance. Detailed scan feedback is accessible only to HR and admin.</span>
         <% } else if (user.resume_review_status === 'shortlisted') { %>
           <span>Your resume has been approved by admin and is ready for applications.</span>
-          <span style="display:block; margin-top:0.35rem; color:#64748b;">The AICTE scan has been completed and HR/admin have approved your resume for this job track.</span>
+          <span style="display:block; margin-top:0.35rem; color:#666;">The AICTE scan has been completed and HR/admin have approved your resume for this job track.</span>
         <% } else if (user.resume_review_status === 'rejected') { %>
           <span>Your resume was rejected by admin. Please upload a new version to send it for review again.</span>
         <% } else { %>
@@ -454,14 +454,14 @@
     <% } %>
 
     <% if (user.resume_path) { %>
-      <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: var(--shadow-md); border-left: 4px solid #6e7d65;">
+      <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
           <div style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 50%;">
             <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
           </div>
           <div>
             <h3 style="margin: 0; color: #065f46; font-size: 1.2rem;">Resume Uploaded</h3>
-            <p style="margin: 0.25rem 0 0; color: #64748b; font-size: 0.9rem;">Your resume is ready for job applications</p>
+            <p style="margin: 0.25rem 0 0; color: #666; font-size: 0.9rem;">Your resume is ready for job applications</p>
           </div>
         </div>
         
@@ -491,10 +491,10 @@
     <h2 style="font-size: 1.8rem; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> Your Applications</h2>
     
     <% if (meetings && meetings.length > 0) { %>
-      <div class="meeting-section" style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:14px; padding:1.25rem; margin-bottom:1.5rem;">
+      <div class="meeting-section" style="background:#f1f1f1; border:1px solid #bfdbfe; border-radius:14px; padding:1.25rem; margin-bottom:1.5rem;">
         <h3 style="margin-top:0; color:#425b65;"><i class="fas fa-video"></i> Scheduled Interview Meetings</h3>
         <% meetings.forEach(meeting => { %>
-          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:0.75rem; align-items:center; padding:0.9rem 0; border-bottom:1px solid #dbeafe;">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:0.75rem; align-items:center; padding:0.9rem 0; border-bottom:1px solid #e8f5e9;">
             <div style="min-width:220px;">
               <strong><%= meeting.job_title %></strong><br>
               <span style="color:#475569;"><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
@@ -590,18 +590,18 @@ function toggleEditMode() {
 <div id="resumeModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
   <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-2xl); width: 90%; max-width: 500px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-      <h3 style="margin: 0; color: #24333d;"><i class="fas fa-file-upload"></i> <%= user.resume_path ? 'Update' : 'Upload' %> Your Resume</h3>
-      <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b;">&times;</button>
+      <h3 style="margin: 0; color: #282A35;"><i class="fas fa-file-upload"></i> <%= user.resume_path ? 'Update' : 'Upload' %> Your Resume</h3>
+      <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">&times;</button>
     </div>
     
     <form action="/profile/resume" method="POST" enctype="multipart/form-data">
       <div style="margin-bottom: 1.5rem;">
-        <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;">
+        <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #111;">
           <i class="fas fa-file-upload"></i> Select Resume File
         </label>
         <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,image/*" required 
-               style="width: 100%; padding: 1rem; border: 2px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; transition: var(--transition); cursor: pointer;">
-        <small style="color: #64748b; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+               style="width: 100%; padding: 1rem; border: 2px dashed #ddd; border-radius: 8px; background: #f1f1f1; transition: var(--transition); cursor: pointer;">
+        <small style="color: #666; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
           <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, DOC, DOCX, JPG, PNG
           <%= user.resume_path ? '<br><i class="fas fa-info-circle"></i> This will replace your current resume.' : '' %>
         </small>

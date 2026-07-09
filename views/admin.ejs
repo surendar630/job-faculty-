@@ -9,7 +9,7 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 .admin-header {
-  background: linear-gradient(135deg, #2f4f4f 0%, #455a64 100%);
+  background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
   color: white;
   padding: 2rem;
   border-radius: 12px;
@@ -34,12 +34,12 @@
   padding: 2rem;
   border-radius: 12px;
   box-shadow: var(--shadow-md);
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
 }
 
 .form-section h3 {
   margin-top: 0;
-  color: #24333d;
+  color: #282A35;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -53,7 +53,7 @@
   display: block;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #1e293b;
+  color: #111;
 }
 
 .form-group input,
@@ -61,7 +61,7 @@
 .form-group select {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ddd;
   border-radius: 8px;
   font-family: inherit;
   font-size: 0.95rem;
@@ -72,7 +72,7 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #2f4f4f;
+  border-color: #04AA6D;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
@@ -84,7 +84,7 @@
 .form-group button {
   width: 100%;
   padding: 0.75rem;
-  background: linear-gradient(135deg, #2f4f4f, #455a64);
+  background: linear-gradient(135deg, #04AA6D, #059862);
   color: white;
   border: none;
   border-radius: 8px;
@@ -106,13 +106,13 @@
   border-radius: 12px;
   box-shadow: var(--shadow-md);
   margin-bottom: 2rem;
-  border-left: 4px solid #2f4f4f;
+  border-left: 4px solid #04AA6D;
 }
 
 .section-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #24333d;
+  color: #282A35;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -127,7 +127,7 @@
 
 .job-item {
   background: white;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #ddd;
   padding: 1.5rem;
   border-radius: 8px;
   transition: var(--transition);
@@ -135,16 +135,16 @@
 
 .job-item:hover {
   box-shadow: var(--shadow-md);
-  border-color: #2f4f4f;
+  border-color: #04AA6D;
 }
 
 .job-item h4 {
-  color: #2f4f4f;
+  color: #04AA6D;
   margin-top: 0;
 }
 
 .job-item-info {
-  color: #64748b;
+  color: #666;
   font-size: 0.9rem;
   margin: 0.5rem 0;
 }
@@ -169,9 +169,9 @@
 }
 
 .application-item {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-left: 4px solid #2f4f4f;
+  background: #f1f1f1;
+  border: 1px solid #ddd;
+  border-left: 4px solid #04AA6D;
   padding: 1.5rem;
   border-radius: 8px;
   transition: var(--transition);
@@ -191,7 +191,7 @@
 
 .app-item-title {
   font-weight: 600;
-  color: #24333d;
+  color: #282A35;
   margin: 0;
 }
 
@@ -199,7 +199,7 @@
   display: flex;
   gap: 1.5rem;
   flex-wrap: wrap;
-  color: #64748b;
+  color: #666;
   font-size: 0.9rem;
   margin: 0.5rem 0;
 }
@@ -218,8 +218,8 @@
 }
 
 .status-shortlisted {
-  background: #dbeafe;
-  color: #455a64;
+  background: #e8f5e9;
+  color: #059862;
 }
 
 .app-item-actions {
@@ -237,7 +237,7 @@
 .empty-state {
   text-align: center;
   padding: 2rem;
-  color: #64748b;
+  color: #666;
 }
 
 @media (max-width: 768px) {
@@ -267,7 +267,7 @@
     <span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span>
     <span onclick="window.location.href='/shortlisted'"><i class="fas fa-check-circle"></i> Shortlisted</span>
     <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#2f4f4f'" onmouseout="this.style.color='#cbd5e1'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </form>
   </div>
 </nav>
@@ -279,7 +279,7 @@
     <p>Manage job postings, applications, and candidate interviews</p>
   </div>
 
-  <div class="applications-section" style="border-left: 4px solid #6e7d65; margin-bottom: 2rem;">
+  <div class="applications-section" style="border-left: 4px solid #04AA6D; margin-bottom: 2rem;">
     <h3 class="section-title"><i class="fas fa-check-circle"></i> Shortlisted Resumes</h3>
     <p style="margin-top: 0.5rem; color: #475569;">Review all candidates who have been shortlisted and jump to the resume shortlist page instantly.</p>
     <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
@@ -380,7 +380,7 @@
         <div class="application-item">
           <div class="app-item-header">
             <div>
-              <h4 class="app-item-title"><i class="fas fa-user"></i> <%= u.name %> &nbsp; <small style="color:#64748b; font-weight:600;">(&lt;<%= u.email %>&gt;)</small></h4>
+              <h4 class="app-item-title"><i class="fas fa-user"></i> <%= u.name %> &nbsp; <small style="color:#666; font-weight:600;">(&lt;<%= u.email %>&gt;)</small></h4>
             </div>
             <span class="app-status status-<%= (u.resume_review_status || 'pending').toLowerCase() %>">
               <i class="fas fa-tag"></i> <%= (u.resume_review_status || 'pending').charAt(0).toUpperCase() + (u.resume_review_status || 'pending').slice(1) %>
@@ -389,16 +389,16 @@
 
           <p style="margin:0.5rem 0 0; color:#475569;"><strong>Submitted Resume:</strong>
             <% if (u.resume_path) { %>
-              <a href="/<%= u.resume_path %>" target="_blank" style="margin-left:0.5rem; text-decoration:none; color:#24333d;">View Resume</a>
+              <a href="/<%= u.resume_path %>" target="_blank" style="margin-left:0.5rem; text-decoration:none; color:#282A35;">View Resume</a>
             <% } %>
           </p>
 
           <% if (u.resume_scan_score || u.resume_scan_report) { %>
-            <div style="margin-top:0.75rem; background:#f8fafc; border-radius:12px; padding:1rem; color:#334155;">
+            <div style="margin-top:0.75rem; background:#f1f1f1; border-radius:12px; padding:1rem; color:#334155;">
               <strong>AICTE Scan Summary:</strong>
               <p style="margin:0.5rem 0 0;">Score: <strong><%= u.resume_scan_score || 'N/A' %>%</strong> | Status: <strong><%= u.resume_aicte_status || 'pending' %></strong></p>
               <% if (u.resume_scan_report) { %>
-                <pre style="white-space:pre-wrap; margin-top:0.75rem; font-size:0.92rem; line-height:1.55; background:#ffffff; border:1px solid #e2e8f0; padding:0.9rem; border-radius:10px;"><%= u.resume_scan_report %></pre>
+                <pre style="white-space:pre-wrap; margin-top:0.75rem; font-size:0.92rem; line-height:1.55; background:#ffffff; border:1px solid #ddd; padding:0.9rem; border-radius:10px;"><%= u.resume_scan_report %></pre>
               <% } %>
             </div>
           <% } %>
@@ -433,7 +433,7 @@
 
           <div class="app-item-actions" style="margin-top:1rem;">
             <form action="/admin/resume/<%= u.id %>/review" method="POST" style="display:flex; gap:0.5rem; align-items:center;">
-              <select name="action" style="padding: 0.6rem 0.9rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #24333d;">
+              <select name="action" style="padding: 0.6rem 0.9rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; color: #282A35;">
                 <option value="pending" <%= (!u.resume_review_status || u.resume_review_status === 'pending') ? 'selected' : '' %>>Pending</option>
                 <option value="shortlist">Shortlist</option>
                 <option value="reject">Reject</option>
@@ -451,7 +451,7 @@
     <h3 class="section-title"><i class="fas fa-file-alt"></i> Candidate Applications</h3>
     <div style="margin-bottom: 1rem;">
       <label for="statusFilter" style="font-weight: 600; margin-right: 0.5rem;">Filter by Status:</label>
-      <select id="statusFilter" onchange="filterApplications()" style="padding: 0.5rem; border-radius: 6px; border: 1px solid #e2e8f0;">
+      <select id="statusFilter" onchange="filterApplications()" style="padding: 0.5rem; border-radius: 6px; border: 1px solid #ddd;">
         <option value="all">All Applications</option>
         <option value="pending">Pending</option>
         <option value="shortlisted">Shortlisted</option>
@@ -489,8 +489,8 @@
 
           <% const meeting = (meetingByApp || {})[app.id]; %>
           <% if (meeting) { %>
-            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 0.95rem; margin-bottom: 1rem;">
-              <strong style="display:block; margin-bottom:0.5rem; color:#455a64;">Scheduled Interview Meeting</strong>
+            <div style="background: #f1f1f1; border: 1px solid #bfdbfe; border-radius: 8px; padding: 0.95rem; margin-bottom: 1rem;">
+              <strong style="display:block; margin-bottom:0.5rem; color:#059862;">Scheduled Interview Meeting</strong>
               <div style="color:#334155; line-height:1.5;">
                 <div><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></div>
                 <div><i class="fas fa-video"></i> <%= meeting.platform %></div>
@@ -513,8 +513,8 @@
             </div>
           <% } else { %>
             <form action="/admin/application/<%= app.id %>/meeting" method="POST" class="meeting-schedule-form" style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin-bottom:1rem;">
-              <input type="datetime-local" name="scheduled_at" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; min-width:220px;">
-              <select name="platform" required style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; min-width:180px; background:#ffffff; color:#24333d;">
+              <input type="datetime-local" name="scheduled_at" required style="padding:0.75rem; border-radius:8px; border:1px solid #ddd; min-width:220px;">
+              <select name="platform" required style="padding:0.75rem; border-radius:8px; border:1px solid #ddd; min-width:180px; background:#ffffff; color:#282A35;">
                 <option value="">Select platform</option>
                 <option value="jitsi">Jitsi</option>
                 <option value="zoom">Zoom</option>
@@ -522,7 +522,7 @@
                 <option value="teams">Teams</option>
                 <option value="other">Other</option>
               </select>
-              <input type="url" name="meeting_link" placeholder="Meeting link (required for Zoom/Google Meet/Teams)" style="padding:0.75rem; border-radius:8px; border:1px solid #cbd5e1; flex:1; min-width:220px;">
+              <input type="url" name="meeting_link" placeholder="Meeting link (required for Zoom/Google Meet/Teams)" style="padding:0.75rem; border-radius:8px; border:1px solid #ddd; flex:1; min-width:220px;">
               <label style="display:flex; align-items:center; gap:0.5rem; padding:0.5rem;">
                 <input type="checkbox" name="camera_enabled" checked>
                 <i class="fas fa-camera"></i> Camera
@@ -536,7 +536,7 @@
           <% } %>
 
           <% if (app.interview_score !== null) { %>
-            <div style="background: linear-gradient(135deg, #2f4f4f, #455a64); color: white; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; text-align: center;">
+            <div style="background: linear-gradient(135deg, #04AA6D, #059862); color: white; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; text-align: center;">
               <strong>Interview Score: <%= app.interview_score %>%</strong>
             </div>
           <% } %>
@@ -544,7 +544,7 @@
           <div class="app-item-actions">
             <% if (app.status === 'pending') { %>
               <form action="/admin/application/<%= app.id %>/shortlist" method="POST" style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
-                <select name="field" style="padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #24333d;">
+                <select name="field" style="padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; color: #282A35;">
                   <option value="">Shortlist by Field</option>
                   <option value="DSA">DSA</option>
                   <option value="Python">Python</option>
@@ -595,19 +595,19 @@ function openEditMeetingModal(meetingId, scheduledAt, platform, meetingLink, cam
   modal.innerHTML = `
     <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
       <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #455a64;">Edit Meeting</h3>
+        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Edit Meeting</h3>
         <form id="editMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
-            <input type="datetime-local" id="editScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <input type="datetime-local" id="editScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
           </div>
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
-            <input type="text" id="editPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <input type="text" id="editPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
           </div>
           <div>
             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
-            <input type="url" id="editMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+            <input type="url" id="editMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
           </div>
           <div style="display: flex; gap: 1rem;">
             <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
@@ -620,7 +620,7 @@ function openEditMeetingModal(meetingId, scheduledAt, platform, meetingLink, cam
             </label>
           </div>
           <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-            <button type="button" onclick="closeEditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; font-weight: 600;">Cancel</button>
+            <button type="button" onclick="closeEditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
             <button type="button" onclick="submitEditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #6f8090; color: white; cursor: pointer; font-weight: 600;">Save</button>
           </div>
         </form>
