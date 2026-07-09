@@ -4,21 +4,21 @@
 
 /* ROOT VARIABLES */
 :root {
-  --primary-color: #a435f0;
-  --secondary-color: #5624d0;
-  --accent-color: #ff6b00;
-  --dark-bg: #1c1d1f;
-  --light-bg: #f7f9fa;
+  --primary-color: #2563eb;
+  --secondary-color: #0f766e;
+  --accent-color: #f59e0b;
+  --dark-bg: #0f172a;
+  --light-bg: #f8fafc;
   --card-bg: #ffffff;
-  --text-dark: #1c1d1f;
-  --text-light: #6a6f73;
-  --border-color: #d1d7dc;
-  --success-color: #1e9b5d;
+  --text-dark: #0f172a;
+  --text-light: #64748b;
+  --border-color: #e2e8f0;
+  --success-color: #0f9d7a;
   --warning-color: #f59e0b;
-  --shadow-sm: 0 1px 2px rgba(28, 29, 31, 0.06);
-  --shadow-md: 0 6px 16px rgba(28, 29, 31, 0.08);
-  --shadow-lg: 0 12px 24px rgba(28, 29, 31, 0.12);
-  --shadow-xl: 0 20px 40px rgba(28, 29, 31, 0.16);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 6px 16px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 10px 24px rgba(15, 23, 42, 0.1);
+  --shadow-xl: 0 18px 36px rgba(15, 23, 42, 0.12);
   --transition: all 0.25s ease;
 }
 
@@ -35,7 +35,7 @@ html, body {
 
 body {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #f7f9fa 0%, #f0f2f5 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
   color: var(--text-dark);
   line-height: 1.6;
   min-height: 100vh;
@@ -50,7 +50,7 @@ body::before {
   right: -50%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(164, 53, 240, 0.06), transparent);
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.05), transparent);
   border-radius: 50%;
   pointer-events: none;
   z-index: -1;
@@ -168,18 +168,17 @@ a:hover {
    NAVIGATION
    ============================================ */
 nav {
-  background: linear-gradient(135deg, var(--dark-bg) 0%, #2d2f31 100%);
-  backdrop-filter: blur(10px);
-  color: white;
+  background: #ffffff;
+  color: var(--text-dark);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .logo {
@@ -287,8 +286,8 @@ nav {
    HERO SECTION
    ============================================ */
 .hero {
-  background: linear-gradient(135deg, #1c1d1f 0%, #2d2f31 45%, var(--secondary-color) 100%);
-  color: white;
+  background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 60%, #ecfeff 100%);
+  color: var(--text-dark);
   padding: 5rem 2rem;
   text-align: center;
   min-height: 400px;
@@ -298,6 +297,7 @@ nav {
   align-items: center;
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .hero::before {
@@ -455,7 +455,7 @@ nav {
   padding: 1.5rem;
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
-  border: 1px solid rgba(209, 215, 220, 0.7);
+  border: 1px solid var(--border-color);
 }
 
 .card:hover {
@@ -464,7 +464,7 @@ nav {
 }
 
 .job-card {
-  background: linear-gradient(90deg, rgba(164, 53, 240, 0.04), #ffffff);
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.05), #ffffff);
   margin: 1.5rem;
   padding: 1.5rem;
   border-radius: 16px;
