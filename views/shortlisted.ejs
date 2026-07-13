@@ -308,6 +308,11 @@
                 <% } %>
               </div>
             <% } %>
+            <% if (app.shortlisted_field) { %>
+              <div style="margin-top:0.75rem; padding:0.75rem 0.9rem; border-radius:8px; background:#ecfdf5; color:#065f46; font-weight:600;">
+                <i class="fas fa-check-circle"></i> Shortlisted for: <%= app.shortlisted_field %>
+              </div>
+            <% } %>
           </div>
 
           <div class="resume-actions">

@@ -261,6 +261,50 @@
   font-size: 0.92rem;
 }
 
+.external-strip {
+  display: grid;
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.external-card {
+  background: white;
+  border-radius: 14px;
+  border-left: 4px solid #04AA6D;
+  box-shadow: var(--shadow-md);
+  padding: 1rem 1.15rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.external-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #059862;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.external-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #282A35;
+}
+
+.external-meta {
+  color: #666;
+  font-size: 0.92rem;
+}
+
 @media (max-width: 768px) {
   .job-card-wrapper {
     flex-direction: column;
@@ -363,6 +407,28 @@
       </div>
     </div>
   </div>
+
+  <% if (universityOpenings && universityOpenings.length) { %>
+    <div class="external-strip">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.4rem;">
+        <h3 style="margin:0; color:#282A35;"><i class="fas fa-university"></i> University openings for teachers, professors, and deans</h3>
+        <span class="external-pill"><i class="fas fa-broadcast-tower"></i> live-style links</span>
+      </div>
+      <% universityOpenings.forEach(opening => { %>
+        <div class="external-card">
+          <div style="display:flex; flex-direction:column; gap:0.4rem;">
+            <span class="external-pill"><i class="fas fa-building"></i> <%= opening.source %></span>
+            <div class="external-title"><%= opening.title %></div>
+            <div class="external-meta"><i class="fas fa-school"></i> <%= opening.university %> · <i class="fas fa-map-marker-alt"></i> <%= opening.location %></div>
+          </div>
+          <a class="btn btn-primary" href="<%= opening.link %>" target="_blank" rel="noreferrer">
+            <i class="fas fa-arrow-right"></i> Open listing
+          </a>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+
   <!-- COMPARE SECTION -->
   <form action="/compare" method="POST" id="compareForm">
     <div class="compare-section">

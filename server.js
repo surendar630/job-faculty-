@@ -425,6 +425,74 @@ function analyzeResumeForAICTE(job, resumeText) {
   };
 }
 
+function evaluateShortlistDecision({ interviewScore, resumeScore, aicteStatus }) {
+  const interview = Number(interviewScore ?? 0);
+  const resume = Number(resumeScore ?? 0);
+  const status = String(aicteStatus || '').toLowerCase();
+
+  if (status.includes('compliant') && interview >= 75 && resume >= 70) {
+    return { shouldShortlist: true, reason: 'strong' };
+  }
+
+  if (interview >= 80 && resume >= 50) {
+    return { shouldShortlist: true, reason: 'interview' };
+  }
+
+  if (status.includes('compliant') && interview >= 65 && resume >= 60) {
+    return { shouldShortlist: true, reason: 'resume' };
+  }
+
+  return { shouldShortlist: false, reason: 'review' };
+}
+
+function autoApplyAICTEShortlist(applicationId, interviewScore) {
+  return new Promise((resolve, reject) => {
+    if (!applicationId) return resolve({ shouldShortlist: false, reason: 'review' });
+
+    db.get(`SELECT a.id, a.status, a.shortlisted_field, a.resume_scan_score, a.resume_aicte_status, a.user_id
+            FROM applications a WHERE a.id = ?`, [applicationId], (err, application) => {
+      if (err) return reject(err);
+      if (!application) return resolve({ shouldShortlist: false, reason: 'review' });
+
+      const decision = evaluateShortlistDecision({
+        interviewScore,
+        resumeScore: application.resume_scan_score,
+        aicteStatus: application.resume_aicte_status
+      });
+
+      const nextStatus = decision.shouldShortlist ? 'shortlisted' : application.status;
+      const nextField = decision.shouldShortlist ? (application.shortlisted_field || 'AICTE + Interview') : application.shortlisted_field;
+      const reviewStatus = decision.shouldShortlist ? 'shortlisted' : 'pending';
+      const updateFields = [];
+      const values = [];
+
+      if (decision.shouldShortlist) {
+        updateFields.push('status = ?');
+        updateFields.push('shortlisted_field = ?');
+        values.push(nextStatus, nextField);
+      } else if (application.status === 'shortlisted') {
+        updateFields.push('status = ?');
+        values.push(application.status);
+      }
+
+      if (updateFields.length > 0) {
+        db.run(`UPDATE applications SET ${updateFields.join(', ')} WHERE id = ?`, [...values, applicationId], (updateErr) => {
+          if (updateErr) return reject(updateErr);
+          db.run('UPDATE users SET resume_review_status = ? WHERE id = ?', [reviewStatus, application.user_id], (userErr) => {
+            if (userErr) return reject(userErr);
+            resolve(decision);
+          });
+        });
+      } else {
+        db.run('UPDATE users SET resume_review_status = ? WHERE id = ?', [reviewStatus, application.user_id], (userErr) => {
+          if (userErr) return reject(userErr);
+          resolve(decision);
+        });
+      }
+    });
+  });
+}
+
 function getJitsiMeetingLink(seed) {
   const roomName = `JobFaculty-${seed}-${Math.random().toString(36).slice(2, 8)}`;
   return `https://meet.jit.si/${encodeURIComponent(roomName)}`;
@@ -1210,6 +1278,47 @@ app.get('/office/shortlisted', verifyToken, (req, res) => {
   });
 });
 
+function getUniversityOpenings() {
+  return [
+    {
+      id: 'opening-1',
+      title: 'Professor of Computer Science',
+      university: 'IIT Delhi',
+      location: 'Delhi, India',
+      source: 'LinkedIn',
+      category: 'Computer Science',
+      link: 'https://www.linkedin.com/jobs/search/?keywords=Professor%20Computer%20Science'
+    },
+    {
+      id: 'opening-2',
+      title: 'Assistant Professor - Software Engineering',
+      university: 'IIIT Bangalore',
+      location: 'Bangalore, India',
+      source: 'Naukri',
+      category: 'Software Engineering',
+      link: 'https://www.naukri.com/software-engineering-jobs'
+    },
+    {
+      id: 'opening-3',
+      title: 'Dean of Engineering',
+      university: 'BITS Pilani',
+      location: 'Pilani, India',
+      source: 'University Careers',
+      category: 'Engineering',
+      link: 'https://www.bits-pilani.ac.in/careers'
+    },
+    {
+      id: 'opening-4',
+      title: 'Associate Professor - AI & Data Science',
+      university: 'University of Hyderabad',
+      location: 'Hyderabad, India',
+      source: 'LinkedIn',
+      category: 'Data Science',
+      link: 'https://www.linkedin.com/jobs/search/?keywords=Associate%20Professor%20Data%20Science'
+    }
+  ].filter(item => /teacher|professor|dean|faculty|lecturer|associate professor|assistant professor/i.test(item.title));
+}
+
 app.get('/jobs', verifyToken, (req, res) => {
   const { search, category, location, sort } = req.query;
   let query = 'SELECT * FROM jobs WHERE 1=1';
@@ -1238,7 +1347,8 @@ app.get('/jobs', verifyToken, (req, res) => {
     db.all('SELECT job_id FROM favorited_jobs WHERE user_id = ?', [req.user.id], (err, favorites) => {
       if (err) return res.status(500).send('Error');
       const favoriteIds = favorites.map(f => f.job_id);
-      res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds });
+      const universityOpenings = getUniversityOpenings();
+      res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings });
     });
   });
 });
@@ -1923,7 +2033,13 @@ app.post('/interview/:interviewId/complete', verifyToken, (req, res) => {
   db.all('SELECT score FROM interview_questions WHERE interview_id = ?', [req.params.interviewId], (err, questions) => {
     const totalScore = questions.reduce((sum, q) => sum + q.score, 0) / questions.length;
     db.run('UPDATE interviews SET status = ?, score = ? WHERE id = ?', ['completed', totalScore, req.params.interviewId], (err) => {
-      res.redirect('/admin');
+      if (err) return res.status(500).send('Error completing interview');
+      db.get('SELECT application_id FROM interviews WHERE id = ?', [req.params.interviewId], (err, interviewRow) => {
+        if (err || !interviewRow) return res.redirect('/admin');
+        autoApplyAICTEShortlist(interviewRow.application_id, totalScore)
+          .then(() => res.redirect('/admin'))
+          .catch(() => res.redirect('/admin'));
+      });
     });
   });
 });
@@ -2041,7 +2157,13 @@ app.post('/candidate-interview/:interviewId/complete', verifyToken, (req, res) =
   db.all('SELECT score FROM interview_questions WHERE interview_id = ?', [req.params.interviewId], (err, questions) => {
     const totalScore = questions.reduce((sum, q) => sum + q.score, 0) / questions.length;
     db.run('UPDATE interviews SET status = ?, score = ? WHERE id = ?', ['completed', totalScore, req.params.interviewId], (err) => {
-      res.redirect('/profile');
+      if (err) return res.status(500).send('Error completing interview');
+      db.get('SELECT application_id FROM interviews WHERE id = ?', [req.params.interviewId], (err, interviewRow) => {
+        if (err || !interviewRow) return res.redirect('/profile');
+        autoApplyAICTEShortlist(interviewRow.application_id, totalScore)
+          .then(() => res.redirect('/profile'))
+          .catch(() => res.redirect('/profile'));
+      });
     });
   });
 });
@@ -2082,9 +2204,17 @@ io.on('connection', (socket) => {
   });
 });
 
-httpServer.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+  httpServer.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = {
+  evaluateShortlistDecision,
+  analyzeResumeForAICTE,
+  autoApplyAICTEShortlist
+};
 
 async function generateQuestions(category, jobTitle, jobDescription) {
   const combinedRole = [category, jobTitle, jobDescription].filter(Boolean).join(' ');
