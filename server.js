@@ -1281,40 +1281,49 @@ app.get('/office/shortlisted', verifyToken, (req, res) => {
 function getUniversityOpenings() {
   return [
     {
-      id: 'opening-1',
-      title: 'Professor of Computer Science',
-      university: 'IIT Delhi',
-      location: 'Delhi, India',
+      id: 'opening-bangalore-1',
+      title: 'Professor / Associate Professor - Computer Science',
+      university: 'IISc Bangalore',
+      location: 'Bangalore, Karnataka',
       source: 'LinkedIn',
       category: 'Computer Science',
-      link: 'https://www.linkedin.com/jobs/search/?keywords=Professor%20Computer%20Science'
+      link: 'https://www.linkedin.com/jobs/search/?keywords=Professor%20Computer%20Science%20Bangalore'
     },
     {
-      id: 'opening-2',
+      id: 'opening-bangalore-2',
       title: 'Assistant Professor - Software Engineering',
       university: 'IIIT Bangalore',
-      location: 'Bangalore, India',
+      location: 'Bangalore, Karnataka',
       source: 'Naukri',
       category: 'Software Engineering',
-      link: 'https://www.naukri.com/software-engineering-jobs'
+      link: 'https://www.naukri.com/software-engineering-jobs-in-bangalore'
     },
     {
-      id: 'opening-3',
-      title: 'Dean of Engineering',
-      university: 'BITS Pilani',
-      location: 'Pilani, India',
+      id: 'opening-bangalore-3',
+      title: 'Dean / Professor - Engineering and Technology',
+      university: 'RV University',
+      location: 'Bangalore, Karnataka',
       source: 'University Careers',
       category: 'Engineering',
-      link: 'https://www.bits-pilani.ac.in/careers'
+      link: 'https://rvu.edu.in/careers'
     },
     {
-      id: 'opening-4',
+      id: 'opening-bangalore-4',
       title: 'Associate Professor - AI & Data Science',
-      university: 'University of Hyderabad',
-      location: 'Hyderabad, India',
+      university: 'Christ University',
+      location: 'Bangalore, Karnataka',
       source: 'LinkedIn',
       category: 'Data Science',
-      link: 'https://www.linkedin.com/jobs/search/?keywords=Associate%20Professor%20Data%20Science'
+      link: 'https://www.linkedin.com/jobs/search/?keywords=Associate%20Professor%20Data%20Science%20Bangalore'
+    },
+    {
+      id: 'opening-bangalore-5',
+      title: 'Lecturer / Faculty - Computer Science',
+      university: 'BMS College of Engineering',
+      location: 'Bangalore, Karnataka',
+      source: 'Naukri',
+      category: 'Computer Science',
+      link: 'https://www.naukri.com/teaching-jobs-in-bangalore'
     }
   ].filter(item => /teacher|professor|dean|faculty|lecturer|associate professor|assistant professor/i.test(item.title));
 }
