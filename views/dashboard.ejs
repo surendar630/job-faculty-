@@ -72,12 +72,111 @@
   margin-top: 0.5rem;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  padding: 0;
-}
+  .training-hero {
+    display: grid;
+    grid-template-columns: 1.4fr 0.9fr;
+    gap: 1.25rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f4fff8 100%);
+    border: 1px solid #dff6e8;
+    border-radius: 18px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+  }
+
+  .training-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: #e9fdf2;
+    color: #0f7d4d;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .training-hero h2 {
+    margin: 0 0 0.6rem;
+    font-size: 1.45rem;
+    color: #282A35;
+  }
+
+  .training-hero p {
+    margin: 0;
+    color: #4b5563;
+    line-height: 1.6;
+  }
+
+  .training-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .training-highlight {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .training-highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    font-weight: 600;
+  }
+
+  .training-highlight-item i {
+    color: #04AA6D;
+    font-size: 1.05rem;
+  }
+
+  .training-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .training-card {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid #e5f7ed;
+    box-shadow: var(--shadow-sm);
+    padding: 1.1rem;
+  }
+
+  .training-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #04AA6D, #059862);
+    color: white;
+    margin-bottom: 0.8rem;
+  }
+
+  .training-card h3 {
+    margin: 0 0 0.45rem;
+    font-size: 1rem;
+    color: #282A35;
+  }
+
+  .training-card p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
 
 .dashboard-card {
   background: white;
@@ -288,9 +387,6 @@
     margin-top: 0;
   }
 
-  background-clip: text;
-}
-
 .dashboard-card h3 {
   margin: 1rem 0 0.5rem;
   color: #282A35;
@@ -370,6 +466,41 @@
         <h3>Profile completeness</h3>
         <p><%= profileCompletion %>% complete</p>
       </div>
+    </div>
+  </div>
+
+  <div class="training-hero">
+    <div>
+      <div class="training-pill"><i class="fas fa-graduation-cap"></i> AICTE-Aligned Professional Training</div>
+      <h2>Advance your professional library with structured training for communication, interviews, and video calling.</h2>
+      <p>Strengthen your faculty readiness with modern learning modules, professional etiquette, and live practice rooms that follow AICTE-inspired standards.</p>
+      <div class="training-actions">
+        <a href="/meetings" class="btn btn-primary" style="text-decoration:none;"><i class="fas fa-video"></i> Start Live Practice</a>
+        <a href="/profile" class="btn btn-secondary" style="text-decoration:none;"><i class="fas fa-chalkboard-user"></i> View Learning Path</a>
+      </div>
+    </div>
+    <div class="training-highlight">
+      <div class="training-highlight-item"><i class="fas fa-book-open"></i><span>Advanced professional library modules</span></div>
+      <div class="training-highlight-item"><i class="fas fa-balance-scale"></i><span>AICTE-compliant training standards</span></div>
+      <div class="training-highlight-item"><i class="fas fa-video"></i><span>Video calling and interview readiness</span></div>
+    </div>
+  </div>
+
+  <div class="training-grid">
+    <div class="training-card">
+      <div class="training-card-icon"><i class="fas fa-brain"></i></div>
+      <h3>Advanced Skills Library</h3>
+      <p>Explore professional modules for leadership, classroom communication, and modern interview preparation.</p>
+    </div>
+    <div class="training-card">
+      <div class="training-card-icon"><i class="fas fa-certificate"></i></div>
+      <h3>AICTE-Focused Learning</h3>
+      <p>Follow structured, quality-driven content aligned with academic and professional development norms.</p>
+    </div>
+    <div class="training-card">
+      <div class="training-card-icon"><i class="fas fa-video"></i></div>
+      <h3>Live Video Calling Lab</h3>
+      <p>Practice interviews, presentations, and formal conversations in a real online environment.</p>
     </div>
   </div>
 
@@ -458,11 +589,11 @@
         <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Start Comparing</button>
       </div>
 
-      <div class="dashboard-card" onclick="window.location.href='/profile'">
+      <div class="dashboard-card" onclick="window.location.href='/meetings'">
         <i class="fas fa-robot"></i>
-        <h3>AI Interview Prep</h3>
-        <p>Practice with AI-powered interview questions and get instant feedback.</p>
-        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Start Interview</button>
+        <h3>Professional Training Lab</h3>
+        <p>Practice AICTE-aligned professional training, interview readiness, and video calling sessions.</p>
+        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Join Lab</button>
       </div>
 
       <div class="dashboard-card" onclick="window.location.href='/jobs'">

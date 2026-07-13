@@ -29,6 +29,103 @@
   margin: 0;
 }
 
+.training-hero {
+  display: grid;
+  grid-template-columns: 1.3fr 0.9fr;
+  gap: 1rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f4fff8 100%);
+  border: 1px solid #dff6e8;
+  border-radius: 18px;
+  padding: 1.4rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 1.6rem;
+}
+
+.training-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #e9fdf2;
+  color: #0f7d4d;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+
+.training-hero h2 {
+  margin: 0 0 0.6rem;
+  font-size: 1.35rem;
+  color: #282A35;
+}
+
+.training-hero p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.training-highlight {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.training-highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  font-weight: 600;
+}
+
+.training-highlight-item i {
+  color: #04AA6D;
+}
+
+.training-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+
+.training-card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e5f7ed;
+  box-shadow: var(--shadow-sm);
+  padding: 1rem;
+}
+
+.training-card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #04AA6D, #059862);
+  color: white;
+  margin-bottom: 0.8rem;
+}
+
+.training-card h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+  color: #282A35;
+}
+
+.training-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .resume-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -141,7 +238,38 @@
   <!-- HEADER -->
   <div class="shortlisted-header">
     <h1><i class="fas fa-check-circle"></i> Shortlisted Candidates</h1>
-    <p>Review resumes of shortlisted applicants for faculty positions</p>
+    <p>Review resumes of shortlisted applicants for faculty positions with professional screening and AICTE-focused training support.</p>
+  </div>
+
+  <div class="training-hero">
+    <div>
+      <div class="training-pill"><i class="fas fa-graduation-cap"></i> Professional Shortlisting Training</div>
+      <h2>Strengthen your screening workflow with structured professional review and interview readiness.</h2>
+      <p>Use this module to evaluate resumes more professionally, align with AICTE-style standards, and prepare for the next stage of faculty recruitment.</p>
+    </div>
+    <div class="training-highlight">
+      <div class="training-highlight-item"><i class="fas fa-book-open"></i><span>Resume review and professional training support</span></div>
+      <div class="training-highlight-item"><i class="fas fa-balance-scale"></i><span>AICTE-informed shortlist evaluation</span></div>
+      <div class="training-highlight-item"><i class="fas fa-video"></i><span>Live interview and video-calling readiness</span></div>
+    </div>
+  </div>
+
+  <div class="training-grid">
+    <div class="training-card">
+      <div class="training-card-icon"><i class="fas fa-file-alt"></i></div>
+      <h3>Professional Resume Review</h3>
+      <p>Review shortlisted candidates with a structured, quality-based approach that supports better hiring decisions.</p>
+    </div>
+    <div class="training-card">
+      <div class="training-card-icon"><i class="fas fa-certificate"></i></div>
+      <h3>AICTE-Oriented Screening</h3>
+      <p>Follow a more standardized and professional selection mindset aligned to academic recruitment norms.</p>
+    </div>
+    <div class="training-card">
+      <div class="training-card-icon"><i class="fas fa-video"></i></div>
+      <h3>Interview Preparation</h3>
+      <p>Move candidates forward into live practice and interview settings with confidence and clarity.</p>
+    </div>
   </div>
 
   <!-- RESUMES GRID -->
