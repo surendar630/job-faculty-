@@ -11,12 +11,12 @@ nav { background: #122040; color: white; padding: 15px; display: flex; justify-c
 .logo { font-size: 22px; font-weight: bold; }
 .nav-links span { margin: 0 10px; cursor: pointer; }
 .question { background: white; margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; border: 1px solid #cbd5e1; border-radius: 10px; font-family: inherit; }
-#codingAnswer { min-height: 220px; font-family: 'Courier New', Courier, monospace; background: #f8fafc; }
+textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; }
+#codingAnswer { min-height: 220px; font-family: 'Courier New', Courier, monospace; background: #f1f1f1; }
 .btn { background: #0a1628; color: white; padding: 10px; border: none; cursor: pointer; margin: 5px; }
 .voice-btn { background: #28a745; }
-.media-controls { background: #f8fafc; border-radius: 10px; padding: 12px; margin: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; }
-.media-btn { flex: 1; min-width: 90px; padding: 8px 12px; border: 2px solid #cbd5e1; border-radius: 8px; background: white; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #1e293b; }
+.media-controls { background: #f1f1f1; border-radius: 10px; padding: 12px; margin: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+.media-btn { flex: 1; min-width: 90px; padding: 8px 12px; border: 2px solid #ddd; border-radius: 8px; background: white; cursor: pointer; font-weight: 600; transition: all 0.2s; color: #111; }
 .media-btn.active { background: #28a745; color: white; border-color: #28a745; }
 .score { color: #0f766e; font-weight: bold; }
 .progress { background: #ddd; height: 20px; border-radius: 10px; margin: 10px 0; }
@@ -46,8 +46,8 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; border: 1p
 </nav>
 
 <div style="padding:20px;" id="interviewContent">
-  <h1>Interview for <%= job_title %></h1>
-  <p>Answer the following questions. You can use voice input or type your responses. Your answers will be evaluated by our AI assistant.</p>
+  <h1>Software AI Interview Coach</h1>
+  <p>Practice a real software-hiring interview for <%= job_title %>. The AI asks technical questions, scores your responses, and can follow up with deeper prompts.</p>
 
   <div class="media-controls">
     <button class="media-btn active" id="cam-toggle" onclick="toggleCandidateCamera()">📹 Camera</button>
@@ -55,20 +55,22 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; border: 1p
   </div>
 
   <div class="reference-box">
-    <h3>W3Schools Interview Training Reference</h3>
-    <p>Use the W3Schools reference to prepare for questions in HTML, CSS, JavaScript, Python, Java, SQL, C, C++, PHP, and more.</p>
-    <p><a href="https://www.w3schools.com/" target="_blank">Visit W3Schools</a> for tutorials, examples, and quick references.</p>
+    <h3>Software Interview Training Reference</h3>
+    <p>Use W3Schools, GeeksforGeeks, MDN, and freeCodeCamp to prepare for software interview topics such as JavaScript, Python, Java, SQL, data structures, API design, and debugging.</p>
+    <p><a href="https://www.w3schools.com/" target="_blank">Visit W3Schools</a> · <a href="https://www.geeksforgeeks.org/" target="_blank">GeeksforGeeks</a> · <a href="https://developer.mozilla.org/" target="_blank">MDN</a></p>
   </div>
   <div class="sample-mcq">
     <h3>Sample MCQ practice</h3>
     <p>Select a field and review a few sample multiple-choice questions before your interview.</p>
     <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; margin-top:0.75rem;">
-      <label for="sampleField" style="font-weight:600; color:#1e293b;">Field:</label>
+      <label for="sampleField" style="font-weight:600; color:#111;">Field:</label>
       <select id="sampleField">
         <option value="DSA" <%= job_category && job_category.toLowerCase().includes('computer science') ? 'selected' : '' %>>DSA</option>
         <option value="Python" <%= job_category && job_category.toLowerCase().includes('python') ? 'selected' : '' %>>Python</option>
         <option value="Java" <%= job_category && job_category.toLowerCase().includes('java') ? 'selected' : '' %>>Java</option>
         <option value="JavaScript" <%= job_category && job_category.toLowerCase().includes('javascript') ? 'selected' : '' %>>JavaScript</option>
+        <option value="Software Engineering" <%= job_category && job_category.toLowerCase().includes('software') ? 'selected' : '' %>>Software Engineering</option>
+        <option value="Web Development" <%= job_category && job_category.toLowerCase().includes('web') ? 'selected' : '' %>>Web Development</option>
         <option value="HTML" <%= job_category && job_category.toLowerCase().includes('html') ? 'selected' : '' %>>HTML</option>
         <option value="CSS" <%= job_category && job_category.toLowerCase().includes('css') ? 'selected' : '' %>>CSS</option>
         <option value="SQL" <%= job_category && job_category.toLowerCase().includes('sql') ? 'selected' : '' %>>SQL</option>
@@ -91,9 +93,9 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; border: 1p
       <button class="btn" type="button" onclick="submitCodingRound()">Submit Coding Round</button>
     </div>
     <div id="codingResult" class="score" style="margin-top:0.75rem;"></div>
-    <div id="codingPreview" style="background:#ffffff; border:1px solid #cbd5e1; padding:18px; border-radius:12px; margin-top:18px;">
+    <div id="codingPreview" style="background:#ffffff; border:1px solid #ddd; padding:18px; border-radius:12px; margin-top:18px;">
       <h4 style="margin-top:0;">Live Preview</h4>
-      <iframe id="codePreviewFrame" sandbox="allow-scripts" style="width:100%; min-height:250px; border:1px solid #cbd5e1; border-radius:10px;"></iframe>
+      <iframe id="codePreviewFrame" sandbox="allow-scripts" style="width:100%; min-height:250px; border:1px solid #ddd; border-radius:10px;"></iframe>
     </div>
   </div>
 
@@ -265,6 +267,14 @@ function showSampleMCQs() {
     Java: [
       { question: 'Which of these is a valid Java access modifier?', choices: ['public', 'protected', 'private', 'All of the above'], answer: 3 },
       { question: 'Which keyword is used to inherit a class in Java?', choices: ['extends', 'implements', 'inherits', 'uses'], answer: 0 }
+    ],
+    'Software Engineering': [
+      { question: 'What is the difference between a stack and a queue in software design?', choices: ['Both are FIFO', 'Stack is LIFO and queue is FIFO', 'Queue is LIFO and stack is FIFO', 'Both are LIFO'], answer: 1 },
+      { question: 'Which practice best improves maintainability in a growing codebase?', choices: ['Writing code without tests', 'Refactoring and modular design', 'Avoiding comments', 'Hard-coding values'], answer: 1 }
+    ],
+    'Web Development': [
+      { question: 'Which HTML attribute specifies the destination of a link?', choices: ['src', 'href', 'alt', 'class'], answer: 1 },
+      { question: 'What does CSS Flexbox help with?', choices: ['Database storage', 'Layout alignment', 'Server-side rendering', 'Encryption'], answer: 1 }
     ]
   };
 
@@ -315,7 +325,7 @@ function toggleCandidateCamera(){
   const btn=document.getElementById('cam-toggle');
   btn.classList.toggle('active');
   btn.style.background=btn.classList.contains('active')?'#28a745':'#e5e7eb';
-  btn.style.color=btn.classList.contains('active')?'white':'#1e293b';
+  btn.style.color=btn.classList.contains('active')?'white':'#111';
   btn.textContent=btn.classList.contains('active')?'🎥 Camera ON':'🎥 Camera OFF';
 }
 
@@ -323,7 +333,7 @@ function toggleCandidateMic(){
   const btn=document.getElementById('mic-toggle');
   btn.classList.toggle('active');
   btn.style.background=btn.classList.contains('active')?'#28a745':'#e5e7eb';
-  btn.style.color=btn.classList.contains('active')?'white':'#1e293b';
+  btn.style.color=btn.classList.contains('active')?'white':'#111';
   btn.textContent=btn.classList.contains('active')?'🎤 Microphone ON':'🎤 Microphone OFF';
 }
 </script>

@@ -2087,13 +2087,21 @@ httpServer.listen(PORT, '0.0.0.0', () => {
 });
 
 async function generateQuestions(category, jobTitle, jobDescription) {
+  const combinedRole = [category, jobTitle, jobDescription].filter(Boolean).join(' ');
+  const normalized = (combinedRole || '').toLowerCase();
+  const isSoftwareRole = /(software|developer|engineer|programming|programmer|web|frontend|backend|full stack|devops|qa|mobile|cloud|ai|ml|data science)/i.test(normalized);
+
   try {
-    // In production, use OpenAI to generate questions
-    const prompt = `Generate 4 interview questions for a ${category} professor position titled "${jobTitle}".
-    Job description: ${jobDescription}
-    Use W3Schools reference material and common training topics for programming and web languages like HTML, CSS, JavaScript, Python, Java, SQL, C, C++, PHP, and data structures.
-    Questions should assess teaching experience, research background, and subject expertise in the selected language or category.
-    Format: Return only the questions, one per line.`;
+    const prompt = isSoftwareRole
+      ? `You are a software hiring interviewer. Generate 4 practical interview questions for a candidate applying to "${jobTitle || 'Software role'}".
+      Role context: ${category || 'Software Engineering'} / ${jobDescription || 'Technical role'}.
+      Focus on real-world software engineering: debugging, data structures, algorithms, OOP, APIs, databases, async programming, testing, system design, and problem solving.
+      Return only the questions, one per line.`
+      : `Generate 4 interview questions for a ${category} professor position titled "${jobTitle}".
+      Job description: ${jobDescription}
+      Use W3Schools reference material and common training topics for programming and web languages like HTML, CSS, JavaScript, Python, Java, SQL, C, C++, PHP, and data structures.
+      Questions should assess teaching experience, research background, and subject expertise in the selected language or category.
+      Format: Return only the questions, one per line.`;
 
     const response = await openaiClient.chat.completions.create({
       model: 'gpt-3.5-turbo',
@@ -2105,9 +2113,44 @@ async function generateQuestions(category, jobTitle, jobDescription) {
     return questions.slice(0, 4);
   } catch (error) {
     console.log('OpenAI error, using fallback:', error.message);
-    // Fallback to predefined questions
-    return getFallbackQuestions(category);
+    return isSoftwareRole ? getSoftwareFallbackQuestions(category, jobTitle) : getFallbackQuestions(category);
   }
+}
+
+function getSoftwareFallbackQuestions(category, jobTitle) {
+  const defaultQuestions = [
+    'Can you explain how you would debug a production issue in a web application step by step?',
+    'How do you decide between arrays, linked lists, stacks, or queues for a given problem?',
+    'Describe how you would design a REST API for a small booking system and handle validation and errors.',
+    'How do you write unit tests for a feature and what makes them reliable?'
+  ];
+
+  const normalized = (category || jobTitle || '').toLowerCase();
+  if (normalized.includes('javascript') || normalized.includes('frontend') || normalized.includes('web')) {
+    return [
+      'How do you structure a modern frontend component so it is reusable and easy to maintain?',
+      'What is the difference between event bubbling and event capturing in JavaScript?',
+      'How would you optimize a web page that loads slowly due to large assets and multiple requests?',
+      'How do you make a web application accessible for keyboard and screen-reader users?'
+    ];
+  }
+  if (normalized.includes('python')) {
+    return [
+      'How do you handle errors and exceptions in Python so your app remains resilient?',
+      'What is the difference between a list, tuple, and dictionary in Python for practical coding tasks?',
+      'How would you structure a Python script to process large CSV files efficiently?',
+      'What are decorators and when would you use them in Python?'
+    ];
+  }
+  if (normalized.includes('java')) {
+    return [
+      'How does Java handle memory management and garbage collection in a typical application?',
+      'What is the difference between interfaces and abstract classes in Java?',
+      'How would you design a multithreaded Java service safely?',
+      'What practices help you write clean object-oriented Java code?'
+    ];
+  }
+  return defaultQuestions;
 }
 
 function getFallbackQuestions(category) {

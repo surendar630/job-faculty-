@@ -22,6 +22,14 @@
   .info-list { list-style: none; padding-left: 0; margin: 0; display: grid; gap: 10px; }
   .resource-link { color: #04AA6D; text-decoration: none; }
   .resource-link:hover { text-decoration: underline; }
+  .prep-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 22px; }
+  .prep-card { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); color: white; border-radius: 16px; padding: 18px; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); }
+  .prep-card h3 { font-size: 16px; margin-bottom: 10px; }
+  .prep-card p, .prep-card li { font-size: 14px; line-height: 1.7; color: #e5e7eb; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.16); margin-bottom: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+  .prep-list { display: grid; gap: 10px; margin-top: 8px; }
+  .prep-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); padding: 10px 12px; border-radius: 12px; }
+  .prep-item strong { display: block; margin-bottom: 4px; font-size: 14px; }
   .tabs { display: flex; gap: 8px; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
   .tab { padding: 12px 18px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: #666; border-bottom: 2px solid transparent; transition: all 0.15s ease; }
   .tab.active { color: #111; border-bottom-color: #111; }
@@ -98,8 +106,8 @@
   </div>
 </nav>
 <div class="container">
-  <h1>Interview Trainer</h1>
-  <p class="subtitle">Practice MCQ and coding questions across HTML, CSS, JavaScript, Python, DSA &amp; CS.</p>
+  <h1>Advanced Interview Trainer</h1>
+  <p class="subtitle">Practice technical MCQs, coding challenges, behavioral answers, and strong questions to ask during interviews using W3Schools, GeeksforGeeks, MDN, and other trusted learning platforms.</p>
   <div class="info-grid">
     <div class="info-card">
       <h2>W3Schools-style review</h2>
@@ -108,10 +116,10 @@
     <div class="info-card">
       <h2>Recommended resources</h2>
       <ul class="info-list">
-        <li><a class="resource-link" href="https://www.w3schools.com/" target="_blank" rel="noreferrer">W3Schools</a> – easy reference for web fundamentals and examples.</li>
-        <li><a class="resource-link" href="https://developer.mozilla.org/" target="_blank" rel="noreferrer">MDN Web Docs</a> – authoritative browser and web standard documentation.</li>
-        <li><a class="resource-link" href="https://www.freecodecamp.org/" target="_blank" rel="noreferrer">freeCodeCamp</a> – hands-on tutorials and interactive practice.</li>
-        <li><a class="resource-link" href="https://www.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks</a> – deeper algorithm and computer science explanations.</li>
+        <li><a class="resource-link" href="https://www.w3schools.com/" target="_blank" rel="noreferrer">W3Schools</a> – quick tutorials for HTML, CSS, JavaScript, SQL, Python, and web basics.</li>
+        <li><a class="resource-link" href="https://developer.mozilla.org/" target="_blank" rel="noreferrer">MDN Web Docs</a> – deeper browser and web standard documentation.</li>
+        <li><a class="resource-link" href="https://www.freecodecamp.org/" target="_blank" rel="noreferrer">freeCodeCamp</a> – hands-on projects and structured practice.</li>
+        <li><a class="resource-link" href="https://www.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks</a> – strong explanations for DSA, OOP, system design, and interview prep.</li>
       </ul>
     </div>
     <div class="info-card">
@@ -119,9 +127,30 @@
       <ul class="info-list">
         <li><a class="resource-link" href="https://www.w3schools.com/quiztest/quiztest.asp?qtest=HTML" target="_blank" rel="noreferrer">W3Schools HTML Quiz</a> – quick MCQs for HTML basics.</li>
         <li><a class="resource-link" href="https://www.w3schools.com/quiztest/quiztest.asp?qtest=CSS" target="_blank" rel="noreferrer">W3Schools CSS Quiz</a> – quick MCQs for CSS fundamentals.</li>
-        <li><a class="resource-link" href="https://practice.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks Practice Portal</a> – coding problems and task-based challenges.</li>
+        <li><a class="resource-link" href="https://practice.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks Practice Portal</a> – coding problems and challenge-based drills.</li>
         <li><a class="resource-link" href="https://www.geeksforgeeks.org/quizzes/" target="_blank" rel="noreferrer">GFG MCQ Quizzes</a> – multiple-choice quizzes on algorithms and data structures.</li>
       </ul>
+    </div>
+  </div>
+
+  <div class="prep-section">
+    <div class="prep-card">
+      <div class="pill">Advanced interview prep</div>
+      <h3>How to answer and ask smarter interview questions</h3>
+      <div class="prep-list">
+        <div class="prep-item"><strong>Tell me about yourself</strong><p>Use the present-past-future structure and connect your experience to the role.</p></div>
+        <div class="prep-item"><strong>Why this role?</strong><p>Link your expertise to the institution, department, and student impact.</p></div>
+        <div class="prep-item"><strong>STAR answers</strong><p>Practice Situation, Task, Action, Result stories for leadership and teaching-related challenges.</p></div>
+      </div>
+    </div>
+    <div class="prep-card">
+      <div class="pill">Questions to ask</div>
+      <h3>Great questions to ask the interviewer</h3>
+      <div class="prep-list">
+        <div class="prep-item"><strong>What does success look like?</strong><p>Ask about the first 90 days, key priorities, and measurable outcomes.</p></div>
+        <div class="prep-item"><strong>How is the team supported?</strong><p>Learn about mentorship, collaboration, research support, and growth paths.</p></div>
+        <div class="prep-item"><strong>What is the culture?</strong><p>Understand teaching culture, expectations, and how the institution supports its faculty.</p></div>
+      </div>
     </div>
   </div>
 
