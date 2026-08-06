@@ -8,8 +8,25 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
+html, body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: transparent;
+  color: #fff;
+}
+
+@keyframes bgShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .login-hero {
-  background: linear-gradient(135deg, #282A35 0%, #3a3d49 50%, #04AA6D 100%);
+  background: transparent;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -22,11 +39,23 @@
 .login-hero::before {
   content: '';
   position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(30, 64, 175, 0.15), transparent);
+  top: -30%;
+  right: -20%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 55%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.login-hero::after {
+  content: '';
+  position: absolute;
+  left: -15%;
+  bottom: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.18), transparent 50%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -222,6 +251,20 @@
     width: 100%;
   }
 }
+
+body, .login-hero {
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+
 </style>
 </head>
 <body>
