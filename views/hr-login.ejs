@@ -323,7 +323,7 @@ body {
 </div>
 </body>
 <script type="module">
-  import { describeFirebaseAuthError, initFirebaseAuth, signInWithPopup, signInWithRedirect } from '/firebase-config.js';
+  import { describeFirebaseAuthError, initFirebaseAuth, signInWithPopup } from '/firebase-config.js';
   import { setupEmailLinkAuth } from '/email-link-auth.js';
 
   setupEmailLinkAuth({ emailId: 'email', buttonId: 'emailLinkBtn', statusId: 'emailLinkStatus', redirectFallback: '/office' });
@@ -351,8 +351,8 @@ body {
       try {
         await completeGoogleSignIn(await signInWithPopup(firebaseAuth.auth, firebaseAuth.googleProvider));
       } catch (error) {
-        if (error?.code !== 'auth/internal-error' && error?.code !== 'auth/popup-blocked') throw error;
-        await signInWithRedirect(firebaseAuth.auth, firebaseAuth.googleProvider);
+        if (error?.code === 'auth/popup-closed-by-user' || error?.code === 'auth/cancelled-popup-request') throw error;
+        window.location.assign('/auth/google');
       }
     } catch (error) {
       console.error('Firebase Google sign-in error:', error);
