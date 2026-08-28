@@ -291,7 +291,7 @@
 </div>
 </body>
 <script type="module">
-  import { initFirebaseAuth, signInWithPopup } from '/firebase-config.js';
+  import { describeFirebaseAuthError, initFirebaseAuth, signInWithPopup } from '/firebase-config.js';
   import { setupEmailLinkAuth } from '/email-link-auth.js';
 
   setupEmailLinkAuth({ emailId: 'email', buttonId: 'emailLinkBtn', statusId: 'emailLinkStatus', redirectFallback: '/dashboard' });
@@ -311,11 +311,11 @@
         window.location.href = data.redirect || '/dashboard';
       } else {
         const errorText = await response.text();
-        alert('Google sign-in failed: ' + errorText);
+        throw new Error(errorText);
       }
     } catch (error) {
       console.error('Firebase Google sign-in error:', error);
-      alert('Google sign-in failed. Please try again.');
+      alert(describeFirebaseAuthError(error));
     }
   });
 

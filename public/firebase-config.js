@@ -59,4 +59,21 @@ export async function initFirebaseAuth() {
   return { app, analytics, auth, googleProvider, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup };
 }
 
+export function describeFirebaseAuthError(error) {
+  const code = error?.code || '';
+  if (code === 'auth/unauthorized-domain') {
+    return 'Google sign-in is not enabled for this website. Add job-fa.onrender.com in Firebase Authentication > Settings > Authorized domains.';
+  }
+  if (code === 'auth/operation-not-allowed') {
+    return 'Google sign-in is disabled. Enable the Google provider in Firebase Authentication > Sign-in method.';
+  }
+  if (code === 'auth/popup-blocked') {
+    return 'Your browser blocked the Google sign-in popup. Allow popups for this site and try again.';
+  }
+  if (code === 'auth/popup-closed-by-user') {
+    return 'The Google sign-in window was closed before authentication finished.';
+  }
+  return error?.message || 'Google sign-in failed. Please try again.';
+}
+
 export { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup };
