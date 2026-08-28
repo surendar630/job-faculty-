@@ -58,6 +58,8 @@ A full-stack web application for finding academic jobs with advanced AI-powered 
 4. Run `npm start`
 5. Open http://localhost:3000
 
+The app uses SQLite as its live source of truth. Create jobs through the admin portal; demo jobs are disabled by default and can be enabled locally with `SEED_DEMO_DATA=true`. Set `OPENAI_API_KEY` to enable live cloud AI question generation, answer scoring, and follow-up questions. Without it, the app uses its built-in fallback behavior. Readiness is available at `/api/health`.
+
 ## Deployment to Render
 
 1. **Connect Repository**: Link your GitHub repository to Render

@@ -25,10 +25,8 @@ function getGoogleRedirectUri(req) {
   return (process.env.GOOGLE_CALLBACK_URL || process.env.GOOGLE_REDIRECT_URI || `${req.protocol}://${req.get('host')}/auth/google/callback`).trim();
 }
 
-// Initialize OpenAI (in production, use environment variable for API key)
-const openaiClient = new openai.OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || 'your-api-key-here' // Replace with actual key
-});
+const openaiApiKey = String(process.env.OPENAI_API_KEY || '').trim();
+const openaiClient = openaiApiKey ? new openai.OpenAI({ apiKey: openaiApiKey }) : null;
 
 const app = express();
 app.set('trust proxy', 1);
@@ -41,6 +39,7 @@ const io = new Server(httpServer, {
 });
 const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key'; // In production, use environment variable
+const AI_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
 const requireRoles = (...allowedRoles) => (req, res, next) => {
   if (!req.user || !allowedRoles.includes(req.user.role)) {
@@ -103,7 +102,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Database setup
-const db = new sqlite3.Database('./database.db');
+const databasePath = process.env.DATABASE_URL || path.join(__dirname, 'database.db');
+const db = new sqlite3.Database(databasePath);
 
 // Create tables
 db.serialize(() => {
@@ -279,8 +279,7 @@ db.serialize(() => {
     FOREIGN KEY (user_id) REFERENCES users(id)
   )`);
 
-  // Insert sample jobs
-  db.run(`INSERT OR IGNORE INTO jobs (title, university, location, salary, description, requirements, category) VALUES
+  if (process.env.SEED_DEMO_DATA === 'true') db.run(`INSERT OR IGNORE INTO jobs (title, university, location, salary, description, requirements, category) VALUES
     ('Professor - AI', 'MIT', 'USA', '₹20,00,000', 'Teaching AI courses and conducting research', 'PhD in AI, 5+ years experience', 'Computer Science'),
     ('Assistant Professor - Data Science', 'Stanford', 'USA', '₹15,00,000', 'Data Science teaching and research', 'PhD in Data Science', 'Data Science'),
     ('Lecturer - Computer Science', 'Harvard', 'USA', '₹12,00,000', 'CS fundamentals teaching', 'Masters in CS', 'Computer Science'),
@@ -595,6 +594,19 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   db.all('SELECT * FROM jobs LIMIT 4', [], (err, jobs) => {
     res.render('index', { jobs });
+  });
+});
+
+app.get('/api/health', (req, res) => {
+  db.get('SELECT COUNT(*) AS jobs FROM jobs', [], (err, row) => {
+    if (err) return res.status(503).json({ ok: false, database: false, ai: !!openaiClient });
+    res.json({
+      ok: true,
+      database: true,
+      ai: !!openaiClient,
+      jobs: row.jobs,
+      environment: process.env.NODE_ENV || 'development'
+    });
   });
 });
 
@@ -2231,6 +2243,7 @@ async function generateQuestions(category, jobTitle, jobDescription) {
   const isSoftwareRole = /(software|developer|engineer|programming|programmer|web|frontend|backend|full stack|devops|qa|mobile|cloud|ai|ml|data science)/i.test(normalized);
 
   try {
+    if (!openaiClient) throw new Error('OPENAI_API_KEY is not configured');
     const prompt = isSoftwareRole
       ? `You are a software hiring interviewer. Generate 4 practical interview questions for a candidate applying to "${jobTitle || 'Software role'}".
       Role context: ${category || 'Software Engineering'} / ${jobDescription || 'Technical role'}.
@@ -2243,7 +2256,7 @@ async function generateQuestions(category, jobTitle, jobDescription) {
       Format: Return only the questions, one per line.`;
 
     const response = await openaiClient.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: AI_MODEL,
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 300
     });
@@ -2433,6 +2446,7 @@ function getFallbackQuestions(category) {
 
 async function evaluateAnswer(question, answer) {
   try {
+    if (!openaiClient) throw new Error('OPENAI_API_KEY is not configured');
     // Use AI to evaluate the answer
     const prompt = `Evaluate this interview answer on a scale of 0-100. 
     Question: ${question}
@@ -2440,7 +2454,7 @@ async function evaluateAnswer(question, answer) {
     Consider relevance, depth, clarity, and expertise. Return only a number between 0 and 100.`;
 
     const response = await openaiClient.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: AI_MODEL,
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 10
     });
@@ -2467,6 +2481,7 @@ function fallbackScoring(answer) {
 
 async function generateFollowUpQuestion(originalQuestion, answer, category) {
   try {
+    if (!openaiClient) throw new Error('OPENAI_API_KEY is not configured');
     const prompt = `Based on this interview question and answer, generate one follow-up question to probe deeper.
     
 Original Question: ${originalQuestion}
@@ -2476,7 +2491,7 @@ Job Category: ${category}
 The follow-up should be relevant, specific, and help assess the candidate's expertise. Return only the follow-up question.`;
 
     const response = await openaiClient.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: AI_MODEL,
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 100
     });
