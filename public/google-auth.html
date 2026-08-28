@@ -1,23 +1,37 @@
 <script type="module">
-  import { initFirebaseAuth, signInWithPopup } from './firebase-config.js';
+  import { describeFirebaseAuthError, initFirebaseAuth, signInWithPopup, signInWithRedirect } from './firebase-config.js';
+
+  const completeGoogleSignIn = async (result) => {
+    const response = await fetch('/auth/google-firebase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken: await result.user.getIdToken() })
+    });
+    if (!response.ok) throw new Error(await response.text());
+    const data = await response.json();
+    window.location.href = data.redirect || '/dashboard';
+  };
+
+  const firebaseAuth = await initFirebaseAuth();
+  try {
+    const redirectResult = await firebaseAuth.getRedirectResult(firebaseAuth.auth);
+    if (redirectResult?.user) await completeGoogleSignIn(redirectResult);
+  } catch (error) {
+    console.error('Google redirect sign-in failed:', error);
+    alert(describeFirebaseAuthError(error));
+  }
 
   window.signInWithGoogle = async function() {
     try {
-      const { auth, googleProvider } = await initFirebaseAuth();
-      const result = await signInWithPopup(auth, googleProvider);
-      const response = await fetch('/auth/google-firebase', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ idToken: await result.user.getIdToken() })
-      });
-      if (!response.ok) throw new Error(await response.text());
-      const data = await response.json();
-      window.location.href = data.redirect || '/dashboard';
+      try {
+        await completeGoogleSignIn(await signInWithPopup(firebaseAuth.auth, firebaseAuth.googleProvider));
+      } catch (error) {
+        if (error?.code !== 'auth/internal-error' && error?.code !== 'auth/popup-blocked') throw error;
+        await signInWithRedirect(firebaseAuth.auth, firebaseAuth.googleProvider);
+      }
     } catch (error) {
       console.error('Google sign-in failed:', error);
-      alert('Google sign-in failed. Please try again.');
+      alert(describeFirebaseAuthError(error));
     }
   };
 </script>

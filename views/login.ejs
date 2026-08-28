@@ -291,27 +291,45 @@
 </div>
 </body>
 <script type="module">
-  import { describeFirebaseAuthError, initFirebaseAuth, signInWithPopup } from '/firebase-config.js';
+  import { describeFirebaseAuthError, initFirebaseAuth, signInWithPopup, signInWithRedirect } from '/firebase-config.js';
   import { setupEmailLinkAuth } from '/email-link-auth.js';
 
   setupEmailLinkAuth({ emailId: 'email', buttonId: 'emailLinkBtn', statusId: 'emailLinkStatus', redirectFallback: '/dashboard' });
 
+  const completeGoogleSignIn = async (result, redirectFallback) => {
+    const idToken = await result.user.getIdToken();
+    const response = await fetch('/auth/google-firebase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken })
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    window.location.href = data.redirect || redirectFallback;
+  };
+
+  const firebaseAuth = await initFirebaseAuth();
+  try {
+    const redirectResult = await firebaseAuth.getRedirectResult(firebaseAuth.auth);
+    if (redirectResult?.user) {
+      await completeGoogleSignIn(redirectResult, '/dashboard');
+    }
+  } catch (error) {
+    console.error('Firebase Google redirect sign-in error:', error);
+    alert(describeFirebaseAuthError(error));
+  }
+
   document.getElementById('firebaseGoogleBtn').addEventListener('click', async () => {
     try {
-      const { auth, googleProvider } = await initFirebaseAuth();
-      const result = await signInWithPopup(auth, googleProvider);
-      const idToken = await result.user.getIdToken();
-      const response = await fetch('/auth/google-firebase', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        window.location.href = data.redirect || '/dashboard';
-      } else {
-        const errorText = await response.text();
-        throw new Error(errorText);
+      try {
+        await completeGoogleSignIn(await signInWithPopup(firebaseAuth.auth, firebaseAuth.googleProvider), '/dashboard');
+      } catch (error) {
+        if (error?.code !== 'auth/internal-error' && error?.code !== 'auth/popup-blocked') {
+          throw error;
+        }
+        await signInWithRedirect(firebaseAuth.auth, firebaseAuth.googleProvider);
       }
     } catch (error) {
       console.error('Firebase Google sign-in error:', error);

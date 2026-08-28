@@ -3,11 +3,13 @@ import { getApp, getApps, initializeApp } from 'https://www.gstatic.com/firebase
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js';
 import {
   getAuth,
+  getRedirectResult,
   GoogleAuthProvider,
   isSignInWithEmailLink,
   sendSignInLinkToEmail,
   signInWithEmailLink,
-  signInWithPopup
+  signInWithPopup,
+  signInWithRedirect
 } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
 const DEFAULT_FIREBASE_CONFIG = {
@@ -56,7 +58,7 @@ export async function initFirebaseAuth() {
   googleProvider.setCustomParameters({
     prompt: 'select_account',
   });
-  return { app, analytics, auth, googleProvider, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup };
+  return { app, analytics, auth, googleProvider, getRedirectResult, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect };
 }
 
 export function describeFirebaseAuthError(error) {
@@ -73,7 +75,10 @@ export function describeFirebaseAuthError(error) {
   if (code === 'auth/popup-closed-by-user') {
     return 'The Google sign-in window was closed before authentication finished.';
   }
+  if (code === 'auth/internal-error') {
+    return 'Google sign-in could not open its popup. Please try again; the sign-in page will use a redirect if the popup is unavailable.';
+  }
   return error?.message || 'Google sign-in failed. Please try again.';
 }
 
-export { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup };
+export { getRedirectResult, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect };
