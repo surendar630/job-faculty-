@@ -1089,3 +1089,52 @@ button[type="submit"] {
 .animate-bounce {
   animation: bounce 2s infinite;
 }
+
+/* Shared academic workspace layer. Page-specific portals can still use their own layout. */
+:root {
+  --primary-color: #0b6b68;
+  --secondary-color: #123d48;
+  --accent-color: #b47a28;
+  --dark-bg: #17212b;
+  --light-bg: #f6f7f5;
+  --card-bg: #ffffff;
+  --text-dark: #17212b;
+  --text-light: #607080;
+  --border-color: #d9e1e5;
+  --shadow-sm: 0 1px 3px rgba(23, 33, 43, .06);
+  --shadow-md: 0 8px 24px rgba(23, 33, 43, .09);
+  --shadow-lg: 0 16px 38px rgba(23, 33, 43, .13);
+}
+
+body {
+  font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  background: #f6f7f5;
+  color: #17212b;
+}
+
+nav {
+  background: #ffffff;
+  border-bottom: 1px solid #d9e1e5;
+  box-shadow: 0 2px 10px rgba(23, 33, 43, .04);
+}
+
+.logo { color: #17212b; }
+.nav-links span, .nav-links a { color: #607080; }
+.nav-links span:hover, .nav-links a:hover { color: #0b6b68; }
+.card, .dashboard-card, .recommendation-card, .meeting-panel, .meeting-card { border-radius: 4px; border-color: #d9e1e5; }
+.btn { border-radius: 4px; }
+.btn-primary { background: #0b6b68; }
+.btn-primary:hover { background: #085452; }
+.btn-secondary { color: #0b6b68; border-color: #0b6b68; }
+.btn-secondary:hover { background: #0b6b68; }
+.cloud-ai-status { display:flex; align-items:center; gap:1rem; background:#fff; border:1px solid #d9e1e5; border-left:4px solid #b47a28; padding:1rem 1.25rem; margin:0 0 2rem; }
+.cloud-ai-status i { color:#b47a28; font-size:1.25rem; }
+.cloud-ai-status strong { color:#17212b; }
+.cloud-ai-status p { margin:.2rem 0 0; font-size:.88rem; }
+.cloud-ai-status .text-link { margin-left:auto; color:#0b6b68; white-space:nowrap; }
+.cloud-ai-status.is-pending { border-left-color:#9aa8ad; }
+.cloud-ai-status.is-pending > i { color:#607080; }
+@media (max-width:700px) {
+  .cloud-ai-status { align-items:flex-start; flex-wrap:wrap; }
+  .cloud-ai-status .text-link { margin-left:2.25rem; }
+}

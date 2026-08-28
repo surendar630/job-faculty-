@@ -1022,7 +1022,8 @@ app.get('/dashboard', verifyToken, (req, res) => {
                       meetings: [],
                       recommendations: recommendations || [],
                       nextAction,
-                      profileCompletion
+                      profileCompletion,
+                      aiEnabled: !!openaiClient
                     });
                   }
 
@@ -1037,7 +1038,8 @@ app.get('/dashboard', verifyToken, (req, res) => {
                           meetings,
                           recommendations: recommendations || [],
                           nextAction,
-                          profileCompletion
+                          profileCompletion,
+                          aiEnabled: !!openaiClient
                         });
                       }
                     });
