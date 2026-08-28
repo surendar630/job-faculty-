@@ -593,7 +593,11 @@ app.use((req, res, next) => {
 // Routes
 app.get('/', (req, res) => {
   db.all('SELECT * FROM jobs LIMIT 4', [], (err, jobs) => {
-    res.render('index', { jobs });
+    res.render('index', {
+      jobs: jobs || [],
+      universityOpenings: getUniversityOpenings(),
+      aiEnabled: !!openaiClient
+    });
   });
 });
 
@@ -1336,6 +1340,15 @@ function getUniversityOpenings() {
       source: 'Naukri',
       category: 'Computer Science',
       link: 'https://www.naukri.com/teaching-jobs-in-bangalore'
+    },
+    {
+      id: 'opening-india-1',
+      title: 'Faculty and Higher Education Opportunities',
+      university: 'Indeed India',
+      location: 'India',
+      source: 'Indeed',
+      category: 'Faculty',
+      link: 'https://in.indeed.com/q-assistant-professor-jobs.html'
     }
   ].filter(item => /teacher|professor|dean|faculty|lecturer|associate professor|assistant professor/i.test(item.title));
 }

@@ -3,335 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AcademiaPro — Faculty & Professor Job Portal</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>AcademiaPro | Faculty Recruitment</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
-.hero-section {
-  position: relative;
-}
-
-.cta-buttons {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  margin-top: 2rem;
-  flex-wrap: wrap;
-}
-
-.btn-large {
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-}
-
-.stats-section {
-  background: white;
-  padding: 3rem 2rem;
-  text-align: center;
-}
-
-.stats-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.stat {
-  padding: 1.5rem;
-}
-
-.stat-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.stat-label {
-  color: #666;
-  margin-top: 0.5rem;
-}
-
-.featured-section {
-  padding: 3rem 2rem;
-  background: linear-gradient(135deg, #f1f1f1, #f1f1f1);
-}
-
-.section-title {
-  text-align: center;
-  font-size: 2.2rem;
-  margin-bottom: 3rem;
-  color: #282A35;
-}
-
-.jobs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.featured-job-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-md);
-  transition: var(--transition);
-  border-top: 4px solid #04AA6D;
-  display: flex;
-  flex-direction: column;
-}
-
-.featured-job-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
-  border-top-color: #059862;
-}
-
-.job-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #282A35;
-  margin-bottom: 0.5rem;
-}
-
-.job-university {
-  color: #04AA6D;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.job-meta {
-  display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
-  flex-wrap: wrap;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.job-meta span {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.job-salary {
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 1rem 0;
-}
-
-.job-description {
-  color: #666;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 1rem 0;
-  flex-grow: 1;
-}
-
-.features-section {
-  background: white;
-  padding: 3rem 2rem;
-  border-top: 1px solid #ddd;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.feature-card {
-  text-align: center;
-}
-
-.feature-icon {
-  font-size: 3rem;
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 1rem;
-}
-
-.feature-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #282A35;
-}
-
-.feature-desc {
-  color: #666;
-  line-height: 1.6;
-}
-
-.cta-section {
-  background: linear-gradient(135deg, #282A35 0%, #3a3d49 50%, #04AA6D 100%);
-  color: white;
-  padding: 3rem 2rem;
-  text-align: center;
-}
-
-.cta-section h2 {
-  color: white;
-  margin-bottom: 1rem;
-}
-
-.cta-section p {
-  color: rgba(255,255,255,0.9);
-  max-width: 600px;
-  margin: 0 auto 2rem;
-}
+:root { --ink:#17212b; --muted:#607080; --paper:#f6f7f5; --line:#d9e1e5; --teal:#0b6b68; --gold:#b47a28; }
+body { background:var(--paper); color:var(--ink); font-family:'DM Sans',sans-serif; }
+nav { background:#fff; border-bottom:1px solid var(--line); box-shadow:none; padding:1rem max(2rem, calc((100% - 1180px)/2)); }
+.logo { color:var(--ink); font-size:1.15rem; letter-spacing:.02em; }
+.logo i { color:var(--teal); margin-right:.45rem; }
+.nav-links { gap:1.5rem; }
+.nav-links span,.nav-links a { color:var(--muted); font-size:.9rem; }
+.nav-links span:hover,.nav-links a:hover { color:var(--teal); }
+.nav-links .btn { color:#fff; }
+.faculty-hero { background:linear-gradient(115deg,#123d48 0%,#176c6b 62%,#d5a24c 150%); color:#fff; padding:5.5rem 2rem 6rem; }
+.hero-inner { max-width:1180px; margin:auto; display:grid; grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr); gap:4rem; align-items:center; }
+.eyebrow { color:#f2cb81; font-size:.78rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:1.1rem; }
+.faculty-hero h1 { color:#fff; font:700 clamp(2.5rem,5vw,4.6rem)/1.03 'Source Serif 4',serif; max-width:720px; margin:0 0 1.25rem; }
+.faculty-hero p { color:#e4eeee; max-width:650px; font-size:1.08rem; margin-bottom:2rem; }
+.hero-actions { display:flex; gap:.8rem; flex-wrap:wrap; }
+.hero-actions .btn { border-radius:4px; padding:.8rem 1.25rem; }
+.hero-actions .btn-primary { background:#d5a24c; color:#17212b; }
+.hero-actions .btn-secondary { background:transparent; border-color:#bcd4d4; color:#fff; }
+.hero-note { border-left:1px solid rgba(255,255,255,.35); padding:1.5rem 0 1.5rem 2rem; }
+.hero-note strong { display:block; color:#fff; font:600 1.65rem 'Source Serif 4',serif; margin-bottom:.6rem; }
+.hero-note span { color:#d2e3e3; font-size:.9rem; }
+.section-wrap { max-width:1180px; margin:auto; padding:4rem 2rem; }
+.section-heading { display:flex; justify-content:space-between; align-items:end; gap:1rem; margin-bottom:1.5rem; }
+.section-heading h2 { color:var(--ink); font:700 2.1rem 'Source Serif 4',serif; margin:0; }
+.section-heading p { margin:0; max-width:520px; }
+.listings { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; }
+.listing { background:#fff; border:1px solid var(--line); border-top:3px solid var(--teal); padding:1.35rem; min-height:240px; display:flex; flex-direction:column; }
+.listing h3 { font-size:1.08rem; color:var(--ink); margin:.75rem 0 .45rem; }
+.listing .institution { color:var(--teal); font-weight:600; }
+.listing .meta { color:var(--muted); font-size:.87rem; display:flex; gap:.8rem; flex-wrap:wrap; margin:.7rem 0; }
+.listing .meta i { color:var(--gold); }
+.listing .listing-footer { margin-top:auto; padding-top:1rem; display:flex; justify-content:space-between; align-items:center; gap:.5rem; }
+.source { font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+.text-link { color:var(--teal); font-weight:700; font-size:.88rem; }
+.text-link i { margin-left:.35rem; }
+.portal-band { background:#e8efed; border-top:1px solid #d5e0dd; border-bottom:1px solid #d5e0dd; }
+.portals { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+.portal { background:#fff; border:1px solid var(--line); padding:1.25rem; }
+.portal i { color:var(--teal); font-size:1.2rem; margin-bottom:1rem; }
+.portal h3 { font-size:1rem; color:var(--ink); margin-bottom:.35rem; }
+.portal p { font-size:.84rem; margin:0; }
+.ai-strip { display:flex; align-items:center; gap:1rem; border-left:4px solid var(--gold); background:#fff; padding:1.2rem 1.4rem; margin-top:2rem; }
+.ai-strip i { color:var(--gold); font-size:1.4rem; }
+.ai-strip p { margin:0; font-size:.9rem; }
+footer { background:#17212b; color:#d9e1e5; padding:2rem max(2rem, calc((100% - 1180px)/2)); margin:0; }
+footer p { color:#aab9c1; margin:.25rem 0; }
+@media (max-width:700px) { nav { padding:1rem; } .nav-links { gap:.7rem; } .nav-links span:not(.btn) { display:none; } .faculty-hero { padding:4rem 1.25rem; } .hero-inner { grid-template-columns:1fr; gap:2rem; } .hero-note { border-left:0; border-top:1px solid rgba(255,255,255,.35); padding:1.25rem 0 0; } .section-wrap { padding:3rem 1.25rem; } .section-heading { display:block; } .section-heading h2 { margin-bottom:.5rem; } .portals { grid-template-columns:1fr 1fr; } }
 </style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav>
-  <div class="logo"><i class="fas fa-graduation-cap"></i> AcademiaPro</div>
+  <div class="logo"><i class="fas fa-university"></i> AcademiaPro</div>
   <div class="nav-links">
-    <span onclick="window.location.href='/'"><i class="fas fa-home"></i> Home</span>
-    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
-    <span onclick="window.location.href='/login'" class="btn btn-secondary" style="margin: 0;"><i class="fas fa-sign-in-alt"></i> Login</span>
+    <span onclick="window.location.href='/'">Home</span>
+    <span onclick="window.location.href='/jobs'">Find positions</span>
+    <span onclick="window.location.href='/login'" class="btn btn-primary" style="margin:0;">Sign in</span>
   </div>
 </nav>
-
-<!-- HERO -->
-<div class="hero hero-section">
-  <h1><i class="fas fa-search"></i> Find Your Perfect Academic Position</h1>
-  <p>Connect with top universities worldwide. Discover exciting opportunities for faculty and professors.</p>
-  
-  <div class="search-box" style="max-width: 800px;">
-    <input type="text" placeholder="Search by job title, university, or location...">
-    <button onclick="window.location.href='/jobs'" class="btn-primary"><i class="fas fa-search"></i> Search Jobs</button>
+<header class="faculty-hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Faculty recruitment platform</div>
+      <h1>Build the next chapter of your academic career.</h1>
+      <p>Discover carefully organized teaching, research, and academic leadership opportunities from universities and trusted job networks.</p>
+      <div class="hero-actions"><a class="btn btn-primary" href="/jobs"><i class="fas fa-search"></i> Browse faculty positions</a><a class="btn btn-secondary" href="/register"><i class="fas fa-user-plus"></i> Create your profile</a></div>
+    </div>
+    <div class="hero-note"><strong>One profile. More considered opportunities.</strong><span>Keep your academic experience, research interests, and professional links ready for every application.</span></div>
   </div>
-
-  <div class="cta-buttons">
-    <button class="btn btn-primary btn-large" onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Browse Jobs</button>
-    <button class="btn btn-secondary btn-large" onclick="window.location.href='/register'"><i class="fas fa-user-plus"></i> Get Started</button>
-  </div>
-</div>
-
-<!-- STATS -->
-<div class="stats-section">
-  <h2>Why Choose AcademiaPro?</h2>
-  <div class="stats-container">
-    <div class="stat">
-      <div class="stat-number">500+</div>
-      <div class="stat-label">Universities Worldwide</div>
+</header>
+<main>
+  <section class="section-wrap">
+    <div class="section-heading"><div><div class="eyebrow" style="color:var(--teal);margin-bottom:.45rem;">Curated feed</div><h2>Featured academic openings</h2></div><p>Review roles managed in AcademiaPro and follow verified external sources when the opportunity is hosted elsewhere.</p></div>
+    <div class="listings">
+      <% if (jobs.length) { jobs.slice(0, 3).forEach(job => { %>
+        <article class="listing"><div class="institution"><i class="fas fa-building-columns"></i> <%= job.university %></div><h3><%= job.title %></h3><div class="meta"><span><i class="fas fa-location-dot"></i> <%= job.location %></span><span><i class="fas fa-layer-group"></i> <%= job.category %></span></div><div class="listing-footer"><span class="source">AcademiaPro listing</span><a class="text-link" href="/login">View role <i class="fas fa-arrow-right"></i></a></div></article>
+      <% }); } else { %><article class="listing"><div class="institution">AcademiaPro</div><h3>New faculty positions are being reviewed.</h3><p>Use the external networks below to explore live academic opportunities today.</p></article><% } %>
+      <% universityOpenings.slice(0, 3).forEach(opening => { %>
+        <article class="listing"><div class="institution"><i class="fas fa-landmark"></i> <%= opening.university %></div><h3><%= opening.title %></h3><div class="meta"><span><i class="fas fa-location-dot"></i> <%= opening.location %></span><span><i class="fas fa-tag"></i> <%= opening.category %></span></div><div class="listing-footer"><span class="source"><%= opening.source %></span><a class="text-link" href="<%= opening.link %>" target="_blank" rel="noopener">Open source <i class="fas fa-arrow-up-right-from-square"></i></a></div></article>
+      <% }); %>
     </div>
-    <div class="stat">
-      <div class="stat-number">10K+</div>
-      <div class="stat-label">Active Job Openings</div>
-    </div>
-    <div class="stat">
-      <div class="stat-number">5K+</div>
-      <div class="stat-label">Successful Placements</div>
-    </div>
-    <div class="stat">
-      <div class="stat-number">95%</div>
-      <div class="stat-label">Success Rate</div>
-    </div>
-  </div>
-</div>
-
-<!-- FEATURED JOBS -->
-<div class="featured-section">
-  <h2 class="section-title"><i class="fas fa-star"></i> Featured Opportunities</h2>
-  
-  <div class="jobs-grid">
-    <% jobs.slice(0, 6).forEach(job => { %>
-      <div class="featured-job-card">
-        <div class="job-title"><i class="fas fa-book"></i> <%= job.title %></div>
-        <div class="job-university"><i class="fas fa-school"></i> <%= job.university %></div>
-        
-        <div class="job-meta">
-          <span><i class="fas fa-map-marker-alt"></i> <%= job.location %></span>
-          <span><i class="fas fa-tag"></i> <%= job.category %></span>
-        </div>
-
-        <div class="job-salary"><i class="fas fa-indian-rupee"></i> <%= job.salary %></div>
-        
-        <p class="job-description">Exciting opportunity to join our faculty team. We're looking for talented professionals to contribute to our academic excellence.</p>
-
-        <button class="btn btn-primary" onclick="window.location.href='/login'" style="margin-top: auto;"><i class="fas fa-arrow-right"></i> View Details</button>
-      </div>
-    <% }); %>
-  </div>
-</div>
-
-<!-- FEATURES -->
-<div class="features-section">
-  <h2 class="section-title"><i class="fas fa-lightbulb"></i> Our Unique Features</h2>
-  
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-robot"></i></div>
-      <div class="feature-title">AI-Powered Interviews</div>
-      <div class="feature-desc">Experience next-generation interview technology powered by artificial intelligence.</div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
-      <div class="feature-title">Compare Job Offers</div>
-      <div class="feature-desc">Easily compare multiple job offers side-by-side to make the best decision.</div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-handshake"></i></div>
-      <div class="feature-title">Smart Matching</div>
-      <div class="feature-desc">Our algorithm matches you with the best opportunities based on your profile.</div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-      <div class="feature-title">Secure & Verified</div>
-      <div class="feature-desc">All universities and positions are verified for authenticity and legitimacy.</div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-globe"></i></div>
-      <div class="feature-title">Global Reach</div>
-      <div class="feature-desc">Connect with universities and opportunities from across the globe.</div>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-headset"></i></div>
-      <div class="feature-title">24/7 Support</div>
-      <div class="feature-desc">Our dedicated support team is always ready to help you succeed.</div>
-    </div>
-  </div>
-</div>
-
-<!-- CTA SECTION -->
-<div class="cta-section">
-  <h2>Ready to Start Your Journey?</h2>
-  <p>Join thousands of professionals who've found their perfect academic position through AcademiaPro.</p>
-  <div class="cta-buttons">
-    <button class="btn btn-primary btn-large" onclick="window.location.href='/register'"><i class="fas fa-rocket"></i> Register Now</button>
-    <button class="btn btn-secondary btn-large" onclick="window.location.href='/jobs'"><i class="fas fa-arrow-right"></i> Explore Jobs</button>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer style="background: #282A35; color: white; padding: 2rem; text-align: center; margin-top: 3rem;">
-  <p>&copy; 2026 AcademiaPro. All rights reserved.</p>
-  <p style="font-size: 0.9rem; color: #ddd;">Connecting talent with opportunity worldwide</p>
-</footer>
-
+    <div class="ai-strip"><i class="fas fa-wand-magic-sparkles"></i><p><strong>AI-assisted preparation:</strong> <%= aiEnabled ? 'Your workspace is connected to cloud AI for interview practice and structured feedback.' : 'Interview practice and structured feedback are available when cloud AI is enabled by the administrator.' %></p></div>
+  </section>
+  <section class="portal-band"><div class="section-wrap"><div class="section-heading"><div><div class="eyebrow" style="color:var(--teal);margin-bottom:.45rem;">Live job networks</div><h2>Search beyond one institution</h2></div><p>AcademiaPro helps you reach the source. Always review the original posting, closing date, and application requirements before applying.</p></div><div class="portals">
+    <a class="portal" href="https://www.linkedin.com/jobs/search/?keywords=faculty" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i><h3>LinkedIn</h3><p>Professional networks and university hiring teams.</p></a>
+    <a class="portal" href="https://www.naukri.com/teaching-jobs" target="_blank" rel="noopener"><i class="fas fa-briefcase"></i><h3>Naukri</h3><p>Teaching and higher-education roles across India.</p></a>
+    <a class="portal" href="https://in.indeed.com/q-assistant-professor-jobs.html" target="_blank" rel="noopener"><i class="fas fa-globe"></i><h3>Indeed</h3><p>Searchable academic openings and alerts.</p></a>
+    <a class="portal" href="/register"><i class="fas fa-user-check"></i><h3>AcademiaPro profile</h3><p>Prepare one structured profile for applications.</p></a>
+  </div></div></section>
+</main>
+<footer><p><strong>AcademiaPro</strong> | Faculty recruitment and academic careers</p><p>External links open the original publisher. Verify each listing before applying.</p></footer>
 </body>
 </html>
