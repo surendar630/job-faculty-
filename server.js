@@ -13,8 +13,9 @@ const openai = require('openai');
 const multer = require('multer');
 require('dotenv').config();
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
-const GOOGLE_CLIENT_ID_ALT = process.env.GOOGLE_CLIENT_ID_ALT || '';
+const DEFAULT_GOOGLE_CLIENT_ID = '62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID_ALT = process.env.GOOGLE_CLIENT_ID_ALT || DEFAULT_GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
 const FIREBASE_CLIENT_ID = process.env.FIREBASE_CLIENT_ID || '';
 const FIREBASE_CLIENT_ID_ALT = process.env.FIREBASE_CLIENT_ID_ALT || '';
@@ -742,15 +743,15 @@ app.get('/auth/config', (req, res) => {
       appId: process.env.FIREBASE_APP_ID || '1:62016617558:web:014890807abc948a928ff7',
       measurementId: process.env.FIREBASE_MEASUREMENT_ID || 'G-EM3X896YYN'
     },
-    googleClientId: process.env.GOOGLE_CLIENT_ID || '62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com',
-    googleClientIdAlt: process.env.GOOGLE_CLIENT_ID_ALT || '62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com',
+    googleClientId: GOOGLE_CLIENT_ID,
+    googleClientIdAlt: GOOGLE_CLIENT_ID_ALT,
     firebaseApiKey: process.env.FIREBASE_API_KEY || 'AIzaSyB_PLqF1qcEEhnrYaUA1k5Tsi61MW0xZS8'
   });
 });
 
 app.get('/auth/google', (req, res) => {
-  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
-    return res.status(500).send('Google OAuth is not configured on this server.');
+  if (!GOOGLE_CLIENT_SECRET) {
+    return res.status(503).send('Google sign-in is not fully configured. Add GOOGLE_CLIENT_SECRET in Render environment variables.');
   }
 
   const redirectUri = getGoogleRedirectUri(req);
