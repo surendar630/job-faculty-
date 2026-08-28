@@ -35,6 +35,10 @@ Visit `http://localhost:3000` and click "Sign in with Google" button
 
 ## 📱 Adding Google Sign-In Button to Your Pages
 
+## ✉️ Enable Passwordless Email Sign-In
+
+In Firebase Console, enable **Email/Password** and **Email link (passwordless sign-in)** under Authentication -> Sign-in method. Also add `localhost` and the deployed Render hostname under Authentication -> Settings -> Authorized domains. The login, registration, and HR login pages already include an **Email me a sign-in link** action. Users must confirm their email again if they open the link on another device.
+
 ### Option 1: Google Sign-In Button (HTML)
 Add this to your login/register pages (e.g., `views/login.ejs`):
 

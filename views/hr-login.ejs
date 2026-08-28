@@ -313,6 +313,10 @@ body {
       <div class="form-group">
         <button id="firebaseGoogleBtn" type="button" class="btn-google"><i class="fab fa-google"></i> Sign in with Google</button>
       </div>
+      <div class="form-group">
+        <button id="emailLinkBtn" type="button" class="btn btn-secondary"><i class="fas fa-envelope"></i> Email me a sign-in link</button>
+        <div id="emailLinkStatus" class="auth-link-status" role="status" aria-live="polite"></div>
+      </div>
       <p>Need a candidate login? <a href="/login"><i class="fas fa-arrow-left"></i> Go to normal login</a></p>
     </div>
   </div>
@@ -320,6 +324,9 @@ body {
 </body>
 <script type="module">
   import { initFirebaseAuth, signInWithPopup } from '/firebase-config.js';
+  import { setupEmailLinkAuth } from '/email-link-auth.js';
+
+  setupEmailLinkAuth({ emailId: 'email', buttonId: 'emailLinkBtn', statusId: 'emailLinkStatus', redirectFallback: '/office' });
 
   document.getElementById('firebaseGoogleBtn').addEventListener('click', async () => {
     try {

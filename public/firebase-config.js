@@ -1,7 +1,14 @@
 // Browser-safe Firebase SDK imports for the static Express page.
 import { getApp, getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  isSignInWithEmailLink,
+  sendSignInLinkToEmail,
+  signInWithEmailLink,
+  signInWithPopup
+} from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
 const DEFAULT_FIREBASE_CONFIG = {
   apiKey: 'AIzaSyB_PLqF1qcEEhnrYaUA1k5Tsi61MW0xZS8',
@@ -49,7 +56,7 @@ export async function initFirebaseAuth() {
   googleProvider.setCustomParameters({
     prompt: 'select_account',
   });
-  return { app, analytics, auth, googleProvider, signInWithPopup };
+  return { app, analytics, auth, googleProvider, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup };
 }
 
-export { signInWithPopup };
+export { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup };

@@ -53,6 +53,12 @@ const firebaseConfig = {
 
 ## Authentication Flow
 
+### Option 0: Firebase Email Link (Passwordless)
+
+The login, registration, and HR login screens support passwordless email links. Enable both **Email/Password** and **Email link (passwordless sign-in)** under Firebase Console -> Authentication -> Sign-in method. Add the local and production hostnames under Authentication -> Settings -> Authorized domains.
+
+The app stores the email only in browser local storage while waiting for the link. If the link is opened on another device, the user must enter the email again; the email is never trusted from URL parameters. Production links must use HTTPS.
+
 ### Option 1: OAuth2 Flow (Traditional)
 
 1. User clicks "Sign in with Google" button
@@ -79,6 +85,17 @@ const firebaseConfig = {
 9. User is redirected to dashboard
 
 ## Enable Google Authentication in Firebase Console
+
+### Android client note
+
+This repository is a web application and does not contain an Android app, Gradle project, package name, or `google-services.json`. The Android client-auth guide therefore does not require a code change here. SHA-1 fingerprints are only needed when a separate Android client is added:
+
+1. Get the debug SHA-1 with `./gradlew signingReport` or `keytool -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore`.
+2. Register the Android package name and SHA-1 in Firebase Console -> Project settings -> Your apps -> Add app -> Android.
+3. For a Play-distributed app, register the Play App Signing certificate SHA-1 from Play Console -> Release -> Setup -> App integrity, in addition to any upload/debug certificate.
+4. Download the generated `google-services.json` into the Android app module and enable Google sign-in in the Android client.
+
+The browser sign-in used by this project relies on Firebase Web configuration, authorized web domains, and the Google provider. It does not use Android SHA-1 values.
 
 ### Step 1: Go to Firebase Console
 1. Navigate to https://console.firebase.google.com/
@@ -137,6 +154,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 ### Firebase Authentication
 - **POST** `/auth/google-firebase` - Firebase token verification and user creation
+- Firebase email-link completion uses the same endpoint after `signInWithEmailLink` returns a Firebase ID token.
 
 ### Standard Authentication
 - **GET** `/login` - Login page
