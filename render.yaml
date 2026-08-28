@@ -39,6 +39,8 @@ services:
         value: 62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com
       - key: FIREBASE_CLIENT_ID_ALT
         value: 62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com
+      - key: FIREBASE_PROJECT_ID
+        value: job-faculty
       - key: FIREBASE_API_KEY
         value: AIzaSyB_PLqF1qcEEhnrYaUA1k5Tsi61MW0xZS8
       - key: PORT

@@ -18,8 +18,10 @@ const GOOGLE_CLIENT_ID_ALT = process.env.GOOGLE_CLIENT_ID_ALT || '';
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
 const FIREBASE_CLIENT_ID = process.env.FIREBASE_CLIENT_ID || '';
 const FIREBASE_CLIENT_ID_ALT = process.env.FIREBASE_CLIENT_ID_ALT || '';
+const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'job-faculty';
 
 const isValidFirebaseClientId = (id) => typeof id === 'string' && id.includes('.apps.googleusercontent.com');
+const isValidFirebaseIssuer = (issuer) => issuer === `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
 
 function getGoogleRedirectUri(req) {
   return (process.env.GOOGLE_CALLBACK_URL || process.env.GOOGLE_REDIRECT_URI || `${req.protocol}://${req.get('host')}/auth/google/callback`).trim();
@@ -750,7 +752,7 @@ app.get('/auth/google/callback', async (req, res) => {
       const name = googleUser.name || email.split('@')[0];
       if (user) {
         const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
-        res.cookie('token', token);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
         if (user.role === 'admin') return res.redirect('/admin');
         if (user.role === 'hr') return res.redirect('/office');
         return res.redirect('/dashboard');
@@ -763,7 +765,7 @@ app.get('/auth/google/callback', async (req, res) => {
         }
         const userId = this.lastID;
         const token = jwt.sign({ id: userId, email, role: 'user' }, SECRET_KEY);
-        res.cookie('token', token);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
         res.redirect('/dashboard');
       });
     });
@@ -790,26 +792,33 @@ app.post('/auth/google-firebase', async (req, res) => {
       .map((id) => (typeof id === 'string' ? id.trim() : ''))
       .filter((id) => id.length > 0 && isValidFirebaseClientId(id));
 
-    if (expectedClientIds.length > 0 && !expectedClientIds.includes(tokenInfo.aud)) {
-      console.error('Firebase token audience mismatch:', tokenInfo.aud, 'expected one of', expectedClientIds);
+    const isFirebaseToken = isValidFirebaseIssuer(tokenInfo.iss);
+    const validAudience = isFirebaseToken
+      ? tokenInfo.aud === FIREBASE_PROJECT_ID
+      : expectedClientIds.includes(tokenInfo.aud);
+    if (!validAudience) {
+      console.error('Google token audience mismatch:', tokenInfo.aud, 'issuer:', tokenInfo.iss);
       return res.status(400).send('Token audience mismatch');
     }
-    if (tokenInfo.iss !== 'https://accounts.google.com' && tokenInfo.iss !== 'accounts.google.com') {
+    if (!isFirebaseToken && tokenInfo.iss !== 'https://accounts.google.com' && tokenInfo.iss !== 'accounts.google.com') {
       console.error('Invalid token issuer:', tokenInfo.iss);
       return res.status(400).send('Invalid token issuer');
     }
 
     const email = tokenInfo.email;
-    const name = tokenInfo.name || email.split('@')[0];
     if (!email) {
       return res.status(400).send('Firebase token did not return an email');
     }
+    if (tokenInfo.email_verified !== 'true' && tokenInfo.email_verified !== true) {
+      return res.status(400).send('Google email is not verified');
+    }
+    const name = tokenInfo.name || email.split('@')[0];
 
     db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
       if (err) return res.status(500).send('Database error');
       if (user) {
         const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
-        res.cookie('token', token);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
         if (user.role === 'admin') return res.json({ success: true, redirect: '/admin' });
         if (user.role === 'hr') return res.json({ success: true, redirect: '/office' });
         return res.json({ success: true, redirect: '/dashboard' });
@@ -822,7 +831,7 @@ app.post('/auth/google-firebase', async (req, res) => {
         }
         const userId = this.lastID;
         const token = jwt.sign({ id: userId, email, role: 'user' }, SECRET_KEY);
-        res.cookie('token', token);
+        res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
         res.json({ success: true, redirect: '/dashboard' });
       });
     });

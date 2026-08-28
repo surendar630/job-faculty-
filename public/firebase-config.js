@@ -1,5 +1,5 @@
 // Browser-safe Firebase SDK imports for the static Express page.
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+import { getApp, getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
@@ -37,13 +37,17 @@ export async function getFirebaseRuntimeConfig() {
 
 export async function initFirebaseAuth() {
   const config = await getFirebaseRuntimeConfig();
-  const app = initializeApp(config.firebaseConfig || DEFAULT_FIREBASE_CONFIG);
-  const analytics = getAnalytics(app);
+  const app = getApps().length ? getApp() : initializeApp(config.firebaseConfig || DEFAULT_FIREBASE_CONFIG);
+  let analytics = null;
+  try {
+    analytics = getAnalytics(app);
+  } catch (error) {
+    console.warn('Firebase Analytics is unavailable in this browser:', error);
+  }
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({
     prompt: 'select_account',
-    client_id: config.googleClientId || GOOGLE_CLIENT_ID
   });
   return { app, analytics, auth, googleProvider, signInWithPopup };
 }
