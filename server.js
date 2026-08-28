@@ -23,6 +23,58 @@ const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'job-faculty';
 const isValidFirebaseClientId = (id) => typeof id === 'string' && id.includes('.apps.googleusercontent.com');
 const isValidFirebaseIssuer = (issuer) => issuer === `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
 
+const googleCertificateCache = new Map();
+
+async function verifyGoogleToken(idToken) {
+  const tokenParts = String(idToken).split('.');
+  if (tokenParts.length !== 3) throw new Error('Invalid Google token format');
+
+  const decodePart = (part) => JSON.parse(Buffer.from(part, 'base64url').toString('utf8'));
+  const header = decodePart(tokenParts[0]);
+  const claims = decodePart(tokenParts[1]);
+  const issuer = claims.iss;
+  const isFirebaseToken = isValidFirebaseIssuer(issuer);
+  const validIssuers = isFirebaseToken
+    ? [issuer]
+    : ['https://accounts.google.com', 'accounts.google.com'];
+  if (!validIssuers.includes(issuer) || header.alg !== 'RS256' || !header.kid) {
+    throw new Error('Invalid Google token issuer or algorithm');
+  }
+
+  const certificateUrl = isFirebaseToken
+    ? 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com'
+    : 'https://www.googleapis.com/oauth2/v3/certs';
+  let certificates = googleCertificateCache.get(certificateUrl);
+  if (!certificates || certificates.expiresAt < Date.now()) {
+    const certificateResponse = await fetch(certificateUrl);
+    if (!certificateResponse.ok) throw new Error('Unable to fetch Google signing certificates');
+    certificates = {
+      keys: await certificateResponse.json(),
+      expiresAt: Date.now() + 60 * 60 * 1000
+    };
+    googleCertificateCache.set(certificateUrl, certificates);
+  }
+
+  const certificate = certificates.keys[header.kid];
+  if (!certificate) throw new Error('Unknown Google signing key');
+  const signedData = `${tokenParts[0]}.${tokenParts[1]}`;
+  const signature = Buffer.from(tokenParts[2], 'base64url');
+  if (!crypto.verify('RSA-SHA256', Buffer.from(signedData), certificate, signature)) {
+    throw new Error('Invalid Google token signature');
+  }
+  if (!claims.sub || typeof claims.sub !== 'string' || claims.sub.length > 128) {
+    throw new Error('Invalid Google token subject');
+  }
+  if (!claims.exp || claims.exp * 1000 <= Date.now()) throw new Error('Google token has expired');
+  if (isFirebaseToken && claims.aud !== FIREBASE_PROJECT_ID) throw new Error('Firebase token audience mismatch');
+
+  const expectedClientIds = [FIREBASE_CLIENT_ID, FIREBASE_CLIENT_ID_ALT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_ID_ALT]
+    .map((id) => (typeof id === 'string' ? id.trim() : ''))
+    .filter((id) => id.length > 0 && isValidFirebaseClientId(id));
+  if (!isFirebaseToken && !expectedClientIds.includes(claims.aud)) throw new Error('Google token audience mismatch');
+  return claims;
+}
+
 function getGoogleRedirectUri(req) {
   return (process.env.GOOGLE_CALLBACK_URL || process.env.GOOGLE_REDIRECT_URI || `${req.protocol}://${req.get('host')}/auth/google/callback`).trim();
 }
@@ -780,31 +832,8 @@ app.post('/auth/google-firebase', async (req, res) => {
   if (!idToken) return res.status(400).send('Missing Firebase ID token');
 
   try {
-    const verifyResponse = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
-    const tokenInfo = await verifyResponse.json();
-
-    if (!verifyResponse.ok) {
-      console.error('Firebase token verification failed:', tokenInfo);
-      return res.status(400).send('Invalid Firebase token');
-    }
-
-    const expectedClientIds = [FIREBASE_CLIENT_ID, FIREBASE_CLIENT_ID_ALT, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_ID_ALT]
-      .map((id) => (typeof id === 'string' ? id.trim() : ''))
-      .filter((id) => id.length > 0 && isValidFirebaseClientId(id));
-
+    const tokenInfo = await verifyGoogleToken(idToken);
     const isFirebaseToken = isValidFirebaseIssuer(tokenInfo.iss);
-    const validAudience = isFirebaseToken
-      ? tokenInfo.aud === FIREBASE_PROJECT_ID
-      : expectedClientIds.includes(tokenInfo.aud);
-    if (!validAudience) {
-      console.error('Google token audience mismatch:', tokenInfo.aud, 'issuer:', tokenInfo.iss);
-      return res.status(400).send('Token audience mismatch');
-    }
-    if (!isFirebaseToken && tokenInfo.iss !== 'https://accounts.google.com' && tokenInfo.iss !== 'accounts.google.com') {
-      console.error('Invalid token issuer:', tokenInfo.iss);
-      return res.status(400).send('Invalid token issuer');
-    }
-
     const email = tokenInfo.email;
     if (!email) {
       return res.status(400).send('Firebase token did not return an email');
@@ -837,7 +866,7 @@ app.post('/auth/google-firebase', async (req, res) => {
     });
   } catch (error) {
     console.error('Firebase auth exception:', error);
-    res.status(500).send('Firebase sign-in failed');
+    res.status(400).send(error.message || 'Firebase sign-in failed');
   }
 });
 
