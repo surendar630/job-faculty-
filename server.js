@@ -750,16 +750,21 @@ app.get('/auth/config', (req, res) => {
 });
 
 app.get('/auth/google', (req, res) => {
-  if (!GOOGLE_CLIENT_SECRET) {
-    return res.status(503).send('Google sign-in is not fully configured. Add GOOGLE_CLIENT_SECRET in Render environment variables.');
-  }
-
   const redirectUri = getGoogleRedirectUri(req);
+  const state = crypto.randomBytes(24).toString('base64url');
+  const codeVerifier = crypto.randomBytes(48).toString('base64url');
+  const codeChallenge = crypto.createHash('sha256').update(codeVerifier).digest('base64url');
+  const cookieOptions = { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', maxAge: 10 * 60 * 1000 };
+  res.cookie('google_oauth_state', state, cookieOptions);
+  res.cookie('google_oauth_verifier', codeVerifier, cookieOptions);
   const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth' +
     '?response_type=code' +
     `&client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}` +
     `&redirect_uri=${encodeURIComponent(redirectUri)}` +
     '&scope=openid%20email%20profile' +
+    `&state=${encodeURIComponent(state)}` +
+    `&code_challenge=${encodeURIComponent(codeChallenge)}` +
+    '&code_challenge_method=S256' +
     '&prompt=select_account';
   res.redirect(authUrl);
 });
@@ -767,7 +772,13 @@ app.get('/auth/google', (req, res) => {
 app.get('/auth/google/callback', async (req, res) => {
   const code = req.query.code;
   const redirectUri = getGoogleRedirectUri(req);
-  if (!code) return res.redirect('/login');
+  const expectedState = req.cookies.google_oauth_state;
+  const codeVerifier = req.cookies.google_oauth_verifier;
+  res.clearCookie('google_oauth_state');
+  res.clearCookie('google_oauth_verifier');
+  if (!code || !req.query.state || req.query.state !== expectedState || !codeVerifier) {
+    return res.status(400).send('Google sign-in could not be verified. Please start again.');
+  }
 
   try {
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
@@ -776,8 +787,8 @@ app.get('/auth/google/callback', async (req, res) => {
       body: new URLSearchParams({
         code,
         client_id: GOOGLE_CLIENT_ID,
-        client_secret: GOOGLE_CLIENT_SECRET,
         redirect_uri: redirectUri,
+        code_verifier: codeVerifier,
         grant_type: 'authorization_code'
       })
     });
