@@ -1,6 +1,6 @@
 const assert = require('assert');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildResumeTrainingCards } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore } = require('../server');
 
 (function run() {
   const insights = buildRealtimeAIInsights({
@@ -65,6 +65,16 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions,
   assert.ok(trainingCards.length >= 1, 'Training cards should include at least one action');
   assert.ok(trainingCards[0].title && trainingCards[0].description, 'Each card should include title and description');
   assert.ok(trainingCards[0].description.toLowerCase().includes('strengthen') || trainingCards[0].description.toLowerCase().includes('improve'), 'Training guidance should include practical improvement steps');
+
+  const advancedCoach = buildAdvancedAICoach({
+    user: { role: 'user', name: 'Dr. Maya', skills: 'AI, research, teaching, data science', bio: 'Teaching and research in AI and faculty development' },
+    jobs: [{ title: 'Professor - AI', category: 'Computer Science' }],
+    stats: { applications: 4, interviews: 2, favorites: 3 },
+    profileCompletion: 82
+  });
+  assert.ok(Array.isArray(advancedCoach), 'Advanced AI coach cards should be returned');
+  assert.ok(advancedCoach.length >= 3, 'Advanced AI coach should include multiple coaching cards');
+  assert.ok(calculateJobFitScore({ title: 'Professor - AI', category: 'Computer Science' }, { skills: 'AI, research, teaching, machine learning', bio: 'Research and teaching in AI', experience: 6 }) >= 70, 'AI job fit score should reflect strong subject alignment');
 
   console.log('shortlist rule tests passed');
 })();

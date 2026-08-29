@@ -481,9 +481,11 @@
               </div>
 
               <div class="job-salary"><i class="fas fa-indian-rupee"></i> <%= job.salary %></div>
-            <div style="margin-top: 0.8rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.7rem 0.8rem; color:#475569; font-size:0.9rem; line-height:1.5;">
-              <strong style="color:#0f172a;">Application fit:</strong> <%= job.requirements ? (job.requirements.length > 160 ? job.requirements.substring(0, 160) + '...' : job.requirements) : 'Checkout the detailed role requirements before applying.' %>
-            </div>
+              <% const fitSummary = (jobFitSummaryMap && jobFitSummaryMap[job.id]) || { score: 0, label: 'Needs tuning', summary: 'AI advisor is evaluating the role fit.' }; %>
+              <div style="margin-top: 0.8rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.7rem 0.8rem; color:#475569; font-size:0.9rem; line-height:1.5;">
+                <strong style="color:#0f172a;">AI fit:</strong> <%= fitSummary.score %>% · <span style="font-weight:700; color:#0f766e;"><%= fitSummary.label %></span>
+                <div style="margin-top:0.45rem; color:#475569;"><%= fitSummary.summary %></div>
+              </div>
             </div>
 
             <div class="job-actions">

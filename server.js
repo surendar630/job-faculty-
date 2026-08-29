@@ -1601,10 +1601,11 @@ app.get('/jobs', verifyToken, (req, res) => {
       const universityOpenings = getUniversityOpenings({ search, category, location });
       const aiInsightsContext = { user: req.user, jobs, stats: { applications: jobs.length, favorites: favoriteIds.length }, profileCompletion: 80 };
       const cloudAiActions = buildCloudAIActions(aiInsightsContext);
+      const fitMap = Object.fromEntries((jobs || []).map(job => [job.id, buildJobFitSummary(job, req.user)]));
       fetchRealtimeAIInsights(aiInsightsContext).then((aiInsights) => {
-        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights, cloudAiActions });
+        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights, cloudAiActions, jobFitSummaryMap: fitMap });
       }).catch(() => {
-        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights: buildRealtimeAIInsights(aiInsightsContext), cloudAiActions });
+        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights: buildRealtimeAIInsights(aiInsightsContext), cloudAiActions, jobFitSummaryMap: fitMap });
       });
     });
   });
@@ -2627,7 +2628,102 @@ function buildResumeTrainingCards({ applications = [] } = {}) {
   });
 }
 
-function buildCloudAIActions({ user = {}, jobs = [], stats = {} } = {}) {
+function calculateJobFitScore(job = {}, user = {}) {
+  const jobTitle = String(job.title || '').toLowerCase();
+  const jobCategory = String(job.category || '').toLowerCase();
+  const userSkills = String(user.skills || '').toLowerCase();
+  const userBio = String(user.bio || '').toLowerCase();
+  const userExperience = Number(user.experience || 0);
+  const keywords = [
+    'ai', 'data science', 'computer science', 'research', 'teaching', 'faculty', 'machine learning',
+    'cybersecurity', 'engineering', 'mathematics', 'software', 'lecturer', 'professor', 'associate professor'
+  ];
+
+  let score = 35;
+
+  if (!jobTitle && !jobCategory) return 0;
+  if (jobTitle.includes('professor') || jobTitle.includes('faculty')) score += 15;
+  if (jobCategory && userSkills.includes(jobCategory.toLowerCase())) score += 20;
+  if (userBio.includes('teaching') || userBio.includes('research') || userBio.includes('faculty')) score += 10;
+  if (userExperience >= 3) score += 12;
+  if (userExperience >= 7) score += 8;
+
+  const matchedKeywords = keywords.filter(keyword => jobTitle.includes(keyword) || jobCategory.includes(keyword) || userSkills.includes(keyword));
+  score += Math.min(20, matchedKeywords.length * 5);
+
+  return Math.min(100, Math.max(0, score));
+}
+
+function buildJobFitSummary(job = {}, user = {}) {
+  const score = calculateJobFitScore(job, user);
+  if (score >= 80) {
+    return {
+      score,
+      label: 'Strong match',
+      summary: 'AI fit is high because your experience, teaching focus, and subject keywords align strongly with this role.'
+    };
+  }
+  if (score >= 65) {
+    return {
+      score,
+      label: 'Good match',
+      summary: 'This role is a promising fit. Add a few more research or teaching highlights to strengthen your profile.'
+    };
+  }
+  return {
+    score,
+    label: 'Needs tuning',
+    summary: 'The role is relevant, but a stronger teaching, research, or publication profile will improve your match.'
+  };
+}
+
+function buildAdvancedAICoach({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
+  const role = user && user.role ? user.role : 'user';
+  const applications = Number(stats.applications || 0);
+  const interviews = Number(stats.interviews || 0);
+  const favorites = Number(stats.favorites || 0);
+  const completion = Number(profileCompletion || 0);
+  const categoryList = [...new Set((jobs || []).map(job => job.category).filter(Boolean))].slice(0, 3).join(', ') || 'AI and teaching roles';
+
+  const baseCards = [
+    {
+      title: 'Resume strength coach',
+      description: completion >= 75
+        ? `Your profile is ${completion}% complete and already positioned for strong role matching. Tighten your research and teaching impact statements to raise shortlist quality.`
+        : `Your profile is ${completion}% complete. Focus on stronger academic positioning, teaching highlights, and publications to improve shortlist readiness.`
+    },
+    {
+      title: 'Skill gap trainer',
+      description: `The current market signal is strongest in ${categoryList}. Build your profile around those disciplines and emphasize publications, course delivery, and student mentorship.`
+    },
+    {
+      title: 'Interview readiness mentor',
+      description: interviews > 0
+        ? `You have ${interviews} interview touchpoints already. Use the next session to sharpen your research narrative, leadership examples, and role-specific answers.`
+        : 'You are still building interview momentum. Practice AI-led interview questions and refine your academic storytelling before your next panel.'
+    }
+  ];
+
+  if (role === 'hr' || role === 'admin') {
+    return [
+      ...baseCards,
+      {
+        title: 'Hiring intelligence coach',
+        description: `Track ${applications} applications, ${interviews} interview reviews, and ${favorites} shortlist priorities to train your team on which candidates are most likely to move forward.`
+      }
+    ].slice(0, 4);
+  }
+
+  return [
+    ...baseCards,
+    {
+      title: 'Career momentum coach',
+      description: `Your candidate pipeline shows ${applications} applications, ${interviews} interview sessions, and ${favorites} saved roles. Keep improving your CV and research narrative to convert interest into next-step interviews.`
+    }
+  ].slice(0, 4);
+}
+
+function buildCloudAIActions({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
   const role = user && user.role ? user.role : 'user';
   const applications = Number(stats.applications || 0);
   const interviews = Number(stats.interviews || 0);
@@ -2655,23 +2751,27 @@ function buildCloudAIActions({ user = {}, jobs = [], stats = {} } = {}) {
     }
   ];
 
+  const advanced = buildAdvancedAICoach({ user, jobs, stats, profileCompletion });
+
   if (role === 'hr' || role === 'admin') {
     return [
       ...shared,
+      ...advanced.slice(0, 2),
       {
         title: 'Workflow automation',
         description: `Track ${applications} applications, ${interviews} interview touchpoints, and ${favorites} shortlist priorities to cut admin overhead and improve decision speed.`
       }
-    ].slice(0, 4);
+    ].slice(0, 5);
   }
 
   return [
     ...shared,
+    ...advanced.slice(0, 2),
     {
       title: 'Career momentum coach',
       description: `Your profile is building momentum with ${applications} applications, ${interviews} interview sessions, and ${favorites} saved roles helping you stay focused on likely outcomes.`
     }
-  ].slice(0, 4);
+  ].slice(0, 5);
 }
 
 function buildRealtimeAIInsights({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
@@ -2756,6 +2856,9 @@ module.exports = {
   analyzeResumeForAICTE,
   autoApplyAICTEShortlist,
   buildResumeTrainingCards,
+  buildAdvancedAICoach,
+  calculateJobFitScore,
+  buildJobFitSummary,
   buildCloudAIActions,
   buildRealtimeAIInsights,
   fetchRealtimeAIInsights,
