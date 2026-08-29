@@ -107,6 +107,30 @@
   </div>
 </nav>
 <div class="container">
+  <div class="info-grid" style="margin-bottom: 1.5rem;">
+    <% if (aiInsights && aiInsights.length) { %>
+      <% aiInsights.forEach((insight) => { %>
+        <div class="info-card">
+          <h2><i class="fas fa-wand-magic-sparkles"></i> <%= insight.title %></h2>
+          <p><%= insight.description %></p>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="info-card">
+        <h2><i class="fas fa-robot"></i> Cloud AI coaching</h2>
+        <p>Use structured practice to sharpen responses, refine strengths, and build confidence before interviews.</p>
+      </div>
+      <div class="info-card">
+        <h2><i class="fas fa-chart-line"></i> Performance readiness</h2>
+        <p>Review technical accuracy, coding confidence, and communication quality in one place.</p>
+      </div>
+      <div class="info-card">
+        <h2><i class="fas fa-bullseye"></i> Strategic preparation</h2>
+        <p>Train for live interviews with realistic questions, expert feedback, and stronger follow-up responses.</p>
+      </div>
+    <% } %>
+  </div>
+
   <h1>Advanced Interview Trainer</h1>
   <p class="subtitle">Practice technical MCQs, coding challenges, behavioral answers, and strong questions to ask during interviews using W3Schools, GeeksforGeeks, MDN, and other trusted learning platforms.</p>
   <div class="info-grid">

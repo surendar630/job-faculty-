@@ -168,20 +168,32 @@
 <% const categories = [...new Set(jobs.map(job => job.category).filter(Boolean))]; %>
 <div class="jobs-container">
   <div class="insight-strip">
-    <div class="insight-card">
-      <div class="insight-icon"><i class="fas fa-bookmark"></i></div>
-      <div>
-        <h3><%= jobs.length %> saved applications</h3>
-        <p>Keep your shortlist organized and revisit the best-fit roles anytime.</p>
+    <% if (aiInsights && aiInsights.length) { %>
+      <% aiInsights.forEach((insight) => { %>
+        <div class="insight-card">
+          <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+          <div>
+            <h3><%= insight.title %></h3>
+            <p><%= insight.description %></p>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-bookmark"></i></div>
+        <div>
+          <h3><%= jobs.length %> saved applications</h3>
+          <p>Keep your shortlist organized and revisit the best-fit roles anytime.</p>
+        </div>
       </div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-icon"><i class="fas fa-layer-group"></i></div>
-      <div>
-        <h3><%= categories.length ? categories.join(', ') : 'Fresh matches' %></h3>
-        <p>Track the areas of interest you are actively exploring.</p>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-layer-group"></i></div>
+        <div>
+          <h3><%= categories.length ? categories.join(', ') : 'Fresh matches' %></h3>
+          <p>Track the areas of interest you are actively exploring.</p>
+        </div>
       </div>
-    </div>
+    <% } %>
   </div>
   <div class="jobs-list">
     <% if (jobs.length > 0) { %>

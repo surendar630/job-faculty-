@@ -255,21 +255,31 @@
   </div>
 
   <div class="training-grid">
-    <div class="training-card">
-      <div class="training-card-icon"><i class="fas fa-file-alt"></i></div>
-      <h3>Professional Resume Review</h3>
-      <p>Review shortlisted candidates with a structured, quality-based approach that supports better hiring decisions.</p>
-    </div>
-    <div class="training-card">
-      <div class="training-card-icon"><i class="fas fa-certificate"></i></div>
-      <h3>AICTE-Oriented Screening</h3>
-      <p>Follow a more standardized and professional selection mindset aligned to academic recruitment norms.</p>
-    </div>
-    <div class="training-card">
-      <div class="training-card-icon"><i class="fas fa-video"></i></div>
-      <h3>Interview Preparation</h3>
-      <p>Move candidates forward into live practice and interview settings with confidence and clarity.</p>
-    </div>
+    <% if (aiInsights && aiInsights.length) { %>
+      <% aiInsights.forEach((insight) => { %>
+        <div class="training-card">
+          <div class="training-card-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+          <h3><%= insight.title %></h3>
+          <p><%= insight.description %></p>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="training-card">
+        <div class="training-card-icon"><i class="fas fa-file-alt"></i></div>
+        <h3>Professional Resume Review</h3>
+        <p>Review shortlisted candidates with a structured, quality-based approach that supports better hiring decisions.</p>
+      </div>
+      <div class="training-card">
+        <div class="training-card-icon"><i class="fas fa-certificate"></i></div>
+        <h3>AICTE-Oriented Screening</h3>
+        <p>Follow a more standardized and professional selection mindset aligned to academic recruitment norms.</p>
+      </div>
+      <div class="training-card">
+        <div class="training-card-icon"><i class="fas fa-video"></i></div>
+        <h3>Interview Preparation</h3>
+        <p>Move candidates forward into live practice and interview settings with confidence and clarity.</p>
+      </div>
+    <% } %>
   </div>
 
   <!-- RESUMES GRID -->

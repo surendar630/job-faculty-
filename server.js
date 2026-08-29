@@ -1170,7 +1170,28 @@ app.get('/profile', verifyToken, (req, res) => {
             WHERE a.user_id = ?
             ORDER BY m.scheduled_at DESC`, [req.user.id], (err, meetings) => {
       if (err) return res.status(500).send('Error loading meeting information');
-      res.render('profile', { user: req.user, applications, meetings });
+
+      const profileInsightsContext = {
+        user: req.user,
+        jobs: (applications || []).slice(0, 5).map(app => ({
+          title: app.job_title,
+          category: 'Career profile',
+          university: app.university || 'Your selected institutions',
+          location: app.location || 'Global'
+        })),
+        stats: {
+          applications: (applications || []).length,
+          interviews: (meetings || []).length,
+          favorites: 0
+        },
+        profileCompletion: 88
+      };
+
+      fetchRealtimeAIInsights(profileInsightsContext).then((aiInsights) => {
+        res.render('profile', { user: req.user, applications, meetings, aiInsights, aiEnabled: !!openaiClient });
+      }).catch(() => {
+        res.render('profile', { user: req.user, applications, meetings, aiInsights: buildRealtimeAIInsights(profileInsightsContext), aiEnabled: !!openaiClient });
+      });
     });
   });
 });
@@ -1392,7 +1413,23 @@ app.get('/office/shortlisted', verifyToken, (req, res) => {
           WHERE a.status = 'shortlisted' OR u.resume_review_status = 'shortlisted'
           ORDER BY a.applied_at DESC`, [], (err, applications) => {
     if (err) return res.status(500).send('Error');
-    res.render('shortlisted', { applications, user: req.user });
+    const shortlistedInsightsContext = {
+      user: req.user,
+      jobs: (applications || []).slice(0, 5).map(app => ({
+        title: app.job_title,
+        category: 'Shortlist pipeline',
+        university: app.university,
+        location: app.location || 'Global'
+      })),
+      stats: { applications: (applications || []).length, interviews: 0, favorites: (applications || []).length },
+      profileCompletion: 90
+    };
+
+    fetchRealtimeAIInsights(shortlistedInsightsContext).then((aiInsights) => {
+      res.render('shortlisted', { applications, user: req.user, aiInsights, aiEnabled: !!openaiClient });
+    }).catch(() => {
+      res.render('shortlisted', { applications, user: req.user, aiInsights: buildRealtimeAIInsights(shortlistedInsightsContext), aiEnabled: !!openaiClient });
+    });
   });
 });
 
@@ -1515,7 +1552,18 @@ app.post('/jobs/:id/favorite', verifyToken, (req, res) => {
 app.get('/favorites', verifyToken, (req, res) => {
   db.all('SELECT j.* FROM favorited_jobs f JOIN jobs j ON f.job_id = j.id WHERE f.user_id = ?', [req.user.id], (err, jobs) => {
     if (err) return res.status(500).send('Error loading saved jobs');
-    res.render('favorites', { jobs, user: req.user });
+    const savedInsightsContext = {
+      user: req.user,
+      jobs,
+      stats: { applications: jobs.length, interviews: 0, favorites: jobs.length },
+      profileCompletion: 84
+    };
+
+    fetchRealtimeAIInsights(savedInsightsContext).then((aiInsights) => {
+      res.render('favorites', { jobs, user: req.user, aiInsights, aiEnabled: !!openaiClient });
+    }).catch(() => {
+      res.render('favorites', { jobs, user: req.user, aiInsights: buildRealtimeAIInsights(savedInsightsContext), aiEnabled: !!openaiClient });
+    });
   });
 });
 
@@ -1740,7 +1788,18 @@ app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => 
 });
 
 app.get('/practice', verifyToken, (req, res) => {
-  res.render('practice', { user: req.user });
+  const practiceInsightsContext = {
+    user: req.user,
+    jobs: [],
+    stats: { applications: 0, interviews: 0, favorites: 0 },
+    profileCompletion: 85
+  };
+
+  fetchRealtimeAIInsights(practiceInsightsContext).then((aiInsights) => {
+    res.render('practice', { user: req.user, aiInsights, aiEnabled: !!openaiClient });
+  }).catch(() => {
+    res.render('practice', { user: req.user, aiInsights: buildRealtimeAIInsights(practiceInsightsContext), aiEnabled: !!openaiClient });
+  });
 });
 
 app.post('/practice/submit', verifyToken, express.json(), (req, res) => {
