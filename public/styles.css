@@ -1134,6 +1134,12 @@ nav {
 .cloud-ai-status .text-link { margin-left:auto; color:#0b6b68; white-space:nowrap; }
 .cloud-ai-status.is-pending { border-left-color:#9aa8ad; }
 .cloud-ai-status.is-pending > i { color:#607080; }
+.cloud-ai-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; margin:0 0 2rem; }
+.cloud-ai-card { background:linear-gradient(135deg, #ffffff, #f5f9ff); border:1px solid #dfeafe; border-radius:16px; padding:1.2rem 1.1rem; box-shadow:0 10px 24px rgba(13, 56, 88, 0.06); position:relative; overflow:hidden; }
+.cloud-ai-card::before { content:''; position:absolute; inset:0 auto 0 0; width:4px; background:linear-gradient(180deg, #0b6b68, #b47a28); }
+.cloud-ai-badge { display:inline-flex; align-items:center; gap:.45rem; color:#0b6b68; background:#eafaf7; padding:.38rem .68rem; border-radius:999px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.cloud-ai-card h3 { margin:.85rem 0 .45rem; font-size:1rem; color:#17212b; }
+.cloud-ai-card p { margin:0; color:#607080; font-size:.9rem; line-height:1.6; }
 .logo::after { content:'Designed by SURENDAR R S'; display:block; position:static; width:auto; height:auto; background:none; color:#8a989e; font-size:.55rem; font-weight:500; letter-spacing:.04em; line-height:1.2; margin-top:.15rem; }
 @media (max-width:700px) {
   .cloud-ai-status { align-items:flex-start; flex-wrap:wrap; }

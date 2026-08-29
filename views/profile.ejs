@@ -343,6 +343,15 @@
         </div>
       <% } %>
     </div>
+    <div class="cloud-ai-grid" style="margin-top:1.5rem;">
+      <% (cloudAiActions || []).forEach((item) => { %>
+        <div class="cloud-ai-card">
+          <span class="cloud-ai-badge"><i class="fas fa-wand-magic-sparkles"></i> Cloud AI</span>
+          <h3><%= item.title %></h3>
+          <p><%= item.description %></p>
+        </div>
+      <% }); %>
+    </div>
     <div id="profileDisplay" class="profile-info" style="margin-top: 1.5rem;">
       <!-- Basic Information -->
       <div style="grid-column: span 2; margin-bottom: 1rem;">

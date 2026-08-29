@@ -155,6 +155,16 @@
     <% } %>
   </div>
 
+  <div class="cloud-ai-grid">
+    <% (cloudAiActions || []).forEach((item) => { %>
+      <div class="cloud-ai-card">
+        <span class="cloud-ai-badge"><i class="fas fa-wand-magic-sparkles"></i> Cloud AI</span>
+        <h3><%= item.title %></h3>
+        <p><%= item.description %></p>
+      </div>
+    <% }); %>
+  </div>
+
   <div class="office-grid">
     <div class="office-card">
       <h3>Total Applications</h3>

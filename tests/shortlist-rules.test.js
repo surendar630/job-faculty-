@@ -1,6 +1,6 @@
 const assert = require('assert');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions } = require('../server');
 
 (function run() {
   const insights = buildRealtimeAIInsights({
@@ -16,6 +16,11 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights } = require('../serve
   assert.ok(Array.isArray(insights), 'AI insights should return an array');
   assert.ok(insights.length >= 3, 'AI insights should include multiple cards');
   assert.ok(insights.every(item => item.title && item.description), 'Each insight should have title and description');
+
+  const cloudActions = buildCloudAIActions({ user: { role: 'hr' }, stats: { applications: 18, interviews: 7 } });
+  assert.ok(Array.isArray(cloudActions), 'Cloud AI actions should return an array');
+  assert.strictEqual(cloudActions.length >= 3, true, 'Cloud AI actions should provide the core capability cards');
+  assert.ok(cloudActions.every(item => item.title && item.description), 'Each cloud AI action should include a clear title and description');
 
   const cases = [
     {

@@ -487,6 +487,16 @@
     <a href="/practice" class="text-link">Open practice lab <i class="fas fa-arrow-right"></i></a>
   </div>
 
+  <div class="cloud-ai-grid">
+    <% (cloudAiActions || []).forEach((item) => { %>
+      <div class="cloud-ai-card">
+        <span class="cloud-ai-badge"><i class="fas fa-wand-magic-sparkles"></i> Cloud AI</span>
+        <h3><%= item.title %></h3>
+        <p><%= item.description %></p>
+      </div>
+    <% }); %>
+  </div>
+
   <div style="padding: 0 0 2rem;">
       <h2 style="font-size: 1.8rem; margin-bottom: 2rem;"><i class="fas fa-th-large"></i> Priority actions</h2>
       <div class="dashboard-grid">

@@ -1068,6 +1068,7 @@ app.get('/dashboard', verifyToken, (req, res) => {
                   stats,
                   profileCompletion
                 };
+                const cloudAiActions = buildCloudAIActions(dashboardInsightsContext);
 
                 db.all(meetingQuery, params, (err, meetings) => {
                   if (err) return res.status(500).send('Error loading dashboard meetings');
@@ -1082,7 +1083,8 @@ app.get('/dashboard', verifyToken, (req, res) => {
                         nextAction,
                         profileCompletion,
                         aiEnabled: !!openaiClient,
-                        aiInsights
+                        aiInsights,
+                        cloudAiActions
                       });
                     }).catch(() => {
                       res.render('dashboard', {
@@ -1093,7 +1095,8 @@ app.get('/dashboard', verifyToken, (req, res) => {
                         nextAction,
                         profileCompletion,
                         aiEnabled: !!openaiClient,
-                        aiInsights: buildRealtimeAIInsights(dashboardInsightsContext)
+                        aiInsights: buildRealtimeAIInsights(dashboardInsightsContext),
+                        cloudAiActions
                       });
                     });
                   };
@@ -1186,11 +1189,12 @@ app.get('/profile', verifyToken, (req, res) => {
         },
         profileCompletion: 88
       };
+      const cloudAiActions = buildCloudAIActions(profileInsightsContext);
 
       fetchRealtimeAIInsights(profileInsightsContext).then((aiInsights) => {
-        res.render('profile', { user: req.user, applications, meetings, aiInsights, aiEnabled: !!openaiClient });
+        res.render('profile', { user: req.user, applications, meetings, aiInsights, aiEnabled: !!openaiClient, cloudAiActions });
       }).catch(() => {
-        res.render('profile', { user: req.user, applications, meetings, aiInsights: buildRealtimeAIInsights(profileInsightsContext), aiEnabled: !!openaiClient });
+        res.render('profile', { user: req.user, applications, meetings, aiInsights: buildRealtimeAIInsights(profileInsightsContext), aiEnabled: !!openaiClient, cloudAiActions });
       });
     });
   });
@@ -1317,6 +1321,7 @@ app.get('/office', verifyToken, (req, res) => {
               },
               profileCompletion: 88
             };
+            const cloudAiActions = buildCloudAIActions(officeInsightsContext);
 
             fetchRealtimeAIInsights(officeInsightsContext).then((aiInsights) => {
               res.render('office', {
@@ -1329,7 +1334,8 @@ app.get('/office', verifyToken, (req, res) => {
                 recentApps,
                 meetings,
                 aiEnabled: !!openaiClient,
-                aiInsights
+                aiInsights,
+                cloudAiActions
               });
             }).catch(() => {
               res.render('office', {
@@ -1342,7 +1348,8 @@ app.get('/office', verifyToken, (req, res) => {
                 recentApps,
                 meetings,
                 aiEnabled: !!openaiClient,
-                aiInsights: buildRealtimeAIInsights(officeInsightsContext)
+                aiInsights: buildRealtimeAIInsights(officeInsightsContext),
+                cloudAiActions
               });
             });
           });
@@ -1522,10 +1529,11 @@ app.get('/jobs', verifyToken, (req, res) => {
       const favoriteIds = favorites.map(f => f.job_id);
       const universityOpenings = getUniversityOpenings();
       const aiInsightsContext = { user: req.user, jobs, stats: { applications: jobs.length, favorites: favoriteIds.length }, profileCompletion: 80 };
+      const cloudAiActions = buildCloudAIActions(aiInsightsContext);
       fetchRealtimeAIInsights(aiInsightsContext).then((aiInsights) => {
-        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights });
+        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights, cloudAiActions });
       }).catch(() => {
-        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights: buildRealtimeAIInsights(aiInsightsContext) });
+        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights: buildRealtimeAIInsights(aiInsightsContext), cloudAiActions });
       });
     });
   });
@@ -2496,6 +2504,53 @@ async function generateUniversityJobRequirements({ title, university, category, 
   return fallback;
 }
 
+function buildCloudAIActions({ user = {}, jobs = [], stats = {} } = {}) {
+  const role = user && user.role ? user.role : 'user';
+  const applications = Number(stats.applications || 0);
+  const interviews = Number(stats.interviews || 0);
+  const favorites = Number(stats.favorites || 0);
+  const activeJobs = Array.isArray(jobs) ? jobs.length : 0;
+
+  const shared = [
+    {
+      title: 'AI shortlist guidance',
+      description: role === 'hr' || role === 'admin'
+        ? 'Review candidates with automated resume and interview scoring so hiring reviews stay consistent and high-quality.'
+        : 'Understand which application signals are strongest and what to improve before your next interview stage.'
+    },
+    {
+      title: 'Smart interview practice',
+      description: role === 'hr' || role === 'admin'
+        ? 'Generate interview rubrics, compare panel notes, and keep your evaluation flow structured from first screening to final decision.'
+        : 'Prepare with role-specific follow-up prompts, deeper questions, and feedback designed around your next academic opportunity.'
+    },
+    {
+      title: 'Talent market pulse',
+      description: activeJobs
+        ? `The platform is surfacing ${activeJobs} relevant roles and hiring signals, giving you a faster path to matching the right academic opportunity.`
+        : 'Your AI workspace is monitoring the market so you can act quickly when strong matches appear.'
+    }
+  ];
+
+  if (role === 'hr' || role === 'admin') {
+    return [
+      ...shared,
+      {
+        title: 'Workflow automation',
+        description: `Track ${applications} applications, ${interviews} interview touchpoints, and ${favorites} shortlist priorities to cut admin overhead and improve decision speed.`
+      }
+    ].slice(0, 4);
+  }
+
+  return [
+    ...shared,
+    {
+      title: 'Career momentum coach',
+      description: `Your profile is building momentum with ${applications} applications, ${interviews} interview sessions, and ${favorites} saved roles helping you stay focused on likely outcomes.`
+    }
+  ].slice(0, 4);
+}
+
 function buildRealtimeAIInsights({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
   const jobList = Array.isArray(jobs) ? jobs : [];
   const activeCount = jobList.length;
@@ -2577,6 +2632,7 @@ module.exports = {
   evaluateShortlistDecision,
   analyzeResumeForAICTE,
   autoApplyAICTEShortlist,
+  buildCloudAIActions,
   buildRealtimeAIInsights,
   fetchRealtimeAIInsights,
   buildUniversityJobRequirements,
