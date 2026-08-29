@@ -328,6 +328,10 @@
         </div>
         <div class="form-group">
           <label for="requirements"><i class="fas fa-list-check"></i> Key Requirements</label>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:0.5rem; flex-wrap:wrap;">
+            <small style="color:#475569;">Cloud AI can generate a polished university-standard requirement summary.</small>
+            <button type="button" class="btn btn-secondary" id="aiRequirementsBtn" style="padding:0.5rem 0.9rem; width:auto; min-width: 180px; font-size:0.9rem; margin:0; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe;"><i class="fas fa-wand-magic-sparkles"></i> Generate with AI</button>
+          </div>
           <textarea id="requirements" name="requirements" placeholder="List the key requirements for this position..." required></textarea>
         </div>
         <div class="form-group">
@@ -595,6 +599,134 @@ function filterApplications() {
 
 // Initialize filter
 filterApplications();
+
+// Edit Meeting Modal Functions
+function openEditMeetingModal(meetingId, scheduledAt, platform, meetingLink, cameraEnabled, micEnabled) {
+  const modal = document.createElement('div');
+  modal.id = 'editMeetingModal';
+  modal.innerHTML = `
+    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+      <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Edit Meeting</h3>
+        <form id="editMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
+            <input type="datetime-local" id="editScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
+            <input type="text" id="editPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
+            <input type="url" id="editMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+          </div>
+          <div style="display: flex; gap: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+              <input type="checkbox" id="editCameraEnabled" ${cameraEnabled ? 'checked' : ''}>
+              <i class="fas fa-camera"></i> Camera Enabled
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+              <input type="checkbox" id="editMicEnabled" ${micEnabled ? 'checked' : ''}>
+              <i class="fas fa-microphone"></i> Mic Enabled
+            </label>
+          </div>
+          <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+            <button type="button" onclick="closeEditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
+            <button type="button" onclick="submitEditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #6f8090; color: white; cursor: pointer; font-weight: 600;">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function closeEditMeetingModal() {
+  const modal = document.getElementById('editMeetingModal');
+  if (modal) modal.remove();
+}
+
+function submitEditMeeting(meetingId) {
+  const scheduledAt = document.getElementById('editScheduledAt').value;
+  const platform = document.getElementById('editPlatform').value;
+  const meetingLink = document.getElementById('editMeetingLink').value;
+  const cameraEnabled = document.getElementById('editCameraEnabled').checked;
+  const micEnabled = document.getElementById('editMicEnabled').checked;
+
+  const normalizedPlatform = String(platform || '').toLowerCase();
+  if (!scheduledAt || !platform || (!['jitsi', 'zoom', 'google-meet'].includes(normalizedPlatform) && !meetingLink)) {
+    alert('Please fill all fields. Leave the link blank for Jitsi, Zoom, or Google Meet and it will be generated automatically.');
+    return;
+  }
+
+  fetch(`/meeting/${meetingId}/modify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ scheduled_at: scheduledAt, platform, meeting_link: meetingLink, camera_enabled: cameraEnabled, mic_enabled: micEnabled })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('Meeting updated successfully');
+      location.reload();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  })
+  .catch(err => alert('Error updating meeting: ' + err));
+}
+function filterApplications() {
+  const filter = document.getElementById('statusFilter').value;
+  const items = document.querySelectorAll('.application-item');
+  items.forEach(item => {
+    if (filter === 'all' || item.getAttribute('data-status') === filter) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// Initialize filter
+filterApplications();
+
+const requirementsField = document.getElementById('requirements');
+const aiRequirementsBtn = document.getElementById('aiRequirementsBtn');
+
+if (aiRequirementsBtn && requirementsField) {
+  aiRequirementsBtn.addEventListener('click', async () => {
+    const title = document.getElementById('title')?.value || '';
+    const university = document.getElementById('university')?.value || '';
+    const category = document.getElementById('category')?.value || '';
+    const location = document.getElementById('location')?.value || '';
+
+    if (!title && !university) {
+      alert('Add a role title or university before generating AI requirements.');
+      return;
+    }
+
+    aiRequirementsBtn.disabled = true;
+    aiRequirementsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+
+    try {
+      const response = await fetch('/jobs/ai-requirements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, university, category, location })
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Unable to generate requirement details');
+      requirementsField.value = data.requirements;
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      aiRequirementsBtn.disabled = false;
+      aiRequirementsBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate with AI';
+    }
+  });
+}
 
 // Edit Meeting Modal Functions
 function openEditMeetingModal(meetingId, scheduledAt, platform, meetingLink, cameraEnabled, micEnabled) {

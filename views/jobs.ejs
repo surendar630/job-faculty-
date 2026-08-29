@@ -469,6 +469,9 @@
               </div>
 
               <div class="job-salary"><i class="fas fa-indian-rupee"></i> <%= job.salary %></div>
+            <div style="margin-top: 0.8rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.7rem 0.8rem; color:#475569; font-size:0.9rem; line-height:1.5;">
+              <strong style="color:#0f172a;">Application fit:</strong> <%= job.requirements ? (job.requirements.length > 160 ? job.requirements.substring(0, 160) + '...' : job.requirements) : 'Checkout the detailed role requirements before applying.' %>
+            </div>
             </div>
 
             <div class="job-actions">
@@ -476,7 +479,7 @@
                 <i class="fas fa-bookmark"></i> <%= favoriteIds && favoriteIds.includes(job.id) ? 'Saved' : 'Save' %>
               </button>
               <button type="button" class="btn btn-primary" onclick="window.location.href='/job/<%= job.id %>'">
-                <i class="fas fa-arrow-right"></i> View Details
+                <i class="fas fa-arrow-right"></i> Apply now
               </button>
             </div>
           </div>

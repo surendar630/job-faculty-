@@ -1756,7 +1756,7 @@ app.post('/practice/submit', verifyToken, express.json(), (req, res) => {
   );
 });
 
-app.get('/admin', verifyToken, requireRoles('admin'), (req, res) => {
+app.get('/admin', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
   db.all('SELECT * FROM jobs', [], (err, jobs) => {
     if (err) return res.status(500).send('Error fetching jobs');
     db.all('SELECT a.*, j.title as job_title, u.name as candidate_name, u.skills as candidate_skills, i.score as interview_score FROM applications a JOIN jobs j ON a.job_id = j.id JOIN users u ON a.user_id = u.id LEFT JOIN interviews i ON a.id = i.application_id', [], (err, applications) => {
@@ -1821,36 +1821,50 @@ app.post('/admin/resume/:userId/review', verifyToken, (req, res) => {
 });
 
 app.post('/admin/job', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const { title, university, location, salary, description, requirements, category } = req.body;
   db.run('INSERT INTO jobs (title, university, location, salary, description, requirements, category) VALUES (?, ?, ?, ?, ?, ?, ?)',
     [title, university, location, salary, description, requirements, category], (err) => {
     if (err) return res.status(500).send('Error');
-    res.redirect('/admin');
+    const redirectPath = req.user.role === 'hr' ? '/office' : '/admin';
+    res.redirect(redirectPath);
   });
 });
 
 app.post('/admin/job/:id/delete', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   db.run('DELETE FROM jobs WHERE id = ?', [req.params.id], (err) => {
-    res.redirect('/admin');
+    const redirectPath = req.user.role === 'hr' ? '/office' : '/admin';
+    res.redirect(redirectPath);
   });
 });
 
 app.get('/admin/job/:id/edit', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   db.get('SELECT * FROM jobs WHERE id = ?', [req.params.id], (err, job) => {
-    res.render('edit-job', { job });
+    res.render('edit-job', { job, user: req.user });
   });
 });
 
 app.post('/admin/job/:id/edit', verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') return res.status(403).send('Access denied');
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
   const { title, university, location, salary, description, requirements, category } = req.body;
   db.run('UPDATE jobs SET title = ?, university = ?, location = ?, salary = ?, description = ?, requirements = ?, category = ? WHERE id = ?',
     [title, university, location, salary, description, requirements, category, req.params.id], (err) => {
-    res.redirect('/admin');
+    const redirectPath = req.user.role === 'hr' ? '/office' : '/admin';
+    res.redirect(redirectPath);
   });
+});
+
+app.post('/jobs/ai-requirements', verifyToken, async (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).json({ error: 'Access denied' });
+  const { title, university, category, location } = req.body || {};
+  if (!title && !university) {
+    return res.status(400).json({ error: 'Role title or university is required.' });
+  }
+
+  const requirements = await generateUniversityJobRequirements({ title, university, category, location });
+  res.json({ requirements, generated: true });
 });
 
 app.post('/admin/application/:id/shortlist', verifyToken, (req, res) => {
@@ -2319,6 +2333,41 @@ io.on('connection', (socket) => {
   });
 });
 
+function buildUniversityJobRequirements({ title, university, category, location } = {}) {
+  const jobTitle = String(title || 'Academic Role').trim() || 'Academic Role';
+  const institution = String(university || 'University').trim() || 'University';
+  const discipline = String(category || 'Academic').trim() || 'Academic';
+  const region = String(location || 'Global').trim() || 'Global';
+
+  return [
+    `Strong academic background in ${discipline} with a demonstrable record of research, teaching, or applied professional impact.`,
+    `${institution} seeks candidates with relevant qualifications, institutional experience, and evidence of contribution to learning outcomes in ${region}.`,
+    `Applicants should show expertise in curriculum design, student engagement, scholarly work, or interdisciplinary collaborations aligned to the role: ${jobTitle}.`,
+    `Priority will be given to candidates who can contribute to institutional priorities, mentorship, academic quality, and measurable research or teaching outcomes.`,
+    `Candidates are expected to provide a current CV, supporting credentials, and evidence of professional alignment with the advertised position.`
+  ].join(' ');
+}
+
+async function generateUniversityJobRequirements({ title, university, category, location } = {}) {
+  const fallback = buildUniversityJobRequirements({ title, university, category, location });
+  if (!openaiClient) return fallback;
+
+  try {
+    const prompt = `Create a concise but professional university hiring requirement summary for a ${category || 'academic'} role titled "${title || 'Academic Role'}" at ${university || 'the university'} in ${location || 'the target region'}. Keep it to 5 strong sentences, in polished academic English, and avoid jargon. Return only the final paragraph text.`;
+    const response = await openaiClient.chat.completions.create({
+      model: AI_MODEL,
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 220
+    });
+    const generated = String(response.choices?.[0]?.message?.content || '').trim();
+    if (generated) return generated;
+  } catch (error) {
+    console.log('AI job requirement generation failed, using fallback:', error.message);
+  }
+
+  return fallback;
+}
+
 function buildRealtimeAIInsights({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
   const jobList = Array.isArray(jobs) ? jobs : [];
   const activeCount = jobList.length;
@@ -2401,7 +2450,9 @@ module.exports = {
   analyzeResumeForAICTE,
   autoApplyAICTEShortlist,
   buildRealtimeAIInsights,
-  fetchRealtimeAIInsights
+  fetchRealtimeAIInsights,
+  buildUniversityJobRequirements,
+  generateUniversityJobRequirements
 };
 
 async function generateQuestions(category, jobTitle, jobDescription) {
