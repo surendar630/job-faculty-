@@ -291,13 +291,14 @@
           </div>
 
           <div class="resume-content">
+            <% const universityForwardLink = 'https://www.google.com/search?q=' + encodeURIComponent((app.job_title || 'Faculty') + ' ' + (app.university || 'University') + ' careers apply'); %>
             <p style="color: #666; margin: 0;">
               <strong>Status:</strong> 
               <span style="background: #e8f5e9; color: #059862; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">
                 <i class="fas fa-check"></i> Shortlisted
               </span>
             </p>
-            <% if (app.resume_scan_score || app.resume_scan_report) { %>
+            <% if (typeof app.resume_scan_score !== 'undefined' || app.resume_scan_report) { %>
               <div style="margin-top:0.85rem; padding:0.9rem; background:#f1f1f1; border-radius:10px; color:#334155;">
                 <strong>AICTE scan:</strong> <%= app.resume_scan_score || 'N/A' %>% | <%= app.resume_aicte_status || 'pending' %>
                 <% if (app.resume_scan_report) { %>
@@ -315,7 +316,12 @@
               <label style="font-weight:600; color:#334155;">Forward candidate to university / college</label>
               <input type="text" name="university" placeholder="e.g. IISc Bangalore or Christ University" style="padding:0.7rem 0.8rem; border-radius:8px; border:1px solid #dbe3ef;" required>
               <textarea name="notes" rows="2" placeholder="Add a quick forwarding note for the hiring team..." style="padding:0.7rem 0.8rem; border-radius:8px; border:1px solid #dbe3ef; resize:vertical;"></textarea>
-              <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-paper-plane"></i> Forward Resume</button>
+              <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                <button type="submit" class="btn btn-primary" style="flex:1; min-width: 170px;"><i class="fas fa-paper-plane"></i> Forward Resume</button>
+                <a href="<%= universityForwardLink %>" target="_blank" rel="noopener" class="btn btn-secondary" style="text-decoration:none; white-space:nowrap;">
+                  <i class="fas fa-external-link-alt"></i> Open university careers
+                </a>
+              </div>
             </form>
           </div>
 

@@ -1871,13 +1871,14 @@ app.post('/shortlisted/:id/forward', verifyToken, (req, res) => {
           WHERE a.id = ?`, [req.params.id], (err, application) => {
     if (err || !application) return res.status(404).send('Application not found');
 
+    const universityLink = buildUniversityForwardLink({ university: universityName, title: application.job_title }, { name: application.candidate_name, email: application.candidate_email });
     db.run(`INSERT INTO resume_forwardings (application_id, user_id, candidate_name, candidate_email, university_name, university_email, job_title, resume_path, status, notes)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'forwarded', ?)`,
-      [application.id, application.user_id, application.candidate_name, application.candidate_email, universityName, '', application.job_title, application.resume_path, notes], (insertErr) => {
+      [application.id, application.user_id, application.candidate_name, application.candidate_email, universityName, '', application.job_title, application.resume_path, `${notes || 'Auto-forwarded via AICTE shortlist'} | Link: ${universityLink}`], (insertErr) => {
         if (insertErr) return res.status(500).send('Unable to forward resume');
         db.run('UPDATE applications SET shortlisted_field = ? WHERE id = ?', [`Forwarded to ${universityName}`, application.id], (updateErr) => {
           if (updateErr) return res.status(500).send('Resume was saved but shortlist note could not be updated');
-          res.redirect('/shortlisted');
+          return res.redirect(`/shortlisted?forward=${encodeURIComponent(universityName)}&link=${encodeURIComponent(universityLink)}`);
         });
       }
     );
@@ -2656,6 +2657,23 @@ io.on('connection', (socket) => {
   });
 });
 
+function buildUniversityForwardLink(job = {}, candidate = {}) {
+  const university = String(job.university || job.company || job.institution || 'University').trim() || 'University';
+  const title = String(job.title || 'Academic role').trim() || 'Academic role';
+  const candidateName = String(candidate.name || 'Candidate').trim() || 'Candidate';
+  const candidateEmail = String(candidate.email || '').trim();
+  const safeUniversity = encodeURIComponent(university);
+  const safeTitle = encodeURIComponent(title);
+  const safeName = encodeURIComponent(candidateName);
+  const safeEmail = encodeURIComponent(candidateEmail);
+
+  const contextTerms = candidateName && candidateName !== 'Candidate' ? `+${safeName}` : '';
+  const emailContext = candidateEmail ? `+${safeEmail}` : '';
+  const googleCareers = `https://www.google.com/search?q=${safeTitle}+${safeUniversity}+faculty+careers+jobs+apply${contextTerms}${emailContext}`;
+
+  return googleCareers;
+}
+
 function buildUniversityJobRequirements({ title, university, category, location } = {}) {
   const jobTitle = String(title || 'Academic Role').trim() || 'Academic Role';
   const institution = String(university || 'University').trim() || 'University';
@@ -3002,7 +3020,8 @@ module.exports = {
   getUniversityOpenings,
   buildExternalJobSearchUrl,
   buildUniversityJobRequirements,
-  generateUniversityJobRequirements
+  generateUniversityJobRequirements,
+  buildUniversityForwardLink
 };
 
 async function generateQuestions(category, jobTitle, jobDescription) {

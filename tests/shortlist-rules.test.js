@@ -1,6 +1,6 @@
 const assert = require('assert');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink } = require('../server');
 
 (function run() {
   const insights = buildRealtimeAIInsights({
@@ -85,6 +85,10 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions,
   assert.ok(Array.isArray(advancedCoach), 'Advanced AI coach cards should be returned');
   assert.ok(advancedCoach.length >= 3, 'Advanced AI coach should include multiple coaching cards');
   assert.ok(calculateJobFitScore({ title: 'Professor - AI', category: 'Computer Science' }, { skills: 'AI, research, teaching, machine learning', bio: 'Research and teaching in AI', experience: 6 }) >= 70, 'AI job fit score should reflect strong subject alignment');
+
+  const forwardLink = buildUniversityForwardLink({ university: 'IISc Bangalore', title: 'Professor - AI' }, { name: 'Dr. Priya', email: 'priya@example.com' });
+  assert.ok(typeof forwardLink === 'string' && forwardLink.startsWith('http'), 'University forward link should be an external URL');
+  assert.ok(forwardLink.toLowerCase().includes('google') || forwardLink.toLowerCase().includes('career') || forwardLink.toLowerCase().includes('mailto:'), 'University forward link should target the university or careers search');
 
   console.log('shortlist rule tests passed');
 })();
