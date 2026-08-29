@@ -228,34 +228,22 @@
 </div>
 
 <script>
-const FIELDS = ["All","HTML","CSS","JavaScript","Python","DSA","CS"];
-const ALL_Q = [
-  {f:"HTML",q:"Which HTML tag defines the document's body?",o:["<head>","<body>","<main>","<content>"],a:1,e:"The <body> tag contains all the visible page content — text, images, links, etc."},
-  {f:"HTML",q:"What attribute makes an input field required in HTML5?",o:["mandatory","validate","required","must"],a:2,e:"The 'required' attribute on a form input prevents submission if the field is empty."},
-  {f:"HTML",q:"Which tag is used to create a hyperlink?",o:["<link>","<href>","<a>","<url>"],a:2,e:"The <a> (anchor) tag creates hyperlinks. The href attribute specifies the destination URL."},
-  {f:"CSS",q:"Which CSS property controls the stacking order of overlapping elements?",o:["stack-order","layer","z-index","depth"],a:2,e:"z-index sets the stack order. Higher values sit on top; it only works on positioned elements."},
-  {f:"CSS",q:"What does the 'em' unit in CSS refer to?",o:["Pixels relative to screen","Font size of the root element","Font size of the parent element","Viewport width"],a:2,e:"'em' is relative to the font-size of the parent element. 'rem' is relative to the root <html> element."},
-  {f:"CSS",q:"Which property is used to make a flex container?",o:["display: block","display: inline","display: flex","float: left"],a:2,e:"Setting display: flex on a container enables Flexbox layout for its direct children."},
-  {f:"JavaScript",q:"Which method removes the last element from a JavaScript array?",o:["shift()","remove()","pop()","delete()"],a:2,e:"Array.pop() removes and returns the last element. shift() removes the first element."},
-  {f:"JavaScript",q:"What does '===' check in JavaScript?",o:["Value only","Type only","Value and type","Reference equality"],a:2,e:"=== is strict equality — it checks both value AND type. == does type coercion before comparing."},
-  {f:"JavaScript",q:"Which method adds an element to the END of an array?",o:["push()","append()","add()","insert()"],a:0,e:"Array.push() appends one or more elements to the end of an array and returns the new length."},
-  {f:"Python",q:"Which keyword is used to define a function in Python?",o:["function","fun","define","def"],a:3,e:"Python uses 'def' to define functions: def my_func():"},
-  {f:"Python",q:"What is the output of len([1, 2, 3]) in Python?",o:["2","3","4","Error"],a:1,e:"len() returns the number of items in a list. [1,2,3] has 3 elements → output is 3."},
-  {f:"Python",q:"Which of these creates a dictionary in Python?",o:["[]","()","{}","<>"],a:2,e:"Curly braces {} create a dictionary in Python. [] is a list, () is a tuple."},
-  {f:"DSA",q:"What is the time complexity of binary search?",o:["O(n)","O(log n)","O(n²)","O(1)"],a:1,e:"Binary search halves the search space each step → O(log n) time complexity."},
-  {f:"DSA",q:"Which data structure uses LIFO (Last In, First Out) order?",o:["Queue","Array","Stack","Linked List"],a:2,e:"A stack follows LIFO — the last element pushed is the first one popped. Queues use FIFO."},
-  {f:"DSA",q:"What is the worst-case time complexity of bubble sort?",o:["O(n)","O(n log n)","O(n²)","O(log n)"],a:2,e:"Bubble sort compares adjacent elements repeatedly. In the worst case it performs O(n²) comparisons."},
-  {f:"CS",q:"What does HTTP stand for?",o:["HyperText Transfer Protocol","High Transfer Text Process","HyperText Transport Program","Host Transfer Text Protocol"],a:0,e:"HTTP = HyperText Transfer Protocol — the foundation of data exchange on the web."},
-  {f:"CS",q:"Which of the following is NOT an OOP principle?",o:["Encapsulation","Polymorphism","Compilation","Inheritance"],a:2,e:"The four OOP pillars are Encapsulation, Abstraction, Polymorphism, and Inheritance. Compilation is not one of them."},
-  {f:"CS",q:"What does RAM stand for?",o:["Read Access Memory","Random Access Memory","Rapid Application Memory","Remote Access Module"],a:1,e:"RAM stands for Random Access Memory — fast, volatile memory the CPU uses to store data it's actively using."},
-];
-const CODING_Q = [
-  {id:0,f:"HTML",label:"Profile card",prompt:"Build a profile card using HTML & CSS. Show an avatar circle with initials, a name, job title, and a skill badge.",ex:`<style>\n.card{font-family:sans-serif;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:24px;max-width:240px;text-align:center}\n.av{width:60px;height:60px;border-radius:50%;background:#6f8090;color:#fff;font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}\nh2{font-size:17px;margin:0 0 4px;color:#111}p{color:#6b7280;font-size:13px;margin:0 0 10px}\n.badge{background:#f1f1f1;color:#425b65;font-size:11px;padding:3px 10px;border-radius:20px}\n</style>\n<div class="card"><div class="av">AR</div><h2>Anya Rao</h2><p>Frontend Developer</p><span class="badge">React · CSS</span></div>`},
-  {id:1,f:"JavaScript",label:"Counter app",prompt:"Build a counter app using HTML, CSS & JavaScript. Show a number with + and − buttons. The counter should not go below 0.",ex:`<style>\nbody{font-family:sans-serif;display:flex;justify-content:center;padding:40px}\n.c{text-align:center}.num{font-size:56px;font-weight:700;color:#111;margin:8px 0}.btns{display:flex;gap:12px;justify-content:center}button{width:48px;height:48px;border-radius:50%;border:1px solid #d1d5db;background:#f9fafb;font-size:22px;cursor:pointer}button:hover{background:#e5e7eb}\n</style>\n<div class="c"><div class="num" id="n">0</div><div class="btns"><button onclick="update(-1)">−</button><button onclick="update(1)">+</button></div></div>\n<script>let v=0;function update(d){v=Math.max(0,v+d);document.getElementById('n').textContent=v} <\/script>`},
-  {id:2,f:"CSS",label:"Flexbox nav",prompt:"Build a responsive nav bar using CSS Flexbox. Logo left, three nav links right. Dark background with hover effects.",ex:`<style>\n*{box-sizing:border-box;margin:0;padding:0}\nnav{background:#111;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:54px}\n.brand{color:#f1f1f1;font-size:17px;font-weight:700}.links{display:flex;gap:4px}.links a{color:#94a3b8;text-decoration:none;font-size:13px;padding:6px 12px;border-radius:6px;transition:background .15s,color .15s}.links a:hover{background:#334155;color:#f1f1f1}\n</style>\n<nav><span class="brand">DevCo</span><div class="links"><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></div></nav>`},
-  {id:3,f:"Python",label:"FizzBuzz",prompt:"Write a Python function fizzbuzz(n) that prints numbers 1 to n. Multiples of 3 → 'Fizz', multiples of 5 → 'Buzz', both → 'FizzBuzz'. (Paste your Python code — AI will review it.)",ex:`def fizzbuzz(n):\n    for i in range(1, n + 1):\n        if i % 15 == 0:\n            print("FizzBuzz")\n        elif i % 3 == 0:\n            print("Fizz")\n        elif i % 5 == 0:\n            print("Buzz")\n        else:\n            print(i)\n\nfizzbuzz(20)`},
-  {id:4,f:"DSA",label:"Reverse a string",prompt:"Write a function (any language) to reverse a string without using built-in reverse methods. Example: 'hello' → 'olleh'",ex:`function reverseString(str) {\n  let result = '';\n  for (let i = str.length - 1; i >= 0; i--) {\n    result += str[i];\n  }\n  return result;\n}\n\nconsole.log(reverseString('hello')); // 'olleh'`},
-];
+const practiceSet = <%- JSON.stringify(practiceSet || { summary: 'Professional mock interview set', mcqs: [], coding: [] }) %>;
+const FIELDS = ["All", ...(practiceSet.mcqs || []).map(q => q.field || "Professional")];
+const ALL_Q = (practiceSet.mcqs || []).map((q, index) => ({
+  f: q.field || "Professional",
+  q: q.question || `Question ${index + 1}`,
+  o: Array.isArray(q.options) && q.options.length >= 4 ? q.options : ["Option A", "Option B", "Option C", "Option D"],
+  a: Number.isInteger(q.answerIndex) ? q.answerIndex : 0,
+  e: q.explanation || "This is a professional interview question designed to test your readiness and decision quality."
+}));
+const CODING_Q = (practiceSet.coding || []).map((item, index) => ({
+  id: index,
+  f: item.field || "Professional",
+  label: item.title || `Coding task ${index + 1}`,
+  prompt: item.prompt || 'Solve this challenge using a strong, structured approach.',
+  ex: item.starter || '<div>Start from here</div>'
+}));
 let curField = "All", curIdx = 0, answered = {}, selCQ = 0, codeRating = "", codeFeedback = "";
 function filteredQ() { return curField === "All" ? ALL_Q : ALL_Q.filter(q => q.f === curField); }
 function tagEl(field) { return `<span class="tag tag-${field}">${field}</span>`; }

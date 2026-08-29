@@ -1,8 +1,8 @@
 const assert = require('assert');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary, generateProfessionalPracticeSet } = require('../server');
 
-(function run() {
+(async function run() {
   const insights = buildRealtimeAIInsights({
     user: { name: 'Dr. Priya', role: 'user' },
     jobs: [
@@ -95,6 +95,16 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions,
   assert.ok(practiceSummary.score >= 80, 'Practice score should reflect the candidate band');
   assert.ok(practiceSummary.band && practiceSummary.summary, 'Practice summary should include a band and human-readable summary');
   assert.ok(practiceSummary.summary.toLowerCase().includes('interview') || practiceSummary.summary.toLowerCase().includes('readiness'), 'Practice summary should explain readiness for HR/admin review');
+
+  const aiPracticeSet = await generateProfessionalPracticeSet({
+    user: { role: 'admin', name: 'HR Team' },
+    category: 'Computer Science',
+    jobTitle: 'Assistant Professor - AI and Data Science',
+    prompt: 'Faculty hiring mock test for AI and machine learning interview readiness'
+  });
+  assert.ok(aiPracticeSet && Array.isArray(aiPracticeSet.mcqs), 'Generated practice set should include MCQ questions');
+  assert.ok(aiPracticeSet.mcqs.length >= 4, 'Generated practice set should include multiple MCQ questions');
+  assert.ok(Array.isArray(aiPracticeSet.coding), 'Generated practice set should include coding challenges');
 
   console.log('shortlist rule tests passed');
 })();

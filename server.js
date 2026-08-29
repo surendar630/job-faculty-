@@ -2026,7 +2026,7 @@ app.post('/profile/resume', upload.single('resume'), verifyToken, async (req, re
     });
 });
 
-app.get('/practice', verifyToken, (req, res) => {
+app.get('/practice', verifyToken, async (req, res) => {
   const practiceInsightsContext = {
     user: req.user,
     jobs: [],
@@ -2034,10 +2034,22 @@ app.get('/practice', verifyToken, (req, res) => {
     profileCompletion: 85
   };
 
+  const practiceSet = await generateProfessionalPracticeSet({
+    user: req.user,
+    category: req.user?.current_position || req.user?.skills || 'Computer Science',
+    jobTitle: 'Professional academic interview readiness',
+    prompt: 'Mock interview for recruitment and faculty shortlist readiness',
+    profile: req.user?.bio || req.user?.experience || ''
+  }).catch(() => ({
+    mcqs: getProfessionalFallbackMcqs(req.user?.skills || 'Computer Science', 'Professional academic interview readiness'),
+    coding: getProfessionalFallbackCoding(req.user?.skills || 'Computer Science', 'Professional academic interview readiness'),
+    summary: 'Professional interview readiness assessment'
+  }));
+
   fetchRealtimeAIInsights(practiceInsightsContext).then((aiInsights) => {
-    res.render('practice', { user: req.user, aiInsights, aiEnabled: !!openaiClient });
+    res.render('practice', { user: req.user, aiInsights, aiEnabled: !!openaiClient, practiceSet });
   }).catch(() => {
-    res.render('practice', { user: req.user, aiInsights: buildRealtimeAIInsights(practiceInsightsContext), aiEnabled: !!openaiClient });
+    res.render('practice', { user: req.user, aiInsights: buildRealtimeAIInsights(practiceInsightsContext), aiEnabled: !!openaiClient, practiceSet });
   });
 });
 
@@ -3145,12 +3157,124 @@ module.exports = {
   buildCloudAIRecommendations,
   buildRealtimeAIInsights,
   fetchRealtimeAIInsights,
+  generateProfessionalPracticeSet,
   getUniversityOpenings,
   buildExternalJobSearchUrl,
   buildUniversityJobRequirements,
   generateUniversityJobRequirements,
   buildUniversityForwardLink
 };
+
+async function generateProfessionalPracticeSet({ user = {}, category = 'Computer Science', jobTitle = 'Professional interview readiness', prompt = 'Mock interview readiness', profile = '' } = {}) {
+  const role = user && user.role ? user.role : 'user';
+  const fallbackMcqs = getProfessionalFallbackMcqs(category, jobTitle);
+  const fallbackCoding = getProfessionalFallbackCoding(category, jobTitle);
+
+  if (!openaiClient) {
+    return {
+      role,
+      summary: `Professional mock interview set for ${jobTitle || category}`,
+      mcqs: fallbackMcqs,
+      coding: fallbackCoding
+    };
+  }
+
+  try {
+    const promptText = `You are a senior academic hiring coach for ${role}. Generate a professional mock interview set for ${jobTitle || 'Academic role'} in the ${category || 'general'} domain.
+Role profile: ${profile || 'Candidate is preparing for academic and hiring interviews.'}
+The candidate may be a faculty, teaching, or technical academic applicant. Keep the questions realistic, rigorous, and aligned to current hiring standards.
+Return valid JSON only with this exact structure:
+{
+  "summary": "short summary",
+  "mcqs": [{ "question": "...", "options": ["...","...","...","..."], "answerIndex": 0, "explanation": "...", "field": "Data Science" }],
+  "coding": [{ "title": "...", "prompt": "...", "starter": "...", "field": "Python" }]
+}
+Requirements:
+- 5 MCQs total
+- 2 coding challenges total
+- Keep options standardized and answerIndex integer 0-3
+- Make the questions professional and clearly linked to the domain and role
+- Do not include markdown fences or any extra text`;
+
+    const response = await openaiClient.chat.completions.create({
+      model: AI_MODEL,
+      messages: [{ role: 'user', content: promptText }],
+      max_tokens: 1200
+    });
+
+    const raw = String(response.choices?.[0]?.message?.content || '').trim();
+    const cleaned = raw.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+    const parsed = JSON.parse(cleaned || '{}');
+
+    const mcqs = Array.isArray(parsed.mcqs) && parsed.mcqs.length ? parsed.mcqs.slice(0, 5).map((item, index) => ({
+      question: String(item.question || fallbackMcqs[index]?.question || `Question ${index + 1}`),
+      options: Array.isArray(item.options) && item.options.length >= 4 ? item.options.slice(0, 4).map(option => String(option)) : fallbackMcqs[index]?.options || ['Option A', 'Option B', 'Option C', 'Option D'],
+      answerIndex: Number.isInteger(item.answerIndex) ? item.answerIndex : fallbackMcqs[index]?.answerIndex || 0,
+      explanation: String(item.explanation || fallbackMcqs[index]?.explanation || ''),
+      field: String(item.field || fallbackMcqs[index]?.field || category || 'Professional')
+    })) : fallbackMcqs;
+
+    const coding = Array.isArray(parsed.coding) && parsed.coding.length ? parsed.coding.slice(0, 2).map((item, index) => ({
+      title: String(item.title || `Coding task ${index + 1}`),
+      prompt: String(item.prompt || fallbackCoding[index]?.prompt || 'Solve this challenge with a strong, well-structured answer.'),
+      starter: String(item.starter || fallbackCoding[index]?.starter || ''),
+      field: String(item.field || fallbackCoding[index]?.field || category || 'Professional')
+    })) : fallbackCoding;
+
+    return {
+      role,
+      summary: String(parsed.summary || `Professional mock interview set for ${jobTitle || category}`),
+      mcqs,
+      coding
+    };
+  } catch (error) {
+    console.log('Professional practice generation failed, using fallback:', error.message);
+    return {
+      role,
+      summary: `Professional mock interview set for ${jobTitle || category}`,
+      mcqs: fallbackMcqs,
+      coding: fallbackCoding
+    };
+  }
+}
+
+function getProfessionalFallbackMcqs(category = 'Computer Science', jobTitle = 'Professional interview readiness') {
+  const normalized = `${category} ${jobTitle}`.toLowerCase();
+  const core = [
+    { question: 'Which response structure best demonstrates strong academic or professional readiness in an interview?', options: ['Give a long story without focus', 'Use a clear present-past-future structure with evidence', 'Only list qualifications', 'Avoid examples and focus on theory'], answerIndex: 1, explanation: 'Strong interview responses should be structured, evidence-based, and tied to academic or professional outcomes.', field: 'Interview strategy' },
+    { question: 'What is the strongest way to evaluate a candidate’s research or teaching impact?', options: ['Rely only on credentials', 'Review measurable outcomes, methods, and evidence', 'Ask for general opinions only', 'Ignore institutional context'], answerIndex: 1, explanation: 'Research and teaching impact are best assessed through outcomes, methodology, and evidence of contribution.', field: 'Assessment' },
+    { question: 'How should a candidate respond when asked about a challenge or setback?', options: ['Claim there were no problems', 'Describe the issue, action taken, and result clearly', 'Blame the institution', 'Provide only a general statement'], answerIndex: 1, explanation: 'A strong answer uses a structured reflection that shows resilience, learning, and growth.', field: 'Behavioral readiness' },
+    { question: 'Which of the following best signals strong hiring readiness?', options: ['Using vague language only', 'Linking skills to role-specific outcomes', 'Only repeating the job description', 'Avoiding evidence and metrics'], answerIndex: 1, explanation: 'Employer-ready candidates connect their skills directly to measurable outcomes tied to the role.', field: 'Hiring fit' },
+    { question: 'What is the best way to prepare for a professional panel interview?', options: ['Memorize scripts without adaptation', 'Prepare evidence, examples, and role-specific questions', 'Focus only on one topic', 'Skip mock practice'], answerIndex: 1, explanation: 'Professional readiness requires preparation across evidence, communication, and role-specific alignment.', field: 'Preparation' }
+  ];
+
+  if (normalized.includes('ai') || normalized.includes('data science') || normalized.includes('computer science')) {
+    return [
+      { question: 'Which approach best demonstrates strong AI or data science readiness in a hiring discussion?', options: ['Listing tools without context', 'Explaining methods, assumptions, and outcomes with evidence', 'Avoiding technical depth', 'Focusing only on buzzwords'], answerIndex: 1, explanation: 'Strong AI and data science candidates explain their methods, assumptions, and measurable impact clearly.', field: 'AI / Data Science' },
+      { question: 'What should a candidate emphasize when discussing model performance?', options: ['Only the final accuracy number', 'Context, metrics, validation, and limitations', 'Only a comparison with competitors', 'No mention of evaluation'], answerIndex: 1, explanation: 'Responsible performance discussion includes metrics, method, validation strategy, and awareness of limitations.', field: 'AI / Data Science' },
+      { question: 'Which professional response is most convincing during a faculty or technical interview?', options: ['A vague overview of generic work', 'A structured example showing problem statement, method, and result', 'Only a list of technologies', 'No concrete example'], answerIndex: 1, explanation: 'Strong candidates share structured, evidence-led examples that connect to outcomes and role expectations.', field: 'Academic readiness' },
+      { question: 'How do you best communicate technical complexity to a non-technical panel?', options: ['Use jargon without context', 'Translate concepts into stakeholder-focused outcomes', 'Avoid explaining the process', 'Rely on abstract terms only'], answerIndex: 1, explanation: 'Panels value communication that makes complexity understandable and tied to impact.', field: 'Communication' },
+      { question: 'What most improves shortlist confidence in an academic or technical role?', options: ['Generic claims only', 'Clear contributions, evidence, and alignment to the role', 'Lengthy biographies with no impact', 'Only social proof'], answerIndex: 1, explanation: 'Shortlist confidence grows when contributions and role alignment are clearly supported by evidence.', field: 'Hiring fit' }
+    ];
+  }
+
+  return core;
+}
+
+function getProfessionalFallbackCoding(category = 'Computer Science', jobTitle = 'Professional interview readiness') {
+  const normalized = `${category} ${jobTitle}`.toLowerCase();
+  if (normalized.includes('ai') || normalized.includes('data science') || normalized.includes('computer science')) {
+    return [
+      { title: 'Model reasoning challenge', field: 'AI / Data Science', prompt: 'Design a small evaluation rubric for comparing two machine-learning models for a faculty hiring or research task. Explain metrics, bias checks, and what would make one model stronger.', starter: 'Goal: Compare Model A and Model B\nMetrics to include: accuracy, precision, recall, fairness, interpretability\nExplain your evaluation approach in a short structured answer.' },
+      { title: 'Problem structuring challenge', field: 'AI / Data Science', prompt: 'Write a concise algorithm or design plan for ranking research applicants or candidates by fit using a few structured criteria such as publications, teaching impact, and domain alignment.', starter: 'Input: candidate records with teaching, research, and skills data\nOutput: ranked shortlist\nDescribe a simple, explainable scoring approach.' }
+    ];
+  }
+
+  return [
+    { title: 'Evidence-based response task', field: 'Interview strategy', prompt: 'Prepare a 90-second answer to: Describe a time you improved a process, project, or academic outcome. Structure the answer with the situation, action, and measurable result.', starter: 'Situation:\nTask:\nAction:\nResult:' },
+    { title: 'Professional communication task', field: 'Presentation', prompt: 'Draft a short professional introduction for a panel interview that highlights your teaching, research, and impact in a crisp, confident style.', starter: 'Intro: "Good morning, thank you for the opportunity..."' }
+  ];
+}
 
 async function generateQuestions(category, jobTitle, jobDescription) {
   const combinedRole = [category, jobTitle, jobDescription].filter(Boolean).join(' ');
