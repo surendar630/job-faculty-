@@ -385,30 +385,39 @@
 <% const featuredCategories = [...new Set(jobs.map(job => job.category).filter(Boolean))].slice(0,3); %>
 <div class="jobs-container">
   <div class="insight-strip">
-    <div class="insight-card">
-      <div class="insight-icon"><i class="fas fa-briefcase"></i></div>
-      <div>
-        <h3><%= jobs.length %> open roles</h3>
-        <p>Browse academic and research positions from trusted institutions.</p>
+    <% if (aiInsights && aiInsights.length) { %>
+      <% aiInsights.forEach((insight) => { %>
+        <div class="insight-card">
+          <div class="insight-icon"><i class="fas fa-robot"></i></div>
+          <div>
+            <h3><%= insight.title %></h3>
+            <p><%= insight.description %></p>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-briefcase"></i></div>
+        <div>
+          <h3><%= jobs.length %> open roles</h3>
+          <p>Browse academic and research positions from trusted institutions.</p>
+        </div>
       </div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-icon"><i class="fas fa-heart"></i></div>
-      <div>
-        <h3><%= favoriteIds.length %> saved positions</h3>
-        <p>Keep your shortlist ready for review and application.</p>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-heart"></i></div>
+        <div>
+          <h3><%= favoriteIds.length %> saved positions</h3>
+          <p>Keep your shortlist ready for review and application.</p>
+        </div>
       </div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-icon"><i class="fas fa-tags"></i></div>
-      <div>
-        <h3><%= featuredCategories.length ? featuredCategories.join(', ') : 'Fresh updates' %></h3>
-        <p>These categories are currently most active on the platform.</p>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-tags"></i></div>
+        <div>
+          <h3><%= featuredCategories.length ? featuredCategories.join(', ') : 'Fresh updates' %></h3>
+          <p>These categories are currently most active on the platform.</p>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <% if (universityOpenings && universityOpenings.length) { %>
+    <% } %>
     <div class="external-strip">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.4rem;">
         <h3 style="margin:0; color:#282A35;"><i class="fas fa-university"></i> Bangalore teaching and university openings</h3>

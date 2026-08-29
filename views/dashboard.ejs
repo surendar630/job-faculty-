@@ -453,20 +453,32 @@
   </div>
 
   <div class="insight-strip">
-    <div class="insight-card">
-      <div class="insight-icon"><i class="fas fa-bullseye"></i></div>
-      <div>
-        <h3><%= nextAction.title %></h3>
-        <p><%= nextAction.description %></p>
+    <% if (aiInsights && aiInsights.length) { %>
+      <% aiInsights.forEach((insight) => { %>
+        <div class="insight-card">
+          <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+          <div>
+            <h3><%= insight.title %></h3>
+            <p><%= insight.description %></p>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-bullseye"></i></div>
+        <div>
+          <h3><%= nextAction.title %></h3>
+          <p><%= nextAction.description %></p>
+        </div>
       </div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-icon"><i class="fas fa-percent"></i></div>
-      <div>
-        <h3>Profile completeness</h3>
-        <p><%= profileCompletion %>% complete</p>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-percent"></i></div>
+        <div>
+          <h3>Profile completeness</h3>
+          <p><%= profileCompletion %>% complete</p>
+        </div>
       </div>
-    </div>
+    <% } %>
   </div>
 
   <div class="cloud-ai-status <%= aiEnabled ? 'is-ready' : 'is-pending' %>">

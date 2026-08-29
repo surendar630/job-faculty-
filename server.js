@@ -1062,19 +1062,44 @@ app.get('/dashboard', verifyToken, (req, res) => {
                      ORDER BY m.scheduled_at DESC
                      LIMIT 5`;
                 const params = req.user.role === 'admin' || req.user.role === 'hr' ? [] : [req.user.id];
+                const dashboardInsightsContext = {
+                  user: req.user,
+                  jobs: recommendations || [],
+                  stats,
+                  profileCompletion
+                };
 
                 db.all(meetingQuery, params, (err, meetings) => {
                   if (err) return res.status(500).send('Error loading dashboard meetings');
-                  if (!meetings || !meetings.length) {
-                    return res.render('dashboard', {
-                      user: req.user,
-                      stats,
-                      meetings: [],
-                      recommendations: recommendations || [],
-                      nextAction,
-                      profileCompletion,
-                      aiEnabled: !!openaiClient
+
+                  const renderDashboard = (resolvedMeetings) => {
+                    fetchRealtimeAIInsights(dashboardInsightsContext).then((aiInsights) => {
+                      res.render('dashboard', {
+                        user: req.user,
+                        stats,
+                        meetings: resolvedMeetings,
+                        recommendations: recommendations || [],
+                        nextAction,
+                        profileCompletion,
+                        aiEnabled: !!openaiClient,
+                        aiInsights
+                      });
+                    }).catch(() => {
+                      res.render('dashboard', {
+                        user: req.user,
+                        stats,
+                        meetings: resolvedMeetings,
+                        recommendations: recommendations || [],
+                        nextAction,
+                        profileCompletion,
+                        aiEnabled: !!openaiClient,
+                        aiInsights: buildRealtimeAIInsights(dashboardInsightsContext)
+                      });
                     });
+                  };
+
+                  if (!meetings || !meetings.length) {
+                    return renderDashboard([]);
                   }
 
                   let pending = meetings.length;
@@ -1082,15 +1107,7 @@ app.get('/dashboard', verifyToken, (req, res) => {
                     db.all('SELECT mp.*, u.name, u.email, u.role FROM meeting_participants mp JOIN users u ON mp.user_id = u.id WHERE mp.meeting_id = ?', [meeting.id], (err, participants) => {
                       meeting.participants = participants || [];
                       if (--pending === 0) {
-                        res.render('dashboard', {
-                          user: req.user,
-                          stats,
-                          meetings,
-                          recommendations: recommendations || [],
-                          nextAction,
-                          profileCompletion,
-                          aiEnabled: !!openaiClient
-                        });
+                        renderDashboard(meetings);
                       }
                     });
                   });
@@ -1434,7 +1451,12 @@ app.get('/jobs', verifyToken, (req, res) => {
       if (err) return res.status(500).send('Error');
       const favoriteIds = favorites.map(f => f.job_id);
       const universityOpenings = getUniversityOpenings();
-      res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings });
+      const aiInsightsContext = { user: req.user, jobs, stats: { applications: jobs.length, favorites: favoriteIds.length }, profileCompletion: 80 };
+      fetchRealtimeAIInsights(aiInsightsContext).then((aiInsights) => {
+        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights });
+      }).catch(() => {
+        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights: buildRealtimeAIInsights(aiInsightsContext) });
+      });
     });
   });
 });
@@ -1471,7 +1493,14 @@ app.get('/job/:id', verifyToken, (req, res) => {
     db.get('SELECT * FROM applications WHERE user_id = ? AND job_id = ?', [req.user.id, id], (err, application) => {
       db.get('SELECT resume_path FROM users WHERE id = ?', [req.user.id], (err, userResume) => {
         db.get('SELECT * FROM favorited_jobs WHERE user_id = ? AND job_id = ?', [req.user.id, id], (err, favorite) => {
-          res.render('job-detail', { job, user: req.user, applied: !!application, hasResume: !!userResume?.resume_path, isFavorite: !!favorite });
+          db.all('SELECT * FROM jobs WHERE id != ? ORDER BY id DESC LIMIT 3', [id], (err, relatedJobs) => {
+            const insightContext = { user: req.user, jobs: relatedJobs || [], stats: { applications: 0, interviews: 0, favorites: 0 }, profileCompletion: 80 };
+            fetchRealtimeAIInsights(insightContext).then((aiInsights) => {
+              res.render('job-detail', { job, user: req.user, applied: !!application, hasResume: !!userResume?.resume_path, isFavorite: !!favorite, relatedJobs: relatedJobs || [], aiInsights });
+            }).catch(() => {
+              res.render('job-detail', { job, user: req.user, applied: !!application, hasResume: !!userResume?.resume_path, isFavorite: !!favorite, relatedJobs: relatedJobs || [], aiInsights: buildRealtimeAIInsights(insightContext) });
+            });
+          });
         });
       });
     });
@@ -2290,6 +2319,77 @@ io.on('connection', (socket) => {
   });
 });
 
+function buildRealtimeAIInsights({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
+  const jobList = Array.isArray(jobs) ? jobs : [];
+  const activeCount = jobList.length;
+  const categoryList = [...new Set(jobList.map(job => job.category).filter(Boolean))].slice(0, 3);
+  const topSuggestion = jobList[0] || {};
+  const completion = Number(profileCompletion || 0);
+  const applications = Number(stats.applications || 0);
+  const interviews = Number(stats.interviews || 0);
+  const favorites = Number(stats.favorites || 0);
+  const roleLabel = user && user.role === 'hr' ? 'HR recruiting view' : user && user.role === 'admin' ? 'Admin operations view' : 'Candidate growth view';
+
+  const cards = [
+    {
+      title: 'Cloud AI market pulse',
+      description: activeCount
+        ? `Live trend: ${activeCount} active roles are matching your current profile, with ${categoryList.length ? categoryList.join(', ') : 'emerging academic disciplines'} leading the market.`
+        : 'The market is quiet right now, so your best next step is to strengthen your profile and keep your resume fresh.'
+    },
+    {
+      title: 'Career momentum',
+      description: applications || interviews || favorites
+        ? `Your pipeline shows ${applications} applications, ${interviews} interview touchpoints, and ${favorites} saved roles—strong momentum for a faster shortlist.`
+        : 'You are still building your pipeline. Add a stronger resume, saved roles, and interview practice to accelerate progress.'
+    },
+    {
+      title: 'Profile readiness',
+      description: completion >= 75
+        ? `Your profile is ${completion}% complete and ready for high-intent applications. ${topSuggestion.title ? `Best match right now: ${topSuggestion.title}` : 'Keep refining your experience and skills.'}`
+        : `Your profile is ${completion}% complete. A few additional details in your bio, experience, and skills will raise your match quality materially.`
+    },
+    {
+      title: `${roleLabel}`,
+      description: user && user.name
+        ? `${user.name}, your dashboard is tuned to surface the strongest opportunities and the next best action for your academic career path.`
+        : 'Your AI assistant is prioritizing the roles and tasks most likely to move your next academic opportunity forward.'
+    }
+  ];
+
+  return cards.slice(0, 4);
+}
+
+async function fetchRealtimeAIInsights(context) {
+  const fallback = buildRealtimeAIInsights(context);
+  if (!openaiClient) return fallback;
+
+  try {
+    const jobsSummary = (context.jobs || []).slice(0, 5).map(job => `${job.title || 'Role'} @ ${job.university || 'Institution'} (${job.location || 'Global'})`).join(' | ') || 'No active jobs';
+    const prompt = `You are an academic hiring strategist. Return a JSON array with exactly 3 objects: {"title":"...","description":"..."}. Use the candidate context: profileCompletion=${context.profileCompletion || 0}, applications=${context.stats?.applications || 0}, interviews=${context.stats?.interviews || 0}, favorites=${context.stats?.favorites || 0}. Focus on the top opportunities: ${jobsSummary}. Keep descriptions concise and useful for a faculty candidate. Only output valid JSON.`;
+
+    const response = await openaiClient.chat.completions.create({
+      model: AI_MODEL,
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 200
+    });
+
+    const text = String(response.choices?.[0]?.message?.content || '').trim();
+    const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+    const parsed = JSON.parse(cleaned);
+    if (Array.isArray(parsed) && parsed.length >= 3) {
+      return parsed.slice(0, 4).map(item => ({
+        title: String(item.title || 'AI insight').slice(0, 80),
+        description: String(item.description || '').slice(0, 180)
+      }));
+    }
+  } catch (error) {
+    console.log('Realtime AI insight generation failed, using local fallback:', error.message);
+  }
+
+  return fallback;
+}
+
 if (require.main === module) {
   httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
@@ -2299,7 +2399,9 @@ if (require.main === module) {
 module.exports = {
   evaluateShortlistDecision,
   analyzeResumeForAICTE,
-  autoApplyAICTEShortlist
+  autoApplyAICTEShortlist,
+  buildRealtimeAIInsights,
+  fetchRealtimeAIInsights
 };
 
 async function generateQuestions(category, jobTitle, jobDescription) {

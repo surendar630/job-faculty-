@@ -360,12 +360,44 @@
       </button>
     </div>
 
-    <!-- MORE VACANCIES -->
-    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f1f1f1; border-radius: 12px;">
+    <% if (aiInsights && aiInsights.length) { %>
+      <div style="margin-top: 2.5rem; background: linear-gradient(135deg, #eefaf4 0%, #f7f7ff 100%); border-radius: 16px; padding: 1.5rem; border: 1px solid #d9f3e6; box-shadow: var(--shadow-md);">
+        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; color:#0f766e; font-weight:700;">
+          <i class="fas fa-wand-magic-sparkles"></i>
+          <span>AI-powered opportunity intelligence</span>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+          <% aiInsights.forEach((insight) => { %>
+            <div style="background: white; border-radius: 12px; padding: 1rem; border: 1px solid #dfeee7;">
+              <h4 style="margin:0 0 0.5rem; color:#282A35; font-size:1rem;"><%= insight.title %></h4>
+              <p style="margin:0; color:#475569; line-height:1.6; font-size:0.92rem;"><%= insight.description %></p>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+
+    <div style="margin-top: 2.5rem; text-align: center; padding: 2rem; background: #f1f1f1; border-radius: 12px;">
       <h3 style="color: #282A35; margin-top: 0;">Looking for more opportunities?</h3>
       <p style="color: #666; margin-bottom: 1.5rem;">Explore other available positions from universities worldwide.</p>
       <a href="/jobs" class="btn btn-primary"><i class="fas fa-briefcase"></i> View All Vacancies</a>
     </div>
+
+    <% if (relatedJobs && relatedJobs.length) { %>
+      <div style="margin-top: 2.5rem;">
+        <h3 style="color:#282A35; margin-bottom:1rem;"><i class="fas fa-sparkles"></i> Similar roles</h3>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1rem;">
+          <% relatedJobs.forEach((related) => { %>
+            <div style="background:white; border-radius:12px; padding:1rem; box-shadow: var(--shadow-md); border-left:4px solid #04AA6D;">
+              <h4 style="margin:0 0 0.5rem; color:#282A35;"><%= related.title %></h4>
+              <p style="margin:0.3rem 0; color:#666;"><i class="fas fa-school"></i> <%= related.university %></p>
+              <p style="margin:0.3rem 0; color:#666;"><i class="fas fa-map-marker-alt"></i> <%= related.location %></p>
+              <a href="/job/<%= related.id %>" class="btn btn-secondary" style="margin-top:0.8rem; width:100%; text-decoration:none;">View role</a>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
   </div>
 </div>
 

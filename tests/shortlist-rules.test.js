@@ -1,8 +1,22 @@
 const assert = require('assert');
 const path = require('path');
-const { evaluateShortlistDecision } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights } = require('../server');
 
 (function run() {
+  const insights = buildRealtimeAIInsights({
+    user: { name: 'Dr. Priya', role: 'user' },
+    jobs: [
+      { title: 'Professor - Computer Science', category: 'Computer Science', university: 'IISc Bangalore', location: 'Bangalore' },
+      { title: 'Associate Professor - Data Science', category: 'Data Science', university: 'IIIT Bangalore', location: 'Bangalore' }
+    ],
+    stats: { applications: 2, interviews: 1, favorites: 3 },
+    profileCompletion: 82
+  });
+
+  assert.ok(Array.isArray(insights), 'AI insights should return an array');
+  assert.ok(insights.length >= 3, 'AI insights should include multiple cards');
+  assert.ok(insights.every(item => item.title && item.description), 'Each insight should have title and description');
+
   const cases = [
     {
       name: 'shortlists high-scoring AICTE-compliant candidates',
