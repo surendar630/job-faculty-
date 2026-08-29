@@ -1,6 +1,6 @@
 const assert = require('assert');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary } = require('../server');
 
 (function run() {
   const insights = buildRealtimeAIInsights({
@@ -89,6 +89,12 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions,
   const forwardLink = buildUniversityForwardLink({ university: 'IISc Bangalore', title: 'Professor - AI' }, { name: 'Dr. Priya', email: 'priya@example.com' });
   assert.ok(typeof forwardLink === 'string' && forwardLink.startsWith('http'), 'University forward link should be an external URL');
   assert.ok(forwardLink.toLowerCase().includes('google') || forwardLink.toLowerCase().includes('career') || forwardLink.toLowerCase().includes('mailto:'), 'University forward link should target the university or careers search');
+
+  const practiceSummary = buildPracticePerformanceSummary({ user: { role: 'admin' }, totalScore: 84, averageScore: 84, totalQuestions: 20, completedQuestions: 20, sessionType: 'practice' });
+  assert.ok(practiceSummary && typeof practiceSummary === 'object', 'Practice summary should be returned');
+  assert.ok(practiceSummary.score >= 80, 'Practice score should reflect the candidate band');
+  assert.ok(practiceSummary.band && practiceSummary.summary, 'Practice summary should include a band and human-readable summary');
+  assert.ok(practiceSummary.summary.toLowerCase().includes('interview') || practiceSummary.summary.toLowerCase().includes('readiness'), 'Practice summary should explain readiness for HR/admin review');
 
   console.log('shortlist rule tests passed');
 })();

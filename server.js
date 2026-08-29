@@ -2049,10 +2049,19 @@ app.post('/practice/submit', verifyToken, express.json(), (req, res) => {
 
   const questions = Number.isInteger(totalQuestions) ? totalQuestions : 1;
   const completed = Number.isInteger(completedQuestions) ? completedQuestions : 1;
+  const normalizedSessionType = sessionType && typeof sessionType === 'string' ? sessionType : 'practice';
+  const performanceSummary = buildPracticePerformanceSummary({
+    user: req.user,
+    totalScore,
+    averageScore,
+    totalQuestions: questions,
+    completedQuestions: completed,
+    sessionType: normalizedSessionType
+  });
 
   db.run(
     'INSERT INTO interview_sessions (user_id, job_id, session_type, total_questions, completed_questions, total_score, average_score) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [req.user.id, null, 'practice', questions, completed, totalScore, averageScore],
+    [req.user.id, null, normalizedSessionType, questions, completed, totalScore, averageScore],
     function(err) {
       if (err) {
         console.error('Practice session save error:', err);
@@ -2082,7 +2091,7 @@ app.post('/practice/submit', verifyToken, express.json(), (req, res) => {
         console.error('Error saving detailed responses:', e);
       }
 
-      res.json({ success: true, sessionId });
+      res.json({ success: true, sessionId, summary: performanceSummary });
     }
   );
 });
@@ -2912,6 +2921,40 @@ function buildAdvancedAICoach({ user = {}, jobs = [], stats = {}, profileComplet
   ].slice(0, 4);
 }
 
+function buildPracticePerformanceSummary({ user = {}, totalScore = 0, averageScore = 0, totalQuestions = 0, completedQuestions = 0, sessionType = 'practice' } = {}) {
+  const role = user && user.role ? user.role : 'user';
+  const score = Number(totalScore || averageScore || 0);
+  const completed = Number(completedQuestions || totalQuestions || 0);
+  const questionCount = Number(totalQuestions || completed || 0);
+
+  let band = 'Needs development';
+  let readiness = 'requires more preparation before moving to the next panel';
+  if (score >= 85) {
+    band = 'Outstanding';
+    readiness = 'is ready for advanced interview rounds and final committee review';
+  } else if (score >= 70) {
+    band = 'Strong';
+    readiness = 'shows good interview readiness and only needs minor polishing';
+  } else if (score >= 55) {
+    band = 'Developing';
+    readiness = 'is moving in the right direction but needs deeper practice before shortlist review';
+  }
+
+  const summary = role === 'hr' || role === 'admin'
+    ? `Interview readiness: ${band}. Candidate scored ${score}% in the ${sessionType || 'practice'} assessment across ${questionCount || completed || 0} questions, and the profile ${readiness}.`
+    : `Your ${sessionType || 'practice'} mock-interview readiness is ${band}. You scored ${score}% across ${questionCount || completed || 0} questions, indicating that your profile ${readiness}.`;
+
+  return {
+    score,
+    band,
+    summary,
+    readiness,
+    totalQuestions: questionCount,
+    completedQuestions: completed,
+    sessionType: sessionType || 'practice'
+  };
+}
+
 function buildCloudAIActions({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
   const role = user && user.role ? user.role : 'user';
   const applications = Number(stats.applications || 0);
@@ -3097,6 +3140,7 @@ module.exports = {
   buildAdvancedAICoach,
   calculateJobFitScore,
   buildJobFitSummary,
+  buildPracticePerformanceSummary,
   buildCloudAIActions,
   buildCloudAIRecommendations,
   buildRealtimeAIInsights,

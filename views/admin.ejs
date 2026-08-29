@@ -454,7 +454,14 @@
                 <span style="color:#94a3b8;">No interview scores available yet.</span>
               <% } %>
               <% userSessions.forEach(s => { %>
-                <div style="margin-bottom:0.35rem;">Session #<%= s.id %> (<%= s.session_type ? s.session_type : 'practice' %>): total_score: <strong><%= s.total_score %></strong>, average_score: <strong><%= s.average_score %></strong></div>
+                <% const performanceSummary = (typeof buildPracticePerformanceSummary === 'function') ? buildPracticePerformanceSummary({ user: { role: 'admin' }, totalScore: s.total_score, averageScore: s.average_score, totalQuestions: s.total_questions, completedQuestions: s.completed_questions, sessionType: s.session_type || 'practice' }) : null; %>
+                <div style="margin-bottom:0.7rem; padding:0.75rem 0.85rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;">
+                  <div>Session #<%= s.id %> (<%= s.session_type ? s.session_type : 'practice' %>): total_score: <strong><%= s.total_score %></strong>, average_score: <strong><%= s.average_score %></strong></div>
+                  <% if (performanceSummary) { %>
+                    <div style="margin-top:0.4rem; color:#0f172a; font-weight:600;">Band: <%= performanceSummary.band %></div>
+                    <div style="margin-top:0.2rem; color:#475569; line-height:1.5;"><%= performanceSummary.summary %></div>
+                  <% } %>
+                </div>
                 <% const respForSession = (responses || []).filter(r => r.session_id === s.id); %>
                 <% if (respForSession.length > 0) { %>
                   <div style="margin-left:0.5rem; color:#475569;">
