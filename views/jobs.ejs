@@ -432,8 +432,8 @@
 
   <div class="external-strip">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.4rem;">
-        <h3 style="margin:0; color:#282A35;"><i class="fas fa-university"></i> Bangalore teaching and university openings</h3>
-        <span class="external-pill"><i class="fas fa-broadcast-tower"></i> live-style links</span>
+        <h3 style="margin:0; color:#282A35;"><i class="fas fa-university"></i> Live job matches from LinkedIn, Indeed & Naukri</h3>
+        <span class="external-pill"><i class="fas fa-broadcast-tower"></i> filter-aware live results</span>
       </div>
       <% universityOpenings.forEach(opening => { %>
         <div class="external-card">
@@ -515,6 +515,23 @@ document.getElementById('compareForm').addEventListener('submit', function(e) {
     alert('Please select at least 2 jobs to compare.');
   }
 });
+
+function applyLiveFilter() {
+  const search = document.querySelector('input[name="search"]').value.trim().toLowerCase();
+  const category = document.querySelector('select[name="category"]').value.trim().toLowerCase();
+  const location = document.querySelector('input[name="location"]').value.trim().toLowerCase();
+  const liveCards = document.querySelectorAll('.external-card');
+
+  liveCards.forEach((card) => {
+    const text = card.textContent.toLowerCase();
+    const matches = (!search || text.includes(search)) && (!category || text.includes(category)) && (!location || text.includes(location));
+    card.style.display = matches ? 'flex' : 'none';
+  });
+}
+
+document.querySelector('input[name="search"]').addEventListener('input', applyLiveFilter);
+document.querySelector('select[name="category"]').addEventListener('change', applyLiveFilter);
+document.querySelector('input[name="location"]').addEventListener('input', applyLiveFilter);
 
 async function toggleFavorite(jobId, button) {
   try {

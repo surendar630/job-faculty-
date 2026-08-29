@@ -1440,8 +1440,33 @@ app.get('/office/shortlisted', verifyToken, (req, res) => {
   });
 });
 
-function getUniversityOpenings() {
-  return [
+function buildExternalJobSearchUrl({ query = '', location = '', source = 'linkedin' } = {}) {
+  const cleanQuery = String(query || 'faculty jobs').trim() || 'faculty jobs';
+  const cleanLocation = String(location || 'India').trim() || 'India';
+  const encodedQuery = encodeURIComponent(cleanQuery);
+  const encodedLocation = encodeURIComponent(cleanLocation);
+
+  switch (source.toLowerCase()) {
+    case 'linkedin':
+      return `https://www.linkedin.com/jobs/search/?keywords=${encodedQuery}&location=${encodedLocation}`;
+    case 'naukri':
+      return `https://www.naukri.com/${cleanQuery.toLowerCase().replace(/\s+/g, '-')}-jobs-in-${cleanLocation.toLowerCase().replace(/\s+/g, '-')}`;
+    case 'indeed':
+      return `https://in.indeed.com/jobs?q=${encodedQuery}&l=${encodedLocation}`;
+    default:
+      return `https://www.google.com/search?q=${encodedQuery}+${encodedLocation}+jobs`;
+  }
+}
+
+function getUniversityOpenings({ search = '', category = '', location = '' } = {}) {
+  const rawSearch = String(search || '').trim();
+  const rawCategory = String(category || '').trim();
+  const rawLocation = String(location || '').trim();
+  const normalizedSearch = rawSearch.toLowerCase();
+  const normalizedCategory = rawCategory.toLowerCase();
+  const normalizedLocation = rawLocation.toLowerCase();
+
+  const candidateOpenings = [
     {
       id: 'opening-bangalore-1',
       title: 'Professor / Associate Professor - Computer Science',
@@ -1449,7 +1474,7 @@ function getUniversityOpenings() {
       location: 'Bangalore, Karnataka',
       source: 'LinkedIn',
       category: 'Computer Science',
-      link: 'https://www.linkedin.com/jobs/search/?keywords=Professor%20Computer%20Science%20Bangalore'
+      link: buildExternalJobSearchUrl({ query: 'Professor Computer Science Bangalore', location: 'Bangalore', source: 'linkedin' })
     },
     {
       id: 'opening-bangalore-2',
@@ -1458,7 +1483,7 @@ function getUniversityOpenings() {
       location: 'Bangalore, Karnataka',
       source: 'Naukri',
       category: 'Software Engineering',
-      link: 'https://www.naukri.com/software-engineering-jobs-in-bangalore'
+      link: buildExternalJobSearchUrl({ query: 'Assistant Professor Software Engineering', location: 'Bangalore', source: 'naukri' })
     },
     {
       id: 'opening-bangalore-3',
@@ -1476,7 +1501,7 @@ function getUniversityOpenings() {
       location: 'Bangalore, Karnataka',
       source: 'LinkedIn',
       category: 'Data Science',
-      link: 'https://www.linkedin.com/jobs/search/?keywords=Associate%20Professor%20Data%20Science%20Bangalore'
+      link: buildExternalJobSearchUrl({ query: 'Associate Professor Data Science Bangalore', location: 'Bangalore', source: 'linkedin' })
     },
     {
       id: 'opening-bangalore-5',
@@ -1485,7 +1510,7 @@ function getUniversityOpenings() {
       location: 'Bangalore, Karnataka',
       source: 'Naukri',
       category: 'Computer Science',
-      link: 'https://www.naukri.com/teaching-jobs-in-bangalore'
+      link: buildExternalJobSearchUrl({ query: 'Lecturer Faculty Computer Science', location: 'Bangalore', source: 'naukri' })
     },
     {
       id: 'opening-india-1',
@@ -1494,9 +1519,30 @@ function getUniversityOpenings() {
       location: 'India',
       source: 'Indeed',
       category: 'Faculty',
-      link: 'https://in.indeed.com/q-assistant-professor-jobs.html'
+      link: buildExternalJobSearchUrl({ query: 'Assistant Professor', location: 'India', source: 'indeed' })
     }
   ].filter(item => /teacher|professor|dean|faculty|lecturer|associate professor|assistant professor/i.test(item.title));
+
+  const filtered = candidateOpenings.filter((item) => {
+    const titleText = `${item.title} ${item.category} ${item.university} ${item.location}`.toLowerCase();
+    const matchesSearch = !rawSearch || titleText.includes(normalizedSearch);
+    const matchesCategory = !rawCategory || item.category.toLowerCase().includes(normalizedCategory) || titleText.includes(normalizedCategory);
+    const matchesLocation = !rawLocation || item.location.toLowerCase().includes(normalizedLocation) || item.university.toLowerCase().includes(normalizedLocation) || titleText.includes(normalizedLocation);
+    return matchesSearch && matchesCategory && matchesLocation;
+  });
+
+  if (filtered.length > 0) return filtered;
+
+  const fallbackQuery = [rawSearch || rawCategory || 'faculty jobs', rawLocation || 'India'].filter(Boolean).join(' ');
+  return [{
+    id: 'opening-live-search',
+    title: rawSearch || rawCategory || 'Faculty opportunities',
+    university: rawLocation || 'Live job search',
+    location: rawLocation || 'India',
+    source: 'LinkedIn',
+    category: rawCategory || 'Faculty',
+    link: buildExternalJobSearchUrl({ query: fallbackQuery, location: rawLocation || 'India', source: 'linkedin' })
+  }];
 }
 
 app.get('/jobs', verifyToken, (req, res) => {
@@ -1527,7 +1573,7 @@ app.get('/jobs', verifyToken, (req, res) => {
     db.all('SELECT job_id FROM favorited_jobs WHERE user_id = ?', [req.user.id], (err, favorites) => {
       if (err) return res.status(500).send('Error');
       const favoriteIds = favorites.map(f => f.job_id);
-      const universityOpenings = getUniversityOpenings();
+      const universityOpenings = getUniversityOpenings({ search, category, location });
       const aiInsightsContext = { user: req.user, jobs, stats: { applications: jobs.length, favorites: favoriteIds.length }, profileCompletion: 80 };
       const cloudAiActions = buildCloudAIActions(aiInsightsContext);
       fetchRealtimeAIInsights(aiInsightsContext).then((aiInsights) => {
@@ -2635,6 +2681,8 @@ module.exports = {
   buildCloudAIActions,
   buildRealtimeAIInsights,
   fetchRealtimeAIInsights,
+  getUniversityOpenings,
+  buildExternalJobSearchUrl,
   buildUniversityJobRequirements,
   generateUniversityJobRequirements
 };
