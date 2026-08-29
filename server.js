@@ -1281,15 +1281,48 @@ app.get('/office', verifyToken, (req, res) => {
                   JOIN users u ON a.user_id = u.id
                   ORDER BY m.scheduled_at DESC`, [], (err, meetings) => {
             if (err) return res.status(500).send('Error loading scheduled meetings');
-            res.render('office', {
+            const officeInsightsContext = {
               user: req.user,
+              jobs: recentApps.map(app => ({
+                title: app.job_title,
+                category: 'Hiring pipeline',
+                university: app.university,
+                location: app.location || 'Global'
+              })),
               stats: {
                 applications: appCount.total_applications || 0,
-                shortlisted: shortlistCount.total_shortlisted || 0,
-                resumes: resumeCount.total_resumes || 0
+                interviews: meetings.length || 0,
+                favorites: shortlistCount.total_shortlisted || 0
               },
-              recentApps,
-              meetings
+              profileCompletion: 88
+            };
+
+            fetchRealtimeAIInsights(officeInsightsContext).then((aiInsights) => {
+              res.render('office', {
+                user: req.user,
+                stats: {
+                  applications: appCount.total_applications || 0,
+                  shortlisted: shortlistCount.total_shortlisted || 0,
+                  resumes: resumeCount.total_resumes || 0
+                },
+                recentApps,
+                meetings,
+                aiEnabled: !!openaiClient,
+                aiInsights
+              });
+            }).catch(() => {
+              res.render('office', {
+                user: req.user,
+                stats: {
+                  applications: appCount.total_applications || 0,
+                  shortlisted: shortlistCount.total_shortlisted || 0,
+                  resumes: resumeCount.total_resumes || 0
+                },
+                recentApps,
+                meetings,
+                aiEnabled: !!openaiClient,
+                aiInsights: buildRealtimeAIInsights(officeInsightsContext)
+              });
             });
           });
         });
@@ -1795,7 +1828,43 @@ app.get('/admin', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
                       if (!err && Array.isArray(meetings)) {
                         meetings.forEach(m => { meetingByApp[m.application_id] = m; });
                       }
-                      res.render('admin', { jobs, applications, resumeUsers, sessions, interviews, responses, meetingByApp });
+
+                      const adminInsightsContext = {
+                        user: req.user,
+                        jobs,
+                        stats: {
+                          applications: applications.length || 0,
+                          interviews: interviews.length || 0,
+                          favorites: resumeUsers.length || 0
+                        },
+                        profileCompletion: 92
+                      };
+
+                      fetchRealtimeAIInsights(adminInsightsContext).then((aiInsights) => {
+                        res.render('admin', {
+                          jobs,
+                          applications,
+                          resumeUsers,
+                          sessions,
+                          interviews,
+                          responses,
+                          meetingByApp,
+                          aiEnabled: !!openaiClient,
+                          aiInsights
+                        });
+                      }).catch(() => {
+                        res.render('admin', {
+                          jobs,
+                          applications,
+                          resumeUsers,
+                          sessions,
+                          interviews,
+                          responses,
+                          meetingByApp,
+                          aiEnabled: !!openaiClient,
+                          aiInsights: buildRealtimeAIInsights(adminInsightsContext)
+                        });
+                      });
                     });
                   });
                 });

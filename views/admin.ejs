@@ -276,7 +276,43 @@
   <!-- ADMIN HEADER -->
   <div class="admin-header">
     <h1><i class="fas fa-cog"></i> Admin Panel</h1>
-    <p>Manage job postings, applications, and candidate interviews</p>
+    <p>Manage job postings, applications, and candidate interviews with AI-backed hiring visibility.</p>
+  </div>
+
+  <div class="insight-strip" style="margin-bottom: 2rem;">
+    <% if (aiInsights && aiInsights.length) { %>
+      <% aiInsights.forEach((insight) => { %>
+        <div class="insight-card">
+          <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+          <div>
+            <h3><%= insight.title %></h3>
+            <p><%= insight.description %></p>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-chart-line"></i></div>
+        <div>
+          <h3>Hiring momentum</h3>
+          <p>Review job health, shortlist quality, and interview readiness from a single operations view.</p>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-users"></i></div>
+        <div>
+          <h3>Candidate pipeline</h3>
+          <p>Monitor active applicants, shortlisted talent, and interview follow-ups without missing a step.</p>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon"><i class="fas fa-robot"></i></div>
+        <div>
+          <h3>AI operations</h3>
+          <p>Use automation to accelerate role generation, shortlist decisions, and consistent hiring decisions.</p>
+        </div>
+      </div>
+    <% } %>
   </div>
 
   <div class="applications-section" style="border-left: 4px solid #04AA6D; margin-bottom: 2rem;">
