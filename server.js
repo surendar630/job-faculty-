@@ -1853,7 +1853,50 @@ app.get('/shortlisted', verifyToken, requireRoles('admin', 'hr'), (req, res) => 
           ORDER BY a.applied_at DESC`, [], (err, applications) => {
     if (err) return res.status(500).send('Error');
     const resumeTraining = buildResumeTrainingCards({ applications });
-    res.render('shortlisted', { applications, user: req.user, aiInsights: [], resumeTraining });
+    const aiScreening = buildShortlistCloudAI({ applications });
+    res.render('shortlisted', { applications, user: req.user, aiInsights: aiScreening.cards || [], resumeTraining, cloudAiSummary: aiScreening.summary || 'Cloud AI shortlist review ready.' });
+  });
+});
+
+app.get('/api/shortlisted/insights', verifyToken, requireRoles('admin', 'hr'), async (req, res) => {
+  db.all(`SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email, u.resume_path, u.resume_review_status
+          FROM applications a
+          JOIN jobs j ON a.job_id = j.id
+          JOIN users u ON a.user_id = u.id
+          WHERE a.status = 'shortlisted' OR u.resume_review_status = 'shortlisted'
+          ORDER BY a.applied_at DESC`, [], async (err, applications) => {
+    if (err) return res.status(500).json({ error: 'Unable to load shortlist insights' });
+
+    const insightData = buildShortlistCloudAI({ applications });
+    const fallback = { summary: insightData.summary, cards: insightData.cards, actions: insightData.actions };
+
+    if (!openaiClient) {
+      return res.json(fallback);
+    }
+
+    try {
+      const ranked = (applications || []).slice(0, 3).map((app) => `${app.candidate_name || 'Candidate'}: ${app.resume_scan_score || 0}% / ${app.resume_aicte_status || 'pending'}`).join(' | ') || 'No shortlisted resumes yet';
+      const prompt = `You are an academic hiring strategist. Create a brief JSON object with keys summary, actions, cards. summary should be one sentence. actions should be 3 strings. cards should be a JSON array of 3 objects {title, description}. Based on these shortlisted candidates: ${ranked}. Keep it concise, useful for HR/comittee review. Output valid JSON only.`;
+      const response = await openaiClient.chat.completions.create({
+        model: AI_MODEL,
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 250,
+        response_format: { type: 'json_object' }
+      });
+      const text = String(response.choices?.[0]?.message?.content || '').trim();
+      const chunk = JSON.parse(text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim());
+      if (chunk && typeof chunk === 'object') {
+        return res.json({
+          summary: String(chunk.summary || fallback.summary),
+          actions: Array.isArray(chunk.actions) && chunk.actions.length ? chunk.actions.map(String).slice(0, 3) : fallback.actions,
+          cards: Array.isArray(chunk.cards) && chunk.cards.length ? chunk.cards.slice(0, 3).map((card) => ({ title: String(card.title || 'AI Insight'), description: String(card.description || '') })) : fallback.cards
+        });
+      }
+    } catch (error) {
+      console.log('Shortlist AI detail generation failed, using local fallback:', error.message);
+    }
+
+    return res.json(fallback);
   });
 });
 
@@ -2731,6 +2774,47 @@ function buildResumeTrainingCards({ applications = [] } = {}) {
       description: `Strengthen the academic profile for ${roleLabel} by adding quantified teaching impact, publications, and university-level contributions. Keep the CV tailored to the role and emphasize research outcomes before forwarding to the target institution.`
     };
   });
+}
+
+function buildShortlistCloudAI({ applications = [] } = {}) {
+  const list = Array.isArray(applications) ? applications : [];
+  const valid = list.filter(app => Number(app.resume_scan_score || 0) > 0 || app.resume_aicte_status);
+  const total = valid.length;
+  const compliant = valid.filter(app => String(app.resume_aicte_status || '').toLowerCase().includes('compliant')).length;
+  const averageScore = total ? Math.round(valid.reduce((sum, app) => sum + Number(app.resume_scan_score || 0), 0) / total) : 0;
+  const strongest = [...valid].sort((a, b) => (Number(b.resume_scan_score || 0) - Number(a.resume_scan_score || 0))).slice(0, 2);
+  const topName = strongest[0]?.candidate_name || 'No candidate';
+
+  const summary = total
+    ? `Cloud AI shows ${total} shortlisted candidates with ${compliant} AICTE-compliant profiles and an average screening score of ${averageScore}%. ${topName} is the strongest current match.`
+    : 'Cloud AI is ready. Add shortlisted candidates to generate live hiring intelligence.';
+
+  const cards = [
+    {
+      title: 'AI shortlist quality',
+      description: total
+        ? `${total} shortlist profiles are active, with ${compliant} showing AICTE-compliant alignment and strong academic fit.`
+        : 'No shortlisted profiles are available yet. Once candidates are screened, cloud AI will rank the strongest fits.'
+    },
+    {
+      title: 'Top candidate signal',
+      description: strongest[0]
+        ? `${strongest[0].candidate_name || 'Leading candidate'} is leading with ${strongest[0].resume_scan_score || 0}% screening score and ${strongest[0].resume_aicte_status || 'review pending'} status.`
+        : 'More shortlisted candidate data is needed to identify the strongest fit.'
+    },
+    {
+      title: 'Next hiring action',
+      description: 'Forward the highest-ranked candidate to the target university, prepare committee notes, and keep the shortlist aligned to AICTE academic standards.'
+    }
+  ];
+
+  const actions = [
+    'Rank shortlisted resumes by AICTE compliance and academic fit',
+    'Generate a committee-ready screening summary for the top 3 candidates',
+    'Open university careers pages for the strongest shortlisted candidate'
+  ];
+
+  return { summary, cards, actions };
 }
 
 function calculateJobFitScore(job = {}, user = {}) {

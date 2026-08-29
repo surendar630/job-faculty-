@@ -243,15 +243,29 @@
 
   <div class="training-hero">
     <div>
-      <div class="training-pill"><i class="fas fa-graduation-cap"></i> Professional Shortlisting Training</div>
+      <div class="training-pill"><i class="fas fa-graduation-cap"></i> Cloud AI shortlist intelligence</div>
       <h2>Strengthen your screening workflow with structured professional review and interview readiness.</h2>
-      <p>Use this module to evaluate resumes more professionally, align with AICTE-style standards, and prepare for the next stage of faculty recruitment.</p>
+      <p id="ai-summary-text"><%= cloudAiSummary || 'Cloud AI shortlist review ready.' %></p>
+      <div style="margin-top:1rem; display:flex; gap:0.7rem; flex-wrap:wrap;">
+        <button type="button" id="refresh-ai-summary" class="btn btn-primary"><i class="fas fa-brain"></i> Refresh cloud AI</button>
+        <button type="button" id="generate-ai-report" class="btn btn-secondary"><i class="fas fa-file-alt"></i> Generate committee summary</button>
+      </div>
     </div>
     <div class="training-highlight">
       <div class="training-highlight-item"><i class="fas fa-book-open"></i><span>Resume review and professional training support</span></div>
       <div class="training-highlight-item"><i class="fas fa-balance-scale"></i><span>AICTE-informed shortlist evaluation</span></div>
       <div class="training-highlight-item"><i class="fas fa-video"></i><span>Live interview and video-calling readiness</span></div>
     </div>
+  </div>
+
+  <div id="ai-quick-cards" class="training-grid" style="margin-top: 1rem;">
+    <% if (aiInsights && aiInsights.length) { aiInsights.forEach((insight) => { %>
+      <div class="training-card">
+        <div class="training-card-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <h3><%= insight.title %></h3>
+        <p><%= insight.description %></p>
+      </div>
+    <% }); } %>
   </div>
 
   <div class="training-grid">
