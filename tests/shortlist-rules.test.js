@@ -1,6 +1,6 @@
 const assert = require('assert');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore } = require('../server');
 
 (function run() {
   const insights = buildRealtimeAIInsights({
@@ -21,6 +21,16 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions,
   assert.ok(Array.isArray(cloudActions), 'Cloud AI actions should return an array');
   assert.strictEqual(cloudActions.length >= 3, true, 'Cloud AI actions should provide the core capability cards');
   assert.ok(cloudActions.every(item => item.title && item.description), 'Each cloud AI action should include a clear title and description');
+
+  const cloudRecommendations = buildCloudAIRecommendations({
+    user: { name: 'Dr. Priya', role: 'user' },
+    jobs: [{ title: 'Professor - AI', category: 'Computer Science' }, { title: 'Assistant Professor - Data Science', category: 'Data Science' }],
+    stats: { applications: 3, interviews: 2, favorites: 4 },
+    profileCompletion: 87
+  });
+  assert.ok(Array.isArray(cloudRecommendations), 'Cloud AI recommendations should return an array');
+  assert.ok(cloudRecommendations.length >= 3, 'Cloud AI recommendations should provide multiple guidance cards');
+  assert.ok(cloudRecommendations.every(item => item.title && item.description), 'Each recommendation should include a clear title and description');
 
   const cases = [
     {

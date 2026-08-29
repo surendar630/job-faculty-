@@ -496,6 +496,64 @@ function analyzeResumeForAICTE(job, resumeText) {
   };
 }
 
+async function analyzeResumeWithCloudAI(job, resumeText) {
+  const fallback = analyzeResumeForAICTE(job, resumeText);
+  if (!openaiClient || !resumeText) return fallback;
+
+  try {
+    const rawResumeText = String(resumeText || '').trim();
+    if (!rawResumeText) return fallback;
+    const jobTitle = job?.title || 'Faculty role';
+    const jobCategory = job?.category || 'General';
+    const resumeSample = rawResumeText.length > 12000 ? rawResumeText.slice(0, 12000) : rawResumeText;
+
+    const response = await openaiClient.chat.completions.create({
+      model: AI_MODEL,
+      messages: [{
+        role: 'system',
+        content: 'You are an AICTE academic screening assistant. Evaluate faculty resumes and return valid JSON only.'
+      }, {
+        role: 'user',
+        content: `Assess this resume for the role "${jobTitle}" in ${jobCategory}. Return a JSON object with exactly these keys: score, aicteStatus, suggestedPosition, suitabilityScore, overallVerdict, recommendation, strengths, gaps, suitabilityReason. The score must be 0-100, aicteStatus must be "AICTE-compliant" or "AICTE-review-needed", overallVerdict must be "QUALIFIED" or "PARTIALLY_QUALIFIED" or "NOT_QUALIFIED", recommendation must be "STRONGLY_RECOMMEND" or "RECOMMEND" or "CONDITIONAL". Keep strengths and gaps as arrays of concise strings. Include a short suitabilityReason. Resume text:\n\n${resumeSample}`
+      }],
+      max_tokens: 500,
+      response_format: { type: 'json_object' }
+    });
+
+    const text = String(response.choices?.[0]?.message?.content || '').trim();
+    const parsed = JSON.parse(text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim());
+    if (!parsed || typeof parsed !== 'object') return fallback;
+
+    const score = Number(parsed.score ?? fallback.score ?? 0);
+    const suitabilityScore = Number(parsed.suitabilityScore ?? fallback.suitabilityScore ?? score);
+    const aicteStatus = String(parsed.aicteStatus || fallback.aicteStatus || 'AICTE-review-needed');
+    const suggestedPosition = String(parsed.suggestedPosition || fallback.suggestedPosition || 'Assistant Professor');
+    const overallVerdict = String(parsed.overallVerdict || fallback.overallVerdict || 'PARTIALLY_QUALIFIED');
+    const recommendation = String(parsed.recommendation || fallback.recommendation || 'CONDITIONAL');
+    const strengths = Array.isArray(parsed.strengths) && parsed.strengths.length ? parsed.strengths.map(String) : fallback.strengths || [];
+    const gaps = Array.isArray(parsed.gaps) && parsed.gaps.length ? parsed.gaps.map(String) : fallback.gaps || [];
+    const suitabilityReason = String(parsed.suitabilityReason || fallback.suitabilityReason || 'Resume reviewed with cloud AI screening.');
+    const report = `AICTE cloud-AI resume scan for ${jobTitle} (${jobCategory}).\n- Compliance score: ${score}%\n- Suitability score: ${suitabilityScore}%\n- AICTE status: ${aicteStatus}.\n- Suggested position: ${suggestedPosition}.\n- Key strengths: ${strengths.slice(0, 2).join('; ') || 'Strong academic fit review'}\n- Improvement areas: ${gaps.slice(0, 2).join('; ') || 'Continue polishing the profile'}.`;
+
+    return {
+      report,
+      score,
+      aicteStatus,
+      suggestedPosition,
+      suitabilityScore,
+      complianceScore: score,
+      overallVerdict,
+      recommendation,
+      strengths,
+      gaps,
+      suitabilityReason
+    };
+  } catch (error) {
+    console.log('Cloud AI resume screening failed, using local heuristic:', error.message);
+    return fallback;
+  }
+}
+
 function evaluateShortlistDecision({ interviewScore, resumeScore, aicteStatus }) {
   const interview = Number(interviewScore ?? 0);
   const resume = Number(resumeScore ?? 0);
@@ -1391,31 +1449,60 @@ app.post('/upload-portal/process', verifyToken, (req, res) => {
   const errors = [];
 
   candidates.forEach((candidate) => {
-    const analysis = analyzeResumeForAICTE({ title: candidate.pos || candidate.position, category: candidate.dept || candidate.department }, candidate.resume || '');
-    saveResumeBackupEntry(candidate, analysis, req.user, (err, result) => {
-      processedCount += 1;
-      if (err) {
-        errors.push({ candidate: candidate.name || 'Unknown', error: err.message });
-      } else {
-        processedResults.push({
-          id: candidate.id,
-          name: candidate.name,
-          email: candidate.email,
-          backupId: result.backupId,
-          backupPath: result.resumePath,
-          aicteStatus: result.aicteStatus,
-          complianceScore: result.complianceScore,
-          suitabilityScore: result.suitabilityScore,
-          recommendedPosition: result.recommendedPosition,
-          suitabilityReason: result.suitabilityReason
-        });
-      }
-      if (processedCount === candidates.length) {
-        if (errors.length) {
-          return res.status(500).json({ error: 'Some candidates failed to save', details: errors, results: processedResults });
+    const jobContext = { title: candidate.pos || candidate.position, category: candidate.dept || candidate.department };
+    analyzeResumeWithCloudAI(jobContext, candidate.resume || '').then((analysis) => {
+      saveResumeBackupEntry(candidate, analysis, req.user, (err, result) => {
+        processedCount += 1;
+        if (err) {
+          errors.push({ candidate: candidate.name || 'Unknown', error: err.message });
+        } else {
+          processedResults.push({
+            id: candidate.id,
+            name: candidate.name,
+            email: candidate.email,
+            backupId: result.backupId,
+            backupPath: result.resumePath,
+            aicteStatus: result.aicteStatus,
+            complianceScore: result.complianceScore,
+            suitabilityScore: result.suitabilityScore,
+            recommendedPosition: result.recommendedPosition,
+            suitabilityReason: result.suitabilityReason
+          });
         }
-        return res.json({ results: processedResults });
-      }
+        if (processedCount === candidates.length) {
+          if (errors.length) {
+            return res.status(500).json({ error: 'Some candidates failed to save', details: errors, results: processedResults });
+          }
+          return res.json({ results: processedResults });
+        }
+      });
+    }).catch(() => {
+      const analysis = analyzeResumeForAICTE(jobContext, candidate.resume || '');
+      saveResumeBackupEntry(candidate, analysis, req.user, (err, result) => {
+        processedCount += 1;
+        if (err) {
+          errors.push({ candidate: candidate.name || 'Unknown', error: err.message });
+        } else {
+          processedResults.push({
+            id: candidate.id,
+            name: candidate.name,
+            email: candidate.email,
+            backupId: result.backupId,
+            backupPath: result.resumePath,
+            aicteStatus: result.aicteStatus,
+            complianceScore: result.complianceScore,
+            suitabilityScore: result.suitabilityScore,
+            recommendedPosition: result.recommendedPosition,
+            suitabilityReason: result.suitabilityReason
+          });
+        }
+        if (processedCount === candidates.length) {
+          if (errors.length) {
+            return res.status(500).json({ error: 'Some candidates failed to save', details: errors, results: processedResults });
+          }
+          return res.json({ results: processedResults });
+        }
+      });
     });
   });
 });
@@ -1684,9 +1771,9 @@ app.post('/apply/:id', upload.single('resume'), verifyToken, (req, res) => {
   };
 
   const scanThenApply = (resumePath) => {
-    db.get('SELECT * FROM jobs WHERE id = ?', [jobId], (err, job) => {
+    db.get('SELECT * FROM jobs WHERE id = ?', [jobId], async (err, job) => {
       if (err) return res.status(500).send('Error applying');
-      const scanResult = analyzeResumeForAICTE(job, resumePath);
+      const scanResult = await analyzeResumeWithCloudAI(job, resumePath);
       if (req.file) {
         db.run('UPDATE users SET resume_path = ?, resume_review_status = ?, resume_scan_report = ?, resume_scan_score = ?, resume_aicte_status = ? WHERE id = ?',
           [resumePath, 'pending', scanResult.report, scanResult.score, scanResult.aicteStatus, req.user.id], (err) => {
@@ -1729,9 +1816,9 @@ app.post('/apply-and-interview/:id', verifyToken, (req, res) => {
       return res.status(400).send('Please upload a resume first in your profile before taking the interview.');
     }
 
-    db.get('SELECT * FROM jobs WHERE id = ?', [jobId], (err, job) => {
+    db.get('SELECT * FROM jobs WHERE id = ?', async (err, job) => {
       if (err) return res.status(500).send('Error starting interview');
-      const scanResult = analyzeResumeForAICTE(job, resumePath);
+      const scanResult = await analyzeResumeWithCloudAI(job, resumePath);
       db.run('UPDATE users SET resume_review_status = ? WHERE id = ?', ['pending', req.user.id], (err) => {
         if (err) return res.status(500).send('Error starting interview');
         db.run(`INSERT INTO applications (user_id, job_id, resume_path, status, resume_scan_report, resume_scan_score, resume_aicte_status) VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -1869,15 +1956,15 @@ app.get('/profile/resume', verifyToken, (req, res) => {
   return res.redirect('/profile');
 });
 
-app.post('/profile/resume', upload.single('resume'), verifyToken, (req, res) => {
+app.post('/profile/resume', upload.single('resume'), verifyToken, async (req, res) => {
   const resumePath = req.file ? req.file.path : null;
-  
+
   if (!resumePath) {
     return res.status(400).send('Please select a resume file to upload');
   }
 
-  const scanResult = analyzeResumeForAICTE({ title: 'Profile resume upload', category: 'General', requirements: 'Resume quality and AICTE compliance' }, resumePath);
-  
+  const scanResult = await analyzeResumeWithCloudAI({ title: 'Profile resume upload', category: 'General', requirements: 'Resume quality and AICTE compliance' }, resumePath);
+
   // Mark resume upload and set review status to pending so admins can review
   db.run('UPDATE users SET resume_path = ?, resume_review_status = ?, resume_scan_report = ?, resume_scan_score = ?, resume_aicte_status = ? WHERE id = ?',
     [resumePath, 'pending', scanResult.report, scanResult.score, scanResult.aicteStatus, req.user.id], (err) => {
@@ -2774,6 +2861,54 @@ function buildCloudAIActions({ user = {}, jobs = [], stats = {}, profileCompleti
   ].slice(0, 5);
 }
 
+function buildCloudAIRecommendations({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
+  const role = user && user.role ? user.role : 'user';
+  const applications = Number(stats.applications || 0);
+  const interviews = Number(stats.interviews || 0);
+  const favorites = Number(stats.favorites || 0);
+  const completion = Number(profileCompletion || 0);
+  const activeJobs = Array.isArray(jobs) ? jobs.length : 0;
+
+  const core = [
+    {
+      title: 'Resume scan with cloud AI',
+      description: role === 'hr' || role === 'admin'
+        ? 'Scan every faculty resume against AICTE standards, rank academic fit, and filter the strongest shortlist candidates earlier in the review cycle.'
+        : 'Use cloud AI to review your resume for academic fit, publication strength, and shortlist readiness before applying to the next role.'
+    },
+    {
+      title: 'Shortlist confidence review',
+      description: role === 'hr' || role === 'admin'
+        ? `Track ${applications} applications, ${interviews} interview touchpoints, and ${favorites} shortlist signals to improve decision consistency and panel confidence.`
+        : `Your profile is ${completion}% complete and already shows momentum in ${activeJobs || 'active'} relevant roles. Tighten your teaching and research narrative for stronger shortlist outcomes.`
+    },
+    {
+      title: 'Interview pipeline coaching',
+      description: role === 'hr' || role === 'admin'
+        ? 'Coordinate AI-assisted screening with interview follow-ups so HR can move promising candidates faster without losing quality control.'
+        : 'Prepare for the next academic round with stronger answers, better research framing, and clearer evidence of teaching impact.'
+    }
+  ];
+
+  if (role === 'hr' || role === 'admin') {
+    return [
+      ...core,
+      {
+        title: 'Hiring automation brief',
+        description: `Your current recruiting pipeline is surfacing ${applications} applicants and ${interviews} interviews, making it easier to automate routine screening and focus on final committee decisions.`
+      }
+    ].slice(0, 4);
+  }
+
+  return [
+    ...core,
+    {
+      title: 'Career momentum brief',
+      description: 'Keep updating your teaching impact, publications, and degree evidence so cloud AI can better match you with faculty roles and shortlist you sooner.'
+    }
+  ].slice(0, 4);
+}
+
 function buildRealtimeAIInsights({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
   const jobList = Array.isArray(jobs) ? jobs : [];
   const activeCount = jobList.length;
@@ -2854,12 +2989,14 @@ if (require.main === module) {
 module.exports = {
   evaluateShortlistDecision,
   analyzeResumeForAICTE,
+  analyzeResumeWithCloudAI,
   autoApplyAICTEShortlist,
   buildResumeTrainingCards,
   buildAdvancedAICoach,
   calculateJobFitScore,
   buildJobFitSummary,
   buildCloudAIActions,
+  buildCloudAIRecommendations,
   buildRealtimeAIInsights,
   fetchRealtimeAIInsights,
   getUniversityOpenings,
