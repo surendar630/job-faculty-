@@ -394,6 +394,23 @@ db.serialize(() => {
     FOREIGN KEY (created_by) REFERENCES users(id)
   )`);
 
+  db.run(`CREATE TABLE IF NOT EXISTS resume_forwardings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    application_id INTEGER,
+    user_id INTEGER,
+    candidate_name TEXT,
+    candidate_email TEXT,
+    university_name TEXT,
+    university_email TEXT,
+    job_title TEXT,
+    resume_path TEXT,
+    status TEXT DEFAULT 'forwarded',
+    notes TEXT,
+    forwarded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (application_id) REFERENCES applications(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  )`);
+
   // Create admin user
   bcrypt.hash('admin123', 10, (err, hash) => {
     db.run(`INSERT OR IGNORE INTO users (name, email, password, role) VALUES ('Admin', 'admin@academiapro.com', ?, 'admin')`, [hash]);
@@ -1432,10 +1449,12 @@ app.get('/office/shortlisted', verifyToken, (req, res) => {
       profileCompletion: 90
     };
 
+    const resumeTraining = buildResumeTrainingCards({ applications });
+
     fetchRealtimeAIInsights(shortlistedInsightsContext).then((aiInsights) => {
-      res.render('shortlisted', { applications, user: req.user, aiInsights, aiEnabled: !!openaiClient });
+      res.render('shortlisted', { applications, user: req.user, aiInsights, aiEnabled: !!openaiClient, resumeTraining });
     }).catch(() => {
-      res.render('shortlisted', { applications, user: req.user, aiInsights: buildRealtimeAIInsights(shortlistedInsightsContext), aiEnabled: !!openaiClient });
+      res.render('shortlisted', { applications, user: req.user, aiInsights: buildRealtimeAIInsights(shortlistedInsightsContext), aiEnabled: !!openaiClient, resumeTraining });
     });
   });
 });
@@ -1531,7 +1550,12 @@ function getUniversityOpenings({ search = '', category = '', location = '' } = {
     return matchesSearch && matchesCategory && matchesLocation;
   });
 
-  if (filtered.length > 0) return filtered;
+  if (filtered.length > 0) {
+    return filtered.map((item) => ({
+      ...item,
+      type: /college|institute|school|university/i.test(item.university) ? 'College & University' : 'Institution'
+    })).slice(0, 6);
+  }
 
   const fallbackQuery = [rawSearch || rawCategory || 'faculty jobs', rawLocation || 'India'].filter(Boolean).join(' ');
   return [{
@@ -1541,6 +1565,7 @@ function getUniversityOpenings({ search = '', category = '', location = '' } = {
     location: rawLocation || 'India',
     source: 'LinkedIn',
     category: rawCategory || 'Faculty',
+    type: 'College & University',
     link: buildExternalJobSearchUrl({ query: fallbackQuery, location: rawLocation || 'India', source: 'linkedin' })
   }];
 }
@@ -1739,7 +1764,35 @@ app.get('/shortlisted', verifyToken, requireRoles('admin', 'hr'), (req, res) => 
           WHERE a.status = 'shortlisted' OR u.resume_review_status = 'shortlisted'
           ORDER BY a.applied_at DESC`, [], (err, applications) => {
     if (err) return res.status(500).send('Error');
-    res.render('shortlisted', { applications, user: req.user });
+    const resumeTraining = buildResumeTrainingCards({ applications });
+    res.render('shortlisted', { applications, user: req.user, aiInsights: [], resumeTraining });
+  });
+});
+
+app.post('/shortlisted/:id/forward', verifyToken, (req, res) => {
+  if (req.user.role !== 'admin' && req.user.role !== 'hr') return res.status(403).send('Access denied');
+
+  const universityName = String(req.body.university || '').trim();
+  const notes = String(req.body.notes || '').trim();
+  if (!universityName) return res.status(400).send('University or college name is required');
+
+  db.get(`SELECT a.*, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email, u.resume_path
+          FROM applications a
+          JOIN jobs j ON a.job_id = j.id
+          JOIN users u ON a.user_id = u.id
+          WHERE a.id = ?`, [req.params.id], (err, application) => {
+    if (err || !application) return res.status(404).send('Application not found');
+
+    db.run(`INSERT INTO resume_forwardings (application_id, user_id, candidate_name, candidate_email, university_name, university_email, job_title, resume_path, status, notes)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'forwarded', ?)`,
+      [application.id, application.user_id, application.candidate_name, application.candidate_email, universityName, '', application.job_title, application.resume_path, notes], (insertErr) => {
+        if (insertErr) return res.status(500).send('Unable to forward resume');
+        db.run('UPDATE applications SET shortlisted_field = ? WHERE id = ?', [`Forwarded to ${universityName}`, application.id], (updateErr) => {
+          if (updateErr) return res.status(500).send('Resume was saved but shortlist note could not be updated');
+          res.redirect('/shortlisted');
+        });
+      }
+    );
   });
 });
 
@@ -2550,6 +2603,30 @@ async function generateUniversityJobRequirements({ title, university, category, 
   return fallback;
 }
 
+function buildResumeTrainingCards({ applications = [] } = {}) {
+  const list = Array.isArray(applications) ? applications : [];
+
+  return list.slice(0, 4).map((application) => {
+    const score = Number(application.resume_scan_score || 0);
+    const aicteStatus = String(application.resume_aicte_status || '').toLowerCase();
+    const roleLabel = application.job_title || 'Faculty role';
+    const candidateName = application.candidate_name || 'Candidate';
+    const isReady = score >= 70 || aicteStatus.includes('compliant');
+
+    if (isReady) {
+      return {
+        title: `${candidateName} – ready for shortlist review`,
+        description: `The resume for ${roleLabel} is already in a strong position. Strengthen the research and teaching impact section, then prepare a concise panel-ready summary for the next university touchpoint.`
+      };
+    }
+
+    return {
+      title: `${candidateName} – improve resume strength`,
+      description: `Strengthen the academic profile for ${roleLabel} by adding quantified teaching impact, publications, and university-level contributions. Keep the CV tailored to the role and emphasize research outcomes before forwarding to the target institution.`
+    };
+  });
+}
+
 function buildCloudAIActions({ user = {}, jobs = [], stats = {} } = {}) {
   const role = user && user.role ? user.role : 'user';
   const applications = Number(stats.applications || 0);
@@ -2678,6 +2755,7 @@ module.exports = {
   evaluateShortlistDecision,
   analyzeResumeForAICTE,
   autoApplyAICTEShortlist,
+  buildResumeTrainingCards,
   buildCloudAIActions,
   buildRealtimeAIInsights,
   fetchRealtimeAIInsights,

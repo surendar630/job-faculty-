@@ -1,6 +1,6 @@
 const assert = require('assert');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildResumeTrainingCards } = require('../server');
 
 (function run() {
   const insights = buildRealtimeAIInsights({
@@ -51,6 +51,20 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions 
     assert.strictEqual(result.shouldShortlist, expected.shouldShortlist, `${name}: shortlist flag mismatch`);
     assert.strictEqual(result.reason, expected.reason, `${name}: reason mismatch`);
   });
+
+  const trainingCards = buildResumeTrainingCards({
+    applications: [{
+      candidate_name: 'Dr. Meera',
+      job_title: 'Professor - Data Science',
+      resume_scan_score: 62,
+      resume_aicte_status: 'AICTE-review-needed'
+    }]
+  });
+
+  assert.ok(Array.isArray(trainingCards), 'Resume training cards should be returned');
+  assert.ok(trainingCards.length >= 1, 'Training cards should include at least one action');
+  assert.ok(trainingCards[0].title && trainingCards[0].description, 'Each card should include title and description');
+  assert.ok(trainingCards[0].description.toLowerCase().includes('strengthen') || trainingCards[0].description.toLowerCase().includes('improve'), 'Training guidance should include practical improvement steps');
 
   console.log('shortlist rule tests passed');
 })();

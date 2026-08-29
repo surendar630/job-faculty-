@@ -255,31 +255,18 @@
   </div>
 
   <div class="training-grid">
-    <% if (aiInsights && aiInsights.length) { %>
-      <% aiInsights.forEach((insight) => { %>
-        <div class="training-card">
-          <div class="training-card-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-          <h3><%= insight.title %></h3>
-          <p><%= insight.description %></p>
-        </div>
-      <% }); %>
-    <% } else { %>
+    <% const trainingCards = (resumeTraining && resumeTraining.length) ? resumeTraining : [
+      { title: 'Professional Resume Review', description: 'Review shortlisted candidates with a structured, quality-based approach that supports better hiring decisions.' },
+      { title: 'AICTE-Oriented Screening', description: 'Follow a more standardized and professional selection mindset aligned to academic recruitment norms.' },
+      { title: 'Interview Preparation', description: 'Move candidates forward into live practice and interview settings with confidence and clarity.' }
+    ]; %>
+    <% trainingCards.forEach((training) => { %>
       <div class="training-card">
-        <div class="training-card-icon"><i class="fas fa-file-alt"></i></div>
-        <h3>Professional Resume Review</h3>
-        <p>Review shortlisted candidates with a structured, quality-based approach that supports better hiring decisions.</p>
+        <div class="training-card-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <h3><%= training.title %></h3>
+        <p><%= training.description %></p>
       </div>
-      <div class="training-card">
-        <div class="training-card-icon"><i class="fas fa-certificate"></i></div>
-        <h3>AICTE-Oriented Screening</h3>
-        <p>Follow a more standardized and professional selection mindset aligned to academic recruitment norms.</p>
-      </div>
-      <div class="training-card">
-        <div class="training-card-icon"><i class="fas fa-video"></i></div>
-        <h3>Interview Preparation</h3>
-        <p>Move candidates forward into live practice and interview settings with confidence and clarity.</p>
-      </div>
-    <% } %>
+    <% }); %>
   </div>
 
   <!-- RESUMES GRID -->
@@ -323,6 +310,13 @@
                 <i class="fas fa-check-circle"></i> Shortlisted for: <%= app.shortlisted_field %>
               </div>
             <% } %>
+
+            <form action="/shortlisted/<%= app.id %>/forward" method="POST" style="margin-top:1rem; display:grid; gap:0.7rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.9rem;">
+              <label style="font-weight:600; color:#334155;">Forward candidate to university / college</label>
+              <input type="text" name="university" placeholder="e.g. IISc Bangalore or Christ University" style="padding:0.7rem 0.8rem; border-radius:8px; border:1px solid #dbe3ef;" required>
+              <textarea name="notes" rows="2" placeholder="Add a quick forwarding note for the hiring team..." style="padding:0.7rem 0.8rem; border-radius:8px; border:1px solid #dbe3ef; resize:vertical;"></textarea>
+              <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-paper-plane"></i> Forward Resume</button>
+            </form>
           </div>
 
           <div class="resume-actions">
