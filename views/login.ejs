@@ -331,7 +331,7 @@
       <% if (info) { %>
         <div class="alert alert-info"><%= info %></div>
       <% } %>
-      <form action="/login" method="POST">
+      <form action="/login" method="POST" id="loginForm">
         <div class="form-group">
           <label for="email"><i class="fas fa-envelope"></i> Email</label>
           <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" autofocus>
@@ -341,7 +341,7 @@
           <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
         </div>
         <div class="form-group remember-row" style="margin-bottom: 0;">
-          <label><input type="checkbox" name="remember"> Remember me</label>
+          <label><input type="checkbox" name="remember" id="rememberMe"> Remember me</label>
           <label><input type="checkbox" id="showPassword"> Show password</label>
         </div>
         <div class="form-group">
@@ -406,6 +406,23 @@
     } catch (error) {
       console.error('Firebase Google sign-in error:', error);
       alert(describeFirebaseAuthError(error));
+    }
+  });
+
+  const emailInput = document.getElementById('email');
+  const rememberCheckbox = document.getElementById('rememberMe');
+  const loginForm = document.getElementById('loginForm');
+
+  const savedEmail = localStorage.getItem('academiaProLastEmail');
+  if (savedEmail && emailInput) {
+    emailInput.value = savedEmail;
+  }
+
+  loginForm?.addEventListener('submit', () => {
+    if (emailInput && rememberCheckbox && rememberCheckbox.checked) {
+      localStorage.setItem('academiaProLastEmail', emailInput.value.trim());
+    } else if (emailInput) {
+      localStorage.removeItem('academiaProLastEmail');
     }
   });
 

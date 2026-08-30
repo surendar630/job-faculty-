@@ -2,14 +2,17 @@
 import { getApp, getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js';
 import {
+  browserLocalPersistence,
   getAuth,
   getRedirectResult,
   GoogleAuthProvider,
   isSignInWithEmailLink,
   sendSignInLinkToEmail,
+  setPersistence,
   signInWithEmailLink,
   signInWithPopup,
-  signInWithRedirect
+  signInWithRedirect,
+  signInWithEmailAndPassword
 } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
 
 const DEFAULT_FIREBASE_CONFIG = {
@@ -54,11 +57,12 @@ export async function initFirebaseAuth() {
     console.warn('Firebase Analytics is unavailable in this browser:', error);
   }
   const auth = getAuth(app);
+  await setPersistence(auth, browserLocalPersistence);
   const googleProvider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({
     prompt: 'select_account',
   });
-  return { app, analytics, auth, googleProvider, getRedirectResult, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect };
+  return { app, analytics, auth, googleProvider, getRedirectResult, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect, signInWithEmailAndPassword };
 }
 
 export function describeFirebaseAuthError(error) {
@@ -81,4 +85,4 @@ export function describeFirebaseAuthError(error) {
   return error?.message || 'Google sign-in failed. Please try again.';
 }
 
-export { getRedirectResult, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect };
+export { getRedirectResult, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect, signInWithEmailAndPassword, browserLocalPersistence, setPersistence };
