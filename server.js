@@ -962,6 +962,15 @@ app.get('/api/oauth-config', (req, res) => {
 });
 
 app.get('/auth/google', (req, res) => {
+  if (!GOOGLE_CLIENT_SECRET) {
+    return res.status(503).send(
+      '<h1>Google Sign-In Not Configured</h1>' +
+      '<p>The application does not have Google OAuth credentials configured yet.</p>' +
+      '<p>Please contact the administrator to set up the following environment variables on Render:</p>' +
+      '<ul><li>GOOGLE_CLIENT_ID</li><li>GOOGLE_CLIENT_SECRET</li><li>GOOGLE_CALLBACK_URL</li></ul>' +
+      '<p><a href="/login">Back to login</a></p>'
+    );
+  }
   const redirectUri = getGoogleRedirectUri(req);
   const state = crypto.randomBytes(24).toString('base64url');
   const cookieOptions = { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', maxAge: 10 * 60 * 1000 };
@@ -977,6 +986,14 @@ app.get('/auth/google', (req, res) => {
 });
 
 app.get('/auth/google/callback', async (req, res) => {
+  if (!GOOGLE_CLIENT_SECRET) {
+    return res.status(503).send(
+      '<h1>OAuth Configuration Error</h1>' +
+      '<p>Google Sign-In is not fully configured. The server is missing GOOGLE_CLIENT_SECRET.</p>' +
+      '<p>Please ask the administrator to add the required environment variables on Render.</p>' +
+      '<p><a href="/login">Back to login</a></p>'
+    );
+  }
   const code = req.query.code;
   const redirectUri = getGoogleRedirectUri(req);
   const expectedState = req.cookies.google_oauth_state;
