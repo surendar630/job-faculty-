@@ -108,12 +108,104 @@ const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key'; // In production, use environment variable
 const AI_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
-const requireRoles = (...allowedRoles) => (req, res, next) => {
-  if (!req.user || !allowedRoles.includes(req.user.role)) {
-    return res.status(403).send('Access denied');
-  }
-  next();
-};
+app.get('/privacy', (req, res) => {
+  const privacyHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="google9a428d7d0a30a656" />
+  <title>Privacy Policy - AcademiaPro</title>
+  <style>
+    body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 2rem; background: #f9f9f9; }
+    h1, h2 { color: #17212b; }
+    a { color: #0b6b68; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ddd; font-size: 0.9rem; color: #666; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p><strong>Effective Date:</strong> August 30, 2026</p>
+
+  <h2>1. Introduction</h2>
+  <p>AcademiaPro ("we", "us", "our", or "Company") is committed to protecting your privacy. This Privacy Policy explains our policies and practices regarding the collection, use, and disclosure of your personal information when you use our website and services.</p>
+
+  <h2>2. Information We Collect</h2>
+  <p>We collect information in the following ways:</p>
+  <ul>
+    <li><strong>Authentication Data:</strong> When you sign in using Google Sign-In, we receive your name, email address, and profile picture from Google.</li>
+    <li><strong>Application Data:</strong> Information you voluntarily provide when applying for jobs, such as resume, qualifications, and work history.</li>
+    <li><strong>Usage Data:</strong> We may collect information about how you interact with our site, including pages visited, time spent, and actions taken.</li>
+    <li><strong>Device Information:</strong> Browser type, IP address, operating system, and other technical information.</li>
+  </ul>
+
+  <h2>3. How We Use Your Information</h2>
+  <p>We use the information we collect for the following purposes:</p>
+  <ul>
+    <li>To authenticate users and manage user accounts</li>
+    <li>To process job applications and connect candidates with opportunities</li>
+    <li>To improve and maintain our services</li>
+    <li>To communicate with you about your applications and account</li>
+    <li>To comply with legal obligations</li>
+  </ul>
+
+  <h2>4. Google Sign-In</h2>
+  <p>AcademiaPro uses Google Sign-In for user authentication. When you sign in using Google:</p>
+  <ul>
+    <li>You are redirected to Google's secure authentication servers</li>
+    <li>We receive your authentication token and basic profile information</li>
+    <li>We do not store your Google password</li>
+    <li>Your data is protected according to Google's privacy policies and our own practices</li>
+  </ul>
+  <p>For more information on how Google handles your data, please visit <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</p>
+
+  <h2>5. Data Security</h2>
+  <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet or electronic storage is 100% secure.</p>
+
+  <h2>6. Data Retention</h2>
+  <p>We retain your personal information for as long as necessary to provide our services and fulfill the purposes outlined in this policy. You can request deletion of your account and associated data at any time.</p>
+
+  <h2>7. Third-Party Services</h2>
+  <p>We may use third-party services to assist in our operations, including:</p>
+  <ul>
+    <li><strong>Google Authentication:</strong> For secure user sign-in</li>
+    <li><strong>Firebase:</strong> For backend infrastructure and database services</li>
+    <li><strong>OpenAI:</strong> For AI-powered interview features (if enabled)</li>
+  </ul>
+  <p>These services have their own privacy policies, and we encourage you to review them.</p>
+
+  <h2>8. Your Rights</h2>
+  <p>Depending on your location, you may have the following rights:</p>
+  <ul>
+    <li>The right to access your personal information</li>
+    <li>The right to correct inaccurate data</li>
+    <li>The right to request deletion of your data</li>
+    <li>The right to opt-out of certain processing activities</li>
+  </ul>
+
+  <h2>9. Contact Us</h2>
+  <p>If you have questions about this Privacy Policy or our privacy practices, please contact us at:</p>
+  <p>
+    <strong>AcademiaPro</strong><br>
+    Email: support@academiapro.com<br>
+    Website: <a href="https://job-fa.onrender.com">https://job-fa.onrender.com</a>
+  </p>
+
+  <h2>10. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Effective Date" above.</p>
+
+  <div class="footer">
+    <p>&copy; 2026 AcademiaPro. All rights reserved.</p>
+  </div>
+</body>
+</html>
+  `;
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(privacyHtml);
+});
+
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
