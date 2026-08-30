@@ -22,8 +22,8 @@ const DEFAULT_FIREBASE_CONFIG = {
   measurementId: 'G-EM3X896YYN'
 };
 
-export const GOOGLE_CLIENT_ID = '62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com';
-export const GOOGLE_CLIENT_ID_ALT = '62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com';
+export const GOOGLE_CLIENT_ID = '81801350-gtek800d46e2qhgp8k87dkntsdu29r9u.apps.googleusercontent.com';
+export const GOOGLE_CLIENT_ID_ALT = '81801350-gtek800d46e2qhgp8k87dkntsdu29r9u.apps.googleusercontent.com';
 export const FIREBASE_API_KEY = 'AIzaSyB_PLqF1qcEEhnrYaUA1k5Tsi61MW0xZS8';
 
 export async function getFirebaseRuntimeConfig() {

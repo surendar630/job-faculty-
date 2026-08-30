@@ -13,7 +13,7 @@ const openai = require('openai');
 const multer = require('multer');
 require('dotenv').config();
 
-const DEFAULT_GOOGLE_CLIENT_ID = '62016617558-2gcb7841fha9u1nre7alu2pt0s29b0m8.apps.googleusercontent.com';
+const DEFAULT_GOOGLE_CLIENT_ID = '81801350-gtek800d46e2qhgp8k87dkntsdu29r9u.apps.googleusercontent.com';
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_ID_ALT = process.env.GOOGLE_CLIENT_ID_ALT || DEFAULT_GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
@@ -77,7 +77,19 @@ async function verifyGoogleToken(idToken) {
 }
 
 function getGoogleRedirectUri(req) {
-  return (process.env.GOOGLE_CALLBACK_URL || process.env.GOOGLE_REDIRECT_URI || `${req.protocol}://${req.get('host')}/auth/google/callback`).trim();
+  const normalizeUri = (uri) => String(uri || '').trim().replace(/\/+$/, '').replace(/\?.*$/, '');
+
+  const configuredRedirectUri = normalizeUri(process.env.GOOGLE_CALLBACK_URL || process.env.GOOGLE_REDIRECT_URI);
+  if (configuredRedirectUri) return configuredRedirectUri;
+
+  const forwardedProto = req.headers['x-forwarded-proto'];
+  const rawProto = Array.isArray(forwardedProto) ? forwardedProto[0] : forwardedProto;
+  const protocol = String(rawProto || req.protocol || 'http').split(',')[0].trim();
+
+  const forwardedHost = req.headers['x-forwarded-host'];
+  const host = String((Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost) || req.get('host') || 'localhost:3000').split(',')[0].trim();
+
+  return `${protocol}://${host}/auth/google/callback`.replace(/\/+/g, '/');
 }
 
 const openaiApiKey = String(process.env.OPENAI_API_KEY || '').trim();
