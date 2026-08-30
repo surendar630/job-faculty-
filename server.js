@@ -941,6 +941,17 @@ app.get('/auth/config', (req, res) => {
   });
 });
 
+
+app.get('/api/oauth-config', (req, res) => {
+  res.json({
+    googleClientId: GOOGLE_CLIENT_ID,
+    hasClientSecret: !!GOOGLE_CLIENT_SECRET,
+    redirectUri: process.env.GOOGLE_CALLBACK_URL || process.env.GOOGLE_REDIRECT_URI || 'https://job-fa.onrender.com/auth/google/callback',
+    environment: process.env.NODE_ENV || 'development',
+    note: 'If hasClientSecret is false, set GOOGLE_CLIENT_SECRET environment variable on Render'
+  });
+});
+
 app.get('/auth/google', (req, res) => {
   const redirectUri = getGoogleRedirectUri(req);
   const state = crypto.randomBytes(24).toString('base64url');
@@ -980,8 +991,8 @@ app.get('/auth/google/callback', async (req, res) => {
 
     const tokenData = await tokenResponse.json();
     if (!tokenResponse.ok) {
-      console.error('Google token error:', tokenData);
-      return res.status(500).json({ error: tokenData });
+      console.error('Google token error:', { status: tokenResponse.status, error: tokenData, redirectUri, clientId: GOOGLE_CLIENT_ID });
+      return res.status(500).json({ error: tokenData, message: 'Google OAuth token exchange failed. Check server logs and ensure GOOGLE_CLIENT_SECRET is set on Render.' });
     }
 
     const userInfoResponse = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
