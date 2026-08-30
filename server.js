@@ -973,7 +973,7 @@ app.get('/auth/google', (req, res) => {
   }
   const redirectUri = getGoogleRedirectUri(req);
   const state = crypto.randomBytes(24).toString('base64url');
-  const cookieOptions = { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', maxAge: 10 * 60 * 1000 };
+  const cookieOptions = { httpOnly: true, sameSite: 'none', secure: true, maxAge: 10 * 60 * 1000 };
   res.cookie('google_oauth_state', state, cookieOptions);
   const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth' +
     '?response_type=code' +
