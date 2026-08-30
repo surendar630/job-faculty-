@@ -8,18 +8,108 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
+body {
+  background: linear-gradient(135deg, #f5f6f3 0%, #edf3f2 48%, #f9f9f7 100%);
+  color: #1f2937;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(8px);
+}
+
+body::before {
+  width: 500px;
+  height: 500px;
+  top: -140px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(14, 165, 133, 0.14), rgba(14, 165, 133, 0.02) 55%, transparent 72%);
+}
+
+body::after {
+  width: 520px;
+  height: 520px;
+  left: -120px;
+  bottom: -200px;
+  background: radial-gradient(circle, rgba(45, 82, 98, 0.1), rgba(45, 82, 98, 0.02) 52%, transparent 72%);
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
 .admin-header {
-  background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
-  color: white;
+  background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(230, 245, 242, 0.9));
+  border: 1px solid rgba(148, 163, 184, 0.19);
+  color: #17212b;
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 24px;
   margin-bottom: 2rem;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 .admin-header h1 {
-  color: white;
+  color: #17212b;
   margin-top: 0;
+  letter-spacing: -0.04em;
+}
+
+.admin-header p {
+  color: #475569;
+  margin: 0.75rem 0 0;
+  font-size: 1rem;
+}
+
+.insight-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.insight-card {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 18px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(8px);
+}
+
+.insight-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #dff7ef, #e0f2fe);
+  color: #0f766e;
+  font-size: 1rem;
+}
+
+.insight-card h3 {
+  margin: 0 0 0.25rem;
+  color: #1f2937;
+  font-size: 1.05rem;
+}
+
+.insight-card p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.5;
+  font-size: 0.92rem;
 }
 
 .admin-grid {
@@ -30,11 +120,13 @@
 }
 
 .form-section {
-  background: white;
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(148,163,184,0.18);
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  border-left: 4px solid #04AA6D;
+  border-radius: 20px;
+  box-shadow: 0 22px 52px rgba(15, 23, 42, 0.08);
+  border-left: 4px solid #1fb786;
+  backdrop-filter: blur(10px);
 }
 
 .form-section h3 {
@@ -101,12 +193,14 @@
 }
 
 .jobs-section, .applications-section {
-  background: white;
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(148,163,184,0.18);
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
+  border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
   margin-bottom: 2rem;
-  border-left: 4px solid #04AA6D;
+  border-left: 4px solid #1fb786;
+  backdrop-filter: blur(10px);
 }
 
 .section-title {
