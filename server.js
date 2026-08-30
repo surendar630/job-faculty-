@@ -21,6 +21,19 @@ const FIREBASE_CLIENT_ID = process.env.FIREBASE_CLIENT_ID || '';
 const FIREBASE_CLIENT_ID_ALT = process.env.FIREBASE_CLIENT_ID_ALT || '';
 const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID || 'job-faculty';
 
+// Validate OAuth configuration on startup
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+  console.warn('⚠️  WARNING: Google OAuth credentials not fully configured.');
+  console.warn('Set these environment variables on Render to enable Google Sign-In:');
+  console.warn('  - GOOGLE_CLIENT_ID (from Google Cloud Console)');
+  console.warn('  - GOOGLE_CLIENT_SECRET (from Google Cloud Console)');
+  console.warn('  - GOOGLE_CALLBACK_URL (e.g., https://job-fa.onrender.com/auth/google/callback)');
+  if (process.env.NODE_ENV === 'production') {
+    console.error('❌ ERROR: Google OAuth is required in production. Aborting startup.');
+    process.exit(1);
+  }
+}
+
 const isValidFirebaseClientId = (id) => typeof id === 'string' && id.includes('.apps.googleusercontent.com');
 const isValidFirebaseIssuer = (issuer) => issuer === `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
 
