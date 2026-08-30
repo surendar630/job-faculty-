@@ -50,13 +50,30 @@ A full-stack web application for finding academic jobs with advanced AI-powered 
 
 1. Clone the repository
 2. Run `npm install`
-3. Set up environment variables:
+3. For Firebase hosting tools, install the CLI and initialize the project:
+   ```bash
+   npm install firebase
+   npm install -g firebase-tools
+   firebase login
+   firebase init
+   ```
+4. Set up environment variables:
    ```bash
    export OPENAI_API_KEY=your-openai-api-key-here
    export JWT_SECRET=your-jwt-secret-key-here
    ```
-4. Run `npm start`
-5. Open http://localhost:3000
+5. Run `npm start`
+6. Open http://localhost:3000
+
+### Firebase Hosting Deployment
+
+When you're ready to deploy, put static files in the deploy directory (typically `public`) and run:
+
+```bash
+firebase deploy
+```
+
+After deploying, view your app at https://jobfacultyportal.web.app/
 
 The app uses SQLite as its live source of truth. Create jobs through the admin portal; demo jobs are disabled by default and can be enabled locally with `SEED_DEMO_DATA=true`. Set `OPENAI_API_KEY` to enable live cloud AI question generation, answer scoring, and follow-up questions. Without it, the app uses its built-in fallback behavior. Readiness is available at `/api/health`.
 

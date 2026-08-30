@@ -22,6 +22,42 @@ npm install firebase
 npm install -g firebase-tools
 ```
 
+### Firebase Web SDK Setup (modular JS)
+
+If you're using npm and a module bundler, initialize the Firebase SDK with the modular package:
+
+```bash
+npm install firebase
+```
+
+```javascript
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyCyezJ1QEp--pKTllC2SN04Wk-gRJuvd30',
+  authDomain: 'jobfacultyportal.firebaseapp.com',
+  projectId: 'jobfacultyportal',
+  storageBucket: 'jobfacultyportal.firebasestorage.app',
+  messagingSenderId: '1091808492235',
+  appId: '1:1091808492235:web:661d195e1864dda557b94e',
+  measurementId: 'G-XNRBZ9P31G'
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+```
+
+### Firebase Hosting CLI Setup
+
+```bash
+firebase login
+firebase init
+firebase deploy
+```
+
+After deployment, your app will be available at https://jobfacultyportal.web.app/
+
 ### 2. Setup Environment Variables
 
 Create a `.env` file in the root directory with:
