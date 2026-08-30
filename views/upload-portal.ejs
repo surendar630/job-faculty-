@@ -395,6 +395,7 @@
       if(p==='vf')renderVF();
       if(p==='cmp')renderCmp();
       if(p==='fn')renderFn();
+      if(p==='norms')renderNorms();
     }
 
     function normTab(el,id){
@@ -622,6 +623,88 @@ criteria exactly: UG Qualification,PG Qualification,First Class,PhD Degree,Teach
       const list=cands.filter(c=>c.sl&&c.result);
       if(!list.length){el.innerHTML='<div class="empty-s"><i class="ti ti-shield-off"></i><p>Shortlist candidates first</p></div>';return;}
       el.innerHTML=`<div style="font-size:12px;color:var(--t2);margin-bottom:12px">${list.length} shortlisted. Run suitability verification below or from the Shortlisted tab.</div><button class="btn btn-acc" onclick="go('sl')"><i class="ti ti-shield-check"></i>Go to shortlisted candidates ↗</button>`;
+    }
+
+    function renderNorms(){
+      const el = document.getElementById('pg-norms');
+      if (!el) return;
+      const matrix = [
+        { role: 'Assistant Professor', standard: 'UG + PG relevant discipline, first class in either UG or PG, strong academic record, teaching potential, and discipline fit.', focus: 'Academic preparation and foundational teaching readiness.' },
+        { role: 'Associate Professor', standard: 'PhD mandatory, minimum 5 years relevant experience, evidence of research, mentoring, and academic contribution.', focus: 'Research leadership and sustained teaching contribution.' },
+        { role: 'Professor', standard: 'PhD mandatory, significant experience, research output, doctoral supervision, and leadership in academics or administration.', focus: 'Academic leadership, research depth, and institutional impact.' },
+        { role: 'Principal / Dean', standard: 'Professor-level credentials with leadership, strategy, governance, and administrative experience in higher education.', focus: 'Vision, governance, and institutional excellence.' }
+      ];
+
+      el.innerHTML = `
+        <div class="card" style="margin-bottom:18px;">
+          <div class="card-hd">
+            <div class="card-hd-l"><i class="ti ti-book"></i>AICTE faculty recruitment norms</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;">
+            ${matrix.map(item => `
+              <div class="detail-box" style="padding:16px; border-radius:14px; background:rgba(99,102,241,0.05); border:1px solid rgba(99,102,241,0.12);">
+                <div style="font-size:12px; font-weight:700; color:var(--acc2); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;">${item.role}</div>
+                <div style="font-size:12px; line-height:1.7; color:var(--t2); margin-bottom:10px;">${item.standard}</div>
+                <div style="font-size:11px; color:var(--t3); font-weight:600;">Focus: ${item.focus}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px;">
+          <div class="card-hd">
+            <div class="card-hd-l"><i class="ti ti-brain"></i>Cloud AI evaluation framework</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+            <div class="detail-box" style="padding:12px 14px;">
+              <div style="font-size:11px; color:var(--t3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">01. Qualification</div>
+              <div style="font-size:12px; color:var(--t2); line-height:1.6;">Checks UG and PG relevance, degree pedigree, and discipline alignment.</div>
+            </div>
+            <div class="detail-box" style="padding:12px 14px;">
+              <div style="font-size:11px; color:var(--t3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">02. Academic merit</div>
+              <div style="font-size:12px; color:var(--t2); line-height:1.6;">Evaluates first class status, research quality, and academic consistency.</div>
+            </div>
+            <div class="detail-box" style="padding:12px 14px;">
+              <div style="font-size:11px; color:var(--t3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">03. Research contribution</div>
+              <div style="font-size:12px; color:var(--t2); line-height:1.6;">Reviews publications, patents, PhD supervision, and scholarly work.</div>
+            </div>
+            <div class="detail-box" style="padding:12px 14px;">
+              <div style="font-size:11px; color:var(--t3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">04. Institutional value</div>
+              <div style="font-size:12px; color:var(--t2); line-height:1.6;">Assesses teaching experience, administrative leadership, and mentoring readiness.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-hd">
+            <div class="card-hd-l"><i class="ti ti-checklist"></i>Recommended AICTE screening criteria</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;">
+            <div class="detail-box" style="padding:12px 14px;">
+              <div style="font-size:12px; font-weight:700; color:var(--t1); margin-bottom:6px;">Core standards</div>
+              <ul style="margin:0; padding-left:18px; font-size:12px; line-height:1.8; color:var(--t2);">
+                <li>Relevant UG and PG degree equivalence</li>
+                <li>Minimum first-class academic performance</li>
+                <li>PhD requirement for senior roles</li>
+                <li>Teaching and mentoring evidence</li>
+                <li>Research publications and scholarly output</li>
+                <li>FDP / training credibility</li>
+              </ul>
+            </div>
+            <div class="detail-box" style="padding:12px 14px;">
+              <div style="font-size:12px; font-weight:700; color:var(--t1); margin-bottom:6px;">Risk flags</div>
+              <ul style="margin:0; padding-left:18px; font-size:12px; line-height:1.8; color:var(--t2);">
+                <li>Mismatch between discipline and applied post</li>
+                <li>Low/incomplete academic scores</li>
+                <li>Limited research or publication record</li>
+                <li>Lack of PhD for senior academic posts</li>
+                <li>Weak evidence of teaching leadership</li>
+                <li>Insufficient administrative or mentoring profile</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     function renderCmp(){
