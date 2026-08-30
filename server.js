@@ -104,6 +104,84 @@ function getGoogleRedirectUri(req) {
 const openaiApiKey = String(process.env.OPENAI_API_KEY || '').trim();
 const openaiClient = openaiApiKey ? new openai.OpenAI({ apiKey: openaiApiKey }) : null;
 
+function parseOfficeAccounts() {
+  const fallbackCompanyName = process.env.COMPANY_NAME || process.env.OFFICE_COMPANY_NAME || process.env.UNIVERSITY_NAME || 'AcademiaPro';
+  const rawValue = process.env.OFFICE_ACCOUNTS || process.env.OFFICE_EMAILS || process.env.OFFICE_EMAIL || process.env.HR_EMAIL || process.env.UNIVERSITY_EMAILS || process.env.UNIVERSITY_DOMAINS || 'rssrndr@gmail.com';
+  const domainValue = process.env.OFFICE_DOMAINS || process.env.UNIVERSITY_DOMAINS || process.env.UNIVERSITY_EMAIL_DOMAINS || '';
+  const value = String(rawValue || '').trim();
+  const domainList = String(domainValue || '')
+    .split(/[;,\s]+/)
+    .map((part) => String(part || '').trim().toLowerCase())
+    .filter((part) => part && !part.includes('@'));
+
+  if (!value && domainList.length === 0) {
+    return { companyName: fallbackCompanyName, emails: [], domains: [] };
+  }
+
+  try {
+    const parsedJson = JSON.parse(value || '{}');
+    if (Array.isArray(parsedJson)) {
+      const emails = parsedJson.flatMap((entry) => Array.isArray(entry?.emails) ? entry.emails : [entry]).filter(Boolean);
+      const domains = parsedJson.flatMap((entry) => Array.isArray(entry?.domains) ? entry.domains : []).filter(Boolean);
+      const companyName = parsedJson.find((entry) => typeof entry?.companyName === 'string' && entry.companyName.trim())?.companyName || fallbackCompanyName;
+      return {
+        companyName,
+        emails: [...new Set(emails.map((email) => String(email).trim().toLowerCase()).filter(Boolean))],
+        domains: [...new Set([...domainList, ...domains.map((domain) => String(domain).trim().toLowerCase()).filter(Boolean)])]
+      };
+    }
+    if (parsedJson && typeof parsedJson === 'object') {
+      const emails = Array.isArray(parsedJson.emails) ? parsedJson.emails : [];
+      const domains = Array.isArray(parsedJson.domains) ? parsedJson.domains : [];
+      return {
+        companyName: parsedJson.companyName || parsedJson.name || parsedJson.universityName || fallbackCompanyName,
+        emails: [...new Set(emails.map((email) => String(email).trim().toLowerCase()).filter(Boolean))],
+        domains: [...new Set([...domainList, ...domains.map((domain) => String(domain).trim().toLowerCase()).filter(Boolean)])]
+      };
+    }
+  } catch (error) {
+    // Fallback below for plain text values.
+  }
+
+  if (value.includes('|')) {
+    const [companyNamePart, emailListPart] = value.split('|');
+    const companyName = (companyNamePart || '').trim() || fallbackCompanyName;
+    const emails = String(emailListPart || value)
+      .split(/[;,]/)
+      .map((email) => String(email || '').trim())
+      .filter(Boolean);
+    return {
+      companyName,
+      emails: [...new Set(emails.map((email) => email.toLowerCase()))],
+      domains: domainList
+    };
+  }
+
+  const emails = value
+    .split(/[;,]/)
+    .map((email) => String(email || '').trim())
+    .filter(Boolean);
+
+  return {
+    companyName: fallbackCompanyName,
+    emails: [...new Set(emails.map((email) => email.toLowerCase()))],
+    domains: domainList
+  };
+}
+
+const OFFICE_ACCOUNT_CONFIG = parseOfficeAccounts();
+const OFFICE_GOOGLE_EMAILS = OFFICE_ACCOUNT_CONFIG.emails;
+const OFFICE_GOOGLE_DOMAINS = OFFICE_ACCOUNT_CONFIG.domains;
+const OFFICE_COMPANY_NAME = OFFICE_ACCOUNT_CONFIG.companyName;
+
+const isOfficeGoogleUser = (email) => {
+  if (typeof email !== 'string') return false;
+  const normalizedEmail = email.trim().toLowerCase();
+  if (OFFICE_GOOGLE_EMAILS.includes(normalizedEmail)) return true;
+  const emailDomain = normalizedEmail.split('@')[1];
+  return Boolean(emailDomain) && OFFICE_GOOGLE_DOMAINS.some((domain) => domain === emailDomain || normalizedEmail.endsWith(`@${domain}`));
+};
+
 const app = express();
 app.set('trust proxy', 1);
 const httpServer = http.createServer(app);
@@ -1036,22 +1114,32 @@ app.get('/auth/google/callback', async (req, res) => {
     db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
       if (err) return res.status(500).send('Database error');
       const name = googleUser.name || email.split('@')[0];
+      const officeUser = isOfficeGoogleUser(email);
+      const assignedRole = officeUser ? 'hr' : 'user';
+
       if (user) {
-        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
+        const roleForUser = officeUser || user.role === 'hr' ? 'hr' : user.role || 'user';
+        if (roleForUser !== user.role) {
+          db.run('UPDATE users SET role = ?, password = COALESCE(password, ?) WHERE id = ?', [roleForUser, user.password || null, user.id], (updateErr) => {
+            if (updateErr) console.error('Google role update error:', updateErr);
+          });
+        }
+        const token = jwt.sign({ id: user.id, email: user.email, role: roleForUser }, SECRET_KEY);
         res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
-        if (user.role === 'admin') return res.redirect('/admin');
-        if (user.role === 'hr') return res.redirect('/office');
+        if (roleForUser === 'admin') return res.redirect('/admin');
+        if (roleForUser === 'hr') return res.redirect('/office');
         return res.redirect('/dashboard');
       }
 
-      db.run('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, null, 'user'], function (err) {
+      db.run('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, null, assignedRole], function (err) {
         if (err) {
           console.error('Google user creation error:', err);
           return res.status(500).send('Error creating user account');
         }
         const userId = this.lastID;
-        const token = jwt.sign({ id: userId, email, role: 'user' }, SECRET_KEY);
+        const token = jwt.sign({ id: userId, email, role: assignedRole }, SECRET_KEY);
         res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
+        if (assignedRole === 'hr') return res.redirect('/office');
         res.redirect('/dashboard');
       });
     });
@@ -1079,22 +1167,31 @@ app.post('/auth/google-firebase', async (req, res) => {
 
     db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
       if (err) return res.status(500).send('Database error');
+      const officeUser = isOfficeGoogleUser(email);
+      const assignedRole = officeUser ? 'hr' : 'user';
       if (user) {
-        const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET_KEY);
+        const roleForUser = officeUser || user.role === 'hr' ? 'hr' : user.role || 'user';
+        if (roleForUser !== user.role) {
+          db.run('UPDATE users SET role = ?, password = COALESCE(password, ?) WHERE id = ?', [roleForUser, user.password || null, user.id], (updateErr) => {
+            if (updateErr) console.error('Firebase role update error:', updateErr);
+          });
+        }
+        const token = jwt.sign({ id: user.id, email: user.email, role: roleForUser }, SECRET_KEY);
         res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
-        if (user.role === 'admin') return res.json({ success: true, redirect: '/admin' });
-        if (user.role === 'hr') return res.json({ success: true, redirect: '/office' });
+        if (roleForUser === 'admin') return res.json({ success: true, redirect: '/admin' });
+        if (roleForUser === 'hr') return res.json({ success: true, redirect: '/office' });
         return res.json({ success: true, redirect: '/dashboard' });
       }
 
-      db.run('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, null, 'user'], function (err) {
+      db.run('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, null, assignedRole], function (err) {
         if (err) {
           console.error('Google Firebase user creation error:', err);
           return res.status(500).send('Error creating user account');
         }
         const userId = this.lastID;
-        const token = jwt.sign({ id: userId, email, role: 'user' }, SECRET_KEY);
+        const token = jwt.sign({ id: userId, email, role: assignedRole }, SECRET_KEY);
         res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
+        if (assignedRole === 'hr') return res.json({ success: true, redirect: '/office' });
         res.json({ success: true, redirect: '/dashboard' });
       });
     });
