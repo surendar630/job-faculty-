@@ -409,6 +409,32 @@ body::after {
     <% } %>
   </div>
 
+  <div class="applications-section" style="border-left: 4px solid #1d4ed8; margin-bottom: 2rem;">
+    <h3 class="section-title"><i class="fas fa-sign-in-alt"></i> Recent Logins</h3>
+    <p style="margin-top: 0.5rem; color: #475569;">Track which users have signed in, from which method, and when.</p>
+    <% if (recentLogins && recentLogins.length) { %>
+      <div class="applications-list" style="margin-top: 1rem;">
+        <% recentLogins.forEach((login) => { %>
+          <div class="application-item" style="border-left-color: #1d4ed8; background: #f8fbff;">
+            <div class="app-item-header">
+              <div>
+                <p class="app-item-title"><%= login.user_name || login.user_email || login.email || 'Unknown user' %></p>
+                <div class="app-item-meta">
+                  <span><i class="fas fa-envelope"></i> <%= login.email || login.user_email || 'No email recorded' %></span>
+                  <span><i class="fas fa-user-tag"></i> <%= login.role || 'user' %></span>
+                  <span><i class="fas fa-shield-alt"></i> <%= login.login_method || 'login' %></span>
+                </div>
+              </div>
+              <span class="app-status status-shortlisted"><%= new Date(login.created_at).toLocaleString() %></span>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p style="margin-top: 1rem; color: #64748b;">No login activity has been recorded yet.</p>
+    <% } %>
+  </div>
+
   <div class="applications-section" style="border-left: 4px solid #04AA6D; margin-bottom: 2rem;">
     <h3 class="section-title"><i class="fas fa-check-circle"></i> Shortlisted Resumes</h3>
     <p style="margin-top: 0.5rem; color: #475569;">Review all candidates who have been shortlisted and jump to the resume shortlist page instantly.</p>

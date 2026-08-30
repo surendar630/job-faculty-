@@ -372,6 +372,17 @@ db.serialize(() => {
     institution TEXT
   )`);
 
+  db.run(`CREATE TABLE IF NOT EXISTS user_logins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    email TEXT,
+    role TEXT,
+    login_method TEXT,
+    ip_address TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  )`);
+
   db.run(`CREATE TABLE IF NOT EXISTS jobs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT,
@@ -625,6 +636,25 @@ function verifyToken(req, res, next) {
       next();
     });
   });
+}
+
+function getClientIp(req) {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string') return forwarded.split(',')[0].trim();
+  if (Array.isArray(forwarded) && forwarded.length) return String(forwarded[0]).trim();
+  return req.socket && req.socket.remoteAddress ? req.socket.remoteAddress : 'unknown';
+}
+
+function recordUserLogin({ userId, email, role, method, req }) {
+  if (!userId && !email) return;
+  const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : '';
+  db.run(
+    'INSERT INTO user_logins (user_id, email, role, login_method, ip_address) VALUES (?, ?, ?, ?, ?)',
+    [userId || null, normalizedEmail || null, role || null, method || 'login', getClientIp(req)],
+    (err) => {
+      if (err) console.error('User login tracking error:', err);
+    }
+  );
 }
 
 function requireRoles(...allowedRoles) {
@@ -977,6 +1007,7 @@ app.post('/login', (req, res) => {
         cookieOptions.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
       }
       res.cookie('token', token, cookieOptions);
+      recordUserLogin({ userId: user.id, email: user.email, role: user.role, method: 'email-password', req });
       if (user.role === 'admin') return res.redirect('/admin');
       if (user.role === 'hr') return res.redirect('/office');
       return res.redirect('/dashboard');
@@ -1006,6 +1037,7 @@ app.post('/hr-login', (req, res) => {
         cookieOptions.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
       }
       res.cookie('token', token, cookieOptions);
+      recordUserLogin({ userId: user.id, email: user.email, role: user.role, method: 'hr-email-password', req });
       return res.redirect('/office');
     });
   });
@@ -1126,6 +1158,7 @@ app.get('/auth/google/callback', async (req, res) => {
         }
         const token = jwt.sign({ id: user.id, email: user.email, role: roleForUser }, SECRET_KEY);
         res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
+        recordUserLogin({ userId: user.id, email: user.email, role: roleForUser, method: 'google-oauth', req });
         if (roleForUser === 'admin') return res.redirect('/admin');
         if (roleForUser === 'hr') return res.redirect('/office');
         return res.redirect('/dashboard');
@@ -1139,6 +1172,7 @@ app.get('/auth/google/callback', async (req, res) => {
         const userId = this.lastID;
         const token = jwt.sign({ id: userId, email, role: assignedRole }, SECRET_KEY);
         res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
+        recordUserLogin({ userId, email, role: assignedRole, method: 'google-oauth', req });
         if (assignedRole === 'hr') return res.redirect('/office');
         res.redirect('/dashboard');
       });
@@ -1178,6 +1212,7 @@ app.post('/auth/google-firebase', async (req, res) => {
         }
         const token = jwt.sign({ id: user.id, email: user.email, role: roleForUser }, SECRET_KEY);
         res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
+        recordUserLogin({ userId: user.id, email: user.email, role: roleForUser, method: 'firebase-email', req });
         if (roleForUser === 'admin') return res.json({ success: true, redirect: '/admin' });
         if (roleForUser === 'hr') return res.json({ success: true, redirect: '/office' });
         return res.json({ success: true, redirect: '/dashboard' });
@@ -1191,6 +1226,7 @@ app.post('/auth/google-firebase', async (req, res) => {
         const userId = this.lastID;
         const token = jwt.sign({ id: userId, email, role: assignedRole }, SECRET_KEY);
         res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
+        recordUserLogin({ userId, email, role: assignedRole, method: 'firebase-email', req });
         if (assignedRole === 'hr') return res.json({ success: true, redirect: '/office' });
         res.json({ success: true, redirect: '/dashboard' });
       });
@@ -2392,40 +2428,48 @@ app.get('/admin', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
                         meetings.forEach(m => { meetingByApp[m.application_id] = m; });
                       }
 
-                      const adminInsightsContext = {
-                        user: req.user,
-                        jobs,
-                        stats: {
-                          applications: applications.length || 0,
-                          interviews: interviews.length || 0,
-                          favorites: resumeUsers.length || 0
-                        },
-                        profileCompletion: 92
-                      };
+                      db.all(`SELECT ul.*, u.name as user_name, u.email as user_email
+                              FROM user_logins ul
+                              LEFT JOIN users u ON u.id = ul.user_id
+                              ORDER BY ul.created_at DESC
+                              LIMIT 15`, [], (loginErr, recentLogins) => {
+                        const adminInsightsContext = {
+                          user: req.user,
+                          jobs,
+                          stats: {
+                            applications: applications.length || 0,
+                            interviews: interviews.length || 0,
+                            favorites: resumeUsers.length || 0
+                          },
+                          profileCompletion: 92
+                        };
 
-                      fetchRealtimeAIInsights(adminInsightsContext).then((aiInsights) => {
-                        res.render('admin', {
-                          jobs,
-                          applications,
-                          resumeUsers,
-                          sessions,
-                          interviews,
-                          responses,
-                          meetingByApp,
-                          aiEnabled: !!openaiClient,
-                          aiInsights
-                        });
-                      }).catch(() => {
-                        res.render('admin', {
-                          jobs,
-                          applications,
-                          resumeUsers,
-                          sessions,
-                          interviews,
-                          responses,
-                          meetingByApp,
-                          aiEnabled: !!openaiClient,
-                          aiInsights: buildRealtimeAIInsights(adminInsightsContext)
+                        fetchRealtimeAIInsights(adminInsightsContext).then((aiInsights) => {
+                          res.render('admin', {
+                            jobs,
+                            applications,
+                            resumeUsers,
+                            sessions,
+                            interviews,
+                            responses,
+                            meetingByApp,
+                            recentLogins: recentLogins || [],
+                            aiEnabled: !!openaiClient,
+                            aiInsights
+                          });
+                        }).catch(() => {
+                          res.render('admin', {
+                            jobs,
+                            applications,
+                            resumeUsers,
+                            sessions,
+                            interviews,
+                            responses,
+                            meetingByApp,
+                            recentLogins: recentLogins || [],
+                            aiEnabled: !!openaiClient,
+                            aiInsights: buildRealtimeAIInsights(adminInsightsContext)
+                          });
                         });
                       });
                     });
