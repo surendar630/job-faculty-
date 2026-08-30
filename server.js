@@ -540,6 +540,19 @@ function verifyToken(req, res, next) {
   });
 }
 
+function requireRoles(...allowedRoles) {
+  const roles = new Set(
+    allowedRoles.flatMap((role) => Array.isArray(role) ? role : [role]).filter(Boolean)
+  );
+
+  return (req, res, next) => {
+    if (!req.user || !roles.has(req.user.role)) {
+      return res.status(403).send('Access denied');
+    }
+    next();
+  };
+}
+
 function analyzeResumeForAICTE(job, resumeText) {
   const category = (job && job.category) ? job.category : 'General';
   const title = (job && job.title) ? job.title : 'Faculty role';
