@@ -3,246 +3,246 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Interview Trainer - Cloud AI</title>
+<title>Interview Trainer </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: transparent; color: #111; min-height: 100vh; }
-  nav { background: #282A35; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-  .logo { font-size: 20px; font-weight: 700; }
-  .nav-links { display: flex; gap: 18px; align-items: center; }
-  .nav-links span, .nav-links a { color: white; cursor: pointer; text-decoration: none; font-size: 14px; }
-  .container { max-width: 980px; margin: 0 auto; padding: 24px 20px; }
-  h1 { font-size: 28px; margin-bottom: 6px; }
-  .subtitle { font-size: 15px; color: #475569; margin-bottom: 18px; }
-  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 22px; }
-  .info-card { background: white; border: 1px solid #ddd; border-radius: 16px; padding: 18px; }
-  .info-card h2 { font-size: 16px; margin-bottom: 10px; color: #111827; }
-  .info-card p, .info-list li { font-size: 14px; color: #475569; line-height: 1.7; }
-  .info-list { list-style: none; padding-left: 0; margin: 0; display: grid; gap: 10px; }
-  .resource-link { color: #04AA6D; text-decoration: none; }
-  .resource-link:hover { text-decoration: underline; }
-  .prep-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 22px; }
-  .prep-card { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); color: white; border-radius: 16px; padding: 18px; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); }
-  .prep-card h3 { font-size: 16px; margin-bottom: 10px; }
-  .prep-card p, .prep-card li { font-size: 14px; line-height: 1.7; color: #e5e7eb; }
-  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.16); margin-bottom: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
-  .prep-list { display: grid; gap: 10px; margin-top: 8px; }
-  .prep-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); padding: 10px 12px; border-radius: 12px; }
-  .prep-item strong { display: block; margin-bottom: 4px; font-size: 14px; }
-  .tabs { display: flex; gap: 8px; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
-  .tab { padding: 12px 18px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: #666; border-bottom: 2px solid transparent; transition: all 0.15s ease; }
-  .tab.active { color: #111; border-bottom-color: #111; }
-  .tab span.badge { margin-left: 8px; display: inline-block; padding: 2px 8px; border-radius: 999px; background: #ddd; color: #475569; font-size: 11px; }
-  .pane { display: none; }
-  .pane.active { display: block; }
-  .field-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
-  .ftab { padding: 8px 14px; border-radius: 999px; border: 1px solid #ddd; background: #fff; color: #475569; cursor: pointer; transition: all 0.15s ease; font-size: 13px; }
-  .ftab.on { background: #111827; color: white; border-color: #111827; }
-  .card { background: white; border: 1px solid #ddd; border-radius: 14px; padding: 20px; margin-bottom: 18px; }
-  .dots { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
-  .dot { width: 12px; height: 12px; border-radius: 999px; background: #ddd; }
-  .dot.cur { background: #666; }
-  .dot.ok { background: #16a34a; }
-  .dot.bad { background: #dc2626; }
-  .q-meta { font-size: 12px; color: #94a3b8; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .q-text { font-size: 16px; line-height: 1.8; color: #111827; margin-bottom: 18px; }
-  .opts { display: grid; gap: 10px; }
-  .opt { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1px solid #ddd; border-radius: 12px; cursor: pointer; transition: all 0.15s ease; background: white; }
-  .opt:hover { border-color: #94a3b8; }
-  .opt.sel { border-color: #04AA6D; background: #f1f1f1; }
-  .opt.ok { border-color: #16a34a; background: #dcfce7; }
-  .opt.bad { border-color: #dc2626; background: #fee2e2; }
-  .okey { width: 26px; height: 26px; min-width: 26px; border-radius: 999px; border: 1px solid #d1d5db; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280; font-weight: 700; }
-  .opt.sel .okey { background: #04AA6D; color: white; border-color: #04AA6D; }
-  .opt.ok .okey { background: #16a34a; color: white; border-color: #16a34a; }
-  .opt.bad .okey { background: #dc2626; color: white; border-color: #dc2626; }
-  .otext { font-size: 14px; color: #111827; line-height: 1.7; }
-  .fb { margin-top: 14px; padding: 12px 14px; border-radius: 12px; line-height: 1.7; font-size: 14px; }
-  .fb.ok { background: #ecfdf5; color: #166534; border: 1px solid #bbf7d0; }
-  .fb.bad { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-  .tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
-  .tag-HTML { background: #ffedd5; color: #c2410c; }
-  .tag-CSS { background: #e8f5e9; color: #425b65; }
-  .tag-JavaScript { background: #fef3c7; color: #a16207; }
-  .tag-Python { background: #dcfce7; color: #15803d; }
-  .tag-DSA { background: #f5d0fe; color: #6b21a8; }
-  .tag-CS { background: #e0f2fe; color: #0369a1; }
-  .nav-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
-  .btn { padding: 10px 18px; border-radius: 10px; border: 1px solid #d1d5db; background: white; color: #111827; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s ease; }
-  .btn:hover { background: #f1f1f1; }
-  .btn.pri { background: #111827; color: white; border-color: #111827; }
-  .btn.suc { background: #16a34a; color: white; border-color: #16a34a; }
-  .sc { margin-left: auto; color: #475569; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
-  .cq-sel { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
-  .cqbtn { padding: 10px 14px; border-radius: 999px; border: 1px solid #ddd; background: white; color: #475569; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s ease; }
-  .cqbtn.on { background: #111827; color: white; border-color: #111827; }
-  .coding-prompt { background: #f1f1f1; border: 1px solid #ddd; border-radius: 12px; padding: 16px; font-size: 15px; line-height: 1.7; margin-bottom: 14px; }
-  textarea.editor { width: 100%; min-height: 250px; border: 2px solid #ddd; border-radius: 14px; padding: 16px; font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.6; resize: vertical; background: white; color: #111827; }
-  textarea.editor:focus { outline: none; border-color: #111827; }
-  .prev-label { margin-top: 18px; margin-bottom: 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #666; font-weight: 700; }
-  .prev-box { border: 1px solid #ddd; border-radius: 14px; background: white; overflow: hidden; min-height: 110px; }
-  iframe#preview { width: 100%; border: none; min-height: 110px; }
-  .ai-box { background: #f1f1f1; border: 1px solid #ddd; border-radius: 14px; padding: 16px; margin-top: 16px; font-size: 14px; line-height: 1.8; color: #111827; }
-  .ai-box .lbl { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: #666; margin-bottom: 10px; }
-  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 18px; }
-  .stat { background: white; border: 1px solid #ddd; border-radius: 14px; padding: 16px; text-align: center; }
-  .stat .v { font-size: 26px; font-weight: 700; color: #111827; }
-  .stat .l { margin-top: 6px; font-size: 12px; color: #666; }
-  .ld::after { content: ''; animation: ld 1.2s steps(4,end) infinite; }
-  @keyframes ld { 0%,20%{content:'.'} 40%{content:'..'} 60%{content:'...'} 80%,100%{content:''} }
-  @media (max-width: 780px) { .tabs { flex-wrap: wrap; } .nav-row { flex-direction: column; align-items: stretch; } }
+ *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ body { font-family: 'DM Sans', sans-serif; background: transparent; color: #111; min-height: 100vh; }
+ nav { background: #282A35; color: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+ .logo { font-size: 20px; font-weight: 700; }
+ .nav-links { display: flex; gap: 18px; align-items: center; }
+ .nav-links span, .nav-links a { color: white; cursor: pointer; text-decoration: none; font-size: 14px; }
+ .container { max-width: 980px; margin: 0 auto; padding: 24px 20px; }
+ h1 { font-size: 28px; margin-bottom: 6px; }
+ .subtitle { font-size: 15px; color: #475569; margin-bottom: 18px; }
+ .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 22px; }
+ .info-card { background: white; border: 1px solid #ddd; border-radius: 16px; padding: 18px; }
+ .info-card h2 { font-size: 16px; margin-bottom: 10px; color: #111827; }
+ .info-card p, .info-list li { font-size: 14px; color: #475569; line-height: 1.7; }
+ .info-list { list-style: none; padding-left: 0; margin: 0; display: grid; gap: 10px; }
+ .resource-link { color: #04AA6D; text-decoration: none; }
+ .resource-link:hover { text-decoration: underline; }
+ .prep-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 22px; }
+ .prep-card { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); color: white; border-radius: 16px; padding: 18px; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); }
+ .prep-card h3 { font-size: 16px; margin-bottom: 10px; }
+ .prep-card p, .prep-card li { font-size: 14px; line-height: 1.7; color: #e5e7eb; }
+ .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.16); margin-bottom: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+ .prep-list { display: grid; gap: 10px; margin-top: 8px; }
+ .prep-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); padding: 10px 12px; border-radius: 12px; }
+ .prep-item strong { display: block; margin-bottom: 4px; font-size: 14px; }
+ .tabs { display: flex; gap: 8px; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+ .tab { padding: 12px 18px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: #666; border-bottom: 2px solid transparent; transition: all 0.15s ease; }
+ .tab.active { color: #111; border-bottom-color: #111; }
+ .tab span.badge { margin-left: 8px; display: inline-block; padding: 2px 8px; border-radius: 999px; background: #ddd; color: #475569; font-size: 11px; }
+ .pane { display: none; }
+ .pane.active { display: block; }
+ .field-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+ .ftab { padding: 8px 14px; border-radius: 999px; border: 1px solid #ddd; background: #fff; color: #475569; cursor: pointer; transition: all 0.15s ease; font-size: 13px; }
+ .ftab.on { background: #111827; color: white; border-color: #111827; }
+ .card { background: white; border: 1px solid #ddd; border-radius: 14px; padding: 20px; margin-bottom: 18px; }
+ .dots { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+ .dot { width: 12px; height: 12px; border-radius: 999px; background: #ddd; }
+ .dot.cur { background: #666; }
+ .dot.ok { background: #16a34a; }
+ .dot.bad { background: #dc2626; }
+ .q-meta { font-size: 12px; color: #94a3b8; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+ .q-text { font-size: 16px; line-height: 1.8; color: #111827; margin-bottom: 18px; }
+ .opts { display: grid; gap: 10px; }
+ .opt { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 1px solid #ddd; border-radius: 12px; cursor: pointer; transition: all 0.15s ease; background: white; }
+ .opt:hover { border-color: #94a3b8; }
+ .opt.sel { border-color: #04AA6D; background: #f1f1f1; }
+ .opt.ok { border-color: #16a34a; background: #dcfce7; }
+ .opt.bad { border-color: #dc2626; background: #fee2e2; }
+ .okey { width: 26px; height: 26px; min-width: 26px; border-radius: 999px; border: 1px solid #d1d5db; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280; font-weight: 700; }
+ .opt.sel .okey { background: #04AA6D; color: white; border-color: #04AA6D; }
+ .opt.ok .okey { background: #16a34a; color: white; border-color: #16a34a; }
+ .opt.bad .okey { background: #dc2626; color: white; border-color: #dc2626; }
+ .otext { font-size: 14px; color: #111827; line-height: 1.7; }
+ .fb { margin-top: 14px; padding: 12px 14px; border-radius: 12px; line-height: 1.7; font-size: 14px; }
+ .fb.ok { background: #ecfdf5; color: #166534; border: 1px solid #bbf7d0; }
+ .fb.bad { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+ .tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+ .tag-HTML { background: #ffedd5; color: #c2410c; }
+ .tag-CSS { background: #e8f5e9; color: #425b65; }
+ .tag-JavaScript { background: #fef3c7; color: #a16207; }
+ .tag-Python { background: #dcfce7; color: #15803d; }
+ .tag-DSA { background: #f5d0fe; color: #6b21a8; }
+ .tag-CS { background: #e0f2fe; color: #0369a1; }
+ .nav-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+ .btn { padding: 10px 18px; border-radius: 10px; border: 1px solid #d1d5db; background: white; color: #111827; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s ease; }
+ .btn:hover { background: #f1f1f1; }
+ .btn.pri { background: #111827; color: white; border-color: #111827; }
+ .btn.suc { background: #16a34a; color: white; border-color: #16a34a; }
+ .sc { margin-left: auto; color: #475569; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+ .cq-sel { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+ .cqbtn { padding: 10px 14px; border-radius: 999px; border: 1px solid #ddd; background: white; color: #475569; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s ease; }
+ .cqbtn.on { background: #111827; color: white; border-color: #111827; }
+ .coding-prompt { background: #f1f1f1; border: 1px solid #ddd; border-radius: 12px; padding: 16px; font-size: 15px; line-height: 1.7; margin-bottom: 14px; }
+ textarea.editor { width: 100%; min-height: 250px; border: 2px solid #ddd; border-radius: 14px; padding: 16px; font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.6; resize: vertical; background: white; color: #111827; }
+ textarea.editor:focus { outline: none; border-color: #111827; }
+ .prev-label { margin-top: 18px; margin-bottom: 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #666; font-weight: 700; }
+ .prev-box { border: 1px solid #ddd; border-radius: 14px; background: white; overflow: hidden; min-height: 110px; }
+ iframe#preview { width: 100%; border: none; min-height: 110px; }
+ .ai-box { background: #f1f1f1; border: 1px solid #ddd; border-radius: 14px; padding: 16px; margin-top: 16px; font-size: 14px; line-height: 1.8; color: #111827; }
+ .ai-box .lbl { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: #666; margin-bottom: 10px; }
+ .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 18px; }
+ .stat { background: white; border: 1px solid #ddd; border-radius: 14px; padding: 16px; text-align: center; }
+ .stat .v { font-size: 26px; font-weight: 700; color: #111827; }
+ .stat .l { margin-top: 6px; font-size: 12px; color: #666; }
+ .ld::after { content: ''; animation: ld 1.2s steps(4,end) infinite; }
+ @keyframes ld { 0%,20%{content:'.'} 40%{content:'..'} 60%{content:'...'} 80%,100%{content:''} }
+ @media (max-width: 780px) { .tabs { flex-wrap: wrap; } .nav-row { flex-direction: column; align-items: stretch; } }
 </style>
 </head>
 <body>
 <nav>
-  <div class="logo">Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'">Dashboard</span>
-    <span onclick="window.location.href='/jobs'">Jobs</span>
-    <span onclick="window.location.href='/profile'">Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
-    <a href="/logout">Logout</a>
-  </div>
+ <div class="logo"></div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/dashboard'">Dashboard</span>
+  <span onclick="window.location.href='/jobs'">Jobs</span>
+  <span onclick="window.location.href='/profile'">Profile</span>
+  <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
+  <a href="/logout">Logout</a>
+ </div>
 </nav>
 <div class="container">
-  <div class="info-grid" style="margin-bottom: 1.5rem;">
-    <% if (aiInsights && aiInsights.length) { %>
-      <% aiInsights.forEach((insight) => { %>
-        <div class="info-card">
-          <h2><i class="fas fa-wand-magic-sparkles"></i> <%= insight.title %></h2>
-          <p><%= insight.description %></p>
-        </div>
-      <% }); %>
-    <% } else { %>
-      <div class="info-card">
-        <h2><i class="fas fa-robot"></i> Cloud AI coaching</h2>
-        <p>Use structured practice to sharpen responses, refine strengths, and build confidence before interviews.</p>
-      </div>
-      <div class="info-card">
-        <h2><i class="fas fa-chart-line"></i> Performance readiness</h2>
-        <p>Review technical accuracy, coding confidence, and communication quality in one place.</p>
-      </div>
-      <div class="info-card">
-        <h2><i class="fas fa-bullseye"></i> Strategic preparation</h2>
-        <p>Train for live interviews with realistic questions, expert feedback, and stronger follow-up responses.</p>
-      </div>
-    <% } %>
-  </div>
-
-  <h1>Advanced Interview Trainer</h1>
-  <p class="subtitle">Practice technical MCQs, coding challenges, behavioral answers, and strong questions to ask during interviews using W3Schools, GeeksforGeeks, MDN, and other trusted learning platforms.</p>
-  <div class="info-grid">
+ <div class="info-grid" style="margin-bottom: 1.5rem;">
+  <% if (aiInsights && aiInsights.length) { %>
+   <% aiInsights.forEach((insight) => { %>
     <div class="info-card">
-      <h2>W3Schools-style review</h2>
-      <p>These practice items follow the same quick-check style used by W3Schools: focused questions, clear answer options, and short explanations. Use them to reinforce core concepts in HTML, CSS, JavaScript, Python, algorithms, and CS fundamentals.</p>
+     <h2><i class="fas fa-wand-magic-sparkles"></i> <%= insight.title %></h2>
+     <p><%= insight.description %></p>
     </div>
-    <div class="info-card">
-      <h2>Recommended resources</h2>
-      <ul class="info-list">
-        <li><a class="resource-link" href="https://www.w3schools.com/" target="_blank" rel="noreferrer">W3Schools</a> – quick tutorials for HTML, CSS, JavaScript, SQL, Python, and web basics.</li>
-        <li><a class="resource-link" href="https://developer.mozilla.org/" target="_blank" rel="noreferrer">MDN Web Docs</a> – deeper browser and web standard documentation.</li>
-        <li><a class="resource-link" href="https://www.freecodecamp.org/" target="_blank" rel="noreferrer">freeCodeCamp</a> – hands-on projects and structured practice.</li>
-        <li><a class="resource-link" href="https://www.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks</a> – strong explanations for DSA, OOP, system design, and interview prep.</li>
-      </ul>
-    </div>
-    <div class="info-card">
-      <h2>External assessment forms</h2>
-      <ul class="info-list">
-        <li><a class="resource-link" href="https://www.w3schools.com/quiztest/quiztest.asp?qtest=HTML" target="_blank" rel="noreferrer">W3Schools HTML Quiz</a> – quick MCQs for HTML basics.</li>
-        <li><a class="resource-link" href="https://www.w3schools.com/quiztest/quiztest.asp?qtest=CSS" target="_blank" rel="noreferrer">W3Schools CSS Quiz</a> – quick MCQs for CSS fundamentals.</li>
-        <li><a class="resource-link" href="https://practice.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks Practice Portal</a> – coding problems and challenge-based drills.</li>
-        <li><a class="resource-link" href="https://www.geeksforgeeks.org/quizzes/" target="_blank" rel="noreferrer">GFG MCQ Quizzes</a> – multiple-choice quizzes on algorithms and data structures.</li>
-      </ul>
-    </div>
-  </div>
+   <% }); %>
+  <% } else { %>
+   <div class="info-card">
+    <h2><i class="fas fa-robot"></i> coaching</h2>
+    <p>Use structured practice to sharpen responses, refine strengths, and build confidence before interviews.</p>
+   </div>
+   <div class="info-card">
+    <h2><i class="fas fa-chart-line"></i> Performance readiness</h2>
+    <p>Review technical accuracy, coding confidence, and communication quality in one place.</p>
+   </div>
+   <div class="info-card">
+    <h2><i class="fas fa-bullseye"></i> Strategic preparation</h2>
+    <p>Train for live interviews with realistic questions, expert feedback, and stronger follow-up responses.</p>
+   </div>
+  <% } %>
+ </div>
 
-  <div class="prep-section">
-    <div class="prep-card">
-      <div class="pill">Advanced interview prep</div>
-      <h3>How to answer and ask smarter interview questions</h3>
-      <div class="prep-list">
-        <div class="prep-item"><strong>Tell me about yourself</strong><p>Use the present-past-future structure and connect your experience to the role.</p></div>
-        <div class="prep-item"><strong>Why this role?</strong><p>Link your expertise to the institution, department, and student impact.</p></div>
-        <div class="prep-item"><strong>STAR answers</strong><p>Practice Situation, Task, Action, Result stories for leadership and teaching-related challenges.</p></div>
-      </div>
-    </div>
-    <div class="prep-card">
-      <div class="pill">Questions to ask</div>
-      <h3>Great questions to ask the interviewer</h3>
-      <div class="prep-list">
-        <div class="prep-item"><strong>What does success look like?</strong><p>Ask about the first 90 days, key priorities, and measurable outcomes.</p></div>
-        <div class="prep-item"><strong>How is the team supported?</strong><p>Learn about mentorship, collaboration, research support, and growth paths.</p></div>
-        <div class="prep-item"><strong>What is the culture?</strong><p>Understand teaching culture, expectations, and how the institution supports its faculty.</p></div>
-      </div>
-    </div>
+ <h1>Advanced Interview Trainer</h1>
+ <p class="subtitle">Practice technical MCQs, coding challenges, behavioral answers, and strong questions to ask during interviews using W3Schools, GeeksforGeeks, MDN, and other trusted learning platforms.</p>
+ <div class="info-grid">
+  <div class="info-card">
+   <h2>W3Schools-style review</h2>
+   <p>These practice items follow the same quick-check style used by W3Schools: focused questions, clear answer options, and short explanations. Use them to reinforce core concepts in HTML, CSS, JavaScript, Python, algorithms, and CS fundamentals.</p>
   </div>
+  <div class="info-card">
+   <h2>Recommended resources</h2>
+   <ul class="info-list">
+    <li><a class="resource-link" href="https://www.w3schools.com/" target="_blank" rel="noreferrer">W3Schools</a> – quick tutorials for HTML, CSS, JavaScript, SQL, Python, and web basics.</li>
+    <li><a class="resource-link" href="https://developer.mozilla.org/" target="_blank" rel="noreferrer">MDN Web Docs</a> – deeper browser and web standard documentation.</li>
+    <li><a class="resource-link" href="https://www.freecodecamp.org/" target="_blank" rel="noreferrer">freeCodeCamp</a> – hands-on projects and structured practice.</li>
+    <li><a class="resource-link" href="https://www.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks</a> – strong explanations for DSA, OOP, system design, and interview prep.</li>
+   </ul>
+  </div>
+  <div class="info-card">
+   <h2>External assessment forms</h2>
+   <ul class="info-list">
+    <li><a class="resource-link" href="https://www.w3schools.com/quiztest/quiztest.asp?qtest=HTML" target="_blank" rel="noreferrer">W3Schools HTML Quiz</a> – quick MCQs for HTML basics.</li>
+    <li><a class="resource-link" href="https://www.w3schools.com/quiztest/quiztest.asp?qtest=CSS" target="_blank" rel="noreferrer">W3Schools CSS Quiz</a> – quick MCQs for CSS fundamentals.</li>
+    <li><a class="resource-link" href="https://practice.geeksforgeeks.org/" target="_blank" rel="noreferrer">GeeksforGeeks Practice Portal</a> – coding problems and challenge-based drills.</li>
+    <li><a class="resource-link" href="https://www.geeksforgeeks.org/quizzes/" target="_blank" rel="noreferrer">GFG MCQ Quizzes</a> – multiple-choice quizzes on algorithms and data structures.</li>
+   </ul>
+  </div>
+ </div>
 
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('mcq')">MCQ round <span class="badge" id="mcq-badge">0/0</span></button>
-    <button class="tab" onclick="switchTab('code')">&lt;/&gt; Coding round</button>
-    <button class="tab" onclick="switchTab('results')">Results</button>
+ <div class="prep-section">
+  <div class="prep-card">
+   <div class="pill">Advanced interview prep</div>
+   <h3>How to answer and ask smarter interview questions</h3>
+   <div class="prep-list">
+    <div class="prep-item"><strong>Tell me about yourself</strong><p>Use the present-past-future structure and connect your experience to the role.</p></div>
+    <div class="prep-item"><strong>Why this role?</strong><p>Link your expertise to the institution, department, and student impact.</p></div>
+    <div class="prep-item"><strong>STAR answers</strong><p>Practice Situation, Task, Action, Result stories for leadership and teaching-related challenges.</p></div>
+   </div>
   </div>
+  <div class="prep-card">
+   <div class="pill">Questions to ask</div>
+   <h3>Great questions to ask the interviewer</h3>
+   <div class="prep-list">
+    <div class="prep-item"><strong>What does success look like?</strong><p>Ask about the first 90 days, key priorities, and measurable outcomes.</p></div>
+    <div class="prep-item"><strong>How is the team supported?</strong><p>Learn about mentorship, collaboration, research support, and growth paths.</p></div>
+    <div class="prep-item"><strong>What is the culture?</strong><p>Understand teaching culture, expectations, and how the institution supports its faculty.</p></div>
+   </div>
+  </div>
+ </div>
 
-  <div class="pane active" id="pane-mcq">
-    <div class="field-tabs" id="field-tabs"></div>
-    <div class="dots" id="dots"></div>
-    <div class="card" id="mcq-card">
-      <div class="q-meta" id="q-meta"></div>
-      <div class="q-text" id="q-text"></div>
-      <div class="opts" id="opts"></div>
-      <div id="fb"></div>
-    </div>
-    <div class="nav-row">
-      <span class="sc">★ <span id="score-txt">0 / 0</span></span>
-      <button class="btn" id="btn-prev" onclick="moveQ(-1)" style="display:none">← Prev</button>
-      <button class="btn pri" id="btn-next" onclick="moveQ(1)">Next →</button>
-      <button class="btn suc" id="btn-done-mcq" style="display:none" onclick="switchTab('code')">Go to coding →</button>
-    </div>
-  </div>
+ <div class="tabs">
+  <button class="tab active" onclick="switchTab('mcq')">MCQ round <span class="badge" id="mcq-badge">0/0</span></button>
+  <button class="tab" onclick="switchTab('code')">&lt;/&gt; Coding round</button>
+  <button class="tab" onclick="switchTab('results')">Results</button>
+ </div>
 
-  <div class="pane" id="pane-code">
-    <div class="cq-sel" id="cq-sel"></div>
-    <div class="coding-prompt" id="cq-prompt"></div>
-    <textarea class="editor" id="editor" placeholder="Type your code here..."></textarea>
-    <div class="prev-label">Live preview</div>
-    <div class="prev-box"><iframe id="preview" title="Live code preview"></iframe></div>
-    <div id="ai-area"></div>
-    <div class="nav-row">
-      <button class="btn" onclick="loadExample()">Load example</button>
-      <button class="btn" onclick="runPreview()">Run</button>
-      <button class="btn pri" onclick="submitCode()">Get AI feedback ↗</button>
-      <button class="btn suc" id="btn-results" style="display:none" onclick="switchTab('results')">See results →</button>
-    </div>
+ <div class="pane active" id="pane-mcq">
+  <div class="field-tabs" id="field-tabs"></div>
+  <div class="dots" id="dots"></div>
+  <div class="card" id="mcq-card">
+   <div class="q-meta" id="q-meta"></div>
+   <div class="q-text" id="q-text"></div>
+   <div class="opts" id="opts"></div>
+   <div id="fb"></div>
   </div>
+  <div class="nav-row">
+   <span class="sc">★ <span id="score-txt">0 / 0</span></span>
+   <button class="btn" id="btn-prev" onclick="moveQ(-1)" style="display:none">← Prev</button>
+   <button class="btn pri" id="btn-next" onclick="moveQ(1)">Next →</button>
+   <button class="btn suc" id="btn-done-mcq" style="display:none" onclick="switchTab('code')">Go to coding →</button>
+  </div>
+ </div>
 
-  <div class="pane" id="pane-results">
-    <div class="card" id="result-summary" style="display:none;"></div>
-    <div class="stat-grid" id="stat-grid"></div>
-    <div class="card" id="result-detail"></div>
-    <div class="nav-row">
-      <button class="btn pri" onclick="resetAll()">Restart</button>
-    </div>
+ <div class="pane" id="pane-code">
+  <div class="cq-sel" id="cq-sel"></div>
+  <div class="coding-prompt" id="cq-prompt"></div>
+  <textarea class="editor" id="editor" placeholder="Type your code here..."></textarea>
+  <div class="prev-label">Live preview</div>
+  <div class="prev-box"><iframe id="preview" title="Live code preview"></iframe></div>
+  <div id="ai-area"></div>
+  <div class="nav-row">
+   <button class="btn" onclick="loadExample()">Load example</button>
+   <button class="btn" onclick="runPreview()">Run</button>
+   <button class="btn pri" onclick="submitCode()">Get AI feedback ↗</button>
+   <button class="btn suc" id="btn-results" style="display:none" onclick="switchTab('results')">See results →</button>
   </div>
+ </div>
+
+ <div class="pane" id="pane-results">
+  <div class="card" id="result-summary" style="display:none;"></div>
+  <div class="stat-grid" id="stat-grid"></div>
+  <div class="card" id="result-detail"></div>
+  <div class="nav-row">
+   <button class="btn pri" onclick="resetAll()">Restart</button>
+  </div>
+ </div>
 </div>
 
 <script>
 const practiceSet = <%- JSON.stringify(practiceSet || { summary: 'Professional mock interview set', mcqs: [], coding: [] }) %>;
 const FIELDS = ["All", ...(practiceSet.mcqs || []).map(q => q.field || "Professional")];
 const ALL_Q = (practiceSet.mcqs || []).map((q, index) => ({
-  f: q.field || "Professional",
-  q: q.question || `Question ${index + 1}`,
-  o: Array.isArray(q.options) && q.options.length >= 4 ? q.options : ["Option A", "Option B", "Option C", "Option D"],
-  a: Number.isInteger(q.answerIndex) ? q.answerIndex : 0,
-  e: q.explanation || "This is a professional interview question designed to test your readiness and decision quality."
+ f: q.field || "Professional",
+ q: q.question || `Question ${index + 1}`,
+ o: Array.isArray(q.options) && q.options.length >= 4 ? q.options : ["Option A", "Option B", "Option C", "Option D"],
+ a: Number.isInteger(q.answerIndex) ? q.answerIndex : 0,
+ e: q.explanation || "This is a professional interview question designed to test your readiness and decision quality."
 }));
 const CODING_Q = (practiceSet.coding || []).map((item, index) => ({
-  id: index,
-  f: item.field || "Professional",
-  label: item.title || `Coding task ${index + 1}`,
-  prompt: item.prompt || 'Solve this challenge using a strong, structured approach.',
-  ex: item.starter || '<div>Start from here</div>'
+ id: index,
+ f: item.field || "Professional",
+ label: item.title || `Coding task ${index + 1}`,
+ prompt: item.prompt || 'Solve this challenge using a strong, structured approach.',
+ ex: item.starter || '<div>Start from here</div>'
 }));
 let curField = "All", curIdx = 0, answered = {}, selCQ = 0, codeRating = "", codeFeedback = "";
 function filteredQ() { return curField === "All" ? ALL_Q : ALL_Q.filter(q => q.f === curField); }
@@ -250,9 +250,9 @@ function tagEl(field) { return `<span class="tag tag-${field}">${field}</span>`;
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 function renderFieldTabs() { const c = document.getElementById("field-tabs"); c.innerHTML = ""; FIELDS.forEach(f => { const b = document.createElement("button"); b.className = "ftab" + (f === curField ? " on" : ""); b.textContent = f; b.onclick = () => { curField = f; curIdx = 0; renderFieldTabs(); renderQ(); }; c.appendChild(b); }); }
 function renderDots() { const qs = filteredQ(); const c = document.getElementById("dots"); c.innerHTML = ""; qs.forEach((q, i) => { const key = ALL_Q.indexOf(q); const d = document.createElement("div"); d.className = "dot" + (i === curIdx ? " cur" : answered[key] === true ? " ok" : answered[key] === false ? " bad" : ""); c.appendChild(d); }); }
-function renderQ() { const qs = filteredQ(); if (!qs.length) { document.getElementById("mcq-card").innerHTML = '<p style="font-size:14px;color:#666;padding:8px 0">No questions in this category.</p>'; renderDots(); return; } if (curIdx >= qs.length) curIdx = qs.length - 1; const q = qs[curIdx]; const key = ALL_Q.indexOf(q); const isAnswered = answered[key] !== undefined; document.getElementById("q-meta").innerHTML = `<span>Question ${curIdx + 1} of ${qs.length}</span>${tagEl(q.f)}`; document.getElementById("q-text").textContent = q.q; const opts = document.getElementById("opts"); opts.innerHTML = ""; ["A","B","C","D"].forEach((k, i) => { const d = document.createElement("div"); let cls = "opt" + (isAnswered ? " locked" : ""); if (isAnswered) { if (i === q.a) cls += " ok"; else if (i === answered[key] && answered[key] !== q.a) cls += " bad"; } d.className = cls; d.innerHTML = `<span class="okey">${k}</span><span class="otext">${q.o[i]}</span>`; if (!isAnswered) d.onclick = () => selectOpt(key, q, i); opts.appendChild(d); }); const fb = document.getElementById("fb"); if (isAnswered) { const correct = answered[key] === q.a; fb.innerHTML = `<div class="fb ${correct ? 'ok' : 'bad'}">${correct ? '&#10003; Correct! ' : '&#10007; Not quite. '}${q.e}</div>`; } else { fb.innerHTML = ""; } document.getElementById("btn-prev").style.display = curIdx === 0 ? "none" : ""; const isLast = curIdx === qs.length - 1; document.getElementById("btn-next").style.display = isLast ? "none" : ""; document.getElementById("btn-done-mcq").style.display = isLast && isAnswered ? "" : "none"; renderDots(); updateBadge(); }
+function renderQ() { const qs = filteredQ(); if (!qs.length) { document.getElementById("mcq-card").innerHTML = '<p style="font-size:14px;color:#666;padding:8px 0">No questions in this category.</p>'; renderDots(); return; } if (curIdx >= qs.length) curIdx = qs.length 1; const q = qs[curIdx]; const key = ALL_Q.indexOf(q); const isAnswered = answered[key] !== undefined; document.getElementById("q-meta").innerHTML = `<span>Question ${curIdx + 1} of ${qs.length}</span>${tagEl(q.f)}`; document.getElementById("q-text").textContent = q.q; const opts = document.getElementById("opts"); opts.innerHTML = ""; ["A","B","C","D"].forEach((k, i) => { const d = document.createElement("div"); let cls = "opt" + (isAnswered ? " locked" : ""); if (isAnswered) { if (i === q.a) cls += " ok"; else if (i === answered[key] && answered[key] !== q.a) cls += " bad"; } d.className = cls; d.innerHTML = `<span class="okey">${k}</span><span class="otext">${q.o[i]}</span>`; if (!isAnswered) d.onclick = () => selectOpt(key, q, i); opts.appendChild(d); }); const fb = document.getElementById("fb"); if (isAnswered) { const correct = answered[key] === q.a; fb.innerHTML = `<div class="fb ${correct ? 'ok' : 'bad'}">${correct ? '&#10003; Correct! ' : '&#10007; Not quite. '}${q.e}</div>`; } else { fb.innerHTML = ""; } document.getElementById("btn-prev").style.display = curIdx === 0 ? "none" : ""; const isLast = curIdx === qs.length 1; document.getElementById("btn-next").style.display = isLast ? "none" : ""; document.getElementById("btn-done-mcq").style.display = isLast && isAnswered ? "" : "none"; renderDots(); updateBadge(); }
 function selectOpt(key, q, i) { answered[key] = i; renderQ(); }
-function moveQ(dir) { const qs = filteredQ(); curIdx = Math.max(0, Math.min(qs.length - 1, curIdx + dir)); renderQ(); }
+function moveQ(dir) { const qs = filteredQ(); curIdx = Math.max(0, Math.min(qs.length 1, curIdx + dir)); renderQ(); }
 function updateBadge() { const qs = filteredQ(); const done = qs.filter(q => answered[ALL_Q.indexOf(q)] !== undefined).length; const correct = qs.filter(q => answered[ALL_Q.indexOf(q)] === q.a).length; document.getElementById("mcq-badge").textContent = `${correct}/${done}`; document.getElementById("score-txt").textContent = `${correct} / ${done} correct`; }
 function renderCodingPane() { const sel = document.getElementById("cq-sel"); sel.innerHTML = ""; CODING_Q.forEach((q, i) => { const b = document.createElement("button"); b.className = "cqbtn" + (i === selCQ ? " on" : ""); b.innerHTML = `${tagEl(q.f)} ${q.label}`; b.onclick = () => { selCQ = i; renderCodingPane(); }; sel.appendChild(b); }); const cq = CODING_Q[selCQ]; document.getElementById("cq-prompt").innerHTML = `<strong>Task:</strong> ${cq.prompt.replace(/\n/g, "<br>")}`; document.getElementById("ai-area").innerHTML = ""; document.getElementById("btn-results").style.display = "none"; }
 function loadExample() { document.getElementById("editor").value = CODING_Q[selCQ].ex; runPreview(); }
@@ -260,26 +260,26 @@ function runPreview() { const code = document.getElementById("editor").value; co
 document.getElementById("editor").addEventListener("input", debounce(runPreview, 700));
 async function submitCode() { const code = document.getElementById("editor").value.trim(); if (!code) { alert("Please write some code first!"); return; } runPreview(); const area = document.getElementById("ai-area"); area.innerHTML = `<div class="ai-box"><div class="lbl">AI feedback</div><span class="ld">Reviewing your code</span></div>`; const cq = CODING_Q[selCQ]; try { const res = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, messages: [{ role: "user", content: `You are a technical interview coach. A candidate submitted this solution:\n\nTask: ${cq.prompt}\n\nCode:\n${code}\n\nGive concise feedback (3-4 sentences): correctness, code quality, and one improvement tip. End with: Rating: Excellent / Good / Needs improvement.` }] }) }); const data = await res.json(); const text = data.content?.map(b => b.text || "").join("") || "Could not get feedback."; codeRating = text.includes("Excellent") ? "Excellent" : text.includes("Good") ? "Good" : "Needs work"; codeFeedback = text; area.innerHTML = `<div class="ai-box"><div class="lbl">AI feedback</div>${text.replace(/\n/g, "<br>")}</div>`; document.getElementById("btn-results").style.display = ""; } catch(e) { area.innerHTML = `<div class="ai-box"><div class="lbl">AI feedback</div>Could not connect to AI. Check your connection and API key.</div>`; } }
 function showResults() { 
-  const correct = ALL_Q.filter((q, i) => answered[i] === q.a).length; 
-  const done = Object.keys(answered).length; 
-  const pct = done ? Math.round((correct / done) * 100) : 0; 
-  const overallLabel = pct >= 80 && codeRating === "Excellent" ? "Outstanding" : pct >= 70 ? "Strong" : pct >= 55 ? "Developing" : "Needs improvement";
-  const summary = `Interview readiness: ${overallLabel}. Candidate scored ${pct}% in the mock assessment and ${codeRating || 'No coding'} coding evaluation, indicating ${overallLabel === 'Outstanding' ? 'high confidence for a shortlist review' : overallLabel === 'Strong' ? 'good readiness with minor polishing before the next panel' : overallLabel === 'Developing' ? 'promising progress but more practice needed before final review' : 'additional preparation is recommended before moving forward'}.`;
-  document.getElementById("result-summary").style.display = "block";
-  document.getElementById("result-summary").innerHTML = `<div style="padding:0.25rem 0 0.5rem;"><div style="font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#666; font-weight:700; margin-bottom:0.5rem;">Professional score summary</div><div style="font-size:28px; font-weight:800; color:#111827; margin-bottom:8px;">${pct}%</div><div style="font-size:14px; color:#111827; line-height:1.7;">${summary}</div></div>`;
-  document.getElementById("stat-grid").innerHTML = `<div class="stat"><div class="v">${correct}/${ALL_Q.length}</div><div class="l">MCQ correct</div></div><div class="stat"><div class="v">${pct}%</div><div class="l">MCQ accuracy</div></div><div class="stat"><div class="v">${codeRating || "—"}</div><div class="l">Code rating</div></div><div class="stat"><div class="v">${overallLabel}</div><div class="l">Overall</div></div>`; document.getElementById("result-detail").innerHTML = codeFeedback ? `<p style="font-size:14px;color:#475569;line-height:1.7"><strong style="color:#111">Coding feedback:</strong><br>${codeFeedback}</p>` : `<p style="font-size:14px;color:#666">Complete the coding round to see full feedback here.</p>`; }
+ const correct = ALL_Q.filter((q, i) => answered[i] === q.a).length; 
+ const done = Object.keys(answered).length; 
+ const pct = done ? Math.round((correct / done) * 100) : 0; 
+ const overallLabel = pct >= 80 && codeRating === "Excellent" ? "Outstanding" : pct >= 70 ? "Strong" : pct >= 55 ? "Developing" : "Needs improvement";
+ const summary = `Interview readiness: ${overallLabel}. Candidate scored ${pct}% in the mock assessment and ${codeRating || 'No coding'} coding evaluation, indicating ${overallLabel === 'Outstanding' ? 'high confidence for a shortlist review' : overallLabel === 'Strong' ? 'good readiness with minor polishing before the next panel' : overallLabel === 'Developing' ? 'promising progress but more practice needed before final review' : 'additional preparation is recommended before moving forward'}.`;
+ document.getElementById("result-summary").style.display = "block";
+ document.getElementById("result-summary").innerHTML = `<div style="padding:0.25rem 0 0.5rem;"><div style="font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#666; font-weight:700; margin-bottom:0.5rem;">Professional score summary</div><div style="font-size:28px; font-weight:800; color:#111827; margin-bottom:8px;">${pct}%</div><div style="font-size:14px; color:#111827; line-height:1.7;">${summary}</div></div>`;
+ document.getElementById("stat-grid").innerHTML = `<div class="stat"><div class="v">${correct}/${ALL_Q.length}</div><div class="l">MCQ correct</div></div><div class="stat"><div class="v">${pct}%</div><div class="l">MCQ accuracy</div></div><div class="stat"><div class="v">${codeRating || "—"}</div><div class="l">Code rating</div></div><div class="stat"><div class="v">${overallLabel}</div><div class="l">Overall</div></div>`; document.getElementById("result-detail").innerHTML = codeFeedback ? `<p style="font-size:14px;color:#475569;line-height:1.7"><strong style="color:#111">Coding feedback:</strong><br>${codeFeedback}</p>` : `<p style="font-size:14px;color:#666">Complete the coding round to see full feedback here.</p>`; }
 function switchTab(name) { const tabs = document.querySelectorAll(".tab"); tabs.forEach((t, idx) => t.classList.toggle("active", ["mcq","code","results"][idx] === name)); const panes = document.querySelectorAll(".pane"); panes.forEach((p, idx) => p.classList.toggle("active", ["pane-mcq","pane-code","pane-results"][idx] === "pane-" + name)); if (name === "results") showResults(); }
 function resetAll() { answered = {}; selCQ = 0; codeRating = ""; codeFeedback = ""; curIdx = 0; curField = "All"; document.getElementById("editor").value = ""; document.getElementById("result-summary").style.display = "none"; renderFieldTabs(); renderQ(); renderCodingPane(); switchTab("mcq"); }
 renderFieldTabs(); renderQ(); renderCodingPane();
 
 (function() {
-  const params = new URLSearchParams(window.location.search);
-  const tab = params.get('tab');
-  if (tab === 'code' || tab === 'results') {
-    switchTab(tab);
-  } else {
-    switchTab('mcq');
-  }
+ const params = new URLSearchParams(window.location.search);
+ const tab = params.get('tab');
+ if (tab === 'code' || tab === 'results') {
+  switchTab(tab);
+ } else {
+  switchTab('mcq');
+ }
 })();
 </script>
 </body>

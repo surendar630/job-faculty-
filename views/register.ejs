@@ -4,283 +4,283 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="google9a428d7d0a30a656" />
-<title>Register - Cloud AI</title>
+<title>Register </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
 body {
-  background:
-    linear-gradient(135deg, rgba(2, 8, 20, 0.74), rgba(8, 22, 31, 0.8)),
-    url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat fixed;
+ background:
+  linear-gradient(135deg, rgba(2, 8, 20, 0.74), rgba(8, 22, 31, 0.8)),
+  url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat fixed;
 }
 
 .register-hero {
-  background: linear-gradient(120deg, rgba(4, 15, 23, 0.55), rgba(8, 22, 31, 0.5));
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  position: relative;
-  overflow: hidden;
+ background: linear-gradient(120deg, rgba(4, 15, 23, 0.55), rgba(8, 22, 31, 0.5));
+ min-height: 100vh;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ padding: 2rem;
+ position: relative;
+ overflow: hidden;
 }
 
 .register-hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(30, 64, 175, 0.15), transparent);
-  border-radius: 50%;
-  pointer-events: none;
+ content: '';
+ position: absolute;
+ top: -50%;
+ right: -50%;
+ width: 600px;
+ height: 600px;
+ background: radial-gradient(circle, rgba(30, 64, 175, 0.15), transparent);
+ border-radius: 50%;
+ pointer-events: none;
 }
 
 .register-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-  max-width: 1200px;
-  width: 100%;
-  position: relative;
-  z-index: 1;
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 3rem;
+ align-items: center;
+ max-width: 1200px;
+ width: 100%;
+ position: relative;
+ z-index: 1;
 }
 
 .register-info {
-  color: white;
+ color: white;
 }
 
 .register-info h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: white;
+ font-size: 2.5rem;
+ margin-bottom: 1rem;
+ color: white;
 }
 
 .register-info p {
-  color: rgba(255,255,255,0.9);
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+ color: rgba(255,255,255,0.9);
+ font-size: 1.1rem;
+ margin-bottom: 2rem;
 }
 
 .form {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: var(--shadow-xl);
-  border-top: 4px solid #059862;
+ background: white;
+ padding: 2.5rem;
+ border-radius: 16px;
+ box-shadow: var(--shadow-xl);
+ border-top: 4px solid #059862;
 }
 
 .form h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+ text-align: center;
+ margin-bottom: 1.5rem;
+ background: linear-gradient(135deg, #04AA6D, #059862);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ background-clip: text;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+ margin-bottom: 1.5rem;
 }
 
 .form-group label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: #111;
+ display: block;
+ font-weight: 500;
+ margin-bottom: 0.5rem;
+ color: #111;
 }
 
 .form-group input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 0.95rem;
-  transition: var(--transition);
+ width: 100%;
+ padding: 0.75rem 1rem;
+ border: 1px solid #ddd;
+ border-radius: 8px;
+ font-family: inherit;
+ font-size: 0.95rem;
+ transition: var(--transition);
 }
 
 .form-group input:focus {
-  outline: none;
-  border-color: #059862;
-  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+ outline: none;
+ border-color: #059862;
+ box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 
 .form-group button {
-  width: 100%;
-  padding: 0.75rem;
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 1rem;
-  box-shadow: var(--shadow-md);
+ width: 100%;
+ padding: 0.75rem;
+ background: linear-gradient(135deg, #04AA6D, #059862);
+ color: white;
+ border: none;
+ border-radius: 8px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: var(--transition);
+ font-size: 1rem;
+ box-shadow: var(--shadow-md);
 }
 
 .form-group button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+ transform: translateY(-2px);
+ box-shadow: var(--shadow-lg);
 }
 
 .btn-google {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 0.75rem;
-  background: #4285f4;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 1rem;
-  text-decoration: none;
-  box-shadow: var(--shadow-md);
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ width: 100%;
+ padding: 0.75rem;
+ background: #4285f4;
+ color: white;
+ border: none;
+ border-radius: 8px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: var(--transition);
+ font-size: 1rem;
+ text-decoration: none;
+ box-shadow: var(--shadow-md);
 }
 
 .btn-google:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  background: #3367d6;
+ transform: translateY(-2px);
+ box-shadow: var(--shadow-lg);
+ background: #3367d6;
 }
 
 .btn-google i {
-  margin-right: 0.75rem;
+ margin-right: 0.75rem;
 }
 
 .form p {
-  text-align: center;
-  margin-top: 1.5rem;
-  color: #666;
+ text-align: center;
+ margin-top: 1.5rem;
+ color: #666;
 }
 
 .form a {
-  color: #04AA6D;
-  font-weight: 600;
+ color: #04AA6D;
+ font-weight: 600;
 }
 
 .form p {
-  text-align: center;
-  margin-top: 1.5rem;
-  color: #666;
+ text-align: center;
+ margin-top: 1.5rem;
+ color: #666;
 }
 
 .form a {
-  color: #04AA6D;
-  font-weight: 600;
+ color: #04AA6D;
+ font-weight: 600;
 }
 
 @media (max-width: 768px) {
-  .register-content {
-    grid-template-columns: 1fr;
-  }
-  
-  .register-info {
-    display: none;
-  }
-  
-  .form {
-    max-width: 100%;
-    width: 100%;
-  }
+ .register-content {
+  grid-template-columns: 1fr;
+ }
+ 
+ .register-info {
+  display: none;
+ }
+ 
+ .form {
+  max-width: 100%;
+  width: 100%;
+ }
 }
 </style>
 </head>
 <body>
 <div class="register-hero">
-  <div class="register-content">
-    <div class="register-info">
-      <h1>Join Cloud AI</h1>
-      <p>Start your journey to find the perfect academic position or manage your university's hiring process.</p>
-    </div>
-    
-    <div class="form">
-      <h2><i class="fas fa-user-plus"></i> Create Account</h2>
-      <form action="/register" method="POST">
-        <div class="form-group">
-          <label for="name"><i class="fas fa-user"></i> Full Name</label>
-          <input type="text" id="name" name="name" placeholder="John Doe" required>
-        </div>
-        <div class="form-group">
-          <label for="email"><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required>
-        </div>
-        <div class="form-group">
-          <label for="role"><i class="fas fa-user-tag"></i> Account Type</label>
-          <select id="role" name="role" required>
-            <option value="user">Candidate</option>
-            <option value="hr">Office / HR</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="password"><i class="fas fa-lock"></i> Password</label>
-          <input type="password" id="password" name="password" placeholder="••••••••" required>
-        </div>
-        <div class="form-group">
-          <button type="submit"><i class="fas fa-arrow-right"></i> Create Account</button>
-        </div>
-      </form>
-      <div style="margin: 1.5rem 0; display: flex; align-items: center; gap: 1rem;">
-        <div style="flex: 1; height: 1px; background: #ddd;"></div>
-        <span style="color: #666; font-size: 0.85rem;">OR</span>
-        <div style="flex: 1; height: 1px; background: #ddd;"></div>
-      </div>
-      <div class="form-group">
-        <button id="firebaseGoogleBtn" type="button" class="btn-google"><i class="fab fa-google"></i> Sign up with Google</button>
-      </div>
-      <div class="form-group">
-        <button id="emailLinkBtn" type="button" class="btn btn-secondary"><i class="fas fa-envelope"></i> Email me a sign-in link</button>
-        <div id="emailLinkStatus" class="auth-link-status" role="status" aria-live="polite"></div>
-      </div>
-      <p>Already have an account? <a href="/login"><i class="fas fa-sign-in-alt"></i> Login here</a></p>
-    </div>
+ <div class="register-content">
+  <div class="register-info">
+   <h1>Join </h1>
+   <p>Start your journey to find the perfect academic position or manage your university's hiring process.</p>
   </div>
+  
+  <div class="form">
+   <h2><i class="fas fa-user-plus"></i> Create Account</h2>
+   <form action="/register" method="POST">
+    <div class="form-group">
+     <label for="name"><i class="fas fa-user"></i> Full Name</label>
+     <input type="text" id="name" name="name" placeholder="John Doe" required>
+    </div>
+    <div class="form-group">
+     <label for="email"><i class="fas fa-envelope"></i> Email</label>
+     <input type="email" id="email" name="email" placeholder="your@email.com" required>
+    </div>
+    <div class="form-group">
+     <label for="role"><i class="fas fa-user-tag"></i> Account Type</label>
+     <select id="role" name="role" required>
+      <option value="user">Candidate</option>
+      <option value="hr">Office / HR</option>
+     </select>
+    </div>
+    <div class="form-group">
+     <label for="password"><i class="fas fa-lock"></i> Password</label>
+     <input type="password" id="password" name="password" placeholder="••••••••" required>
+    </div>
+    <div class="form-group">
+     <button type="submit"><i class="fas fa-arrow-right"></i> Create Account</button>
+    </div>
+   </form>
+   <div style="margin: 1.5rem 0; display: flex; align-items: center; gap: 1rem;">
+    <div style="flex: 1; height: 1px; background: #ddd;"></div>
+    <span style="color: #666; font-size: 0.85rem;">OR</span>
+    <div style="flex: 1; height: 1px; background: #ddd;"></div>
+   </div>
+   <div class="form-group">
+    <button id="firebaseGoogleBtn" type="button" class="btn-google"><i class="fab fa-google"></i> Sign up with Google</button>
+   </div>
+   <div class="form-group">
+    <button id="emailLinkBtn" type="button" class="btn btn-secondary"><i class="fas fa-envelope"></i> Email me a sign-in link</button>
+    <div id="emailLinkStatus" class="auth-link-status" role="status" aria-live="polite"></div>
+   </div>
+   <p>Already have an account? <a href="/login"><i class="fas fa-sign-in-alt"></i> Login here</a></p>
+  </div>
+ </div>
 </div>
 </body>
 <script type="module">
-  import { describeFirebaseAuthError, initFirebaseAuth, signInWithPopup } from '/firebase-config.js';
-  import { setupEmailLinkAuth } from '/email-link-auth.js';
+ import { describeFirebaseAuthError, initFirebaseAuth, signInWithPopup } from '/firebase-config.js';
+ import { setupEmailLinkAuth } from '/email-link-auth.js';
 
-  setupEmailLinkAuth({ emailId: 'email', buttonId: 'emailLinkBtn', statusId: 'emailLinkStatus', redirectFallback: '/dashboard' });
+ setupEmailLinkAuth({ emailId: 'email', buttonId: 'emailLinkBtn', statusId: 'emailLinkStatus', redirectFallback: '/dashboard' });
 
-  const completeGoogleSignIn = async (result) => {
-    const idToken = await result.user.getIdToken();
-    const response = await fetch('/auth/google-firebase', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken })
-    });
-    if (!response.ok) throw new Error(await response.text());
-    const data = await response.json();
-    window.location.href = data.redirect || '/dashboard';
-  };
-  const firebaseAuth = await initFirebaseAuth();
-  try {
-    const redirectResult = await firebaseAuth.getRedirectResult(firebaseAuth.auth);
-    if (redirectResult?.user) await completeGoogleSignIn(redirectResult);
-  } catch (error) {
-    console.error('Firebase Google redirect sign-in error:', error);
-    alert(describeFirebaseAuthError(error));
-  }
-
-  document.getElementById('firebaseGoogleBtn').addEventListener('click', async () => {
-    try {
-      try {
-        await completeGoogleSignIn(await signInWithPopup(firebaseAuth.auth, firebaseAuth.googleProvider));
-      } catch (error) {
-        if (error?.code === 'auth/popup-closed-by-user' || error?.code === 'auth/cancelled-popup-request') throw error;
-        window.location.assign('/auth/google');
-      }
-    } catch (error) {
-      console.error('Firebase Google sign-in error:', error);
-      alert(describeFirebaseAuthError(error));
-    }
+ const completeGoogleSignIn = async (result) => {
+  const idToken = await result.user.getIdToken();
+  const response = await fetch('/auth/google-firebase', {
+   method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken })
   });
+  if (!response.ok) throw new Error(await response.text());
+  const data = await response.json();
+  window.location.href = data.redirect || '/dashboard';
+ };
+ const firebaseAuth = await initFirebaseAuth();
+ try {
+  const redirectResult = await firebaseAuth.getRedirectResult(firebaseAuth.auth);
+  if (redirectResult?.user) await completeGoogleSignIn(redirectResult);
+ } catch (error) {
+  console.error('Firebase Google redirect sign-in error:', error);
+  alert(describeFirebaseAuthError(error));
+ }
+
+ document.getElementById('firebaseGoogleBtn').addEventListener('click', async () => {
+  try {
+   try {
+    await completeGoogleSignIn(await signInWithPopup(firebaseAuth.auth, firebaseAuth.googleProvider));
+   } catch (error) {
+    if (error?.code === 'auth/popup-closed-by-user' || error?.code === 'auth/cancelled-popup-request') throw error;
+    window.location.assign('/auth/google');
+   }
+  } catch (error) {
+   console.error('Firebase Google sign-in error:', error);
+   alert(describeFirebaseAuthError(error));
+  }
+ });
 </script>
 </html>

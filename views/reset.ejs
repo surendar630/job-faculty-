@@ -3,228 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reset Password - Cloud AI</title>
+<title>Reset Password </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
 body {
-  background:
-    linear-gradient(135deg, rgba(2, 8, 20, 0.74), rgba(8, 22, 31, 0.8)),
-    url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat fixed;
+ background:
+  linear-gradient(135deg, rgba(2, 8, 20, 0.74), rgba(8, 22, 31, 0.8)),
+  url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat fixed;
 }
 
 .login-hero {
-  background: linear-gradient(120deg, rgba(4, 15, 23, 0.55), rgba(8, 22, 31, 0.5));
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  position: relative;
-  overflow: hidden;
+ background: linear-gradient(120deg, rgba(4, 15, 23, 0.55), rgba(8, 22, 31, 0.5));
+ min-height: 100vh;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ padding: 2rem;
+ position: relative;
+ overflow: hidden;
 }
 .login-hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(30, 64, 175, 0.15), transparent);
-  border-radius: 50%;
-  pointer-events: none;
+ content: '';
+ position: absolute;
+ top: -50%;
+ right: -50%;
+ width: 600px;
+ height: 600px;
+ background: radial-gradient(circle, rgba(30, 64, 175, 0.15), transparent);
+ border-radius: 50%;
+ pointer-events: none;
 }
 .login-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-  max-width: 1200px;
-  width: 100%;
-  position: relative;
-  z-index: 1;
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 3rem;
+ align-items: center;
+ max-width: 1200px;
+ width: 100%;
+ position: relative;
+ z-index: 1;
 }
 .login-info {
-  color: white;
+ color: white;
 }
 .login-info h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: white;
+ font-size: 2.5rem;
+ margin-bottom: 1rem;
+ color: white;
 }
 .login-info p {
-  color: rgba(255,255,255,0.9);
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-  line-height: 1.8;
+ color: rgba(255,255,255,0.9);
+ font-size: 1.1rem;
+ margin-bottom: 2rem;
+ line-height: 1.8;
 }
 .features {
-  list-style: none;
-  margin-bottom: 2rem;
+ list-style: none;
+ margin-bottom: 2rem;
 }
 .features li {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  color: rgba(255,255,255,0.85);
+ display: flex;
+ align-items: center;
+ gap: 1rem;
+ margin-bottom: 1rem;
+ color: rgba(255,255,255,0.85);
 }
 .features i {
-  color: #04AA6D;
-  font-size: 1.3rem;
-  min-width: 30px;
+ color: #04AA6D;
+ font-size: 1.3rem;
+ min-width: 30px;
 }
 .form {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: var(--shadow-xl);
-  border-top: 4px solid #04AA6D;
+ background: white;
+ padding: 2.5rem;
+ border-radius: 16px;
+ box-shadow: var(--shadow-xl);
+ border-top: 4px solid #04AA6D;
 }
 .form h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #282A35;
+ text-align: center;
+ margin-bottom: 1.5rem;
+ color: #282A35;
 }
 .form-group {
-  margin-bottom: 1.5rem;
+ margin-bottom: 1.5rem;
 }
 .form-group label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: #111;
+ display: block;
+ font-weight: 500;
+ margin-bottom: 0.5rem;
+ color: #111;
 }
 .form-group input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 0.95rem;
-  transition: var(--transition);
+ width: 100%;
+ padding: 0.75rem 1rem;
+ border: 1px solid #ddd;
+ border-radius: 8px;
+ font-family: inherit;
+ font-size: 0.95rem;
+ transition: var(--transition);
 }
 .form-group input:focus {
-  outline: none;
-  border-color: #04AA6D;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+ outline: none;
+ border-color: #04AA6D;
+ box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 .form-group button {
-  width: 100%;
-  padding: 0.75rem;
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 1rem;
-  box-shadow: var(--shadow-md);
+ width: 100%;
+ padding: 0.75rem;
+ background: linear-gradient(135deg, #04AA6D, #059862);
+ color: white;
+ border: none;
+ border-radius: 8px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: var(--transition);
+ font-size: 1rem;
+ box-shadow: var(--shadow-md);
 }
 ..form-group button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+ transform: translateY(-2px);
+ box-shadow: var(--shadow-lg);
 }
 .alert {
-  border-radius: 10px;
-  padding: 1rem 1rem;
-  margin-bottom: 1.25rem;
-  font-size: 0.95rem;
+ border-radius: 10px;
+ padding: 1rem 1rem;
+ margin-bottom: 1.25rem;
+ font-size: 0.95rem;
 }
 .alert-error {
-  background: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+ background: #fee2e2;
+ color: #b91c1c;
+ border: 1px solid #fecaca;
 }
 .alert-info {
-  background: #e0f2fe;
-  color: #0369a1;
-  border: 1px solid #bae6fd;
+ background: #e0f2fe;
+ color: #0369a1;
+ border: 1px solid #bae6fd;
 }
 .form p {
-  text-align: center;
-  margin-top: 1.5rem;
-  color: #666;
+ text-align: center;
+ margin-top: 1.5rem;
+ color: #666;
 }
 .form a {
-  color: #04AA6D;
-  font-weight: 600;
-  transition: var(--transition);
+ color: #04AA6D;
+ font-weight: 600;
+ transition: var(--transition);
 }
 .form a:hover {
-  color: #059862;
+ color: #059862;
 }
 @media (max-width: 768px) {
-  nav {
-    display: none;
-  }
-  .login-content {
-    grid-template-columns: 1fr;
-  }
-  .login-info {
-    display: none;
-  }
-  .form {
-    max-width: 100%;
-    width: 100%;
-  }
+ nav {
+  display: none;
+ }
+ .login-content {
+  grid-template-columns: 1fr;
+ }
+ .login-info {
+  display: none;
+ }
+ .form {
+  max-width: 100%;
+  width: 100%;
+ }
 }
 </style>
 </head>
 <body>
 <div class="login-hero">
-  <div class="login-content">
-    <div class="login-info">
-      <h1>Reset Your Password</h1>
-      <p>Enter the email address associated with your Cloud AI account and choose a new password to regain access.</p>
-      <ul class="features">
-        <li><i class="fas fa-shield-alt"></i> Secure password update</li>
-        <li><i class="fas fa-user-check"></i> Easy recovery process</li>
-        <li><i class="fas fa-lock"></i> Keep your account safe</li>
-      </ul>
-    </div>
-    <div class="form">
-      <h2><i class="fas fa-key"></i> Reset Password</h2>
-      <% if (error) { %>
-        <div class="alert alert-error"><%= error %></div>
-      <% } %>
-      <% if (info) { %>
-        <div class="alert alert-info"><%= info %></div>
-      <% } %>
-      <form action="/reset-request" method="POST">
-        <div class="form-group">
-          <label for="email"><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" autofocus>
-        </div>
-        <div class="form-group">
-          <button type="submit"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
-        </div>
-      </form>
-      <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
-      <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #282A35; text-align: center;">Manual Reset</h3>
-      <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem; text-align: center;">If you prefer, reset your password directly by providing your email and a strong new password.</p>
-      <form action="/reset-manual" method="POST">
-        <div class="form-group">
-          <label for="manual_email"><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="manual_email" name="email" placeholder="your@email.com" required autocomplete="email">
-        </div>
-        <div class="form-group">
-          <label for="manual_password"><i class="fas fa-lock"></i> New Password</label>
-          <input type="password" id="manual_password" name="password" placeholder="••••••••" required autocomplete="new-password">
-        </div>
-        <div class="form-group">
-          <label for="manual_confirm_password"><i class="fas fa-lock"></i> Confirm Password</label>
-          <input type="password" id="manual_confirm_password" name="confirm_password" placeholder="••••••••" required autocomplete="new-password">
-        </div>
-        <div class="form-group">
-          <button type="submit"><i class="fas fa-unlock-alt"></i> Reset Manually</button>
-        </div>
-      </form>
-      <p>Remembered your password? <a href="/login"><i class="fas fa-arrow-left"></i> Back to login</a></p>
-    </div>
+ <div class="login-content">
+  <div class="login-info">
+   <h1>Reset Your Password</h1>
+   <p>Enter the email address associated with your account and choose a new password to regain access.</p>
+   <ul class="features">
+    <li><i class="fas fa-shield-alt"></i> Secure password update</li>
+    <li><i class="fas fa-user-check"></i> Easy recovery process</li>
+    <li><i class="fas fa-lock"></i> Keep your account safe</li>
+   </ul>
   </div>
+  <div class="form">
+   <h2><i class="fas fa-key"></i> Reset Password</h2>
+   <% if (error) { %>
+    <div class="alert alert-error"><%= error %></div>
+   <% } %>
+   <% if (info) { %>
+    <div class="alert alert-info"><%= info %></div>
+   <% } %>
+   <form action="/reset-request" method="POST">
+    <div class="form-group">
+     <label for="email"><i class="fas fa-envelope"></i> Email</label>
+     <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" autofocus>
+    </div>
+    <div class="form-group">
+     <button type="submit"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
+    </div>
+   </form>
+   <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+   <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #282A35; text-align: center;">Manual Reset</h3>
+   <p style="color: #475569; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem; text-align: center;">If you prefer, reset your password directly by providing your email and a strong new password.</p>
+   <form action="/reset-manual" method="POST">
+    <div class="form-group">
+     <label for="manual_email"><i class="fas fa-envelope"></i> Email</label>
+     <input type="email" id="manual_email" name="email" placeholder="your@email.com" required autocomplete="email">
+    </div>
+    <div class="form-group">
+     <label for="manual_password"><i class="fas fa-lock"></i> New Password</label>
+     <input type="password" id="manual_password" name="password" placeholder="••••••••" required autocomplete="new-password">
+    </div>
+    <div class="form-group">
+     <label for="manual_confirm_password"><i class="fas fa-lock"></i> Confirm Password</label>
+     <input type="password" id="manual_confirm_password" name="confirm_password" placeholder="••••••••" required autocomplete="new-password">
+    </div>
+    <div class="form-group">
+     <button type="submit"><i class="fas fa-unlock-alt"></i> Reset Manually</button>
+    </div>
+   </form>
+   <p>Remembered your password? <a href="/login"><i class="fas fa-arrow-left"></i> Back to login</a></p>
+  </div>
+ </div>
 </div>
 </body>
 </html>

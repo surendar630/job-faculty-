@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><%= role === 'hr' ? 'HR Live Interview Portal' : 'Candidate Live Interview Portal' %> - Cloud AI</title>
+<title><%= role === 'hr' ? 'HR Live Interview Portal' : 'Candidate Live Interview Portal' %> </title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 :root { --bg:#07101d; --surface:#101828; --surface2:#192a4d; --surface3:#282A35; --border:#223248; --accent:#5b8dff; --accent2:#22c55e; --text:#f1f1f1; --muted:#94a3b8; --radius:16px; --font-head:'Syne',sans-serif; --font-body:'DM Sans',sans-serif; }
@@ -79,155 +79,155 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 </head>
 <body>
 <div class="header">
-  <div>
-    <div class="brand">Cloud AI</div>
-    <div class="role-badge"><%= role === 'hr' ? 'HR Interview Portal' : 'Candidate Interview Portal' %></div>
-  </div>
-  <div class="header-actions">
-    <button class="link-btn" onclick="window.location.href='<%= role === 'hr' ? '/office' : '/dashboard' %>'">Back to <%= role === 'hr' ? 'Office' : 'Dashboard' %></button>
-    <button class="btn" onclick="navigateTo('lobby')">Lobby</button>
-  </div>
+ <div>
+  <div class="brand"></div>
+  <div class="role-badge"><%= role === 'hr' ? 'HR Interview Portal' : 'Candidate Interview Portal' %></div>
+ </div>
+ <div class="header-actions">
+  <button class="link-btn" onclick="window.location.href='<%= role === 'hr' ? '/office' : '/dashboard' %>'">Back to <%= role === 'hr' ? 'Office' : 'Dashboard' %></button>
+  <button class="btn" onclick="navigateTo('lobby')">Lobby</button>
+ </div>
 </div>
 <div class="main">
-  <div class="card page active" id="page-lobby">
-    <div class="action-panel">
-      <div class="card">
-        <h2><%= role === 'hr' ? 'Host a live interview' : 'Join your interview session' %></h2>
-        <p><%= role === 'hr' ? 'Run interviews live with candidates, manage meeting controls, chat, and evaluate in one unified portal.' : 'Join the live interview room, track your session, and use chat and notes during the meeting.' %></p>
-      </div>
-      <div class="field">
-        <label><%= role === 'hr' ? 'Interviewer name' : 'Your name' %></label>
-        <input id="participantName" type="text" value="<%= user.name %>" placeholder="Enter your name">
-      </div>
-      <div class="field">
-        <label>Position / Role</label>
-        <input id="sessionPosition" type="text" value="Faculty Interview — Fall 2026" placeholder="Interview subject">
-      </div>
-      <% if (role === 'hr') { %>
-      <div class="field">
-        <label>Candidate expected</label>
-        <input id="candidateNameInput" type="text" value="Alex Sharma" placeholder="Candidate name">
-      </div>
-      <% } %>
+ <div class="card page active" id="page-lobby">
+  <div class="action-panel">
+   <div class="card">
+    <h2><%= role === 'hr' ? 'Host a live interview' : 'Join your interview session' %></h2>
+    <p><%= role === 'hr' ? 'Run interviews live with candidates, manage meeting controls, chat, and evaluate in one unified portal.' : 'Join the live interview room, track your session, and use chat and notes during the meeting.' %></p>
+   </div>
+   <div class="field">
+    <label><%= role === 'hr' ? 'Interviewer name' : 'Your name' %></label>
+    <input id="participantName" type="text" value="<%= user.name %>" placeholder="Enter your name">
+   </div>
+   <div class="field">
+    <label>Position / Role</label>
+    <input id="sessionPosition" type="text" value="Faculty Interview — Fall 2026" placeholder="Interview subject">
+   </div>
+   <% if (role === 'hr') { %>
+   <div class="field">
+    <label>Candidate expected</label>
+    <input id="candidateNameInput" type="text" value="Alex Sharma" placeholder="Candidate name">
+   </div>
+   <% } %>
 
-      <% if (meetings && meetings.length) { %>
-      <div class="card">
-        <h2>Upcoming interview sessions</h2>
-        <% meetings.forEach((meeting, index) => { %>
-          <div class="meeting-card">
-            <h3><%= meeting.job_title %> — <%= meeting.university || 'Cloud AI Interview' %></h3>
-            <div class="meeting-meta">
-              <span><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
-              <span><strong>Platform:</strong> <%= meeting.platform || 'Jitsi' %></span>
-              <span><strong>Status:</strong> <%= meeting.status || 'Scheduled' %></span>
-            </div>
-            <div class="participant-list">
-              <% if (meeting.participants && meeting.participants.length) { %>
-                <% meeting.participants.slice(0, 3).forEach((participant) => { %>
-                  <div class="participant-card">
-                    <strong><%= participant.name %></strong>
-                    <span><%= participant.role || 'Participant' %></span>
-                    <span><%= participant.email || 'No email' %></span>
-                  </div>
-                <% }); %>
-              <% } else { %>
-                <div class="participant-card">
-                  <strong><%= role === 'hr' ? 'HR / Interviewer' : 'Candidate' %></strong>
-                  <span>Live interview participant</span>
-                  <span>Waiting to join</span>
-                </div>
-              <% } %>
-            </div>
-            <div class="meeting-actions">
-              <button class="btn" onclick="openScheduledMeeting('<%= meeting.id %>', <%- JSON.stringify(meeting.meeting_link || '') %>)">
-                <% if (role === 'hr') { %>Open live room<% } else { %>Join meeting<% } %>
-              </button>
-              <button class="control-btn" onclick="copyInviteLink(<%- JSON.stringify(meeting.meeting_link || '') %>)">Copy link</button>
-            </div>
-          </div>
+   <% if (meetings && meetings.length) { %>
+   <div class="card">
+    <h2>Upcoming interview sessions</h2>
+    <% meetings.forEach((meeting, index) => { %>
+     <div class="meeting-card">
+      <h3><%= meeting.job_title %> — <%= meeting.university || ' Interview' %></h3>
+      <div class="meeting-meta">
+       <span><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
+       <span><strong>Platform:</strong> <%= meeting.platform || 'Jitsi' %></span>
+       <span><strong>Status:</strong> <%= meeting.status || 'Scheduled' %></span>
+      </div>
+      <div class="participant-list">
+       <% if (meeting.participants && meeting.participants.length) { %>
+        <% meeting.participants.slice(0, 3).forEach((participant) => { %>
+         <div class="participant-card">
+          <strong><%= participant.name %></strong>
+          <span><%= participant.role || 'Participant' %></span>
+          <span><%= participant.email || 'No email' %></span>
+         </div>
         <% }); %>
-      </div>
-      <% } %>
-
-      <div class="controls">
-        <% if (role === 'hr') { %>
-          <button class="btn" onclick="hostMeeting()">🎥 Start Interview</button>
-          <button class="control-btn" onclick="copyInvite()">🔗 Copy Invite Link</button>
-        <% } else { %>
-          <button class="btn" onclick="joinMeeting()">🚀 Join Interview</button>
-          <button class="control-btn" onclick="copyInvite()">🔗 Copy Meeting Code</button>
-        <% } %>
-      </div>
-    </div>
-    <div class="card" style="background:linear-gradient(135deg,rgba(79,124,255,0.12),rgba(16,185,129,0.12));border:none;">
-      <h2>Session overview</h2>
-      <div class="stats-grid">
-        <div class="stat"><div class="stat-title">Meeting code</div><div class="stat-value">IVW-2026-7834</div></div>
-        <div class="stat"><div class="stat-title">Participants</div><div class="stat-value"><%= role === 'hr' ? 'Interviewer + Candidate' : 'Interviewer + You' %></div></div>
-        <div class="stat"><div class="stat-title">Next session</div><div class="stat-value">2:00 PM today</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card sidebar" id="page-room">
-    <div class="room-top">
-      <div>
-        <div class="room-title" id="room-title">Faculty Interview — Fall 2026</div>
-        <div class="room-badge" id="room-status">Live interview</div>
-      </div>
-      <div class="room-badge" id="room-timer">00:00</div>
-    </div>
-
-    <div class="video-grid">
-      <div class="video-panel">
-        <div class="video-preview" id="jitsiContainer" style="min-height:380px;"></div>
-        <div class="video-meta"><span id="jitsiStatus">Jitsi meeting room</span><span class="room-badge">JITSI</span></div>
-      </div>
-      <div class="video-panel">
-        <div class="video-preview" id="localPreview">
-          <video id="localVideo" autoplay muted playsinline></video>
-          <div id="localPlaceholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:rgba(15,23,42,0.85);color:var(--muted);font-size:1.1rem;">Camera off</div>
+       <% } else { %>
+        <div class="participant-card">
+         <strong><%= role === 'hr' ? 'HR / Interviewer' : 'Candidate' %></strong>
+         <span>Live interview participant</span>
+         <span>Waiting to join</span>
         </div>
-        <div class="video-meta"><span id="localNameDisplay"><%= user.name %></span><span id="localBadge">YOU</span></div>
+       <% } %>
       </div>
-    </div>
+      <div class="meeting-actions">
+       <button class="btn" onclick="openScheduledMeeting('<%= meeting.id %>', <%- JSON.stringify(meeting.meeting_link || '') %>)">
+        <% if (role === 'hr') { %>Open live room<% } else { %>Join meeting<% } %>
+       </button>
+       <button class="control-btn" onclick="copyInviteLink(<%- JSON.stringify(meeting.meeting_link || '') %>)">Copy link</button>
+      </div>
+     </div>
+    <% }); %>
+   </div>
+   <% } %>
 
-    <div class="controls">
-      <button class="control-btn" id="micBtn" onclick="toggleMic()">🎤 Microphone</button>
-      <button class="control-btn" id="camBtn" onclick="toggleCamera()">📹 Camera</button>
-      <button class="control-btn" id="screenBtn" onclick="toggleScreenShare()">🖥️ Share</button>
-      <button class="control-btn" id="recordBtn" onclick="toggleRecording()">🔴 Record</button>
-      <button class="control-btn" onclick="leaveRoom()">🚪 Leave</button>
-    </div>
-
-    <div class="sidebar-tabs">
-      <div class="tab active" onclick="switchPanel('chat')" id="tab-chat">Chat</div>
-      <div class="tab" onclick="switchPanel('notes')" id="tab-notes"><%= role === 'hr' ? 'Evaluation' : 'Notes' %></div>
-      <div class="tab" onclick="switchPanel('info')" id="tab-info">Info</div>
-    </div>
-    <div class="panel active" id="panel-chat">
-      <div class="chat-messages" id="chatMessages">
-        <div class="msg"><div class="msg-header"><span class="msg-sender">System</span><span>now</span></div><div class="msg-bubble">Welcome to the live interview room. Use chat to communicate.</div></div>
-      </div>
-      <div class="chat-input-area">
-        <textarea class="chat-input" id="chatInput" placeholder="Type a message…" rows="2" onkeydown="handleChatKey(event)"></textarea>
-        <button class="send-btn" onclick="sendChat()">➤</button>
-      </div>
-    </div>
-    <div class="panel" id="panel-notes">
-      <div class="notes-section">
-        <textarea id="notesArea" placeholder="Keep candidate notes here..."></textarea>
-        <button class="btn" onclick="showToast('Notes saved locally for this session')">Save Notes</button>
-      </div>
-    </div>
-    <div class="panel" id="panel-info">
-      <div class="info-block"><strong>Meeting link:</strong> <a id="meetingLink" href="" target="_blank" rel="noreferrer"></a></div>
-      <div class="info-block"><strong>Meeting code:</strong> <span id="meetingCode">IVW-2026-7834</span></div>
-      <div class="info-block"><strong>Role:</strong> <%= role === 'hr' ? 'HR interviewer' : 'Candidate' %></div>
-      <div class="info-block"><strong>Session:</strong> <span id="sessionLabel">Faculty Interview — Fall 2026</span></div>
-      <div class="info-block"><strong>Support:</strong> Use the meeting controls to manage audio, camera, screen share, chat, and recording.</div>
-    </div>
+   <div class="controls">
+    <% if (role === 'hr') { %>
+     <button class="btn" onclick="hostMeeting()">🎥 Start Interview</button>
+     <button class="control-btn" onclick="copyInvite()">🔗 Copy Invite Link</button>
+    <% } else { %>
+     <button class="btn" onclick="joinMeeting()">🚀 Join Interview</button>
+     <button class="control-btn" onclick="copyInvite()">🔗 Copy Meeting Code</button>
+    <% } %>
+   </div>
   </div>
+  <div class="card" style="background:linear-gradient(135deg,rgba(79,124,255,0.12),rgba(16,185,129,0.12));border:none;">
+   <h2>Session overview</h2>
+   <div class="stats-grid">
+    <div class="stat"><div class="stat-title">Meeting code</div><div class="stat-value">IVW-2026-7834</div></div>
+    <div class="stat"><div class="stat-title">Participants</div><div class="stat-value"><%= role === 'hr' ? 'Interviewer + Candidate' : 'Interviewer + You' %></div></div>
+    <div class="stat"><div class="stat-title">Next session</div><div class="stat-value">2:00 PM today</div></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="card sidebar" id="page-room">
+  <div class="room-top">
+   <div>
+    <div class="room-title" id="room-title">Faculty Interview — Fall 2026</div>
+    <div class="room-badge" id="room-status">Live interview</div>
+   </div>
+   <div class="room-badge" id="room-timer">00:00</div>
+  </div>
+
+  <div class="video-grid">
+   <div class="video-panel">
+    <div class="video-preview" id="jitsiContainer" style="min-height:380px;"></div>
+    <div class="video-meta"><span id="jitsiStatus">Jitsi meeting room</span><span class="room-badge">JITSI</span></div>
+   </div>
+   <div class="video-panel">
+    <div class="video-preview" id="localPreview">
+     <video id="localVideo" autoplay muted playsinline></video>
+     <div id="localPlaceholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:rgba(15,23,42,0.85);color:var(--muted);font-size:1.1rem;">Camera off</div>
+    </div>
+    <div class="video-meta"><span id="localNameDisplay"><%= user.name %></span><span id="localBadge">YOU</span></div>
+   </div>
+  </div>
+
+  <div class="controls">
+   <button class="control-btn" id="micBtn" onclick="toggleMic()">🎤 Microphone</button>
+   <button class="control-btn" id="camBtn" onclick="toggleCamera()">📹 Camera</button>
+   <button class="control-btn" id="screenBtn" onclick="toggleScreenShare()">🖥️ Share</button>
+   <button class="control-btn" id="recordBtn" onclick="toggleRecording()">🔴 Record</button>
+   <button class="control-btn" onclick="leaveRoom()">🚪 Leave</button>
+  </div>
+
+  <div class="sidebar-tabs">
+   <div class="tab active" onclick="switchPanel('chat')" id="tab-chat">Chat</div>
+   <div class="tab" onclick="switchPanel('notes')" id="tab-notes"><%= role === 'hr' ? 'Evaluation' : 'Notes' %></div>
+   <div class="tab" onclick="switchPanel('info')" id="tab-info">Info</div>
+  </div>
+  <div class="panel active" id="panel-chat">
+   <div class="chat-messages" id="chatMessages">
+    <div class="msg"><div class="msg-header"><span class="msg-sender">System</span><span>now</span></div><div class="msg-bubble">Welcome to the live interview room. Use chat to communicate.</div></div>
+   </div>
+   <div class="chat-input-area">
+    <textarea class="chat-input" id="chatInput" placeholder="Type a message…" rows="2" onkeydown="handleChatKey(event)"></textarea>
+    <button class="send-btn" onclick="sendChat()">➤</button>
+   </div>
+  </div>
+  <div class="panel" id="panel-notes">
+   <div class="notes-section">
+    <textarea id="notesArea" placeholder="Keep candidate notes here..."></textarea>
+    <button class="btn" onclick="showToast('Notes saved locally for this session')">Save Notes</button>
+   </div>
+  </div>
+  <div class="panel" id="panel-info">
+   <div class="info-block"><strong>Meeting link:</strong> <a id="meetingLink" href="" target="_blank" rel="noreferrer"></a></div>
+   <div class="info-block"><strong>Meeting code:</strong> <span id="meetingCode">IVW-2026-7834</span></div>
+   <div class="info-block"><strong>Role:</strong> <%= role === 'hr' ? 'HR interviewer' : 'Candidate' %></div>
+   <div class="info-block"><strong>Session:</strong> <span id="sessionLabel">Faculty Interview — Fall 2026</span></div>
+   <div class="info-block"><strong>Support:</strong> Use the meeting controls to manage audio, camera, screen share, chat, and recording.</div>
+  </div>
+ </div>
 </div>
 <div id="toast" class="toast"></div>
 <script src="https://meet.jit.si/external_api.js"></script>
@@ -243,46 +243,46 @@ let jitsiRoomName = 'JobFaculty-'+meetingCode;
 function navigateTo(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active'); if(page==='room') startTimer();}
 function switchPanel(name){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('panel-'+name).classList.add('active');document.getElementById('tab-'+name).classList.add('active');}
 function hostMeeting(){
-  if (activeMeetingLink) {
-    window.open(activeMeetingLink, '_blank');
-    return;
-  }
-  const name=document.getElementById('participantName').value.trim()||'<%= user.name %>';
-  const pos=document.getElementById('sessionPosition').value.trim()||'Faculty Interview';
-  enterRoom(name,'interviewer',pos);
+ if (activeMeetingLink) {
+  window.open(activeMeetingLink, '_blank');
+  return;
+ }
+ const name=document.getElementById('participantName').value.trim()||'<%= user.name %>';
+ const pos=document.getElementById('sessionPosition').value.trim()||'Faculty Interview';
+ enterRoom(name,'interviewer',pos);
 }
 function joinMeeting(){
-  if (activeMeetingLink) {
-    window.open(activeMeetingLink, '_blank');
-    return;
-  }
-  if (activeMeetingId) {
-    window.open(`/meeting/${activeMeetingId}`, '_blank');
-    return;
-  }
-  const name=document.getElementById('participantName').value.trim()||'<%= user.name %>';
-  const pos=document.getElementById('sessionPosition').value.trim()||'Faculty Interview';
-  enterRoom(name,'candidate',pos);
+ if (activeMeetingLink) {
+  window.open(activeMeetingLink, '_blank');
+  return;
+ }
+ if (activeMeetingId) {
+  window.open(`/meeting/${activeMeetingId}`, '_blank');
+  return;
+ }
+ const name=document.getElementById('participantName').value.trim()||'<%= user.name %>';
+ const pos=document.getElementById('sessionPosition').value.trim()||'Faculty Interview';
+ enterRoom(name,'candidate',pos);
 }
 function openScheduledMeeting(meetingId, meetingLink) {
-  if (meetingId) {
-    activeMeetingId = meetingId;
-  }
-  if (meetingLink) {
-    activeMeetingLink = meetingLink;
-    updateMeetingInfo();
-    window.open(meetingLink, '_blank');
-    return;
-  }
-  if (meetingId) {
-    updateMeetingInfo();
-    window.open(`/meeting/${meetingId}`, '_blank');
-  }
+ if (meetingId) {
+  activeMeetingId = meetingId;
+ }
+ if (meetingLink) {
+  activeMeetingLink = meetingLink;
+  updateMeetingInfo();
+  window.open(meetingLink, '_blank');
+  return;
+ }
+ if (meetingId) {
+  updateMeetingInfo();
+  window.open(`/meeting/${meetingId}`, '_blank');
+ }
 }
 function copyInviteLink(meetingLink) {
-  const linkToCopy = meetingLink || activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : 'https://meet.jit.si/'+jitsiRoomName);
-  navigator.clipboard.writeText(linkToCopy).catch(()=>{});
-  showToast('Meeting link copied');
+ const linkToCopy = meetingLink || activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : 'https://meet.jit.si/'+jitsiRoomName);
+ navigator.clipboard.writeText(linkToCopy).catch(()=>{});
+ showToast('Meeting link copied');
 }
 function enterRoom(name, role, position){navigateTo('room'); document.getElementById('room-title').textContent=position; document.getElementById('localNameDisplay').textContent=name; document.getElementById('localBadge').textContent=role==='interviewer'?'INTERVIEWER':'CANDIDATE'; if(role==='candidate'){document.getElementById('remoteName').textContent='Interviewer';} else {const candidateName=document.getElementById('candidateNameInput')?document.getElementById('candidateNameInput').value.trim()||'Candidate':'Candidate';document.getElementById('remoteName').textContent=candidateName;} document.getElementById('remotePlaceholder').style.display='flex'; document.getElementById('remoteCanvas').style.display='none'; showToast('Entering live interview room'); initCamera(); initJitsi(name);}
 function simulateRemoteArrival(){document.getElementById('remotePlaceholder').style.display='none'; document.getElementById('remoteCanvas').style.display='block'; const canvas=document.getElementById('remoteCanvas'); const ctx=canvas.getContext('2d'); let hue=160; const draw=()=>{hue=(hue+0.4)%360; const grad=ctx.createLinearGradient(0,0,640,360); grad.addColorStop(0,`hsl(${hue},30%,20%)`); grad.addColorStop(1,`hsl(${hue+50},25%,12%)`); ctx.fillStyle=grad; ctx.fillRect(0,0,640,360); ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.fillRect(60,80,520,200); ctx.fillStyle='#fff'; ctx.font='bold 30px var(--font-head)'; ctx.fillText('Live candidate feed',80,175); requestAnimationFrame(draw);}; draw();}
@@ -299,20 +299,20 @@ function simulateReply(container){const replies=['Great question, let me clarify
 function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function copyInvite(){const inviteLink = activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : 'https://meet.jit.si/'+jitsiRoomName); navigator.clipboard.writeText(inviteLink).catch(()=>{}); showToast('Meeting link copied');}
 function updateMeetingInfo(){
-  const linkElement = document.getElementById('meetingLink');
-  const codeElement = document.getElementById('meetingCode');
-  const sessionElement = document.getElementById('sessionLabel');
-  if (linkElement) {
-    const href = activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : `https://meet.jit.si/${jitsiRoomName}`);
-    linkElement.href = href;
-    linkElement.textContent = href;
-  }
-  if (codeElement) {
-    codeElement.textContent = meetingCode || defaultMeetingCode;
-  }
-  if (sessionElement) {
-    sessionElement.textContent = defaultSessionLabel;
-  }
+ const linkElement = document.getElementById('meetingLink');
+ const codeElement = document.getElementById('meetingCode');
+ const sessionElement = document.getElementById('sessionLabel');
+ if (linkElement) {
+  const href = activeMeetingLink || (activeMeetingId ? `${window.location.origin}/meeting/${activeMeetingId}` : `https://meet.jit.si/${jitsiRoomName}`);
+  linkElement.href = href;
+  linkElement.textContent = href;
+ }
+ if (codeElement) {
+  codeElement.textContent = meetingCode || defaultMeetingCode;
+ }
+ if (sessionElement) {
+  sessionElement.textContent = defaultSessionLabel;
+ }
 }
 function startTimer(){clearInterval(timerInterval); seconds=0; timerInterval=setInterval(()=>{seconds++; const m=String(Math.floor(seconds/60)).padStart(2,'0'); const s=String(seconds%60).padStart(2,'0'); document.getElementById('room-timer').textContent=`${m}:${s}`;},1000);}
 let toastTimer=null; function showToast(msg){const t=document.getElementById('toast'); t.textContent=msg; t.style.opacity='1'; clearTimeout(toastTimer); toastTimer=setTimeout(()=>{t.style.opacity='0';},2600);} 

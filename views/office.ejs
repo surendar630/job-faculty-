@@ -3,433 +3,433 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Office Portal - Cloud AI</title>
+<title>Office Portal </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
 .office-header {
-  background: linear-gradient(135deg, #04AA6D 0%, #425b65 100%);
-  color: white;
-  padding: 2.5rem 2rem;
-  border-radius: 14px;
-  margin-bottom: 2.5rem;
-  box-shadow: var(--shadow-lg);
+ background: linear-gradient(135deg, #04AA6D 0%, #425b65 100%);
+ color: white;
+ padding: 2.5rem 2rem;
+ border-radius: 14px;
+ margin-bottom: 2.5rem;
+ box-shadow: var(--shadow-lg);
 }
 .office-header h1 {
-  margin-bottom: 0.5rem;
-  font-size: 2rem;
+ margin-bottom: 0.5rem;
+ font-size: 2rem;
 }
 .office-header p {
-  color: rgba(255,255,255,0.9);
-  font-size: 1rem;
+ color: rgba(255,255,255,0.9);
+ font-size: 1rem;
 }
 .office-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+ gap: 1.5rem;
+ margin-bottom: 2rem;
 }
 .office-card {
-  background: white;
-  border-radius: 14px;
-  border: 1px solid #ddd;
-  box-shadow: var(--shadow-md);
-  padding: 1.5rem;
+ background: white;
+ border-radius: 14px;
+ border: 1px solid #ddd;
+ box-shadow: var(--shadow-md);
+ padding: 1.5rem;
 }
 .office-card h3 {
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
-  color: #282A35;
+ font-size: 1.1rem;
+ margin-bottom: 0.75rem;
+ color: #282A35;
 }
 .office-card p {
-  color: #475569;
-  line-height: 1.6;
+ color: #475569;
+ line-height: 1.6;
 }
 .office-card .stat-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #04AA6D;
+ font-size: 2rem;
+ font-weight: 700;
+ color: #04AA6D;
 }
 .office-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+ display: flex;
+ gap: 0.75rem;
+ flex-wrap: wrap;
 }
 .office-actions a,
 .office-actions button {
-  background: #04AA6D;
-  color: white;
-  padding: 0.85rem 1rem;
-  border-radius: 10px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.25s ease;
+ background: #04AA6D;
+ color: white;
+ padding: 0.85rem 1rem;
+ border-radius: 10px;
+ text-decoration: none;
+ border: none;
+ cursor: pointer;
+ transition: opacity 0.25s ease;
 }
 .office-actions a:hover,
 .office-actions button:hover {
-  opacity: 0.9;
+ opacity: 0.9;
 }
 .office-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
+ width: 100%;
+ border-collapse: collapse;
+ margin-top: 1rem;
 }
 .office-table th,
 .office-table td {
-  padding: 0.95rem 0.8rem;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+ padding: 0.95rem 0.8rem;
+ text-align: left;
+ border-bottom: 1px solid #ddd;
 }
 .office-table th {
-  color: #334155;
-  font-weight: 600;
-  font-size: 0.9rem;
+ color: #334155;
+ font-weight: 600;
+ font-size: 0.9rem;
 }
 .office-table tbody tr:hover {
-  background: #f1f1f1;
+ background: #f1f1f1;
 }
 .office-nav span {
-  cursor: pointer;
-  color: #ddd;
-  transition: color 0.2s ease;
+ cursor: pointer;
+ color: #ddd;
+ transition: color 0.2s ease;
 }
 .office-nav span:hover {
-  color: #ffffff;
+ color: #ffffff;
 }
 </style>
 </head>
 <body>
 <nav>
-  <div class="logo"><i class="fas fa-graduation-cap"></i> Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span>
-    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
-    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
-    <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </form>
-  </div>
+ <div class="logo"><i class="fas fa-graduation-cap"></i> </div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span>
+  <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+  <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+  <form action="/logout" method="POST" style="display:inline;">
+   <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </form>
+ </div>
 </nav>
 
 <div class="container">
-  <div class="office-header">
-    <h1><i class="fas fa-building"></i> Office Portal</h1>
-    <p>Welcome, <%= user.name %>. Manage shortlisted candidates, review resumes, and coordinate interview workflows from a more intelligent HR workspace.</p>
-  </div>
+ <div class="office-header">
+  <h1><i class="fas fa-building"></i> Office Portal</h1>
+  <p>Welcome, <%= user.name %>. Manage shortlisted candidates, review resumes, and coordinate interview workflows from a more intelligent HR workspace.</p>
+ </div>
 
-  <div class="insight-strip">
-    <% if (aiInsights && aiInsights.length) { %>
-      <% aiInsights.forEach((insight) => { %>
-        <div class="insight-card">
-          <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-          <div>
-            <h3><%= insight.title %></h3>
-            <p><%= insight.description %></p>
-          </div>
-        </div>
-      <% }); %>
-    <% } else { %>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-bolt"></i></div>
-        <div>
-          <h3>Action center</h3>
-          <p>Review outreach, interviews, and shortlist decisions from one place.</p>
-        </div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-users"></i></div>
-        <div>
-          <h3><%= recentApps.length %> recent applications</h3>
-          <p>Stay on top of the latest candidate activity without missing a step.</p>
-        </div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-video"></i></div>
-        <div>
-          <h3><%= meetings.length %> scheduled interviews</h3>
-          <p>Coordinate hybrid or remote panels with quick access to meeting links.</p>
-        </div>
-      </div>
-    <% } %>
-  </div>
-
-  <div class="cloud-ai-grid">
-    <% (cloudAiActions || []).forEach((item) => { %>
-      <div class="cloud-ai-card">
-        <span class="cloud-ai-badge"><i class="fas fa-wand-magic-sparkles"></i> Cloud AI</span>
-        <h3><%= item.title %></h3>
-        <p><%= item.description %></p>
-      </div>
-    <% }); %>
-  </div>
-
-  <div class="office-grid">
-    <div class="office-card">
-      <h3>Total Applications</h3>
-      <div class="stat-number"><%= stats.applications %></div>
-      <p>Applications received across all active positions. Track volume and workflow progress here.</p>
+ <div class="insight-strip">
+  <% if (aiInsights && aiInsights.length) { %>
+   <% aiInsights.forEach((insight) => { %>
+    <div class="insight-card">
+     <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+     <div>
+      <h3><%= insight.title %></h3>
+      <p><%= insight.description %></p>
+     </div>
     </div>
-    <div class="office-card">
-      <h3>Shortlisted Candidates</h3>
-      <div class="stat-number"><%= stats.shortlisted %></div>
-      <p>Candidates already shortlisted for review. Use the shortlist page to review their resumes and interview status.</p>
+   <% }); %>
+  <% } else { %>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-bolt"></i></div>
+    <div>
+     <h3>Action center</h3>
+     <p>Review outreach, interviews, and shortlist decisions from one place.</p>
     </div>
-    <div class="office-card">
-      <h3>Resumes Available</h3>
-      <div class="stat-number"><%= stats.resumes %></div>
-      <p>Uploaded resumes across the platform. View, filter, and download candidate documents from the shortlist view.</p>
+   </div>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-users"></i></div>
+    <div>
+     <h3><%= recentApps.length %> recent applications</h3>
+     <p>Stay on top of the latest candidate activity without missing a step.</p>
     </div>
-  </div>
-
-  <% if (meetings && meetings.length > 0) { %>
-    <div class="office-card">
-      <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:1rem;">
-        <div>
-          <h3>Upcoming Interview Meetings</h3>
-          <p>Review upcoming candidate interviews and join the scheduled conference links.</p>
-        </div>
-      </div>
-      <div style="overflow-x:auto;">
-        <table class="office-table">
-          <thead>
-            <tr>
-              <th>Candidate</th>
-              <th>Job</th>
-              <th>Date</th>
-              <th>Platform</th>
-              <th>Meeting Link</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% meetings.forEach(meeting => { %>
-              <tr>
-                <td><%= meeting.candidate_name %><br><small style="color:#666;"><%= meeting.candidate_email %></small></td>
-                <td><%= meeting.job_title %></td>
-                <td><%= new Date(meeting.scheduled_at).toLocaleString() %></td>
-                <td><%= meeting.platform %></td>
-                <td>
-                  <% if (meeting.meeting_link) { %>
-                    <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#425b65; text-decoration:underline;">Open Link</a>
-                  <% } else { %>
-                    <span style="color:#666;">No link</span>
-                  <% } %>
-                </td>
-                <td>
-                  <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.25rem; display:inline-block;">
-                    <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'ON' : 'OFF' %>
-                  </span>
-                  <span style="<%= meeting.mic_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; display:inline-block;">
-                    <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'ON' : 'OFF' %>
-                  </span>
-                </td>
-                <td style="display:flex; gap:0.5rem;">
-                  <a href="<%= meeting.meeting_link || ('/meeting/' + meeting.id + '/join-redirect') %>" class="btn btn-primary" target="_blank" style="text-decoration:none; font-size:0.9rem; padding:0.5rem 0.75rem;">Join</a>
-                  <button class="btn btn-secondary" onclick="openHREditMeetingModal(<%= meeting.id %>, '<%= meeting.scheduled_at %>', '<%= meeting.platform %>', '<%= meeting.meeting_link %>', <%= meeting.camera_enabled %>, <%= meeting.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.5rem 0.75rem; border-radius:6px; cursor:pointer; font-size:0.9rem;">
-                    <i class="fas fa-edit"></i> Edit
-                  </button>
-                </td>
-              </tr>
-            <% }); %>
-          </tbody>
-        </table>
-      </div>
+   </div>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-video"></i></div>
+    <div>
+     <h3><%= meetings.length %> scheduled interviews</h3>
+     <p>Coordinate hybrid or remote panels with quick access to meeting links.</p>
     </div>
+   </div>
   <% } %>
+ </div>
 
+ <div class="-grid">
+  <% (cloudAiActions || []).forEach((item) => { %>
+   <div class="-card">
+    <span class="-badge"><i class="fas fa-wand-magic-sparkles"></i> </span>
+    <h3><%= item.title %></h3>
+    <p><%= item.description %></p>
+   </div>
+  <% }); %>
+ </div>
+
+ <div class="office-grid">
   <div class="office-card">
-    <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:1rem;">
-      <div>
-        <h3>Recent Applications</h3>
-        <p>Newest hires and pending resumes from candidates.</p>
-      </div>
-      <div class="office-actions">
-        <a href="/upload-portal"><i class="fas fa-upload"></i> Open Upload Portal</a>
-        <a href="/hr/portal"><i class="fas fa-video"></i> Open Live Interview Portal</a>
-        <a href="/admin"><i class="fas fa-briefcase"></i> Manage Jobs & AI Requirements</a>
-        <a href="/hr/shortlisted"><i class="fas fa-file-alt"></i> View Shortlisted Candidates</a>
-        <a href="/office/shortlisted"><i class="fas fa-file-alt"></i> View Shortlisted Resumes</a>
-        <a href="/shortlisted"><i class="fas fa-check-circle"></i> Shared Resume Shortlist</a>
-      </div>
-    </div>
-    <div style="overflow-x:auto;">
-      <table class="office-table">
-        <thead>
-          <tr>
-            <th>Candidate</th>
-            <th>Job</th>
-            <th>University</th>
-            <th>Status</th>
-            <th>Applied</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% if (recentApps.length === 0) { %>
-            <tr><td colspan="5" style="color:#666; padding:1.5rem; text-align:center;">No recent applications yet.</td></tr>
-          <% } else { %>
-            <% recentApps.forEach(app => { %>
-              <tr>
-                <td><%= app.candidate_name %> <span style="color:#666; font-size:0.85rem;"><%= app.candidate_email %></span></td>
-                <td><%= app.job_title %></td>
-                <td><%= app.university %></td>
-                <td><%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %></td>
-                <td><%= new Date(app.applied_at).toLocaleDateString('en-IN') %></td>
-                <td style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                  <% if (app.meeting_id) { %>
-                    <a href="<%= app.meeting_link || ('/meeting/' + app.meeting_id + '/join-redirect') %>" target="_blank" class="btn btn-primary" style="text-decoration:none; font-size:0.85rem; padding:0.4rem 0.65rem;">Join</a>
-                    <% if (app.meeting_link) { %>
-                      <a href="<%= app.meeting_link %>" target="_blank" class="btn btn-secondary" style="background:#425b65; color:white; border:none; padding:0.4rem 0.65rem; border-radius:6px; cursor:pointer; font-size:0.85rem; text-decoration:none;">Open Link</a>
-                    <% } %>
-                    <button class="btn btn-secondary" onclick="openHREditMeetingModal(<%= app.meeting_id %>, '<%= app.meeting_scheduled_at %>', '<%= app.meeting_platform %>', '<%= app.meeting_link %>', <%= app.camera_enabled %>, <%= app.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.4rem 0.65rem; border-radius:6px; cursor:pointer; font-size:0.85rem;">
-                      <i class="fas fa-edit"></i> Edit
-                    </button>
-                  <% } else { %>
-                    <button class="btn btn-primary" onclick="openScheduleMeetingModal(<%= app.id %>, <%- JSON.stringify(app.candidate_name) %>, <%- JSON.stringify(app.job_title) %>)" style="font-size:0.85rem; padding:0.4rem 0.65rem;">Schedule</button>
-                  <% } %>
-                </td>
-              </tr>
-            <% }) %>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
+   <h3>Total Applications</h3>
+   <div class="stat-number"><%= stats.applications %></div>
+   <p>Applications received across all active positions. Track volume and workflow progress here.</p>
   </div>
+  <div class="office-card">
+   <h3>Shortlisted Candidates</h3>
+   <div class="stat-number"><%= stats.shortlisted %></div>
+   <p>Candidates already shortlisted for review. Use the shortlist page to review their resumes and interview status.</p>
+  </div>
+  <div class="office-card">
+   <h3>Resumes Available</h3>
+   <div class="stat-number"><%= stats.resumes %></div>
+   <p>Uploaded resumes across the platform. View, filter, and download candidate documents from the shortlist view.</p>
+  </div>
+ </div>
+
+ <% if (meetings && meetings.length > 0) { %>
+  <div class="office-card">
+   <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:1rem;">
+    <div>
+     <h3>Upcoming Interview Meetings</h3>
+     <p>Review upcoming candidate interviews and join the scheduled conference links.</p>
+    </div>
+   </div>
+   <div style="overflow-x:auto;">
+    <table class="office-table">
+     <thead>
+      <tr>
+       <th>Candidate</th>
+       <th>Job</th>
+       <th>Date</th>
+       <th>Platform</th>
+       <th>Meeting Link</th>
+       <th>Status</th>
+       <th>Actions</th>
+      </tr>
+     </thead>
+     <tbody>
+      <% meetings.forEach(meeting => { %>
+       <tr>
+        <td><%= meeting.candidate_name %><br><small style="color:#666;"><%= meeting.candidate_email %></small></td>
+        <td><%= meeting.job_title %></td>
+        <td><%= new Date(meeting.scheduled_at).toLocaleString() %></td>
+        <td><%= meeting.platform %></td>
+        <td>
+         <% if (meeting.meeting_link) { %>
+          <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#425b65; text-decoration:underline;">Open Link</a>
+         <% } else { %>
+          <span style="color:#666;">No link</span>
+         <% } %>
+        </td>
+        <td>
+         <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.25rem; display:inline-block;">
+          <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'ON' : 'OFF' %>
+         </span>
+         <span style="<%= meeting.mic_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; display:inline-block;">
+          <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'ON' : 'OFF' %>
+         </span>
+        </td>
+        <td style="display:flex; gap:0.5rem;">
+         <a href="<%= meeting.meeting_link || ('/meeting/' + meeting.id + '/join-redirect') %>" class="btn btn-primary" target="_blank" style="text-decoration:none; font-size:0.9rem; padding:0.5rem 0.75rem;">Join</a>
+         <button class="btn btn-secondary" onclick="openHREditMeetingModal(<%= meeting.id %>, '<%= meeting.scheduled_at %>', '<%= meeting.platform %>', '<%= meeting.meeting_link %>', <%= meeting.camera_enabled %>, <%= meeting.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.5rem 0.75rem; border-radius:6px; cursor:pointer; font-size:0.9rem;">
+          <i class="fas fa-edit"></i> Edit
+         </button>
+        </td>
+       </tr>
+      <% }); %>
+     </tbody>
+    </table>
+   </div>
+  </div>
+ <% } %>
+
+ <div class="office-card">
+  <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:1rem;">
+   <div>
+    <h3>Recent Applications</h3>
+    <p>Newest hires and pending resumes from candidates.</p>
+   </div>
+   <div class="office-actions">
+    <a href="/upload-portal"><i class="fas fa-upload"></i> Open Upload Portal</a>
+    <a href="/hr/portal"><i class="fas fa-video"></i> Open Live Interview Portal</a>
+    <a href="/admin"><i class="fas fa-briefcase"></i> Manage Jobs & AI Requirements</a>
+    <a href="/hr/shortlisted"><i class="fas fa-file-alt"></i> View Shortlisted Candidates</a>
+    <a href="/office/shortlisted"><i class="fas fa-file-alt"></i> View Shortlisted Resumes</a>
+    <a href="/shortlisted"><i class="fas fa-check-circle"></i> Shared Resume Shortlist</a>
+   </div>
+  </div>
+  <div style="overflow-x:auto;">
+   <table class="office-table">
+    <thead>
+     <tr>
+      <th>Candidate</th>
+      <th>Job</th>
+      <th>University</th>
+      <th>Status</th>
+      <th>Applied</th>
+      <th>Actions</th>
+     </tr>
+    </thead>
+    <tbody>
+     <% if (recentApps.length === 0) { %>
+      <tr><td colspan="5" style="color:#666; padding:1.5rem; text-align:center;">No recent applications yet.</td></tr>
+     <% } else { %>
+      <% recentApps.forEach(app => { %>
+       <tr>
+        <td><%= app.candidate_name %> <span style="color:#666; font-size:0.85rem;"><%= app.candidate_email %></span></td>
+        <td><%= app.job_title %></td>
+        <td><%= app.university %></td>
+        <td><%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %></td>
+        <td><%= new Date(app.applied_at).toLocaleDateString('en-IN') %></td>
+        <td style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+         <% if (app.meeting_id) { %>
+          <a href="<%= app.meeting_link || ('/meeting/' + app.meeting_id + '/join-redirect') %>" target="_blank" class="btn btn-primary" style="text-decoration:none; font-size:0.85rem; padding:0.4rem 0.65rem;">Join</a>
+          <% if (app.meeting_link) { %>
+           <a href="<%= app.meeting_link %>" target="_blank" class="btn btn-secondary" style="background:#425b65; color:white; border:none; padding:0.4rem 0.65rem; border-radius:6px; cursor:pointer; font-size:0.85rem; text-decoration:none;">Open Link</a>
+          <% } %>
+          <button class="btn btn-secondary" onclick="openHREditMeetingModal(<%= app.meeting_id %>, '<%= app.meeting_scheduled_at %>', '<%= app.meeting_platform %>', '<%= app.meeting_link %>', <%= app.camera_enabled %>, <%= app.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.4rem 0.65rem; border-radius:6px; cursor:pointer; font-size:0.85rem;">
+           <i class="fas fa-edit"></i> Edit
+          </button>
+         <% } else { %>
+          <button class="btn btn-primary" onclick="openScheduleMeetingModal(<%= app.id %>, <%- JSON.stringify(app.candidate_name) %>, <%- JSON.stringify(app.job_title) %>)" style="font-size:0.85rem; padding:0.4rem 0.65rem;">Schedule</button>
+         <% } %>
+        </td>
+       </tr>
+      <% }) %>
+     <% } %>
+    </tbody>
+   </table>
+  </div>
+ </div>
 </div>
 
 <script>
 // HR Edit Meeting Modal Functions
 function openHREditMeetingModal(meetingId, scheduledAt, platform, meetingLink, cameraEnabled, micEnabled) {
-  const modal = document.createElement('div');
-  modal.id = 'hrEditMeetingModal';
-  modal.innerHTML = `
-    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-      <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Edit Meeting</h3>
-        <form id="hrEditMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
-            <input type="datetime-local" id="hrEditScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
-            <input type="text" id="hrEditPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
-            <input type="url" id="hrEditMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div style="display: flex; gap: 1rem;">
-            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
-              <input type="checkbox" id="hrEditCameraEnabled" ${cameraEnabled ? 'checked' : ''}>
-              <i class="fas fa-camera"></i> Camera Enabled
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
-              <input type="checkbox" id="hrEditMicEnabled" ${micEnabled ? 'checked' : ''}>
-              <i class="fas fa-microphone"></i> Mic Enabled
-            </label>
-          </div>
-          <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-            <button type="button" onclick="closeHREditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
-            <button type="button" onclick="submitHREditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #6f8090; color: white; cursor: pointer; font-weight: 600;">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
+ const modal = document.createElement('div');
+ modal.id = 'hrEditMeetingModal';
+ modal.innerHTML = `
+  <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+   <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+    <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Edit Meeting</h3>
+    <form id="hrEditMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
+      <input type="datetime-local" id="hrEditScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
+      <input type="text" id="hrEditPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
+      <input type="url" id="hrEditMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div style="display: flex; gap: 1rem;">
+      <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+       <input type="checkbox" id="hrEditCameraEnabled" ${cameraEnabled ? 'checked' : ''}>
+       <i class="fas fa-camera"></i> Camera Enabled
+      </label>
+      <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+       <input type="checkbox" id="hrEditMicEnabled" ${micEnabled ? 'checked' : ''}>
+       <i class="fas fa-microphone"></i> Mic Enabled
+      </label>
+     </div>
+     <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+      <button type="button" onclick="closeHREditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
+      <button type="button" onclick="submitHREditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #6f8090; color: white; cursor: pointer; font-weight: 600;">Save</button>
+     </div>
+    </form>
+   </div>
+  </div>
+ `;
+ document.body.appendChild(modal);
 }
 
 function closeHREditMeetingModal() {
-  const modal = document.getElementById('hrEditMeetingModal');
-  if (modal) modal.remove();
+ const modal = document.getElementById('hrEditMeetingModal');
+ if (modal) modal.remove();
 }
 
 function submitHREditMeeting(meetingId) {
-  const scheduledAt = document.getElementById('hrEditScheduledAt').value;
-  const platform = document.getElementById('hrEditPlatform').value;
-  const meetingLink = document.getElementById('hrEditMeetingLink').value;
-  const cameraEnabled = document.getElementById('hrEditCameraEnabled').checked;
-  const micEnabled = document.getElementById('hrEditMicEnabled').checked;
+ const scheduledAt = document.getElementById('hrEditScheduledAt').value;
+ const platform = document.getElementById('hrEditPlatform').value;
+ const meetingLink = document.getElementById('hrEditMeetingLink').value;
+ const cameraEnabled = document.getElementById('hrEditCameraEnabled').checked;
+ const micEnabled = document.getElementById('hrEditMicEnabled').checked;
 
-  const normalizedPlatform = String(platform || '').toLowerCase();
-  if (!scheduledAt || !platform || (!['jitsi', 'zoom', 'google-meet'].includes(normalizedPlatform) && !meetingLink)) {
-    alert('Please fill all fields. Leave the link blank for Jitsi, Zoom, or Google Meet and it will be generated automatically.');
-    return;
+ const normalizedPlatform = String(platform || '').toLowerCase();
+ if (!scheduledAt || !platform || (!['jitsi', 'zoom', 'google-meet'].includes(normalizedPlatform) && !meetingLink)) {
+  alert('Please fill all fields. Leave the link blank for Jitsi, Zoom, or Google Meet and it will be generated automatically.');
+  return;
+ }
+
+ fetch(`/meeting/${meetingId}/modify`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ scheduled_at: scheduledAt, platform, meeting_link: meetingLink, camera_enabled: cameraEnabled, mic_enabled: micEnabled })
+ })
+ .then(res => res.json())
+ .then(data => {
+  if (data.success) {
+   alert('Meeting updated successfully');
+   location.reload();
+  } else {
+   alert('Error: ' + data.message);
   }
-
-  fetch(`/meeting/${meetingId}/modify`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ scheduled_at: scheduledAt, platform, meeting_link: meetingLink, camera_enabled: cameraEnabled, mic_enabled: micEnabled })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      alert('Meeting updated successfully');
-      location.reload();
-    } else {
-      alert('Error: ' + data.message);
-    }
-  })
-  .catch(err => alert('Error updating meeting: ' + err));
+ })
+ .catch(err => alert('Error updating meeting: ' + err));
 }
 
 function openScheduleMeetingModal(applicationId, candidateName, jobTitle) {
-  const modal = document.createElement('div');
-  modal.id = 'hrScheduleMeetingModal';
-  modal.innerHTML = `
-    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-      <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 520px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Schedule Interview Meeting</h3>
-        <p style="margin:0 0 1rem; color:#475569;">Candidate: <strong>${candidateName}</strong><br>Job: <strong>${jobTitle}</strong></p>
-        <form id="hrScheduleMeetingForm" action="/admin/application/${applicationId}/meeting" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
-            <input type="datetime-local" name="scheduled_at" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
-            <select name="platform" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #ffffff; color: #282A35;">
-              <option value="">Select platform</option>
-              <option value="jitsi">Jitsi</option>
-              <option value="zoom">Zoom</option>
-              <option value="google-meet">Google Meet</option>
-              <option value="teams">Teams</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
-            <input type="url" name="meeting_link" placeholder="Meeting link (required for Zoom/Google Meet/Teams)" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
-              <input type="checkbox" name="camera_enabled" checked>
-              <i class="fas fa-camera"></i> Camera
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
-              <input type="checkbox" name="mic_enabled" checked>
-              <i class="fas fa-microphone"></i> Mic
-            </label>
-          </div>
-          <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
-            <button type="button" onclick="closeHRScheduleMeetingModal()" style="flex: 1; padding: 0.85rem 1rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
-            <button type="submit" class="btn btn-primary" style="flex: 1; padding: 0.85rem 1rem; border-radius: 8px; border: none; cursor: pointer;">Schedule</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
+ const modal = document.createElement('div');
+ modal.id = 'hrScheduleMeetingModal';
+ modal.innerHTML = `
+  <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+   <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 520px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+    <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Schedule Interview Meeting</h3>
+    <p style="margin:0 0 1rem; color:#475569;">Candidate: <strong>${candidateName}</strong><br>Job: <strong>${jobTitle}</strong></p>
+    <form id="hrScheduleMeetingForm" action="/admin/application/${applicationId}/meeting" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
+      <input type="datetime-local" name="scheduled_at" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
+      <select name="platform" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #ffffff; color: #282A35;">
+       <option value="">Select platform</option>
+       <option value="jitsi">Jitsi</option>
+       <option value="zoom">Zoom</option>
+       <option value="google-meet">Google Meet</option>
+       <option value="teams">Teams</option>
+       <option value="other">Other</option>
+      </select>
+     </div>
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
+      <input type="url" name="meeting_link" placeholder="Meeting link (required for Zoom/Google Meet/Teams)" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+       <input type="checkbox" name="camera_enabled" checked>
+       <i class="fas fa-camera"></i> Camera
+      </label>
+      <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+       <input type="checkbox" name="mic_enabled" checked>
+       <i class="fas fa-microphone"></i> Mic
+      </label>
+     </div>
+     <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
+      <button type="button" onclick="closeHRScheduleMeetingModal()" style="flex: 1; padding: 0.85rem 1rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
+      <button type="submit" class="btn btn-primary" style="flex: 1; padding: 0.85rem 1rem; border-radius: 8px; border: none; cursor: pointer;">Schedule</button>
+     </div>
+    </form>
+   </div>
+  </div>
+ `;
+ document.body.appendChild(modal);
 }
 
 function closeHRScheduleMeetingModal() {
-  const modal = document.getElementById('hrScheduleMeetingModal');
-  if (modal) modal.remove();
+ const modal = document.getElementById('hrScheduleMeetingModal');
+ if (modal) modal.remove();
 }
 </script>
 

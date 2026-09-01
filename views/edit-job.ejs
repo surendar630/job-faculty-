@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Job - Cloud AI</title>
+<title>Edit Job </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
@@ -18,37 +18,37 @@ input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; }
 </head>
 <body>
 <nav>
-  <div class="logo">Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'">Dashboard</span>
-    <span onclick="window.location.href='/admin'">Admin</span>
-    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
-  </div>
+ <div class="logo"></div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/dashboard'">Dashboard</span>
+  <span onclick="window.location.href='/admin'">Admin</span>
+  <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+ </div>
 </nav>
 
 <div style="padding:20px;">
-  <h1>Edit Job</h1>
-  <div class="form">
-    <form action="/admin/job/<%= job.id %>/edit" method="POST">
-      <input type="text" name="title" placeholder="Job Title" value="<%= job.title %>" required>
-      <input type="text" name="university" placeholder="University" value="<%= job.university %>" required>
-      <input type="text" name="location" placeholder="Location" value="<%= job.location %>" required>
-      <input type="text" name="salary" placeholder="e.g., ₹12,00,000" value="<%= job.salary %>" required>
-      <textarea name="description" placeholder="Description" required><%= job.description %></textarea>
-      <textarea name="requirements" placeholder="Requirements" required><%= job.requirements %></textarea>
-      <select name="category" required>
-        <option value="<%= job.category %>" selected><%= job.category %></option>
-        <option value="Computer Science">Computer Science</option>
-        <option value="Data Science">Data Science</option>
-        <option value="Machine Learning">Machine Learning</option>
-        <option value="Engineering">Engineering</option>
-        <option value="Mathematics">Mathematics</option>
-        <option value="Cybersecurity">Cybersecurity</option>
-        <option value="Software Engineering">Software Engineering</option>
-      </select>
-      <button type="submit" class="btn">Update Job</button>
-    </form>
-  </div>
+ <h1>Edit Job</h1>
+ <div class="form">
+  <form action="/admin/job/<%= job.id %>/edit" method="POST">
+   <input type="text" name="title" placeholder="Job Title" value="<%= job.title %>" required>
+   <input type="text" name="university" placeholder="University" value="<%= job.university %>" required>
+   <input type="text" name="location" placeholder="Location" value="<%= job.location %>" required>
+   <input type="text" name="salary" placeholder="e.g., ₹12,00,000" value="<%= job.salary %>" required>
+   <textarea name="description" placeholder="Description" required><%= job.description %></textarea>
+   <textarea name="requirements" placeholder="Requirements" required><%= job.requirements %></textarea>
+   <select name="category" required>
+    <option value="<%= job.category %>" selected><%= job.category %></option>
+    <option value="Computer Science">Computer Science</option>
+    <option value="Data Science">Data Science</option>
+    <option value="Machine Learning">Machine Learning</option>
+    <option value="Engineering">Engineering</option>
+    <option value="Mathematics">Mathematics</option>
+    <option value="Cybersecurity">Cybersecurity</option>
+    <option value="Software Engineering">Software Engineering</option>
+   </select>
+   <button type="submit" class="btn">Update Job</button>
+  </form>
+ </div>
 </div>
 </body>
 </html>

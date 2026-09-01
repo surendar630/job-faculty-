@@ -3,202 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profile - Cloud AI</title>
+<title>Profile </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
 .profile-header {
-  background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
-  color: white;
-  padding: 3rem 2rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: var(--shadow-lg);
+ background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
+ color: white;
+ padding: 3rem 2rem;
+ border-radius: 12px;
+ margin-bottom: 2rem;
+ box-shadow: var(--shadow-lg);
 }
 
 .profile-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+ gap: 1.5rem;
 }
 
 .profile-info-card {
-  background: rgba(255,255,255,0.15);
-  padding: 1.5rem;
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.2);
+ background: rgba(255,255,255,0.15);
+ padding: 1.5rem;
+ border-radius: 8px;
+ backdrop-filter: blur(10px);
+ border: 1px solid rgba(255,255,255,0.2);
 }
 
 .profile-info-label {
-  color: rgba(255,255,255,0.8);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+ color: rgba(255,255,255,0.8);
+ font-size: 0.85rem;
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ font-weight: 600;
+ margin-bottom: 0.5rem;
 }
 
 .profile-info-value {
-  font-size: 1.2rem;
-  color: white;
-  font-weight: 500;
+ font-size: 1.2rem;
+ color: white;
+ font-weight: 500;
 }
 
 .applications-section {
-  margin-top: 2rem;
+ margin-top: 2rem;
 }
 
 .applications-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+ gap: 1.5rem;
+ margin-top: 1.5rem;
 }
 
 .application-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-md);
-  border-left: 4px solid #04AA6D;
-  transition: var(--transition);
+ background: white;
+ border-radius: 12px;
+ padding: 1.5rem;
+ box-shadow: var(--shadow-md);
+ border-left: 4px solid #04AA6D;
+ transition: var(--transition);
 }
 
 .application-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+ transform: translateY(-4px);
+ box-shadow: var(--shadow-lg);
 }
 
 .app-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #282A35;
-  margin-top: 0;
+ font-size: 1.2rem;
+ font-weight: 600;
+ color: #282A35;
+ margin-top: 0;
 }
 
 .app-university {
-  color: #04AA6D;
-  font-weight: 500;
-  font-size: 0.95rem;
+ color: #04AA6D;
+ font-weight: 500;
+ font-size: 0.95rem;
 }
 
 .app-meta {
-  display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
-  flex-wrap: wrap;
-  font-size: 0.9rem;
-  color: #666;
+ display: flex;
+ gap: 1rem;
+ margin: 1rem 0;
+ flex-wrap: wrap;
+ font-size: 0.9rem;
+ color: #666;
 }
 
 .app-status {
-  display: inline-block;
-  padding: 0.4rem 1rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin: 1rem 0;
+ display: inline-block;
+ padding: 0.4rem 1rem;
+ border-radius: 6px;
+ font-size: 0.85rem;
+ font-weight: 600;
+ margin: 1rem 0;
 }
 
 .status-pending {
-  background: #fef3c7;
-  color: #92400e;
+ background: #fef3c7;
+ color: #92400e;
 }
 
 .status-shortlisted {
-  background: #e8f5e9;
-  color: #059862;
+ background: #e8f5e9;
+ color: #059862;
 }
 
 .status-accepted {
-  background: #d1fae5;
-  color: #065f46;
+ background: #d1fae5;
+ color: #065f46;
 }
 
 .status-rejected {
-  background: #fee2e2;
-  color: #7f1d1d;
+ background: #fee2e2;
+ color: #7f1d1d;
 }
 
 .interview-score {
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  color: white;
-  padding: 1rem;
-  border-radius: 8px;
-  text-align: center;
-  margin: 1rem 0;
+ background: linear-gradient(135deg, #04AA6D, #059862);
+ color: white;
+ padding: 1rem;
+ border-radius: 8px;
+ text-align: center;
+ margin: 1rem 0;
 }
 
 .score-label {
-  font-size: 0.85rem;
-  opacity: 0.9;
+ font-size: 0.85rem;
+ opacity: 0.9;
 }
 
 .score-value {
-  font-size: 2rem;
-  font-weight: 700;
+ font-size: 2rem;
+ font-weight: 700;
 }
 
 .empty-state {
-  background: #f1f1f1;
-  border: 2px dashed #ddd;
-  border-radius: 12px;
-  padding: 3rem;
-  text-align: center;
-  color: #666;
+ background: #f1f1f1;
+ border: 2px dashed #ddd;
+ border-radius: 12px;
+ padding: 3rem;
+ text-align: center;
+ color: #666;
 }
 
 .empty-state i {
-  font-size: 3rem;
-  color: #ddd;
-  margin-bottom: 1rem;
+ font-size: 3rem;
+ color: #ddd;
+ margin-bottom: 1rem;
 }
 
 .app-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
+ display: flex;
+ gap: 0.75rem;
+ margin-top: 1rem;
 }
 
 .app-actions .btn {
-  flex: 1;
-  padding: 0.6rem;
-  font-size: 0.85rem;
-  margin: 0;
+ flex: 1;
+ padding: 0.6rem;
+ font-size: 0.85rem;
+ margin: 0;
 }
 
 .profile-edit-input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 6px;
-  background: rgba(255,255,255,0.1);
-  color: white;
-  font-size: 1.1rem;
-  font-family: inherit;
-  transition: var(--transition);
-  resize: vertical;
+ width: 100%;
+ padding: 0.75rem;
+ border: 1px solid rgba(255,255,255,0.3);
+ border-radius: 6px;
+ background: rgba(255,255,255,0.1);
+ color: white;
+ font-size: 1.1rem;
+ font-family: inherit;
+ transition: var(--transition);
+ resize: vertical;
 }
 
 .profile-edit-input:focus {
-  outline: none;
-  border-color: rgba(255,255,255,0.8);
-  background: rgba(255,255,255,0.2);
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+ outline: none;
+ border-color: rgba(255,255,255,0.8);
+ background: rgba(255,255,255,0.2);
+ box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
 }
 
 .profile-edit-input::placeholder {
-  color: rgba(255,255,255,0.6);
+ color: rgba(255,255,255,0.6);
 }
 
 .profile-edit-input[type="url"] {
-  color: #8aa0ae;
+ color: #8aa0ae;
 }
 
 .profile-edit-input[type="url"]:focus {
-  color: white;
+ color: white;
 }
 </style>
 </head>
@@ -206,471 +206,471 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo"><i class="fas fa-graduation-cap"></i> Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
-    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
-    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
-    <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </form>
-  </div>
+ <div class="logo"><i class="fas fa-graduation-cap"></i> </div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+  <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+  <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+  <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+  <form action="/logout" method="POST" style="display:inline;">
+   <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </form>
+ </div>
 </nav>
 
 <div class="container">
-  <!-- PROFILE HEADER -->
-  <div class="profile-header">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
-      <h1><i class="fas fa-user-circle"></i> Your Profile</h1>
-      <button id="editBtn" class="btn btn-primary" onclick="toggleEditMode()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">
-        <i class="fas fa-edit"></i> Edit Profile
-      </button>
-    </div>
-    <form id="profileForm" action="/profile/update" method="POST" style="display: none;">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-        <!-- Basic Information -->
-        <div style="grid-column: span 2;">
-          <h4 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;"><i class="fas fa-user"></i> Basic Information</h4>
-        </div>
-        <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fas fa-user"></i> Full Name</div>
-          <input type="text" name="name" value="<%= user.name %>" class="profile-edit-input" required>
-        </div>
-        <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fas fa-envelope"></i> Email</div>
-          <input type="email" name="email" value="<%= user.email %>" class="profile-edit-input" required>
-        </div>
-        <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fas fa-phone"></i> Phone Number</div>
-          <input type="tel" name="phone" value="<%= user.phone || '' %>" class="profile-edit-input" placeholder="e.g., +1 (555) 123-4567">
-        </div>
-        <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fas fa-map-marker-alt"></i> Address</div>
-          <input type="text" name="address" value="<%= user.address || '' %>" class="profile-edit-input" placeholder="City, State, Country">
-        </div>
-        
-        <!-- Professional Information -->
-        <div style="grid-column: span 2;">
-          <h4 style="color: white; margin: 2rem 0 1rem; font-size: 1.1rem;"><i class="fas fa-briefcase"></i> Professional Information</h4>
-        </div>
-        <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fas fa-graduation-cap"></i> Current Position</div>
-          <input type="text" name="current_position" value="<%= user.current_position || '' %>" class="profile-edit-input" placeholder="e.g., Assistant Professor">
-        </div>
-        <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fas fa-school"></i> Institution</div>
-          <input type="text" name="institution" value="<%= user.institution || '' %>" class="profile-edit-input" placeholder="e.g., University Name">
-        </div>
-        <div class="profile-info-card" style="grid-column: span 2;">
-          <div class="profile-info-label"><i class="fas fa-book"></i> Education</div>
-          <textarea name="education" class="profile-edit-input" rows="3" placeholder="e.g., PhD in Computer Science, Stanford University (2015-2020)"><%= user.education || '' %></textarea>
-        </div>
-        <div class="profile-info-card" style="grid-column: span 2;">
-          <div class="profile-info-label"><i class="fas fa-history"></i> Experience</div>
-          <textarea name="experience" class="profile-edit-input" rows="3" placeholder="e.g., 5+ years teaching experience, Research in AI/ML"><%= user.experience || '' %></textarea>
-        </div>
-        <div class="profile-info-card" style="grid-column: span 2;">
-          <div class="profile-info-label"><i class="fas fa-tools"></i> Skills</div>
-          <textarea name="skills" class="profile-edit-input" rows="2" placeholder="e.g., Python, Machine Learning, Data Analysis, Teaching"><%= user.skills || '' %></textarea>
-        </div>
-        
-        <!-- Online Presence -->
-        <div style="grid-column: span 2;">
-          <h4 style="color: white; margin: 2rem 0 1rem; font-size: 1.1rem;"><i class="fas fa-globe"></i> Online Presence</h4>
-        </div>
-        <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fab fa-linkedin"></i> LinkedIn Profile</div>
-          <input type="url" name="linkedin" value="<%= user.linkedin || '' %>" class="profile-edit-input" placeholder="https://linkedin.com/in/yourprofile">
-        </div>
-        <div class="profile-info-card">
-          <div class="profile-info-label"><i class="fas fa-link"></i> Personal Website</div>
-          <input type="url" name="website" value="<%= user.website || '' %>" class="profile-edit-input" placeholder="https://yourwebsite.com">
-        </div>
-        
-        <!-- Bio -->
-        <div style="grid-column: span 2;">
-          <h4 style="color: white; margin: 2rem 0 1rem; font-size: 1.1rem;"><i class="fas fa-user-circle"></i> Professional Bio</h4>
-        </div>
-        <div class="profile-info-card" style="grid-column: span 2;">
-          <div class="profile-info-label"><i class="fas fa-align-left"></i> Bio/Summary</div>
-          <textarea name="bio" class="profile-edit-input" rows="4" placeholder="Tell us about yourself, your research interests, teaching philosophy, and career goals..."><%= user.bio || '' %></textarea>
-        </div>
-      </div>
-      
-      <div style="margin-top: 2rem; text-align: center;">
-        <button type="submit" class="btn btn-primary" style="margin-right: 1rem;">
-          <i class="fas fa-save"></i> Save Changes
-        </button>
-        <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">
-          <i class="fas fa-times"></i> Cancel
-        </button>
-      </div>
-    </form>
-    <% const profileFields = [user.name, user.current_position, user.institution, user.education, user.experience, user.skills, user.linkedin, user.bio]; const profileCompletion = Math.round((profileFields.filter(field => field && String(field).trim()).length / profileFields.length) * 100); %>
-    <div class="insight-strip" style="margin-top: 1.5rem;">
-      <% if (aiInsights && aiInsights.length) { %>
-        <% aiInsights.forEach((insight) => { %>
-          <div class="insight-card">
-            <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-            <div>
-              <h3><%= insight.title %></h3>
-              <p><%= insight.description %></p>
-            </div>
-          </div>
-        <% }); %>
-      <% } else { %>
-        <div class="insight-card">
-          <div class="insight-icon"><i class="fas fa-percent"></i></div>
-          <div>
-            <h3><%= profileCompletion %>% profile complete</h3>
-            <p>Stronger profiles attract better matching opportunities.</p>
-          </div>
-        </div>
-        <div class="insight-card">
-          <div class="insight-icon"><i class="fas fa-file-alt"></i></div>
-          <div>
-            <h3><%= applications.length %> active applications</h3>
-            <p>Track your current status without leaving the profile page.</p>
-          </div>
-        </div>
-        <div class="insight-card">
-          <div class="insight-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-          <div>
-            <h3><%= user.resume_path ? 'Resume uploaded' : 'Resume pending' %></h3>
-            <p><%= user.resume_path ? 'Your resume is ready for employers and reviewers.' : 'Upload your resume to speed up applications.' %></p>
-          </div>
-        </div>
-      <% } %>
-    </div>
-    <div class="cloud-ai-grid" style="margin-top:1.5rem;">
-      <% (cloudAiActions || []).forEach((item) => { %>
-        <div class="cloud-ai-card">
-          <span class="cloud-ai-badge"><i class="fas fa-wand-magic-sparkles"></i> Cloud AI</span>
-          <h3><%= item.title %></h3>
-          <p><%= item.description %></p>
-        </div>
-      <% }); %>
-    </div>
-    <div id="profileDisplay" class="profile-info" style="margin-top: 1.5rem;">
-      <!-- Basic Information -->
-      <div style="grid-column: span 2; margin-bottom: 1rem;">
-        <h4 style="color: white; font-size: 1.1rem; margin-bottom: 1rem;"><i class="fas fa-user"></i> Basic Information</h4>
-      </div>
-      <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fas fa-user"></i> Full Name</div>
-        <div class="profile-info-value"><%= user.name %></div>
-      </div>
-      <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fas fa-envelope"></i> Email</div>
-        <div class="profile-info-value"><%= user.email %></div>
-      </div>
-      <% if (user.phone) { %>
-      <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fas fa-phone"></i> Phone</div>
-        <div class="profile-info-value"><%= user.phone %></div>
-      </div>
-      <% } %>
-      <% if (user.address) { %>
-      <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fas fa-map-marker-alt"></i> Address</div>
-        <div class="profile-info-value"><%= user.address %></div>
-      </div>
-      <% } %>
-      
-      <!-- Professional Information -->
-      <% if (user.current_position || user.institution || user.education || user.experience || user.skills) { %>
-      <div style="grid-column: span 2; margin: 2rem 0 1rem;">
-        <h4 style="color: white; font-size: 1.1rem;"><i class="fas fa-briefcase"></i> Professional Information</h4>
-      </div>
-      <% if (user.current_position) { %>
-      <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fas fa-graduation-cap"></i> Current Position</div>
-        <div class="profile-info-value"><%= user.current_position %></div>
-      </div>
-      <% } %>
-      <% if (user.institution) { %>
-      <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fas fa-school"></i> Institution</div>
-        <div class="profile-info-value"><%= user.institution %></div>
-      </div>
-      <% } %>
-      <% if (user.education) { %>
-      <div class="profile-info-card" style="grid-column: span 2;">
-        <div class="profile-info-label"><i class="fas fa-book"></i> Education</div>
-        <div class="profile-info-value" style="white-space: pre-line;"><%= user.education %></div>
-      </div>
-      <% } %>
-      <% if (user.experience) { %>
-      <div class="profile-info-card" style="grid-column: span 2;">
-        <div class="profile-info-label"><i class="fas fa-history"></i> Experience</div>
-        <div class="profile-info-value" style="white-space: pre-line;"><%= user.experience %></div>
-      </div>
-      <% } %>
-      <% if (user.skills) { %>
-      <div class="profile-info-card" style="grid-column: span 2;">
-        <div class="profile-info-label"><i class="fas fa-tools"></i> Skills</div>
-        <div class="profile-info-value"><%= user.skills %></div>
-      </div>
-      <% } %>
-      <% } %>
-      
-      <!-- Online Presence -->
-      <% if (user.linkedin || user.website) { %>
-      <div style="grid-column: span 2; margin: 2rem 0 1rem;">
-        <h4 style="color: white; font-size: 1.1rem;"><i class="fas fa-globe"></i> Online Presence</h4>
-      </div>
-      <% if (user.linkedin) { %>
-      <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fab fa-linkedin"></i> LinkedIn</div>
-        <div class="profile-info-value"><a href="<%= user.linkedin %>" target="_blank" style="color: #ff9800; text-decoration: none;"><%= user.linkedin %></a></div>
-      </div>
-      <% } %>
-      <% if (user.website) { %>
-      <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fas fa-link"></i> Website</div>
-        <div class="profile-info-value"><a href="<%= user.website %>" target="_blank" style="color: #ff9800; text-decoration: none;"><%= user.website %></a></div>
-      </div>
-      <% } %>
-      <% } %>
-      
-      <!-- Bio -->
-      <% if (user.bio) { %>
-      <div style="grid-column: span 2; margin: 2rem 0 1rem;">
-        <h4 style="color: white; font-size: 1.1rem;"><i class="fas fa-user-circle"></i> Professional Bio</h4>
-      </div>
-      <div class="profile-info-card" style="grid-column: span 2;">
-        <div class="profile-info-label"><i class="fas fa-align-left"></i> Bio</div>
-        <div class="profile-info-value" style="white-space: pre-line;"><%= user.bio %></div>
-      </div>
-      <% } %>
-      
-      <!-- Role (always shown) -->
-      <div class="profile-info-card">
-        <div class="profile-info-label"><i class="fas fa-id-badge"></i> Role</div>
-        <div class="profile-info-value"><%= user.role.toUpperCase() %></div>
-      </div>
-    </div>
+ <!-- PROFILE HEADER -->
+ <div class="profile-header">
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+   <h1><i class="fas fa-user-circle"></i> Your Profile</h1>
+   <button id="editBtn" class="btn btn-primary" onclick="toggleEditMode()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">
+    <i class="fas fa-edit"></i> Edit Profile
+   </button>
   </div>
-
-  <!-- RESUME SECTION -->
-  <div class="applications-section">
-    <h2 style="font-size: 1.8rem; margin-bottom: 1rem;"><i class="fas fa-file-alt"></i> Your Resume</h2>
+  <form id="profileForm" action="/profile/update" method="POST" style="display: none;">
+   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+    <!-- Basic Information -->
+    <div style="grid-column: span 2;">
+     <h4 style="color: white; margin-bottom: 1rem; font-size: 1.1rem;"><i class="fas fa-user"></i> Basic Information</h4>
+    </div>
+    <div class="profile-info-card">
+     <div class="profile-info-label"><i class="fas fa-user"></i> Full Name</div>
+     <input type="text" name="name" value="<%= user.name %>" class="profile-edit-input" required>
+    </div>
+    <div class="profile-info-card">
+     <div class="profile-info-label"><i class="fas fa-envelope"></i> Email</div>
+     <input type="email" name="email" value="<%= user.email %>" class="profile-edit-input" required>
+    </div>
+    <div class="profile-info-card">
+     <div class="profile-info-label"><i class="fas fa-phone"></i> Phone Number</div>
+     <input type="tel" name="phone" value="<%= user.phone || '' %>" class="profile-edit-input" placeholder="e.g., +1 (555) 123-4567">
+    </div>
+    <div class="profile-info-card">
+     <div class="profile-info-label"><i class="fas fa-map-marker-alt"></i> Address</div>
+     <input type="text" name="address" value="<%= user.address || '' %>" class="profile-edit-input" placeholder="City, State, Country">
+    </div>
     
-    <% if (user.resume_review_status) { %>
-      <div class="application-status status-<%= user.resume_review_status %>" style="margin-bottom: 1rem; padding: 1rem 1.25rem; display: inline-flex; align-items: center; gap: 0.75rem; border-radius: 14px; font-size: 0.95rem;">
-        <i class="fas fa-info-circle"></i>
-        <% if (user.resume_review_status === 'pending') { %>
-          <span>Your resume is currently under admin review. You can still update it anytime and the latest version will be reviewed.</span>
-          <span style="display:block; margin-top:0.35rem; color:#666;">Your resume is also being checked for AICTE compliance. Detailed scan feedback is accessible only to HR and admin.</span>
-        <% } else if (user.resume_review_status === 'shortlisted') { %>
-          <span>Your resume has been approved by admin and is ready for applications.</span>
-          <span style="display:block; margin-top:0.35rem; color:#666;">The AICTE scan has been completed and HR/admin have approved your resume for this job track.</span>
-        <% } else if (user.resume_review_status === 'rejected') { %>
-          <span>Your resume was rejected by admin. Please upload a new version to send it for review again.</span>
-        <% } else { %>
-          <span>Your resume review status is <strong><%= user.resume_review_status %></strong>.</span>
-        <% } %>
-      </div>
-    <% } %>
-
-    <% if (user.resume_path) { %>
-      <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-          <div style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 50%;">
-            <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
-          </div>
-          <div>
-            <h3 style="margin: 0; color: #065f46; font-size: 1.2rem;">Resume Uploaded</h3>
-            <p style="margin: 0.25rem 0 0; color: #666; font-size: 0.9rem;">Your resume is ready for job applications</p>
-          </div>
-        </div>
-        
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-          <a href="/<%= user.resume_path %>" target="_blank" class="btn btn-primary">
-            <i class="fas fa-eye"></i> View Resume
-          </a>
-          <button onclick="document.getElementById('resumeModal').style.display='block'" class="btn btn-secondary">
-            <i class="fas fa-upload"></i> Update Resume
-          </button>
-        </div>
-      </div>
-    <% } else { %>
-      <div class="empty-state">
-        <i class="fas fa-file-upload"></i>
-        <h3>No Resume Uploaded</h3>
-        <p>Upload your resume to apply for jobs more easily. Your resume will be saved for future applications.</p>
-        <button onclick="document.getElementById('resumeModal').style.display='block'" class="btn btn-primary" style="display: inline-block; margin-top: 1rem;">
-          <i class="fas fa-upload"></i> Upload Resume
-        </button>
-      </div>
-    <% } %>
-  </div>
-
-  <!-- APPLICATIONS SECTION -->
-  <div class="applications-section">
-    <h2 style="font-size: 1.8rem; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> Your Applications</h2>
+    <!-- Professional Information -->
+    <div style="grid-column: span 2;">
+     <h4 style="color: white; margin: 2rem 0 1rem; font-size: 1.1rem;"><i class="fas fa-briefcase"></i> Professional Information</h4>
+    </div>
+    <div class="profile-info-card">
+     <div class="profile-info-label"><i class="fas fa-graduation-cap"></i> Current Position</div>
+     <input type="text" name="current_position" value="<%= user.current_position || '' %>" class="profile-edit-input" placeholder="e.g., Assistant Professor">
+    </div>
+    <div class="profile-info-card">
+     <div class="profile-info-label"><i class="fas fa-school"></i> Institution</div>
+     <input type="text" name="institution" value="<%= user.institution || '' %>" class="profile-edit-input" placeholder="e.g., University Name">
+    </div>
+    <div class="profile-info-card" style="grid-column: span 2;">
+     <div class="profile-info-label"><i class="fas fa-book"></i> Education</div>
+     <textarea name="education" class="profile-edit-input" rows="3" placeholder="e.g., PhD in Computer Science, Stanford University (2015-2020)"><%= user.education || '' %></textarea>
+    </div>
+    <div class="profile-info-card" style="grid-column: span 2;">
+     <div class="profile-info-label"><i class="fas fa-history"></i> Experience</div>
+     <textarea name="experience" class="profile-edit-input" rows="3" placeholder="e.g., 5+ years teaching experience, Research in AI/ML"><%= user.experience || '' %></textarea>
+    </div>
+    <div class="profile-info-card" style="grid-column: span 2;">
+     <div class="profile-info-label"><i class="fas fa-tools"></i> Skills</div>
+     <textarea name="skills" class="profile-edit-input" rows="2" placeholder="e.g., Python, Machine Learning, Data Analysis, Teaching"><%= user.skills || '' %></textarea>
+    </div>
     
-    <% if (meetings && meetings.length > 0) { %>
-      <div class="meeting-section" style="background:#f1f1f1; border:1px solid #bfdbfe; border-radius:14px; padding:1.25rem; margin-bottom:1.5rem;">
-        <h3 style="margin-top:0; color:#425b65;"><i class="fas fa-video"></i> Scheduled Interview Meetings</h3>
-        <% meetings.forEach(meeting => { %>
-          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:0.75rem; align-items:center; padding:0.9rem 0; border-bottom:1px solid #e8f5e9;">
-            <div style="min-width:220px;">
-              <strong><%= meeting.job_title %></strong><br>
-              <span style="color:#475569;"><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
-              <div style="margin-top:0.5rem;">
-                <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.25rem; display:inline-block;">
-                  <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'ON' : 'OFF' %>
-                </span>
-                <span style="<%= meeting.mic_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; display:inline-block;">
-                  <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'ON' : 'OFF' %>
-                </span>
-              </div>
-            </div>
-            <div style="min-width:180px; color:#475569;"><i class="fas fa-video"></i> <%= meeting.platform %></div>
-            <div style="flex:1; color:#475569; overflow-wrap: anywhere;"><strong>Link:</strong> <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#425b65; text-decoration:underline;"><%= meeting.meeting_link %></a></div>
-            <div>
-              <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
-            </div>
-          </div>
-        <% }); %>
+    <!-- Online Presence -->
+    <div style="grid-column: span 2;">
+     <h4 style="color: white; margin: 2rem 0 1rem; font-size: 1.1rem;"><i class="fas fa-globe"></i> Online Presence</h4>
+    </div>
+    <div class="profile-info-card">
+     <div class="profile-info-label"><i class="fab fa-linkedin"></i> LinkedIn Profile</div>
+     <input type="url" name="linkedin" value="<%= user.linkedin || '' %>" class="profile-edit-input" placeholder="https://linkedin.com/in/yourprofile">
+    </div>
+    <div class="profile-info-card">
+     <div class="profile-info-label"><i class="fas fa-link"></i> Personal Website</div>
+     <input type="url" name="website" value="<%= user.website || '' %>" class="profile-edit-input" placeholder="https://yourwebsite.com">
+    </div>
+    
+    <!-- Bio -->
+    <div style="grid-column: span 2;">
+     <h4 style="color: white; margin: 2rem 0 1rem; font-size: 1.1rem;"><i class="fas fa-user-circle"></i> Professional Bio</h4>
+    </div>
+    <div class="profile-info-card" style="grid-column: span 2;">
+     <div class="profile-info-label"><i class="fas fa-align-left"></i> Bio/Summary</div>
+     <textarea name="bio" class="profile-edit-input" rows="4" placeholder="Tell us about yourself, your research interests, teaching philosophy, and career goals..."><%= user.bio || '' %></textarea>
+    </div>
+   </div>
+   
+   <div style="margin-top: 2rem; text-align: center;">
+    <button type="submit" class="btn btn-primary" style="margin-right: 1rem;">
+     <i class="fas fa-save"></i> Save Changes
+    </button>
+    <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">
+     <i class="fas fa-times"></i> Cancel
+    </button>
+   </div>
+  </form>
+  <% const profileFields = [user.name, user.current_position, user.institution, user.education, user.experience, user.skills, user.linkedin, user.bio]; const profileCompletion = Math.round((profileFields.filter(field => field && String(field).trim()).length / profileFields.length) * 100); %>
+  <div class="insight-strip" style="margin-top: 1.5rem;">
+   <% if (aiInsights && aiInsights.length) { %>
+    <% aiInsights.forEach((insight) => { %>
+     <div class="insight-card">
+      <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+      <div>
+       <h3><%= insight.title %></h3>
+       <p><%= insight.description %></p>
       </div>
-    <% } %>
-
-    <% if (applications.length === 0) { %>
-      <div class="empty-state">
-        <i class="fas fa-inbox"></i>
-        <h3>No applications yet</h3>
-        <p>Start exploring job opportunities and apply to positions that interest you.</p>
-        <a href="/jobs" class="btn btn-primary" style="display: inline-block; margin-top: 1rem;"><i class="fas fa-briefcase"></i> Browse Jobs</a>
-      </div>
-    <% } else { %>
-      <div class="applications-grid">
-        <% applications.forEach(app => { %>
-          <div class="application-card">
-            <h3 class="app-title"><i class="fas fa-file-alt"></i> <%= app.title %></h3>
-            <p class="app-university"><i class="fas fa-school"></i> <%= app.university %></p>
-            
-            <div class="app-meta">
-              <span><i class="fas fa-map-marker-alt"></i> <%= app.location %></span>
-              <span><i class="fas fa-calendar"></i> <%= new Date(app.applied_at).toLocaleDateString() %></span>
-            </div>
-
-            <div class="app-status status-<%= app.status.toLowerCase() %>">
-              <i class="fas fa-tag"></i> <%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %>
-            </div>
-
-            <% if (app.interview_score !== null) { %>
-              <div class="interview-score">
-                <div class="score-label">Interview Score</div>
-                <div class="score-value"><%= app.interview_score %>%</div>
-              </div>
-            <% } %>
-
-            <div class="app-actions">
-              <a href="/job/<%= app.job_id %>" class="btn btn-primary" style="text-decoration: none;">
-                <i class="fas fa-eye"></i> View Job
-              </a>
-              <% if (app.status === 'applied' || app.status === 'shortlisted' || app.interview_score === null) { %>
-                <a href="/candidate-interview/<%= app.job_id %>" class="btn btn-secondary" style="text-decoration: none;">
-                  <i class="fas fa-microphone"></i> Take Interview
-                </a>
-              <% } %>
-            </div>
-          </div>
-        <% }); %>
-      </div>
-    <% } %>
+     </div>
+    <% }); %>
+   <% } else { %>
+    <div class="insight-card">
+     <div class="insight-icon"><i class="fas fa-percent"></i></div>
+     <div>
+      <h3><%= profileCompletion %>% profile complete</h3>
+      <p>Stronger profiles attract better matching opportunities.</p>
+     </div>
+    </div>
+    <div class="insight-card">
+     <div class="insight-icon"><i class="fas fa-file-alt"></i></div>
+     <div>
+      <h3><%= applications.length %> active applications</h3>
+      <p>Track your current status without leaving the profile page.</p>
+     </div>
+    </div>
+    <div class="insight-card">
+     <div class="insight-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+     <div>
+      <h3><%= user.resume_path ? 'Resume uploaded' : 'Resume pending' %></h3>
+      <p><%= user.resume_path ? 'Your resume is ready for employers and reviewers.' : 'Upload your resume to speed up applications.' %></p>
+     </div>
+    </div>
+   <% } %>
   </div>
+  <div class="-grid" style="margin-top:1.5rem;">
+   <% (cloudAiActions || []).forEach((item) => { %>
+    <div class="-card">
+     <span class="-badge"><i class="fas fa-wand-magic-sparkles"></i> </span>
+     <h3><%= item.title %></h3>
+     <p><%= item.description %></p>
+    </div>
+   <% }); %>
+  </div>
+  <div id="profileDisplay" class="profile-info" style="margin-top: 1.5rem;">
+   <!-- Basic Information -->
+   <div style="grid-column: span 2; margin-bottom: 1rem;">
+    <h4 style="color: white; font-size: 1.1rem; margin-bottom: 1rem;"><i class="fas fa-user"></i> Basic Information</h4>
+   </div>
+   <div class="profile-info-card">
+    <div class="profile-info-label"><i class="fas fa-user"></i> Full Name</div>
+    <div class="profile-info-value"><%= user.name %></div>
+   </div>
+   <div class="profile-info-card">
+    <div class="profile-info-label"><i class="fas fa-envelope"></i> Email</div>
+    <div class="profile-info-value"><%= user.email %></div>
+   </div>
+   <% if (user.phone) { %>
+   <div class="profile-info-card">
+    <div class="profile-info-label"><i class="fas fa-phone"></i> Phone</div>
+    <div class="profile-info-value"><%= user.phone %></div>
+   </div>
+   <% } %>
+   <% if (user.address) { %>
+   <div class="profile-info-card">
+    <div class="profile-info-label"><i class="fas fa-map-marker-alt"></i> Address</div>
+    <div class="profile-info-value"><%= user.address %></div>
+   </div>
+   <% } %>
+   
+   <!-- Professional Information -->
+   <% if (user.current_position || user.institution || user.education || user.experience || user.skills) { %>
+   <div style="grid-column: span 2; margin: 2rem 0 1rem;">
+    <h4 style="color: white; font-size: 1.1rem;"><i class="fas fa-briefcase"></i> Professional Information</h4>
+   </div>
+   <% if (user.current_position) { %>
+   <div class="profile-info-card">
+    <div class="profile-info-label"><i class="fas fa-graduation-cap"></i> Current Position</div>
+    <div class="profile-info-value"><%= user.current_position %></div>
+   </div>
+   <% } %>
+   <% if (user.institution) { %>
+   <div class="profile-info-card">
+    <div class="profile-info-label"><i class="fas fa-school"></i> Institution</div>
+    <div class="profile-info-value"><%= user.institution %></div>
+   </div>
+   <% } %>
+   <% if (user.education) { %>
+   <div class="profile-info-card" style="grid-column: span 2;">
+    <div class="profile-info-label"><i class="fas fa-book"></i> Education</div>
+    <div class="profile-info-value" style="white-space: pre-line;"><%= user.education %></div>
+   </div>
+   <% } %>
+   <% if (user.experience) { %>
+   <div class="profile-info-card" style="grid-column: span 2;">
+    <div class="profile-info-label"><i class="fas fa-history"></i> Experience</div>
+    <div class="profile-info-value" style="white-space: pre-line;"><%= user.experience %></div>
+   </div>
+   <% } %>
+   <% if (user.skills) { %>
+   <div class="profile-info-card" style="grid-column: span 2;">
+    <div class="profile-info-label"><i class="fas fa-tools"></i> Skills</div>
+    <div class="profile-info-value"><%= user.skills %></div>
+   </div>
+   <% } %>
+   <% } %>
+   
+   <!-- Online Presence -->
+   <% if (user.linkedin || user.website) { %>
+   <div style="grid-column: span 2; margin: 2rem 0 1rem;">
+    <h4 style="color: white; font-size: 1.1rem;"><i class="fas fa-globe"></i> Online Presence</h4>
+   </div>
+   <% if (user.linkedin) { %>
+   <div class="profile-info-card">
+    <div class="profile-info-label"><i class="fab fa-linkedin"></i> LinkedIn</div>
+    <div class="profile-info-value"><a href="<%= user.linkedin %>" target="_blank" style="color: #ff9800; text-decoration: none;"><%= user.linkedin %></a></div>
+   </div>
+   <% } %>
+   <% if (user.website) { %>
+   <div class="profile-info-card">
+    <div class="profile-info-label"><i class="fas fa-link"></i> Website</div>
+    <div class="profile-info-value"><a href="<%= user.website %>" target="_blank" style="color: #ff9800; text-decoration: none;"><%= user.website %></a></div>
+   </div>
+   <% } %>
+   <% } %>
+   
+   <!-- Bio -->
+   <% if (user.bio) { %>
+   <div style="grid-column: span 2; margin: 2rem 0 1rem;">
+    <h4 style="color: white; font-size: 1.1rem;"><i class="fas fa-user-circle"></i> Professional Bio</h4>
+   </div>
+   <div class="profile-info-card" style="grid-column: span 2;">
+    <div class="profile-info-label"><i class="fas fa-align-left"></i> Bio</div>
+    <div class="profile-info-value" style="white-space: pre-line;"><%= user.bio %></div>
+   </div>
+   <% } %>
+   
+   <!-- Role (always shown) -->
+   <div class="profile-info-card">
+    <div class="profile-info-label"><i class="fas fa-id-badge"></i> Role</div>
+    <div class="profile-info-value"><%= user.role.toUpperCase() %></div>
+   </div>
+  </div>
+ </div>
+
+ <!-- RESUME SECTION -->
+ <div class="applications-section">
+  <h2 style="font-size: 1.8rem; margin-bottom: 1rem;"><i class="fas fa-file-alt"></i> Your Resume</h2>
+  
+  <% if (user.resume_review_status) { %>
+   <div class="application-status status-<%= user.resume_review_status %>" style="margin-bottom: 1rem; padding: 1rem 1.25rem; display: inline-flex; align-items: center; gap: 0.75rem; border-radius: 14px; font-size: 0.95rem;">
+    <i class="fas fa-info-circle"></i>
+    <% if (user.resume_review_status === 'pending') { %>
+     <span>Your resume is currently under admin review. You can still update it anytime and the latest version will be reviewed.</span>
+     <span style="display:block; margin-top:0.35rem; color:#666;">Your resume is also being checked for AICTE compliance. Detailed scan feedback is accessible only to HR and admin.</span>
+    <% } else if (user.resume_review_status === 'shortlisted') { %>
+     <span>Your resume has been approved by admin and is ready for applications.</span>
+     <span style="display:block; margin-top:0.35rem; color:#666;">The AICTE scan has been completed and HR/admin have approved your resume for this job track.</span>
+    <% } else if (user.resume_review_status === 'rejected') { %>
+     <span>Your resume was rejected by admin. Please upload a new version to send it for review again.</span>
+    <% } else { %>
+     <span>Your resume review status is <strong><%= user.resume_review_status %></strong>.</span>
+    <% } %>
+   </div>
+  <% } %>
+
+  <% if (user.resume_path) { %>
+   <div style="background: white; border-radius: 12px; padding: 2rem; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
+    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+     <div style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 50%;">
+      <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
+     </div>
+     <div>
+      <h3 style="margin: 0; color: #065f46; font-size: 1.2rem;">Resume Uploaded</h3>
+      <p style="margin: 0.25rem 0 0; color: #666; font-size: 0.9rem;">Your resume is ready for job applications</p>
+     </div>
+    </div>
+    
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+     <a href="/<%= user.resume_path %>" target="_blank" class="btn btn-primary">
+      <i class="fas fa-eye"></i> View Resume
+     </a>
+     <button onclick="document.getElementById('resumeModal').style.display='block'" class="btn btn-secondary">
+      <i class="fas fa-upload"></i> Update Resume
+     </button>
+    </div>
+   </div>
+  <% } else { %>
+   <div class="empty-state">
+    <i class="fas fa-file-upload"></i>
+    <h3>No Resume Uploaded</h3>
+    <p>Upload your resume to apply for jobs more easily. Your resume will be saved for future applications.</p>
+    <button onclick="document.getElementById('resumeModal').style.display='block'" class="btn btn-primary" style="display: inline-block; margin-top: 1rem;">
+     <i class="fas fa-upload"></i> Upload Resume
+    </button>
+   </div>
+  <% } %>
+ </div>
+
+ <!-- APPLICATIONS SECTION -->
+ <div class="applications-section">
+  <h2 style="font-size: 1.8rem; margin-bottom: 1rem;"><i class="fas fa-briefcase"></i> Your Applications</h2>
+  
+  <% if (meetings && meetings.length > 0) { %>
+   <div class="meeting-section" style="background:#f1f1f1; border:1px solid #bfdbfe; border-radius:14px; padding:1.25rem; margin-bottom:1.5rem;">
+    <h3 style="margin-top:0; color:#425b65;"><i class="fas fa-video"></i> Scheduled Interview Meetings</h3>
+    <% meetings.forEach(meeting => { %>
+     <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:0.75rem; align-items:center; padding:0.9rem 0; border-bottom:1px solid #e8f5e9;">
+      <div style="min-width:220px;">
+       <strong><%= meeting.job_title %></strong><br>
+       <span style="color:#475569;"><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
+       <div style="margin-top:0.5rem;">
+        <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.25rem; display:inline-block;">
+         <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'ON' : 'OFF' %>
+        </span>
+        <span style="<%= meeting.mic_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; display:inline-block;">
+         <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'ON' : 'OFF' %>
+        </span>
+       </div>
+      </div>
+      <div style="min-width:180px; color:#475569;"><i class="fas fa-video"></i> <%= meeting.platform %></div>
+      <div style="flex:1; color:#475569; overflow-wrap: anywhere;"><strong>Link:</strong> <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#425b65; text-decoration:underline;"><%= meeting.meeting_link %></a></div>
+      <div>
+       <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+      </div>
+     </div>
+    <% }); %>
+   </div>
+  <% } %>
+
+  <% if (applications.length === 0) { %>
+   <div class="empty-state">
+    <i class="fas fa-inbox"></i>
+    <h3>No applications yet</h3>
+    <p>Start exploring job opportunities and apply to positions that interest you.</p>
+    <a href="/jobs" class="btn btn-primary" style="display: inline-block; margin-top: 1rem;"><i class="fas fa-briefcase"></i> Browse Jobs</a>
+   </div>
+  <% } else { %>
+   <div class="applications-grid">
+    <% applications.forEach(app => { %>
+     <div class="application-card">
+      <h3 class="app-title"><i class="fas fa-file-alt"></i> <%= app.title %></h3>
+      <p class="app-university"><i class="fas fa-school"></i> <%= app.university %></p>
+      
+      <div class="app-meta">
+       <span><i class="fas fa-map-marker-alt"></i> <%= app.location %></span>
+       <span><i class="fas fa-calendar"></i> <%= new Date(app.applied_at).toLocaleDateString() %></span>
+      </div>
+
+      <div class="app-status status-<%= app.status.toLowerCase() %>">
+       <i class="fas fa-tag"></i> <%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %>
+      </div>
+
+      <% if (app.interview_score !== null) { %>
+       <div class="interview-score">
+        <div class="score-label">Interview Score</div>
+        <div class="score-value"><%= app.interview_score %>%</div>
+       </div>
+      <% } %>
+
+      <div class="app-actions">
+       <a href="/job/<%= app.job_id %>" class="btn btn-primary" style="text-decoration: none;">
+        <i class="fas fa-eye"></i> View Job
+       </a>
+       <% if (app.status === 'applied' || app.status === 'shortlisted' || app.interview_score === null) { %>
+        <a href="/candidate-interview/<%= app.job_id %>" class="btn btn-secondary" style="text-decoration: none;">
+         <i class="fas fa-microphone"></i> Take Interview
+        </a>
+       <% } %>
+      </div>
+     </div>
+    <% }); %>
+   </div>
+  <% } %>
+ </div>
 </div>
 
 <script>
 function toggleEditMode() {
-  const profileForm = document.getElementById('profileForm');
-  const profileDisplay = document.getElementById('profileDisplay');
-  const editBtn = document.getElementById('editBtn');
-  
-  if (profileForm.style.display === 'none') {
-    // Switch to edit mode
-    profileForm.style.display = 'block';
-    profileDisplay.style.display = 'none';
-    editBtn.innerHTML = '<i class="fas fa-times"></i> Cancel Edit';
-    editBtn.style.background = 'rgba(239, 68, 68, 0.8)';
-  } else {
-    // Switch to view mode
-    profileForm.style.display = 'none';
-    profileDisplay.style.display = 'grid';
-    editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Profile';
-    editBtn.style.background = 'rgba(255,255,255,0.2)';
-  }
+ const profileForm = document.getElementById('profileForm');
+ const profileDisplay = document.getElementById('profileDisplay');
+ const editBtn = document.getElementById('editBtn');
+ 
+ if (profileForm.style.display === 'none') {
+  // Switch to edit mode
+  profileForm.style.display = 'block';
+  profileDisplay.style.display = 'none';
+  editBtn.innerHTML = '<i class="fas fa-times"></i> Cancel Edit';
+  editBtn.style.background = 'rgba(239, 68, 68, 0.8)';
+ } else {
+  // Switch to view mode
+  profileForm.style.display = 'none';
+  profileDisplay.style.display = 'grid';
+  editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Profile';
+  editBtn.style.background = 'rgba(255,255,255,0.2)';
+ }
 }
 </script>
 
 <!-- RESUME UPLOAD MODAL -->
 <div id="resumeModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
-  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-2xl); width: 90%; max-width: 500px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-      <h3 style="margin: 0; color: #282A35;"><i class="fas fa-file-upload"></i> <%= user.resume_path ? 'Update' : 'Upload' %> Your Resume</h3>
-      <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">&times;</button>
-    </div>
-    
-    <form action="/profile/resume" method="POST" enctype="multipart/form-data">
-      <div style="margin-bottom: 1.5rem;">
-        <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #111;">
-          <i class="fas fa-file-upload"></i> Select Resume File
-        </label>
-        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,image/*" required 
-               style="width: 100%; padding: 1rem; border: 2px dashed #ddd; border-radius: 8px; background: #f1f1f1; transition: var(--transition); cursor: pointer;">
-        <small style="color: #666; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
-          <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, DOC, DOCX, JPG, PNG
-          <%= user.resume_path ? '<br><i class="fas fa-info-circle"></i> This will replace your current resume.' : '' %>
-        </small>
-      </div>
-      
-      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-        <button type="button" onclick="document.getElementById('resumeModal').style.display='none'" 
-                style="padding: 0.75rem 1.5rem; background: #f3f4f6; color: #374151; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
-          Cancel
-        </button>
-        <button type="submit" class="btn btn-primary" style="border: none;">
-          <i class="fas fa-upload"></i> <%= user.resume_path ? 'Update' : 'Upload' %> Resume
-        </button>
-      </div>
-    </form>
+ <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-2xl); width: 90%; max-width: 500px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+   <h3 style="margin: 0; color: #282A35;"><i class="fas fa-file-upload"></i> <%= user.resume_path ? 'Update' : 'Upload' %> Your Resume</h3>
+   <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">&times;</button>
   </div>
+  
+  <form action="/profile/resume" method="POST" enctype="multipart/form-data">
+   <div style="margin-bottom: 1.5rem;">
+    <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #111;">
+     <i class="fas fa-file-upload"></i> Select Resume File
+    </label>
+    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,image/*" required 
+        style="width: 100%; padding: 1rem; border: 2px dashed #ddd; border-radius: 8px; background: #f1f1f1; transition: var(--transition); cursor: pointer;">
+    <small style="color: #666; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+     <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, DOC, DOCX, JPG, PNG
+     <%= user.resume_path ? '<br><i class="fas fa-info-circle"></i> This will replace your current resume.' : '' %>
+    </small>
+   </div>
+   
+   <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+    <button type="button" onclick="document.getElementById('resumeModal').style.display='none'" 
+        style="padding: 0.75rem 1.5rem; background: #f3f4f6; color: #374151; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+     Cancel
+    </button>
+    <button type="submit" class="btn btn-primary" style="border: none;">
+     <i class="fas fa-upload"></i> <%= user.resume_path ? 'Update' : 'Upload' %> Resume
+    </button>
+   </div>
+  </form>
+ </div>
 </div>
 
 <script>
 // Close modal when clicking outside
 window.onclick = function(event) {
-  const modal = document.getElementById('resumeModal');
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+ const modal = document.getElementById('resumeModal');
+ if (event.target == modal) {
+  modal.style.display = "none";
+ }
 }
 
 // File input styling
 document.getElementById('resume').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (file) {
-    console.log('Selected file:', file.name);
-  }
+ const file = e.target.files[0];
+ if (file) {
+  console.log('Selected file:', file.name);
+ }
 });
 
 // Auto-open uploaded resume when redirected with ?open=/path
 (function() {
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const openUrl = params.get('open');
-    if (openUrl && (openUrl.startsWith('/') || openUrl.startsWith(window.location.origin))) {
-      window.open(openUrl, '_blank');
-      // remove query param to avoid repeated opens on refresh
-      history.replaceState(null, '', window.location.pathname);
-    }
-  } catch (e) {
-    console.error('Auto-open resume failed:', e);
+ try {
+  const params = new URLSearchParams(window.location.search);
+  const openUrl = params.get('open');
+  if (openUrl && (openUrl.startsWith('/') || openUrl.startsWith(window.location.origin))) {
+   window.open(openUrl, '_blank');
+   // remove query param to avoid repeated opens on refresh
+   history.replaceState(null, '', window.location.pathname);
   }
+ } catch (e) {
+  console.error('Auto-open resume failed:', e);
+ }
 })();
 </script>
 

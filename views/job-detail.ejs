@@ -3,209 +3,209 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Job Details - Cloud AI</title>
+<title>Job Details </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
 .detail-header {
-  background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
-  color: white;
-  padding: 3rem 2rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: var(--shadow-lg);
+ background: linear-gradient(135deg, #04AA6D 0%, #059862 100%);
+ color: white;
+ padding: 3rem 2rem;
+ border-radius: 12px;
+ margin-bottom: 2rem;
+ box-shadow: var(--shadow-lg);
 }
 
 .detail-header h1 {
-  color: white;
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+ color: white;
+ font-size: 2rem;
+ margin-bottom: 0.5rem;
 }
 
 .detail-header p {
-  color: rgba(255,255,255,0.9);
-  margin: 0.25rem 0;
-  font-size: 1rem;
+ color: rgba(255,255,255,0.9);
+ margin: 0.25rem 0;
+ font-size: 1rem;
 }
 
 .detail-info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+ gap: 1.5rem;
+ margin-top: 1.5rem;
 }
 
 .info-card {
-  background: rgba(255,255,255,0.15);
-  padding: 1rem;
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.2);
+ background: rgba(255,255,255,0.15);
+ padding: 1rem;
+ border-radius: 8px;
+ backdrop-filter: blur(10px);
+ border: 1px solid rgba(255,255,255,0.2);
 }
 
 .info-card-label {
-  color: rgba(255,255,255,0.8);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+ color: rgba(255,255,255,0.8);
+ font-size: 0.85rem;
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ font-weight: 600;
+ margin-bottom: 0.5rem;
 }
 
 .info-card-value {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: white;
+ font-size: 1.4rem;
+ font-weight: 700;
+ color: white;
 }
 
 .content-wrapper {
-  max-width: 1000px;
-  margin: 0 auto;
+ max-width: 1000px;
+ margin: 0 auto;
 }
 
 .detail-section {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: var(--shadow-md);
-  border-left: 4px solid #04AA6D;
+ background: white;
+ padding: 2rem;
+ border-radius: 12px;
+ margin-bottom: 2rem;
+ box-shadow: var(--shadow-md);
+ border-left: 4px solid #04AA6D;
 }
 
 .section-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #282A35;
-  border-bottom: 2px solid #04AA6D;
-  padding-bottom: 1rem;
+ display: flex;
+ align-items: center;
+ gap: 0.75rem;
+ margin-bottom: 1.5rem;
+ font-size: 1.3rem;
+ font-weight: 600;
+ color: #282A35;
+ border-bottom: 2px solid #04AA6D;
+ padding-bottom: 1rem;
 }
 
 .section-header i {
-  color: #04AA6D;
-  font-size: 1.5rem;
+ color: #04AA6D;
+ font-size: 1.5rem;
 }
 
 .section-content {
-  color: #666;
-  line-height: 1.8;
-  font-size: 0.95rem;
+ color: #666;
+ line-height: 1.8;
+ font-size: 0.95rem;
 }
 
 .section-content ul,
 .section-content ol {
-  padding-left: 2rem;
+ padding-left: 2rem;
 }
 
 .section-content li {
-  margin-bottom: 0.5rem;
+ margin-bottom: 0.5rem;
 }
 
 .salary-badge {
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  color: white;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1.3rem;
-  font-weight: 700;
-  display: inline-block;
-  margin-bottom: 1.5rem;
+ background: linear-gradient(135deg, #04AA6D, #059862);
+ color: white;
+ padding: 1rem 1.5rem;
+ border-radius: 8px;
+ font-size: 1.3rem;
+ font-weight: 700;
+ display: inline-block;
+ margin-bottom: 1.5rem;
 }
 
 .action-buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 2rem;
+ display: flex;
+ gap: 1rem;
+ flex-wrap: wrap;
+ margin-top: 2rem;
 }
 
 .action-buttons .btn {
-  flex: 1;
-  min-width: 200px;
-  padding: 1rem;
-  font-size: 1rem;
-  text-align: center;
+ flex: 1;
+ min-width: 200px;
+ padding: 1rem;
+ font-size: 1rem;
+ text-align: center;
 }
 
 .status-badge {
-  background: #d1fae5;
-  color: #065f46;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  display: inline-block;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
+ background: #d1fae5;
+ color: #065f46;
+ padding: 0.75rem 1.5rem;
+ border-radius: 8px;
+ display: inline-block;
+ font-weight: 600;
+ margin-bottom: 1.5rem;
 }
 
 .requirements-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+ gap: 1rem;
+ margin-top: 1rem;
 }
 
 .requirement-item {
-  background: #f1f1f1;
-  padding: 1rem;
-  border-radius: 8px;
-  border-left: 4px solid #04AA6D;
+ background: #f1f1f1;
+ padding: 1rem;
+ border-radius: 8px;
+ border-left: 4px solid #04AA6D;
 }
 
 .requirement-item i {
-  color: #04AA6D;
-  margin-right: 0.5rem;
+ color: #04AA6D;
+ margin-right: 0.5rem;
 }
 
 .breadcrumb {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  margin-bottom: 2rem;
-  color: #666;
-  font-size: 0.95rem;
+ display: flex;
+ gap: 0.5rem;
+ align-items: center;
+ margin-bottom: 2rem;
+ color: #666;
+ font-size: 0.95rem;
 }
 
 .breadcrumb a {
-  color: #04AA6D;
-  transition: var(--transition);
+ color: #04AA6D;
+ transition: var(--transition);
 }
 
 .breadcrumb a:hover {
-  color: #059862;
+ color: #059862;
 }
 
 .breadcrumb-separator {
-  color: #ddd;
+ color: #ddd;
 }
 
 @media (max-width: 768px) {
-  .detail-header {
-    padding: 2rem 1rem;
-  }
+ .detail-header {
+  padding: 2rem 1rem;
+ }
 
-  .detail-header h1 {
-    font-size: 1.5rem;
-  }
+ .detail-header h1 {
+  font-size: 1.5rem;
+ }
 
-  .detail-info-grid {
-    grid-template-columns: 1fr;
-  }
+ .detail-info-grid {
+  grid-template-columns: 1fr;
+ }
 
-  .action-buttons {
-    flex-direction: column;
-  }
+ .action-buttons {
+  flex-direction: column;
+ }
 
-  .action-buttons .btn {
-    width: 100%;
-  }
+ .action-buttons .btn {
+  width: 100%;
+ }
 
-  .requirements-list {
-    grid-template-columns: 1fr;
-  }
+ .requirements-list {
+  grid-template-columns: 1fr;
+ }
 }
 </style>
 </head>
@@ -213,205 +213,205 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo"><i class="fas fa-graduation-cap"></i> Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
-    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
-    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
-    <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </form>
-  </div>
+ <div class="logo"><i class="fas fa-graduation-cap"></i> </div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+  <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+  <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+  <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+  <form action="/logout" method="POST" style="display:inline;">
+   <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </form>
+ </div>
 </nav>
 
 <div class="container">
-  <!-- BREADCRUMB -->
-  <div class="breadcrumb">
-    <a href="/jobs"><i class="fas fa-briefcase"></i> Jobs</a>
-    <span class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></span>
-    <span><i class="fas fa-file"></i> Job Details</span>
-  </div>
+ <!-- BREADCRUMB -->
+ <div class="breadcrumb">
+  <a href="/jobs"><i class="fas fa-briefcase"></i> Jobs</a>
+  <span class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></span>
+  <span><i class="fas fa-file"></i> Job Details</span>
+ </div>
 
-  <!-- HEADER -->
-  <div class="detail-header">
-    <h1><i class="fas fa-briefcase"></i> <%= job.title %></h1>
-    <p><i class="fas fa-school"></i> <%= job.university %></p>
-    
-    <div class="detail-info-grid">
-      <div class="info-card">
-        <div class="info-card-label"><i class="fas fa-map-marker-alt"></i> Location</div>
-        <div class="info-card-value"><%= job.location %></div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label"><i class="fas fa-tag"></i> Category</div>
-        <div class="info-card-value"><%= job.category %></div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-label"><i class="fas fa-dollar-sign"></i> Salary</div>
-        <div class="info-card-value"><%= job.salary %></div>
-      </div>
+ <!-- HEADER -->
+ <div class="detail-header">
+  <h1><i class="fas fa-briefcase"></i> <%= job.title %></h1>
+  <p><i class="fas fa-school"></i> <%= job.university %></p>
+  
+  <div class="detail-info-grid">
+   <div class="info-card">
+    <div class="info-card-label"><i class="fas fa-map-marker-alt"></i> Location</div>
+    <div class="info-card-value"><%= job.location %></div>
+   </div>
+   <div class="info-card">
+    <div class="info-card-label"><i class="fas fa-tag"></i> Category</div>
+    <div class="info-card-value"><%= job.category %></div>
+   </div>
+   <div class="info-card">
+    <div class="info-card-label"><i class="fas fa-dollar-sign"></i> Salary</div>
+    <div class="info-card-value"><%= job.salary %></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="content-wrapper">
+  <!-- STATUS -->
+  <% if (applied) { %>
+   <div class="status-badge"><i class="fas fa-check-circle"></i> You have already applied for this position</div>
+  <% } %>
+
+  <!-- JOB DESCRIPTION -->
+  <% if (job.description) { %>
+   <div class="detail-section">
+    <div class="section-header">
+     <i class="fas fa-align-left"></i> Job Description
     </div>
-  </div>
+    <div class="section-content">
+     <%= job.description %>
+    </div>
+   </div>
+  <% } %>
 
-  <div class="content-wrapper">
-    <!-- STATUS -->
-    <% if (applied) { %>
-      <div class="status-badge"><i class="fas fa-check-circle"></i> You have already applied for this position</div>
-    <% } %>
+  <!-- REQUIREMENTS -->
+  <% if (job.requirements) { %>
+   <div class="detail-section">
+    <div class="section-header">
+     <i class="fas fa-list-check"></i> Key Requirements
+    </div>
+    <div class="section-content">
+     <%= job.requirements %>
+    </div>
+   </div>
+  <% } %>
 
-    <!-- JOB DESCRIPTION -->
-    <% if (job.description) { %>
-      <div class="detail-section">
-        <div class="section-header">
-          <i class="fas fa-align-left"></i> Job Description
+  <!-- ACTION BUTTONS -->
+  <div class="action-buttons">
+   <% if (applied) { %>
+    <a href="/candidate-interview/<%= job.id %>" class="btn btn-success" style="text-decoration: none; text-align: center;">
+     <i class="fas fa-microphone"></i> Take Interview
+    </a>
+   <% } else { %>
+    <div class="detail-section">
+     <div class="section-header">
+      <i class="fas fa-upload"></i> Apply for this Position
+     </div>
+     <form action="/apply/<%= job.id %>" method="POST" enctype="multipart/form-data">
+      <% if (hasResume) { %>
+       <div style="background: #d1fae5; border: 1px solid #04AA6D; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; color: #065f46; font-weight: 600;">
+         <i class="fas fa-check-circle"></i>
+         Resume Available
         </div>
-        <div class="section-content">
-          <%= job.description %>
-        </div>
-      </div>
-    <% } %>
-
-    <!-- REQUIREMENTS -->
-    <% if (job.requirements) { %>
-      <div class="detail-section">
-        <div class="section-header">
-          <i class="fas fa-list-check"></i> Key Requirements
-        </div>
-        <div class="section-content">
-          <%= job.requirements %>
-        </div>
-      </div>
-    <% } %>
-
-    <!-- ACTION BUTTONS -->
-    <div class="action-buttons">
-      <% if (applied) { %>
-        <a href="/candidate-interview/<%= job.id %>" class="btn btn-success" style="text-decoration: none; text-align: center;">
-          <i class="fas fa-microphone"></i> Take Interview
-        </a>
-      <% } else { %>
-        <div class="detail-section">
-          <div class="section-header">
-            <i class="fas fa-upload"></i> Apply for this Position
-          </div>
-          <form action="/apply/<%= job.id %>" method="POST" enctype="multipart/form-data">
-            <% if (hasResume) { %>
-              <div style="background: #d1fae5; border: 1px solid #04AA6D; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
-                <div style="display: flex; align-items: center; gap: 0.5rem; color: #065f46; font-weight: 600;">
-                  <i class="fas fa-check-circle"></i>
-                  Resume Available
-                </div>
-                <p style="color: #065f46; margin: 0.5rem 0 0; font-size: 0.9rem;">
-                  Your resume from the dashboard will be used for this application. You can upload a different resume below if needed.
-                </p>
-                <% if (user.resume_review_status === 'pending') { %>
-                  <p style="color: #92400e; margin: 0.75rem 0 0; font-size: 0.9rem;"><strong>Note:</strong> Your resume is still pending admin review.</p>
-                <% } else if (user.resume_review_status === 'rejected') { %>
-                  <p style="color: #b91c1c; margin: 0.75rem 0 0; font-size: 0.9rem;"><strong>Note:</strong> Your current resume was rejected. Upload a new version to send it for review again.</p>
-                <% } else if (user.resume_review_status === 'shortlisted') { %>
-                  <p style="color: #065f46; margin: 0.75rem 0 0; font-size: 0.9rem;"><strong>Good news:</strong> Your resume has been approved by admin.</p>
-                <% } %>
-              </div>
-            <% } %>
-            
-            <div style="margin-bottom: 1.5rem;">
-              <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #111;">
-                <i class="fas fa-file-upload"></i> <%= hasResume ? 'Upload Different Resume (Optional)' : 'Upload Your Resume (PDF, DOC, DOCX or Image)' %>
-              </label>
-              <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,image/*" <%= hasResume ? '' : 'required' %>
-                     style="width: 100%; padding: 0.75rem; border: 2px dashed #ddd; border-radius: 8px; background: #f1f1f1; transition: var(--transition);">
-              <small style="color: #666; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
-                <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, DOC, DOCX, JPG, PNG
-                <%= hasResume ? 'Leave empty to use your uploaded resume.' : '' %>
-                <br>
-                Your resume will be scanned for AICTE compliance and reviewed by HR/admin after upload. Scan details are visible only to HR and admin.
-              </small>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-              <i class="fas fa-paper-plane"></i> Submit Application
-            </button>
-          </form>
-
-          <% if (hasResume) { %>
-            <form action="/apply-and-interview/<%= job.id %>" method="POST" style="margin-top: 0.75rem;">
-              <button type="submit" class="btn btn-success" style="width: 100%;">
-                <i class="fas fa-microphone"></i> Apply & Take Interview
-              </button>
-            </form>
-          <% } %>
-          
-          <% if (!hasResume) { %>
-            <div style="text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #ddd;">
-              <p style="color: #666; margin-bottom: 1rem;">Don't have a resume ready?</p>
-              <button onclick="window.location.href='/dashboard'" class="btn btn-secondary">
-                <i class="fas fa-upload"></i> Upload Resume to Dashboard First
-              </button>
-            </div>
-          <% } %>
-        </div>
+        <p style="color: #065f46; margin: 0.5rem 0 0; font-size: 0.9rem;">
+         Your resume from the dashboard will be used for this application. You can upload a different resume below if needed.
+        </p>
+        <% if (user.resume_review_status === 'pending') { %>
+         <p style="color: #92400e; margin: 0.75rem 0 0; font-size: 0.9rem;"><strong>Note:</strong> Your resume is still pending admin review.</p>
+        <% } else if (user.resume_review_status === 'rejected') { %>
+         <p style="color: #b91c1c; margin: 0.75rem 0 0; font-size: 0.9rem;"><strong>Note:</strong> Your current resume was rejected. Upload a new version to send it for review again.</p>
+        <% } else if (user.resume_review_status === 'shortlisted') { %>
+         <p style="color: #065f46; margin: 0.75rem 0 0; font-size: 0.9rem;"><strong>Good news:</strong> Your resume has been approved by admin.</p>
+        <% } %>
+       </div>
       <% } %>
       
-      <button type="button" class="btn btn-secondary" onclick="toggleFavorite(<%= job.id %>, this)" data-favorited="<%= isFavorite ? 'true' : 'false' %>">
-        <i class="fas fa-bookmark"></i> <%= isFavorite ? 'Saved Job' : 'Save Job' %>
-      </button>
-      <button class="btn btn-secondary" onclick="window.location.href='/jobs'" style="text-decoration: none;">
-        <i class="fas fa-arrow-left"></i> Back to Jobs
-      </button>
-    </div>
-
-    <% if (aiInsights && aiInsights.length) { %>
-      <div style="margin-top: 2.5rem; background: linear-gradient(135deg, #eefaf4 0%, #f7f7ff 100%); border-radius: 16px; padding: 1.5rem; border: 1px solid #d9f3e6; box-shadow: var(--shadow-md);">
-        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; color:#0f766e; font-weight:700;">
-          <i class="fas fa-wand-magic-sparkles"></i>
-          <span>AI-powered opportunity intelligence</span>
-        </div>
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
-          <% aiInsights.forEach((insight) => { %>
-            <div style="background: white; border-radius: 12px; padding: 1rem; border: 1px solid #dfeee7;">
-              <h4 style="margin:0 0 0.5rem; color:#282A35; font-size:1rem;"><%= insight.title %></h4>
-              <p style="margin:0; color:#475569; line-height:1.6; font-size:0.92rem;"><%= insight.description %></p>
-            </div>
-          <% }); %>
-        </div>
+      <div style="margin-bottom: 1.5rem;">
+       <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #111;">
+        <i class="fas fa-file-upload"></i> <%= hasResume ? 'Upload Different Resume (Optional)' : 'Upload Your Resume (PDF, DOC, DOCX or Image)' %>
+       </label>
+       <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx,image/*" <%= hasResume ? '' : 'required' %>
+           style="width: 100%; padding: 0.75rem; border: 2px dashed #ddd; border-radius: 8px; background: #f1f1f1; transition: var(--transition);">
+       <small style="color: #666; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+        <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, DOC, DOCX, JPG, PNG
+        <%= hasResume ? 'Leave empty to use your uploaded resume.' : '' %>
+        <br>
+        Your resume will be scanned for AICTE compliance and reviewed by HR/admin after upload. Scan details are visible only to HR and admin.
+       </small>
       </div>
-    <% } %>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+       <i class="fas fa-paper-plane"></i> Submit Application
+      </button>
+     </form>
 
-    <div style="margin-top: 2.5rem; text-align: center; padding: 2rem; background: #f1f1f1; border-radius: 12px;">
-      <h3 style="color: #282A35; margin-top: 0;">Looking for more opportunities?</h3>
-      <p style="color: #666; margin-bottom: 1.5rem;">Explore other available positions from universities worldwide.</p>
-      <a href="/jobs" class="btn btn-primary"><i class="fas fa-briefcase"></i> View All Vacancies</a>
-    </div>
-
-    <% if (relatedJobs && relatedJobs.length) { %>
-      <div style="margin-top: 2.5rem;">
-        <h3 style="color:#282A35; margin-bottom:1rem;"><i class="fas fa-sparkles"></i> Similar roles</h3>
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1rem;">
-          <% relatedJobs.forEach((related) => { %>
-            <div style="background:white; border-radius:12px; padding:1rem; box-shadow: var(--shadow-md); border-left:4px solid #04AA6D;">
-              <h4 style="margin:0 0 0.5rem; color:#282A35;"><%= related.title %></h4>
-              <p style="margin:0.3rem 0; color:#666;"><i class="fas fa-school"></i> <%= related.university %></p>
-              <p style="margin:0.3rem 0; color:#666;"><i class="fas fa-map-marker-alt"></i> <%= related.location %></p>
-              <a href="/job/<%= related.id %>" class="btn btn-secondary" style="margin-top:0.8rem; width:100%; text-decoration:none;">View role</a>
-            </div>
-          <% }); %>
-        </div>
+     <% if (hasResume) { %>
+      <form action="/apply-and-interview/<%= job.id %>" method="POST" style="margin-top: 0.75rem;">
+       <button type="submit" class="btn btn-success" style="width: 100%;">
+        <i class="fas fa-microphone"></i> Apply & Take Interview
+       </button>
+      </form>
+     <% } %>
+     
+     <% if (!hasResume) { %>
+      <div style="text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #ddd;">
+       <p style="color: #666; margin-bottom: 1rem;">Don't have a resume ready?</p>
+       <button onclick="window.location.href='/dashboard'" class="btn btn-secondary">
+        <i class="fas fa-upload"></i> Upload Resume to Dashboard First
+       </button>
       </div>
-    <% } %>
+     <% } %>
+    </div>
+   <% } %>
+   
+   <button type="button" class="btn btn-secondary" onclick="toggleFavorite(<%= job.id %>, this)" data-favorited="<%= isFavorite ? 'true' : 'false' %>">
+    <i class="fas fa-bookmark"></i> <%= isFavorite ? 'Saved Job' : 'Save Job' %>
+   </button>
+   <button class="btn btn-secondary" onclick="window.location.href='/jobs'" style="text-decoration: none;">
+    <i class="fas fa-arrow-left"></i> Back to Jobs
+   </button>
   </div>
+
+  <% if (aiInsights && aiInsights.length) { %>
+   <div style="margin-top: 2.5rem; background: linear-gradient(135deg, #eefaf4 0%, #f7f7ff 100%); border-radius: 16px; padding: 1.5rem; border: 1px solid #d9f3e6; box-shadow: var(--shadow-md);">
+    <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; color:#0f766e; font-weight:700;">
+     <i class="fas fa-wand-magic-sparkles"></i>
+     <span>AI-powered opportunity intelligence</span>
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+     <% aiInsights.forEach((insight) => { %>
+      <div style="background: white; border-radius: 12px; padding: 1rem; border: 1px solid #dfeee7;">
+       <h4 style="margin:0 0 0.5rem; color:#282A35; font-size:1rem;"><%= insight.title %></h4>
+       <p style="margin:0; color:#475569; line-height:1.6; font-size:0.92rem;"><%= insight.description %></p>
+      </div>
+     <% }); %>
+    </div>
+   </div>
+  <% } %>
+
+  <div style="margin-top: 2.5rem; text-align: center; padding: 2rem; background: #f1f1f1; border-radius: 12px;">
+   <h3 style="color: #282A35; margin-top: 0;">Looking for more opportunities?</h3>
+   <p style="color: #666; margin-bottom: 1.5rem;">Explore other available positions from universities worldwide.</p>
+   <a href="/jobs" class="btn btn-primary"><i class="fas fa-briefcase"></i> View All Vacancies</a>
+  </div>
+
+  <% if (relatedJobs && relatedJobs.length) { %>
+   <div style="margin-top: 2.5rem;">
+    <h3 style="color:#282A35; margin-bottom:1rem;"><i class="fas fa-sparkles"></i> Similar roles</h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1rem;">
+     <% relatedJobs.forEach((related) => { %>
+      <div style="background:white; border-radius:12px; padding:1rem; box-shadow: var(--shadow-md); border-left:4px solid #04AA6D;">
+       <h4 style="margin:0 0 0.5rem; color:#282A35;"><%= related.title %></h4>
+       <p style="margin:0.3rem 0; color:#666;"><i class="fas fa-school"></i> <%= related.university %></p>
+       <p style="margin:0.3rem 0; color:#666;"><i class="fas fa-map-marker-alt"></i> <%= related.location %></p>
+       <a href="/job/<%= related.id %>" class="btn btn-secondary" style="margin-top:0.8rem; width:100%; text-decoration:none;">View role</a>
+      </div>
+     <% }); %>
+    </div>
+   </div>
+  <% } %>
+ </div>
 </div>
 
 <script>
 async function toggleFavorite(jobId, button) {
-  try {
-    const response = await fetch(`/jobs/${jobId}/favorite`, { method: 'POST' });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Unable to update saved job');
-    button.innerHTML = `<i class="fas fa-heart"></i> ${data.favorited ? 'Saved Job' : 'Save Job'}`;
-    button.dataset.favorited = data.favorited ? 'true' : 'false';
-  } catch (error) {
-    alert(error.message);
-  }
+ try {
+  const response = await fetch(`/jobs/${jobId}/favorite`, { method: 'POST' });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || 'Unable to update saved job');
+  button.innerHTML = `<i class="fas fa-heart"></i> ${data.favorited ? 'Saved Job' : 'Save Job'}`;
+  button.dataset.favorited = data.favorited ? 'true' : 'false';
+ } catch (error) {
+  alert(error.message);
+ }
 }
 </script>
 

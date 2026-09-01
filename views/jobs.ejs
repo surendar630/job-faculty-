@@ -3,335 +3,335 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Available Jobs - Cloud AI</title>
+<title>Available Jobs </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
 .page-header {
-  background: linear-gradient(135deg, #0f766e 0%, #047857 100%);
-  color: white;
-  padding: 2rem;
-  text-align: center;
+ background: linear-gradient(135deg, #0f766e 0%, #047857 100%);
+ color: white;
+ padding: 2rem;
+ text-align: center;
 }
 
 .page-header h1 {
-  color: white;
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
+ color: white;
+ font-size: 2.2rem;
+ margin-bottom: 0.5rem;
 }
 
 .page-header p {
-  color: rgba(255,255,255,0.9);
-  font-size: 1rem;
+ color: rgba(255,255,255,0.9);
+ font-size: 1rem;
 }
 
 .filters-header {
-  background: white;
-  padding: 1.5rem;
-  margin: 2rem;
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  border-left: 4px solid #0f766e;
+ background: white;
+ padding: 1.5rem;
+ margin: 2rem;
+ border-radius: 12px;
+ box-shadow: var(--shadow-md);
+ border-left: 4px solid #0f766e;
 }
 
 .filters-header h3 {
-  margin-top: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #282A35;
+ margin-top: 0;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
+ color: #282A35;
 }
 
 .filters form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  align-items: flex-end;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+ gap: 1rem;
+ align-items: flex-end;
 }
 
 .filters input,
 .filters select {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 0.95rem;
-  transition: var(--transition);
+ width: 100%;
+ padding: 0.75rem 1rem;
+ border: 1px solid #ddd;
+ border-radius: 8px;
+ font-family: inherit;
+ font-size: 0.95rem;
+ transition: var(--transition);
 }
 
 .filters input:focus,
 .filters select:focus {
-  outline: none;
-  border-color: #04AA6D;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+ outline: none;
+ border-color: #04AA6D;
+ box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .filters button {
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: var(--shadow-md);
+ padding: 0.75rem 1.5rem;
+ background: linear-gradient(135deg, #04AA6D, #059862);
+ color: white;
+ border: none;
+ border-radius: 8px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: var(--transition);
+ box-shadow: var(--shadow-md);
 }
 
 .filters button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+ transform: translateY(-2px);
+ box-shadow: var(--shadow-lg);
 }
 
 .jobs-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+ max-width: 1200px;
+ margin: 0 auto;
+ padding: 0 2rem;
 }
 
 .jobs-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 2rem 0;
-  flex-wrap: wrap;
-  gap: 1rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ margin: 2rem 0;
+ flex-wrap: wrap;
+ gap: 1rem;
 }
 
 .jobs-count {
-  color: #666;
-  font-size: 0.95rem;
+ color: #666;
+ font-size: 0.95rem;
 }
 
 .compare-section {
-  background: #f1f1f1;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-left: 4px solid #04AA6D;
+ background: #f1f1f1;
+ padding: 1rem 1.5rem;
+ border-radius: 8px;
+ margin-bottom: 2rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ border-left: 4px solid #04AA6D;
 }
 
 .compare-btn {
-  background: linear-gradient(135deg, #ff9800, #8f6b33) !important;
-  padding: 0.75rem 1.5rem !important;
+ background: linear-gradient(135deg, #ff9800, #8f6b33) !important;
+ padding: 0.75rem 1.5rem !important;
 }
 
 .jobs-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-bottom: 3rem;
+ display: flex;
+ flex-direction: column;
+ gap: 1.5rem;
+ margin-bottom: 3rem;
 }
 
 .job-card-wrapper {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-md);
-  transition: var(--transition);
-  border-left: 4px solid #0f766e;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
+ background: white;
+ border-radius: 12px;
+ padding: 1.5rem;
+ box-shadow: var(--shadow-md);
+ transition: var(--transition);
+ border-left: 4px solid #0f766e;
+ display: flex;
+ align-items: center;
+ gap: 1.5rem;
 }
 
 .job-card-wrapper:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-left-color: #047857;
+ transform: translateY(-4px);
+ box-shadow: var(--shadow-lg);
+ border-left-color: #047857;
 }
 
 .job-card-wrapper input[type="checkbox"] {
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-  accent-color: #04AA6D;
+ width: 22px;
+ height: 22px;
+ cursor: pointer;
+ accent-color: #04AA6D;
 }
 
 .job-card-content {
-  flex: 1;
+ flex: 1;
 }
 
 .job-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #282A35;
-  margin-bottom: 0.5rem;
+ font-size: 1.3rem;
+ font-weight: 600;
+ color: #282A35;
+ margin-bottom: 0.5rem;
 }
 
 .job-university {
-  color: #04AA6D;
-  font-weight: 500;
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+ color: #04AA6D;
+ font-weight: 500;
+ margin-bottom: 0.75rem;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
 }
 
 .job-meta-row {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-  color: #666;
+ display: flex;
+ gap: 2rem;
+ flex-wrap: wrap;
+ margin-bottom: 0.75rem;
+ font-size: 0.95rem;
+ color: #666;
 }
 
 .job-meta-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
 }
 
 .job-salary {
-  font-size: 1.2rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #0f766e, #047857);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+ font-size: 1.2rem;
+ font-weight: 700;
+ background: linear-gradient(135deg, #0f766e, #047857);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ background-clip: text;
 }
 
 .job-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+ display: flex;
+ gap: 0.75rem;
+ flex-wrap: wrap;
 }
 
 .job-actions .btn {
-  padding: 0.6rem 1.2rem;
-  font-size: 0.9rem;
-  margin: 0;
+ padding: 0.6rem 1.2rem;
+ font-size: 0.9rem;
+ margin: 0;
 }
 
 .empty-state {
-  text-align: center;
-  padding: 3rem;
-  color: #666;
+ text-align: center;
+ padding: 3rem;
+ color: #666;
 }
 
 .empty-state i {
-  font-size: 3rem;
-  color: #ddd;
-  margin-bottom: 1rem;
+ font-size: 3rem;
+ color: #ddd;
+ margin-bottom: 1rem;
 }
 
 .insight-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0 1rem;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+ gap: 1rem;
+ margin: 1.5rem 0 1rem;
 }
 
 .insight-card {
-  background: white;
-  padding: 1rem 1.15rem;
-  border-radius: 14px;
-  box-shadow: var(--shadow-md);
-  border-left: 4px solid #04AA6D;
-  display: flex;
-  gap: 0.8rem;
-  align-items: flex-start;
+ background: white;
+ padding: 1rem 1.15rem;
+ border-radius: 14px;
+ box-shadow: var(--shadow-md);
+ border-left: 4px solid #04AA6D;
+ display: flex;
+ gap: 0.8rem;
+ align-items: flex-start;
 }
 
 .insight-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #f1f1f1;
-  color: #04AA6D;
-  display: grid;
-  place-items: center;
+ width: 40px;
+ height: 40px;
+ border-radius: 50%;
+ background: #f1f1f1;
+ color: #04AA6D;
+ display: grid;
+ place-items: center;
 }
 
 .insight-card h3 {
-  margin: 0 0 0.3rem;
-  color: #282A35;
-  font-size: 1rem;
+ margin: 0 0 0.3rem;
+ color: #282A35;
+ font-size: 1rem;
 }
 
 .insight-card p {
-  margin: 0;
-  color: #666;
-  font-size: 0.92rem;
+ margin: 0;
+ color: #666;
+ font-size: 0.92rem;
 }
 
 .external-strip {
-  display: grid;
-  gap: 1rem;
-  margin: 1.25rem 0 2rem;
+ display: grid;
+ gap: 1rem;
+ margin: 1.25rem 0 2rem;
 }
 
 .external-card {
-  background: white;
-  border-radius: 14px;
-  border-left: 4px solid #0f766e;
-  box-shadow: var(--shadow-md);
-  padding: 1rem 1.15rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+ background: white;
+ border-radius: 14px;
+ border-left: 4px solid #0f766e;
+ box-shadow: var(--shadow-md);
+ padding: 1rem 1.15rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ gap: 1rem;
+ flex-wrap: wrap;
 }
 
 .external-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  border-radius: 999px;
-  background: #ecfdf5;
-  color: #0f766e;
-  padding: 0.35rem 0.7rem;
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+ display: inline-flex;
+ align-items: center;
+ gap: 0.35rem;
+ border-radius: 999px;
+ background: #ecfdf5;
+ color: #0f766e;
+ padding: 0.35rem 0.7rem;
+ font-size: 0.78rem;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.04em;
 }
 
 .external-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #282A35;
+ font-size: 1rem;
+ font-weight: 700;
+ color: #282A35;
 }
 
 .external-meta {
-  color: #666;
-  font-size: 0.92rem;
+ color: #666;
+ font-size: 0.92rem;
 }
 
 @media (max-width: 768px) {
-  .job-card-wrapper {
-    flex-direction: column;
-    text-align: center;
-  }
+ .job-card-wrapper {
+  flex-direction: column;
+  text-align: center;
+ }
 
-  .job-meta-row {
-    justify-content: center;
-  }
+ .job-meta-row {
+  justify-content: center;
+ }
 
-  .job-actions {
-    justify-content: center;
-    width: 100%;
-  }
+ .job-actions {
+  justify-content: center;
+  width: 100%;
+ }
 
-  .filters form {
-    grid-template-columns: 1fr;
-  }
+ .filters form {
+  grid-template-columns: 1fr;
+ }
 
-  .compare-section {
-    flex-direction: column;
-    gap: 1rem;
-  }
+ .compare-section {
+  flex-direction: column;
+  gap: 1rem;
+ }
 
-  .page-header h1 {
-    font-size: 1.8rem;
-  }
+ .page-header h1 {
+  font-size: 1.8rem;
+ }
 }
 </style>
 </head>
@@ -339,196 +339,196 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo"><i class="fas fa-graduation-cap"></i> Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
-    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
-    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
-    <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </form>
-  </div>
+ <div class="logo"><i class="fas fa-graduation-cap"></i> </div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+  <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+  <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+  <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+  <form action="/logout" method="POST" style="display:inline;">
+   <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </form>
+ </div>
 </nav>
 
 <!-- PAGE HEADER -->
 <div class="page-header">
-  <h1><i class="fas fa-briefcase"></i> Available Opportunities</h1>
-  <p>Explore faculty and professor positions from universities worldwide</p>
+ <h1><i class="fas fa-briefcase"></i> Available Opportunities</h1>
+ <p>Explore faculty and professor positions from universities worldwide</p>
 </div>
 
 <!-- FILTERS -->
 <div class="filters-header">
-  <h3><i class="fas fa-filter"></i> Filter Jobs</h3>
-  <div class="filters">
-    <form action="/jobs" method="GET">
-      <input type="text" name="search" placeholder="Search by title or university..." value="<%= search || '' %>">
-      <select name="category">
-        <option value="">All Categories</option>
-        <option value="Computer Science" <%= category === 'Computer Science' ? 'selected' : '' %>>Computer Science</option>
-        <option value="Data Science" <%= category === 'Data Science' ? 'selected' : '' %>>Data Science</option>
-        <option value="Machine Learning" <%= category === 'Machine Learning' ? 'selected' : '' %>>Machine Learning</option>
-        <option value="Engineering" <%= category === 'Engineering' ? 'selected' : '' %>>Engineering</option>
-        <option value="Mathematics" <%= category === 'Mathematics' ? 'selected' : '' %>>Mathematics</option>
-        <option value="Cybersecurity" <%= category === 'Cybersecurity' ? 'selected' : '' %>>Cybersecurity</option>
-      </select>
-      <input type="text" name="location" placeholder="Location" value="<%= location || '' %>">
-      <select name="sort">
-        <option value="">Sort by</option>
-        <option value="salary" <%= sort === 'salary' ? 'selected' : '' %>>Salary (High to Low)</option>
-      </select>
-      <button type="submit"><i class="fas fa-search"></i> Filter</button>
-    </form>
-  </div>
+ <h3><i class="fas fa-filter"></i> Filter Jobs</h3>
+ <div class="filters">
+  <form action="/jobs" method="GET">
+   <input type="text" name="search" placeholder="Search by title or university..." value="<%= search || '' %>">
+   <select name="category">
+    <option value="">All Categories</option>
+    <option value="Computer Science" <%= category === 'Computer Science' ? 'selected' : '' %>>Computer Science</option>
+    <option value="Data Science" <%= category === 'Data Science' ? 'selected' : '' %>>Data Science</option>
+    <option value="Machine Learning" <%= category === 'Machine Learning' ? 'selected' : '' %>>Machine Learning</option>
+    <option value="Engineering" <%= category === 'Engineering' ? 'selected' : '' %>>Engineering</option>
+    <option value="Mathematics" <%= category === 'Mathematics' ? 'selected' : '' %>>Mathematics</option>
+    <option value="Cybersecurity" <%= category === 'Cybersecurity' ? 'selected' : '' %>>Cybersecurity</option>
+   </select>
+   <input type="text" name="location" placeholder="Location" value="<%= location || '' %>">
+   <select name="sort">
+    <option value="">Sort by</option>
+    <option value="salary" <%= sort === 'salary' ? 'selected' : '' %>>Salary (High to Low)</option>
+   </select>
+   <button type="submit"><i class="fas fa-search"></i> Filter</button>
+  </form>
+ </div>
 </div>
 
 <% const featuredCategories = [...new Set(jobs.map(job => job.category).filter(Boolean))].slice(0,3); %>
 <div class="jobs-container">
-  <div class="insight-strip">
-    <% if (aiInsights && aiInsights.length) { %>
-      <% aiInsights.forEach((insight) => { %>
-        <div class="insight-card">
-          <div class="insight-icon"><i class="fas fa-robot"></i></div>
-          <div>
-            <h3><%= insight.title %></h3>
-            <p><%= insight.description %></p>
-          </div>
-        </div>
-      <% }); %>
-    <% } else { %>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-briefcase"></i></div>
-        <div>
-          <h3><%= jobs.length %> open roles</h3>
-          <p>Browse academic and research positions from trusted institutions.</p>
-        </div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-heart"></i></div>
-        <div>
-          <h3><%= favoriteIds.length %> saved positions</h3>
-          <p>Keep your shortlist ready for review and application.</p>
-        </div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-tags"></i></div>
-        <div>
-          <h3><%= featuredCategories.length ? featuredCategories.join(', ') : 'Fresh updates' %></h3>
-          <p>These categories are currently most active on the platform.</p>
-        </div>
-      </div>
-    <% } %>
+ <div class="insight-strip">
+  <% if (aiInsights && aiInsights.length) { %>
+   <% aiInsights.forEach((insight) => { %>
+    <div class="insight-card">
+     <div class="insight-icon"><i class="fas fa-robot"></i></div>
+     <div>
+      <h3><%= insight.title %></h3>
+      <p><%= insight.description %></p>
+     </div>
+    </div>
+   <% }); %>
+  <% } else { %>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-briefcase"></i></div>
+    <div>
+     <h3><%= jobs.length %> open roles</h3>
+     <p>Browse academic and research positions from trusted institutions.</p>
+    </div>
+   </div>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-heart"></i></div>
+    <div>
+     <h3><%= favoriteIds.length %> saved positions</h3>
+     <p>Keep your shortlist ready for review and application.</p>
+    </div>
+   </div>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-tags"></i></div>
+    <div>
+     <h3><%= featuredCategories.length ? featuredCategories.join(', ') : 'Fresh updates' %></h3>
+     <p>These categories are currently most active on the platform.</p>
+    </div>
+   </div>
+  <% } %>
+ </div>
+
+ <div class="-grid">
+  <% (cloudAiActions || []).forEach((item) => { %>
+   <div class="-card">
+    <span class="-badge"><i class="fas fa-wand-magic-sparkles"></i> </span>
+    <h3><%= item.title %></h3>
+    <p><%= item.description %></p>
+   </div>
+  <% }); %>
+ </div>
+
+ <div class="external-strip">
+   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.4rem;">
+    <h3 style="margin:0; color:#282A35;"><i class="fas fa-university"></i> Live job matches from LinkedIn, Indeed & Naukri</h3>
+    <span class="external-pill"><i class="fas fa-broadcast-tower"></i> filter-aware live results</span>
+   </div>
+   <% universityOpenings.forEach(opening => { %>
+    <div class="external-card">
+     <div style="display:flex; flex-direction:column; gap:0.4rem;">
+      <span class="external-pill"><i class="fas fa-building"></i> <%= opening.source %></span>
+      <div class="external-title"><%= opening.title %></div>
+      <div class="external-meta"><i class="fas fa-school"></i> <%= opening.university %> · <i class="fas fa-map-marker-alt"></i> <%= opening.location %></div>
+     </div>
+     <a class="btn btn-primary" href="<%= opening.link %>" target="_blank" rel="noreferrer">
+      <i class="fas fa-arrow-right"></i> Open listing
+     </a>
+    </div>
+   <% }); %>
+  </div>
+ </div>
+
+ <!-- COMPARE SECTION -->
+ <form action="/compare" method="POST" id="compareForm">
+  <div class="compare-section">
+   <div class="jobs-count">
+    <i class="fas fa-list"></i> <strong><%= jobs.length %></strong> positions available
+   </div>
+   <button type="submit" class="btn compare-btn"><i class="fas fa-chart-line"></i> Compare Selected Jobs</button>
   </div>
 
-  <div class="cloud-ai-grid">
-    <% (cloudAiActions || []).forEach((item) => { %>
-      <div class="cloud-ai-card">
-        <span class="cloud-ai-badge"><i class="fas fa-wand-magic-sparkles"></i> Cloud AI</span>
-        <h3><%= item.title %></h3>
-        <p><%= item.description %></p>
+  <!-- JOBS LIST -->
+  <div class="jobs-list">
+   <% if (jobs.length > 0) { %>
+    <% jobs.forEach(job => { %>
+     <div class="job-card-wrapper">
+      <input type="checkbox" name="jobIds" value="<%= job.id %>">
+      <div class="job-card-content">
+       <div class="job-title"><i class="fas fa-briefcase"></i> <%= job.title %></div>
+       <div class="job-university"><i class="fas fa-school"></i> <%= job.university %></div>
+       
+       <div class="job-meta-row">
+        <div class="job-meta-item">
+         <i class="fas fa-map-marker-alt"></i>
+         <%= job.location %>
+        </div>
+        <div class="job-meta-item">
+         <i class="fas fa-tag"></i>
+         <%= job.category %>
+        </div>
+       </div>
+
+       <div class="job-salary"><i class="fas fa-indian-rupee"></i> <%= job.salary %></div>
+       <% const fitSummary = (jobFitSummaryMap && jobFitSummaryMap[job.id]) || { score: 0, label: 'Needs tuning', summary: 'AI advisor is evaluating the role fit.' }; %>
+       <div style="margin-top: 0.8rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.7rem 0.8rem; color:#475569; font-size:0.9rem; line-height:1.5;">
+        <strong style="color:#0f172a;">AI fit:</strong> <%= fitSummary.score %>% · <span style="font-weight:700; color:#0f766e;"><%= fitSummary.label %></span>
+        <div style="margin-top:0.45rem; color:#475569;"><%= fitSummary.summary %></div>
+       </div>
       </div>
+
+      <div class="job-actions">
+       <button type="button" class="btn btn-secondary" onclick="toggleFavorite(<%= job.id %>, this)" data-favorited="<%= favoriteIds && favoriteIds.includes(job.id) ? 'true' : 'false' %>">
+        <i class="fas fa-bookmark"></i> <%= favoriteIds && favoriteIds.includes(job.id) ? 'Saved' : 'Save' %>
+       </button>
+       <button type="button" class="btn btn-primary" onclick="window.location.href='/job/<%= job.id %>'">
+        <i class="fas fa-arrow-right"></i> Apply now
+       </button>
+      </div>
+     </div>
     <% }); %>
+   <% } else { %>
+    <div class="empty-state">
+     <i class="fas fa-search"></i>
+     <h3>No jobs found</h3>
+     <p>Try adjusting your search filters or check back later for new opportunities.</p>
+    </div>
+   <% } %>
   </div>
-
-  <div class="external-strip">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.4rem;">
-        <h3 style="margin:0; color:#282A35;"><i class="fas fa-university"></i> Live job matches from LinkedIn, Indeed & Naukri</h3>
-        <span class="external-pill"><i class="fas fa-broadcast-tower"></i> filter-aware live results</span>
-      </div>
-      <% universityOpenings.forEach(opening => { %>
-        <div class="external-card">
-          <div style="display:flex; flex-direction:column; gap:0.4rem;">
-            <span class="external-pill"><i class="fas fa-building"></i> <%= opening.source %></span>
-            <div class="external-title"><%= opening.title %></div>
-            <div class="external-meta"><i class="fas fa-school"></i> <%= opening.university %> · <i class="fas fa-map-marker-alt"></i> <%= opening.location %></div>
-          </div>
-          <a class="btn btn-primary" href="<%= opening.link %>" target="_blank" rel="noreferrer">
-            <i class="fas fa-arrow-right"></i> Open listing
-          </a>
-        </div>
-      <% }); %>
-    </div>
-  </div>
-
-  <!-- COMPARE SECTION -->
-  <form action="/compare" method="POST" id="compareForm">
-    <div class="compare-section">
-      <div class="jobs-count">
-        <i class="fas fa-list"></i> <strong><%= jobs.length %></strong> positions available
-      </div>
-      <button type="submit" class="btn compare-btn"><i class="fas fa-chart-line"></i> Compare Selected Jobs</button>
-    </div>
-
-    <!-- JOBS LIST -->
-    <div class="jobs-list">
-      <% if (jobs.length > 0) { %>
-        <% jobs.forEach(job => { %>
-          <div class="job-card-wrapper">
-            <input type="checkbox" name="jobIds" value="<%= job.id %>">
-            <div class="job-card-content">
-              <div class="job-title"><i class="fas fa-briefcase"></i> <%= job.title %></div>
-              <div class="job-university"><i class="fas fa-school"></i> <%= job.university %></div>
-              
-              <div class="job-meta-row">
-                <div class="job-meta-item">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <%= job.location %>
-                </div>
-                <div class="job-meta-item">
-                  <i class="fas fa-tag"></i>
-                  <%= job.category %>
-                </div>
-              </div>
-
-              <div class="job-salary"><i class="fas fa-indian-rupee"></i> <%= job.salary %></div>
-              <% const fitSummary = (jobFitSummaryMap && jobFitSummaryMap[job.id]) || { score: 0, label: 'Needs tuning', summary: 'AI advisor is evaluating the role fit.' }; %>
-              <div style="margin-top: 0.8rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:0.7rem 0.8rem; color:#475569; font-size:0.9rem; line-height:1.5;">
-                <strong style="color:#0f172a;">AI fit:</strong> <%= fitSummary.score %>% · <span style="font-weight:700; color:#0f766e;"><%= fitSummary.label %></span>
-                <div style="margin-top:0.45rem; color:#475569;"><%= fitSummary.summary %></div>
-              </div>
-            </div>
-
-            <div class="job-actions">
-              <button type="button" class="btn btn-secondary" onclick="toggleFavorite(<%= job.id %>, this)" data-favorited="<%= favoriteIds && favoriteIds.includes(job.id) ? 'true' : 'false' %>">
-                <i class="fas fa-bookmark"></i> <%= favoriteIds && favoriteIds.includes(job.id) ? 'Saved' : 'Save' %>
-              </button>
-              <button type="button" class="btn btn-primary" onclick="window.location.href='/job/<%= job.id %>'">
-                <i class="fas fa-arrow-right"></i> Apply now
-              </button>
-            </div>
-          </div>
-        <% }); %>
-      <% } else { %>
-        <div class="empty-state">
-          <i class="fas fa-search"></i>
-          <h3>No jobs found</h3>
-          <p>Try adjusting your search filters or check back later for new opportunities.</p>
-        </div>
-      <% } %>
-    </div>
-  </form>
+ </form>
 </div>
 
 <script>
 document.getElementById('compareForm').addEventListener('submit', function(e) {
-  const checkboxes = document.querySelectorAll('input[name="jobIds"]:checked');
-  if (checkboxes.length < 2) {
-    e.preventDefault();
-    alert('Please select at least 2 jobs to compare.');
-  }
+ const checkboxes = document.querySelectorAll('input[name="jobIds"]:checked');
+ if (checkboxes.length < 2) {
+  e.preventDefault();
+  alert('Please select at least 2 jobs to compare.');
+ }
 });
 
 function applyLiveFilter() {
-  const search = document.querySelector('input[name="search"]').value.trim().toLowerCase();
-  const category = document.querySelector('select[name="category"]').value.trim().toLowerCase();
-  const location = document.querySelector('input[name="location"]').value.trim().toLowerCase();
-  const liveCards = document.querySelectorAll('.external-card');
+ const search = document.querySelector('input[name="search"]').value.trim().toLowerCase();
+ const category = document.querySelector('select[name="category"]').value.trim().toLowerCase();
+ const location = document.querySelector('input[name="location"]').value.trim().toLowerCase();
+ const liveCards = document.querySelectorAll('.external-card');
 
-  liveCards.forEach((card) => {
-    const text = card.textContent.toLowerCase();
-    const matches = (!search || text.includes(search)) && (!category || text.includes(category)) && (!location || text.includes(location));
-    card.style.display = matches ? 'flex' : 'none';
-  });
+ liveCards.forEach((card) => {
+  const text = card.textContent.toLowerCase();
+  const matches = (!search || text.includes(search)) && (!category || text.includes(category)) && (!location || text.includes(location));
+  card.style.display = matches ? 'flex' : 'none';
+ });
 }
 
 document.querySelector('input[name="search"]').addEventListener('input', applyLiveFilter);
@@ -536,15 +536,15 @@ document.querySelector('select[name="category"]').addEventListener('change', app
 document.querySelector('input[name="location"]').addEventListener('input', applyLiveFilter);
 
 async function toggleFavorite(jobId, button) {
-  try {
-    const response = await fetch(`/jobs/${jobId}/favorite`, { method: 'POST' });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Unable to update saved jobs');
-    button.innerHTML = `<i class="fas fa-heart"></i> ${data.favorited ? 'Saved' : 'Save'}`;
-    button.dataset.favorited = data.favorited ? 'true' : 'false';
-  } catch (error) {
-    alert(error.message);
-  }
+ try {
+  const response = await fetch(`/jobs/${jobId}/favorite`, { method: 'POST' });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || 'Unable to update saved jobs');
+  button.innerHTML = `<i class="fas fa-heart"></i> ${data.favorited ? 'Saved' : 'Save'}`;
+  button.dataset.favorited = data.favorited ? 'true' : 'false';
+ } catch (error) {
+  alert(error.message);
+ }
 }
 </script>
 

@@ -3,349 +3,349 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - Cloud AI</title>
+<title>Admin Panel </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
 body {
-  background: linear-gradient(135deg, #f5f6f3 0%, #edf3f2 48%, #f9f9f7 100%);
-  color: #1f2937;
-  position: relative;
-  overflow-x: hidden;
+ background: linear-gradient(135deg, #f5f6f3 0%, #edf3f2 48%, #f9f9f7 100%);
+ color: #1f2937;
+ position: relative;
+ overflow-x: hidden;
 }
 
 body::before,
 body::after {
-  content: '';
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  filter: blur(8px);
+ content: '';
+ position: fixed;
+ border-radius: 50%;
+ pointer-events: none;
+ z-index: 0;
+ filter: blur(8px);
 }
 
 body::before {
-  width: 500px;
-  height: 500px;
-  top: -140px;
-  right: -80px;
-  background: radial-gradient(circle, rgba(14, 165, 133, 0.14), rgba(14, 165, 133, 0.02) 55%, transparent 72%);
+ width: 500px;
+ height: 500px;
+ top: -140px;
+ right: -80px;
+ background: radial-gradient(circle, rgba(14, 165, 133, 0.14), rgba(14, 165, 133, 0.02) 55%, transparent 72%);
 }
 
 body::after {
-  width: 520px;
-  height: 520px;
-  left: -120px;
-  bottom: -200px;
-  background: radial-gradient(circle, rgba(45, 82, 98, 0.1), rgba(45, 82, 98, 0.02) 52%, transparent 72%);
+ width: 520px;
+ height: 520px;
+ left: -120px;
+ bottom: -200px;
+ background: radial-gradient(circle, rgba(45, 82, 98, 0.1), rgba(45, 82, 98, 0.02) 52%, transparent 72%);
 }
 
 .container {
-  position: relative;
-  z-index: 1;
+ position: relative;
+ z-index: 1;
 }
 
 .admin-header {
-  background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(230, 245, 242, 0.9));
-  border: 1px solid rgba(148, 163, 184, 0.19);
-  color: #17212b;
-  padding: 2rem;
-  border-radius: 24px;
-  margin-bottom: 2rem;
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(10px);
+ background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(230, 245, 242, 0.9));
+ border: 1px solid rgba(148, 163, 184, 0.19);
+ color: #17212b;
+ padding: 2rem;
+ border-radius: 24px;
+ margin-bottom: 2rem;
+ box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+ backdrop-filter: blur(10px);
 }
 
 .admin-header h1 {
-  color: #17212b;
-  margin-top: 0;
-  letter-spacing: -0.04em;
+ color: #17212b;
+ margin-top: 0;
+ letter-spacing: -0.04em;
 }
 
 .admin-header p {
-  color: #475569;
-  margin: 0.75rem 0 0;
-  font-size: 1rem;
+ color: #475569;
+ margin: 0.75rem 0 0;
+ font-size: 1rem;
 }
 
 .insight-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+ gap: 1rem;
+ margin-bottom: 2rem;
 }
 
 .insight-card {
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 18px;
-  padding: 1rem 1.1rem;
-  display: flex;
-  gap: 0.9rem;
-  align-items: flex-start;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
-  backdrop-filter: blur(8px);
+ background: rgba(255, 255, 255, 0.82);
+ border: 1px solid rgba(148, 163, 184, 0.18);
+ border-radius: 18px;
+ padding: 1rem 1.1rem;
+ display: flex;
+ gap: 0.9rem;
+ align-items: flex-start;
+ box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+ backdrop-filter: blur(8px);
 }
 
 .insight-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, #dff7ef, #e0f2fe);
-  color: #0f766e;
-  font-size: 1rem;
+ width: 42px;
+ height: 42px;
+ border-radius: 12px;
+ display: grid;
+ place-items: center;
+ background: linear-gradient(135deg, #dff7ef, #e0f2fe);
+ color: #0f766e;
+ font-size: 1rem;
 }
 
 .insight-card h3 {
-  margin: 0 0 0.25rem;
-  color: #1f2937;
-  font-size: 1.05rem;
+ margin: 0 0 0.25rem;
+ color: #1f2937;
+ font-size: 1.05rem;
 }
 
 .insight-card p {
-  margin: 0;
-  color: #475569;
-  line-height: 1.5;
-  font-size: 0.92rem;
+ margin: 0;
+ color: #475569;
+ line-height: 1.5;
+ font-size: 0.92rem;
 }
 
 .admin-grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 2rem;
-  margin-bottom: 2rem;
+ display: grid;
+ grid-template-columns: 1fr 2fr;
+ gap: 2rem;
+ margin-bottom: 2rem;
 }
 
 .form-section {
-  background: rgba(255,255,255,0.82);
-  border: 1px solid rgba(148,163,184,0.18);
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 22px 52px rgba(15, 23, 42, 0.08);
-  border-left: 4px solid #1fb786;
-  backdrop-filter: blur(10px);
+ background: rgba(255,255,255,0.82);
+ border: 1px solid rgba(148,163,184,0.18);
+ padding: 2rem;
+ border-radius: 20px;
+ box-shadow: 0 22px 52px rgba(15, 23, 42, 0.08);
+ border-left: 4px solid #1fb786;
+ backdrop-filter: blur(10px);
 }
 
 .form-section h3 {
-  margin-top: 0;
-  color: #282A35;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+ margin-top: 0;
+ color: #282A35;
+ display: flex;
+ align-items: center;
+ gap: 0.75rem;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+ margin-bottom: 1.5rem;
 }
 
 .form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #111;
+ display: block;
+ font-weight: 600;
+ margin-bottom: 0.5rem;
+ color: #111;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 0.95rem;
-  transition: var(--transition);
+ width: 100%;
+ padding: 0.75rem 1rem;
+ border: 1px solid #ddd;
+ border-radius: 8px;
+ font-family: inherit;
+ font-size: 0.95rem;
+ transition: var(--transition);
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  outline: none;
-  border-color: #04AA6D;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+ outline: none;
+ border-color: #04AA6D;
+ box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .form-group textarea {
-  resize: vertical;
-  min-height: 100px;
+ resize: vertical;
+ min-height: 100px;
 }
 
 .form-group button {
-  width: 100%;
-  padding: 0.75rem;
-  background: linear-gradient(135deg, #04AA6D, #059862);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 1rem;
-  box-shadow: var(--shadow-md);
+ width: 100%;
+ padding: 0.75rem;
+ background: linear-gradient(135deg, #04AA6D, #059862);
+ color: white;
+ border: none;
+ border-radius: 8px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: var(--transition);
+ font-size: 1rem;
+ box-shadow: var(--shadow-md);
 }
 
 .form-group button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+ transform: translateY(-2px);
+ box-shadow: var(--shadow-lg);
 }
 
 .jobs-section, .applications-section {
-  background: rgba(255,255,255,0.82);
-  border: 1px solid rgba(148,163,184,0.18);
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-  margin-bottom: 2rem;
-  border-left: 4px solid #1fb786;
-  backdrop-filter: blur(10px);
+ background: rgba(255,255,255,0.82);
+ border: 1px solid rgba(148,163,184,0.18);
+ padding: 2rem;
+ border-radius: 20px;
+ box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+ margin-bottom: 2rem;
+ border-left: 4px solid #1fb786;
+ backdrop-filter: blur(10px);
 }
 
 .section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #282A35;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 0;
+ font-size: 1.5rem;
+ font-weight: 600;
+ color: #282A35;
+ display: flex;
+ align-items: center;
+ gap: 0.75rem;
+ margin-top: 0;
 }
 
 .jobs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+ gap: 1.5rem;
 }
 
 .job-item {
-  background: white;
-  border: 1px solid #ddd;
-  padding: 1.5rem;
-  border-radius: 8px;
-  transition: var(--transition);
+ background: white;
+ border: 1px solid #ddd;
+ padding: 1.5rem;
+ border-radius: 8px;
+ transition: var(--transition);
 }
 
 .job-item:hover {
-  box-shadow: var(--shadow-md);
-  border-color: #04AA6D;
+ box-shadow: var(--shadow-md);
+ border-color: #04AA6D;
 }
 
 .job-item h4 {
-  color: #04AA6D;
-  margin-top: 0;
+ color: #04AA6D;
+ margin-top: 0;
 }
 
 .job-item-info {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
+ color: #666;
+ font-size: 0.9rem;
+ margin: 0.5rem 0;
 }
 
 .job-item-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
+ display: flex;
+ gap: 0.5rem;
+ margin-top: 1rem;
 }
 
 .job-item-actions .btn {
-  flex: 1;
-  padding: 0.6rem;
-  font-size: 0.85rem;
-  margin: 0;
+ flex: 1;
+ padding: 0.6rem;
+ font-size: 0.85rem;
+ margin: 0;
 }
 
 .applications-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+ display: flex;
+ flex-direction: column;
+ gap: 1rem;
 }
 
 .application-item {
-  background: #f1f1f1;
-  border: 1px solid #ddd;
-  border-left: 4px solid #04AA6D;
-  padding: 1.5rem;
-  border-radius: 8px;
-  transition: var(--transition);
+ background: #f1f1f1;
+ border: 1px solid #ddd;
+ border-left: 4px solid #04AA6D;
+ padding: 1.5rem;
+ border-radius: 8px;
+ transition: var(--transition);
 }
 
 .application-item:hover {
-  background: white;
-  box-shadow: var(--shadow-md);
+ background: white;
+ box-shadow: var(--shadow-md);
 }
 
 .app-item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: flex-start;
+ margin-bottom: 1rem;
 }
 
 .app-item-title {
-  font-weight: 600;
-  color: #282A35;
-  margin: 0;
+ font-weight: 600;
+ color: #282A35;
+ margin: 0;
 }
 
 .app-item-meta {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
+ display: flex;
+ gap: 1.5rem;
+ flex-wrap: wrap;
+ color: #666;
+ font-size: 0.9rem;
+ margin: 0.5rem 0;
 }
 
 .app-status {
-  display: inline-block;
-  padding: 0.4rem 1rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
+ display: inline-block;
+ padding: 0.4rem 1rem;
+ border-radius: 6px;
+ font-size: 0.85rem;
+ font-weight: 600;
 }
 
 .status-pending {
-  background: #fef3c7;
-  color: #92400e;
+ background: #fef3c7;
+ color: #92400e;
 }
 
 .status-shortlisted {
-  background: #e8f5e9;
-  color: #059862;
+ background: #e8f5e9;
+ color: #059862;
 }
 
 .app-item-actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+ display: flex;
+ gap: 0.75rem;
+ flex-wrap: wrap;
 }
 
 .app-item-actions .btn {
-  padding: 0.6rem 1rem;
-  font-size: 0.85rem;
-  margin: 0;
+ padding: 0.6rem 1rem;
+ font-size: 0.85rem;
+ margin: 0;
 }
 
 .empty-state {
-  text-align: center;
-  padding: 2rem;
-  color: #666;
+ text-align: center;
+ padding: 2rem;
+ color: #666;
 }
 
 @media (max-width: 768px) {
-  .admin-grid {
-    grid-template-columns: 1fr;
-  }
+ .admin-grid {
+  grid-template-columns: 1fr;
+ }
 
-  .jobs-grid {
-    grid-template-columns: 1fr;
-  }
+ .jobs-grid {
+  grid-template-columns: 1fr;
+ }
 
-  .app-item-header {
-    flex-direction: column;
-  }
+ .app-item-header {
+  flex-direction: column;
+ }
 }
 </style>
 </head>
@@ -353,411 +353,411 @@ body::after {
 
 <!-- NAV -->
 <nav>
-  <div class="logo"><i class="fas fa-graduation-cap"></i> Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
-    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
-    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
-    <span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span>
-    <span onclick="window.location.href='/shortlisted'"><i class="fas fa-check-circle"></i> Shortlisted</span>
-    <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </form>
-  </div>
+ <div class="logo"><i class="fas fa-graduation-cap"></i> </div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+  <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+  <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+  <span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span>
+  <span onclick="window.location.href='/shortlisted'"><i class="fas fa-check-circle"></i> Shortlisted</span>
+  <form action="/logout" method="POST" style="display:inline;">
+   <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </form>
+ </div>
 </nav>
 
 <div class="container">
-  <!-- ADMIN HEADER -->
-  <div class="admin-header">
-    <h1><i class="fas fa-cog"></i> Admin Panel</h1>
-    <p>Manage job postings, applications, and candidate interviews with AI-backed hiring visibility.</p>
-  </div>
+ <!-- ADMIN HEADER -->
+ <div class="admin-header">
+  <h1><i class="fas fa-cog"></i> Admin Panel</h1>
+  <p>Manage job postings, applications, and candidate interviews with AI-backed hiring visibility.</p>
+ </div>
 
-  <div class="insight-strip" style="margin-bottom: 2rem;">
-    <% if (aiInsights && aiInsights.length) { %>
-      <% aiInsights.forEach((insight) => { %>
-        <div class="insight-card">
-          <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-          <div>
-            <h3><%= insight.title %></h3>
-            <p><%= insight.description %></p>
-          </div>
-        </div>
-      <% }); %>
-    <% } else { %>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-chart-line"></i></div>
-        <div>
-          <h3>Hiring momentum</h3>
-          <p>Review job health, shortlist quality, and interview readiness from a single operations view.</p>
-        </div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-users"></i></div>
-        <div>
-          <h3>Candidate pipeline</h3>
-          <p>Monitor active applicants, shortlisted talent, and interview follow-ups without missing a step.</p>
-        </div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-robot"></i></div>
-        <div>
-          <h3>AI operations</h3>
-          <p>Use automation to accelerate role generation, shortlist decisions, and consistent hiring decisions.</p>
-        </div>
-      </div>
-    <% } %>
-  </div>
-
-  <div class="applications-section" style="border-left: 4px solid #1d4ed8; margin-bottom: 2rem;">
-    <h3 class="section-title"><i class="fas fa-sign-in-alt"></i> Recent Logins</h3>
-    <p style="margin-top: 0.5rem; color: #475569;">Track which users have signed in, from which method, and when.</p>
-    <% if (recentLogins && recentLogins.length) { %>
-      <div class="applications-list" style="margin-top: 1rem;">
-        <% recentLogins.forEach((login) => { %>
-          <div class="application-item" style="border-left-color: #1d4ed8; background: #f8fbff;">
-            <div class="app-item-header">
-              <div>
-                <p class="app-item-title"><%= login.user_name || login.user_email || login.email || 'Unknown user' %></p>
-                <div class="app-item-meta">
-                  <span><i class="fas fa-envelope"></i> <%= login.email || login.user_email || 'No email recorded' %></span>
-                  <span><i class="fas fa-user-tag"></i> <%= login.role || 'user' %></span>
-                  <span><i class="fas fa-shield-alt"></i> <%= login.login_method || 'login' %></span>
-                </div>
-              </div>
-              <span class="app-status status-shortlisted"><%= new Date(login.created_at).toLocaleString() %></span>
-            </div>
-          </div>
-        <% }); %>
-      </div>
-    <% } else { %>
-      <p style="margin-top: 1rem; color: #64748b;">No login activity has been recorded yet.</p>
-    <% } %>
-  </div>
-
-  <div class="applications-section" style="border-left: 4px solid #04AA6D; margin-bottom: 2rem;">
-    <h3 class="section-title"><i class="fas fa-check-circle"></i> Shortlisted Resumes</h3>
-    <p style="margin-top: 0.5rem; color: #475569;">Review all candidates who have been shortlisted and jump to the resume shortlist page instantly.</p>
-    <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-      <a href="/shortlisted" class="btn btn-primary" style="text-decoration: none;"><i class="fas fa-file-alt"></i> Open Resume Shortlist</a>
-      <a href="/admin" class="btn btn-secondary" style="text-decoration: none;"><i class="fas fa-chevron-left"></i> Back to Admin Dashboard</a>
+ <div class="insight-strip" style="margin-bottom: 2rem;">
+  <% if (aiInsights && aiInsights.length) { %>
+   <% aiInsights.forEach((insight) => { %>
+    <div class="insight-card">
+     <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+     <div>
+      <h3><%= insight.title %></h3>
+      <p><%= insight.description %></p>
+     </div>
     </div>
+   <% }); %>
+  <% } else { %>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-chart-line"></i></div>
+    <div>
+     <h3>Hiring momentum</h3>
+     <p>Review job health, shortlist quality, and interview readiness from a single operations view.</p>
+    </div>
+   </div>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-users"></i></div>
+    <div>
+     <h3>Candidate pipeline</h3>
+     <p>Monitor active applicants, shortlisted talent, and interview follow-ups without missing a step.</p>
+    </div>
+   </div>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-robot"></i></div>
+    <div>
+     <h3>AI operations</h3>
+     <p>Use automation to accelerate role generation, shortlist decisions, and consistent hiring decisions.</p>
+    </div>
+   </div>
+  <% } %>
+ </div>
+
+ <div class="applications-section" style="border-left: 4px solid #1d4ed8; margin-bottom: 2rem;">
+  <h3 class="section-title"><i class="fas fa-sign-in-alt"></i> Recent Logins</h3>
+  <p style="margin-top: 0.5rem; color: #475569;">Track which users have signed in, from which method, and when.</p>
+  <% if (recentLogins && recentLogins.length) { %>
+   <div class="applications-list" style="margin-top: 1rem;">
+    <% recentLogins.forEach((login) => { %>
+     <div class="application-item" style="border-left-color: #1d4ed8; background: #f8fbff;">
+      <div class="app-item-header">
+       <div>
+        <p class="app-item-title"><%= login.user_name || login.user_email || login.email || 'Unknown user' %></p>
+        <div class="app-item-meta">
+         <span><i class="fas fa-envelope"></i> <%= login.email || login.user_email || 'No email recorded' %></span>
+         <span><i class="fas fa-user-tag"></i> <%= login.role || 'user' %></span>
+         <span><i class="fas fa-shield-alt"></i> <%= login.login_method || 'login' %></span>
+        </div>
+       </div>
+       <span class="app-status status-shortlisted"><%= new Date(login.created_at).toLocaleString() %></span>
+      </div>
+     </div>
+    <% }); %>
+   </div>
+  <% } else { %>
+   <p style="margin-top: 1rem; color: #64748b;">No login activity has been recorded yet.</p>
+  <% } %>
+ </div>
+
+ <div class="applications-section" style="border-left: 4px solid #04AA6D; margin-bottom: 2rem;">
+  <h3 class="section-title"><i class="fas fa-check-circle"></i> Shortlisted Resumes</h3>
+  <p style="margin-top: 0.5rem; color: #475569;">Review all candidates who have been shortlisted and jump to the resume shortlist page instantly.</p>
+  <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+   <a href="/shortlisted" class="btn btn-primary" style="text-decoration: none;"><i class="fas fa-file-alt"></i> Open Resume Shortlist</a>
+   <a href="/admin" class="btn btn-secondary" style="text-decoration: none;"><i class="fas fa-chevron-left"></i> Back to Admin Dashboard</a>
+  </div>
+ </div>
+
+ <!-- ADD JOB FORM -->
+ <div class="admin-grid">
+  <div class="form-section">
+   <h3><i class="fas fa-plus-circle"></i> Add New Job</h3>
+   <form action="/admin/job" method="POST">
+    <div class="form-group">
+     <label for="title"><i class="fas fa-briefcase"></i> Job Title</label>
+     <input type="text" id="title" name="title" placeholder="e.g., Senior Professor" required>
+    </div>
+    <div class="form-group">
+     <label for="university"><i class="fas fa-school"></i> University</label>
+     <input type="text" id="university" name="university" placeholder="e.g., Stanford University" required>
+    </div>
+    <div class="form-group">
+     <label for="location"><i class="fas fa-map-marker-alt"></i> Location</label>
+     <input type="text" id="location" name="location" placeholder="e.g., California, USA" required>
+    </div>
+    <div class="form-group">
+     <label for="salary"><i class="fas fa-indian-rupee"></i> Salary</label>
+     <input type="text" id="salary" name="salary" placeholder="e.g., ₹12,00,000 ₹18,00,000" required>
+    </div>
+    <div class="form-group">
+     <label for="category"><i class="fas fa-tag"></i> Category</label>
+     <select id="category" name="category" required>
+      <option value="">Select Category</option>
+      <option value="Computer Science">Computer Science</option>
+      <option value="Data Science">Data Science</option>
+      <option value="Machine Learning">Machine Learning</option>
+      <option value="Engineering">Engineering</option>
+      <option value="Mathematics">Mathematics</option>
+      <option value="Cybersecurity">Cybersecurity</option>
+      <option value="Software Engineering">Software Engineering</option>
+     </select>
+    </div>
+    <div class="form-group">
+     <label for="description"><i class="fas fa-align-left"></i> Job Description</label>
+     <textarea id="description" name="description" placeholder="Describe the job responsibilities and requirements..." required></textarea>
+    </div>
+    <div class="form-group">
+     <label for="requirements"><i class="fas fa-list-check"></i> Key Requirements</label>
+     <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:0.5rem; flex-wrap:wrap;">
+      <small style="color:#475569;"> can generate a polished university-standard requirement summary.</small>
+      <button type="button" class="btn btn-secondary" id="aiRequirementsBtn" style="padding:0.5rem 0.9rem; width:auto; min-width: 180px; font-size:0.9rem; margin:0; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe;"><i class="fas fa-wand-magic-sparkles"></i> Generate with AI</button>
+     </div>
+     <textarea id="requirements" name="requirements" placeholder="List the key requirements for this position..." required></textarea>
+    </div>
+    <div class="form-group">
+     <button type="submit"><i class="fas fa-plus"></i> Add Job</button>
+    </div>
+   </form>
   </div>
 
-  <!-- ADD JOB FORM -->
-  <div class="admin-grid">
-    <div class="form-section">
-      <h3><i class="fas fa-plus-circle"></i> Add New Job</h3>
-      <form action="/admin/job" method="POST">
-        <div class="form-group">
-          <label for="title"><i class="fas fa-briefcase"></i> Job Title</label>
-          <input type="text" id="title" name="title" placeholder="e.g., Senior Professor" required>
+  <!-- JOBS LIST -->
+  <div class="jobs-section">
+   <h3 class="section-title"><i class="fas fa-list"></i> Existing Jobs</h3>
+   <div class="jobs-grid">
+    <% if (jobs.length === 0) { %>
+     <div class="empty-state">
+      <i class="fas fa-inbox"></i>
+      <p>No jobs posted yet. Create your first job posting!</p>
+     </div>
+    <% } else { jobs.forEach(job => { %>
+     <div class="job-item">
+      <h4><i class="fas fa-briefcase"></i> <%= job.title %></h4>
+      <div class="job-item-info"><i class="fas fa-school"></i> <%= job.university %></div>
+      <div class="job-item-info"><i class="fas fa-map-marker-alt"></i> <%= job.location %></div>
+      <div class="job-item-info"><i class="fas fa-tag"></i> <%= job.category %></div>
+      <div class="job-item-actions">
+       <a href="/admin/job/<%= job.id %>/edit" class="btn btn-primary" style="text-decoration: none;">
+        <i class="fas fa-edit"></i> Edit
+       </a>
+       <form action="/admin/job/<%= job.id %>/delete" method="POST" style="flex: 1;">
+        <button type="submit" class="btn btn-secondary" style="width: 100%; background: #ef4444; color: white; border: none;">
+         <i class="fas fa-trash"></i> Delete
+        </button>
+       </form>
+      </div>
+     </div>
+    <% }); } %>
+   </div>
+  </div>
+ </div>
+
+ <!-- RESUME SUBMISSIONS SECTION -->
+ <div class="applications-section">
+  <h3 class="section-title"><i class="fas fa-file"></i> Resume Submissions</h3>
+  <div class="applications-list">
+   <% if (!resumeUsers || resumeUsers.length === 0) { %>
+    <div class="empty-state">
+     <i class="fas fa-inbox"></i>
+     <p>No resume submissions yet.</p>
+    </div>
+   <% } else { resumeUsers.forEach(u => { %>
+    <div class="application-item">
+     <div class="app-item-header">
+      <div>
+       <h4 class="app-item-title"><i class="fas fa-user"></i> <%= u.name %> &nbsp; <small style="color:#666; font-weight:600;">(&lt;<%= u.email %>&gt;)</small></h4>
+      </div>
+      <span class="app-status status-<%= (u.resume_review_status || 'pending').toLowerCase() %>">
+       <i class="fas fa-tag"></i> <%= (u.resume_review_status || 'pending').charAt(0).toUpperCase() + (u.resume_review_status || 'pending').slice(1) %>
+      </span>
+     </div>
+
+     <p style="margin:0.5rem 0 0; color:#475569;"><strong>Submitted Resume:</strong>
+      <% if (u.resume_path) { %>
+       <a href="/<%= u.resume_path %>" target="_blank" style="margin-left:0.5rem; text-decoration:none; color:#282A35;">View Resume</a>
+      <% } %>
+     </p>
+
+     <% if (u.resume_scan_score || u.resume_scan_report) { %>
+      <div style="margin-top:0.75rem; background:#f1f1f1; border-radius:12px; padding:1rem; color:#334155;">
+       <strong>AICTE Scan Summary:</strong>
+       <p style="margin:0.5rem 0 0;">Score: <strong><%= u.resume_scan_score || 'N/A' %>%</strong> | Status: <strong><%= u.resume_aicte_status || 'pending' %></strong></p>
+       <% if (u.resume_scan_report) { %>
+        <pre style="white-space:pre-wrap; margin-top:0.75rem; font-size:0.92rem; line-height:1.55; background:#ffffff; border:1px solid #ddd; padding:0.9rem; border-radius:10px;"><%= u.resume_scan_report %></pre>
+       <% } %>
+      </div>
+     <% } %>
+
+     <div style="margin-top:0.75rem;">
+      <strong>Scores:</strong>
+      <div style="margin-top:0.5rem; color:#475569;">
+       <% 
+        const userSessions = (sessions || []).filter(s => s.user_id === u.id);
+        const userInterviews = (interviews || []).filter(i => i.user_id === u.id);
+       %>
+       <% if (userSessions.length === 0 && userInterviews.length === 0) { %>
+        <span style="color:#94a3b8;">No interview scores available yet.</span>
+       <% } %>
+       <% userSessions.forEach(s => { %>
+        <% const performanceSummary = (typeof buildPracticePerformanceSummary === 'function') ? buildPracticePerformanceSummary({ user: { role: 'admin' }, totalScore: s.total_score, averageScore: s.average_score, totalQuestions: s.total_questions, completedQuestions: s.completed_questions, sessionType: s.session_type || 'practice' }) : null; %>
+        <div style="margin-bottom:0.7rem; padding:0.75rem 0.85rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;">
+         <div>Session #<%= s.id %> (<%= s.session_type ? s.session_type : 'practice' %>): total_score: <strong><%= s.total_score %></strong>, average_score: <strong><%= s.average_score %></strong></div>
+         <% if (performanceSummary) { %>
+          <div style="margin-top:0.4rem; color:#0f172a; font-weight:600;">Band: <%= performanceSummary.band %></div>
+          <div style="margin-top:0.2rem; color:#475569; line-height:1.5;"><%= performanceSummary.summary %></div>
+         <% } %>
         </div>
-        <div class="form-group">
-          <label for="university"><i class="fas fa-school"></i> University</label>
-          <input type="text" id="university" name="university" placeholder="e.g., Stanford University" required>
-        </div>
-        <div class="form-group">
-          <label for="location"><i class="fas fa-map-marker-alt"></i> Location</label>
-          <input type="text" id="location" name="location" placeholder="e.g., California, USA" required>
-        </div>
-        <div class="form-group">
-          <label for="salary"><i class="fas fa-indian-rupee"></i> Salary</label>
-          <input type="text" id="salary" name="salary" placeholder="e.g., ₹12,00,000 - ₹18,00,000" required>
-        </div>
-        <div class="form-group">
-          <label for="category"><i class="fas fa-tag"></i> Category</label>
-          <select id="category" name="category" required>
-            <option value="">Select Category</option>
-            <option value="Computer Science">Computer Science</option>
-            <option value="Data Science">Data Science</option>
-            <option value="Machine Learning">Machine Learning</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Mathematics">Mathematics</option>
-            <option value="Cybersecurity">Cybersecurity</option>
-            <option value="Software Engineering">Software Engineering</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="description"><i class="fas fa-align-left"></i> Job Description</label>
-          <textarea id="description" name="description" placeholder="Describe the job responsibilities and requirements..." required></textarea>
-        </div>
-        <div class="form-group">
-          <label for="requirements"><i class="fas fa-list-check"></i> Key Requirements</label>
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:0.5rem; flex-wrap:wrap;">
-            <small style="color:#475569;">Cloud AI can generate a polished university-standard requirement summary.</small>
-            <button type="button" class="btn btn-secondary" id="aiRequirementsBtn" style="padding:0.5rem 0.9rem; width:auto; min-width: 180px; font-size:0.9rem; margin:0; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe;"><i class="fas fa-wand-magic-sparkles"></i> Generate with AI</button>
-          </div>
-          <textarea id="requirements" name="requirements" placeholder="List the key requirements for this position..." required></textarea>
-        </div>
-        <div class="form-group">
-          <button type="submit"><i class="fas fa-plus"></i> Add Job</button>
-        </div>
+        <% const respForSession = (responses || []).filter(r => r.session_id === s.id); %>
+        <% if (respForSession.length > 0) { %>
+         <div style="margin-left:0.5rem; color:#475569;">
+          <strong>Responses:</strong>
+          <% respForSession.forEach(r => { %>
+           <div style="margin-top:0.25rem; font-size:0.95rem;">- <%= r.question_text %>: <em><%= r.user_answer %></em></div>
+          <% }); %>
+         </div>
+        <% } %>
+       <% }); %>
+       <% userInterviews.forEach(i => { %>
+        <div>Interview #<%= i.id %>: score: <strong><%= i.score %></strong></div>
+       <% }); %>
+      </div>
+     </div>
+
+     <div class="app-item-actions" style="margin-top:1rem;">
+      <form action="/admin/resume/<%= u.id %>/review" method="POST" style="display:flex; gap:0.5rem; align-items:center;">
+       <select name="action" style="padding: 0.6rem 0.9rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; color: #282A35;">
+        <option value="pending" <%= (!u.resume_review_status || u.resume_review_status === 'pending') ? 'selected' : '' %>>Pending</option>
+        <option value="shortlist">Shortlist</option>
+        <option value="reject">Reject</option>
+       </select>
+       <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Update</button>
       </form>
+     </div>
     </div>
+   <% }); } %>
+  </div>
+ </div>
 
-    <!-- JOBS LIST -->
-    <div class="jobs-section">
-      <h3 class="section-title"><i class="fas fa-list"></i> Existing Jobs</h3>
-      <div class="jobs-grid">
-        <% if (jobs.length === 0) { %>
-          <div class="empty-state">
-            <i class="fas fa-inbox"></i>
-            <p>No jobs posted yet. Create your first job posting!</p>
-          </div>
-        <% } else { jobs.forEach(job => { %>
-          <div class="job-item">
-            <h4><i class="fas fa-briefcase"></i> <%= job.title %></h4>
-            <div class="job-item-info"><i class="fas fa-school"></i> <%= job.university %></div>
-            <div class="job-item-info"><i class="fas fa-map-marker-alt"></i> <%= job.location %></div>
-            <div class="job-item-info"><i class="fas fa-tag"></i> <%= job.category %></div>
-            <div class="job-item-actions">
-              <a href="/admin/job/<%= job.id %>/edit" class="btn btn-primary" style="text-decoration: none;">
-                <i class="fas fa-edit"></i> Edit
-              </a>
-              <form action="/admin/job/<%= job.id %>/delete" method="POST" style="flex: 1;">
-                <button type="submit" class="btn btn-secondary" style="width: 100%; background: #ef4444; color: white; border: none;">
-                  <i class="fas fa-trash"></i> Delete
-                </button>
-              </form>
-            </div>
-          </div>
-        <% }); } %>
+ <!-- APPLICATIONS SECTION -->
+ <div class="applications-section">
+  <h3 class="section-title"><i class="fas fa-file-alt"></i> Candidate Applications</h3>
+  <div style="margin-bottom: 1rem;">
+   <label for="statusFilter" style="font-weight: 600; margin-right: 0.5rem;">Filter by Status:</label>
+   <select id="statusFilter" onchange="filterApplications()" style="padding: 0.5rem; border-radius: 6px; border: 1px solid #ddd;">
+    <option value="all">All Applications</option>
+    <option value="pending">Pending</option>
+    <option value="shortlisted">Shortlisted</option>
+   </select>
+  </div>
+  <div class="applications-list" id="applicationsList">
+   <% if (applications.length === 0) { %>
+    <div class="empty-state">
+     <i class="fas fa-inbox"></i>
+     <p>No applications yet. Candidates will appear here once they apply!</p>
+    </div>
+   <% } else { applications.forEach(app => { %>
+    <div class="application-item" data-status="<%= app.status %>">
+     <div class="app-item-header">
+      <div>
+       <h4 class="app-item-title"><i class="fas fa-file-alt"></i> <%= app.job_title %></h4>
+       <div class="app-item-meta">
+        <span><i class="fas fa-user"></i> <%= app.candidate_name %></span>
+        <span><i class="fas fa-calendar"></i> <%= new Date(app.applied_at).toLocaleDateString() %></span>
+        <% if (app.candidate_score != null) { %>
+         <span><i class="fas fa-star"></i> Score: <strong><%= app.candidate_score %>%</strong></span>
+        <% } %>
+       </div>
       </div>
+      <span class="app-status status-<%= app.status.toLowerCase() %>">
+       <i class="fas fa-tag"></i> <%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %>
+      </span>
+     </div>
+     <% if (app.candidate_skills) { %>
+      <p style="margin:0.5rem 0 0; color:#475569;"><strong>Skills:</strong> <%= app.candidate_skills %></p>
+     <% } %>
+     <% if (app.shortlisted_field) { %>
+      <p style="margin:0.35rem 0 1rem; color:#0f766e;"><strong>Shortlisted Field:</strong> <%= app.shortlisted_field %></p>
+     <% } %>
+     <% if (app.resume_scan_score != null || app.resume_aicte_status) { %>
+      <div style="margin:0.35rem 0 1rem; padding:0.9rem; border-radius:10px; background:#f8fafc; border:1px solid #e2e8f0; color:#334155;">
+       <strong>AICTE recommendation:</strong> <%= app.resume_aicte_status || 'pending' %>
+       <% if (app.resume_scan_score != null) { %>
+        <span style="display:inline-block; margin-left:0.5rem; font-weight:700; color:#0f766e;">Score: <%= app.resume_scan_score %>%</span>
+       <% } %>
+      </div>
+     <% } %>
+
+     <% const meeting = (meetingByApp || {})[app.id]; %>
+     <% if (meeting) { %>
+      <div style="background: #f1f1f1; border: 1px solid #bfdbfe; border-radius: 8px; padding: 0.95rem; margin-bottom: 1rem;">
+       <strong style="display:block; margin-bottom:0.5rem; color:#059862;">Scheduled Interview Meeting</strong>
+       <div style="color:#334155; line-height:1.5;">
+        <div><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></div>
+        <div><i class="fas fa-video"></i> <%= meeting.platform %></div>
+        <div><strong>Link:</strong> <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#425b65; text-decoration:underline;"><%= meeting.meeting_link %></a></div>
+        <div style="margin-top:0.5rem;">
+         <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.5rem;">
+          <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'Camera ON' : 'Camera OFF' %>
+         </span>
+         <span style="<%= meeting.mic_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem;">
+          <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'Mic ON' : 'Mic OFF' %>
+         </span>
+        </div>
+       </div>
+       <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
+        <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+        <button class="btn btn-secondary" onclick="openEditMeetingModal(<%= meeting.id %>, '<%= meeting.scheduled_at %>', '<%= meeting.platform %>', '<%= meeting.meeting_link %>', <%= meeting.camera_enabled %>, <%= meeting.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer;">
+         <i class="fas fa-edit"></i> Edit
+        </button>
+       </div>
+      </div>
+     <% } else { %>
+      <form action="/admin/application/<%= app.id %>/meeting" method="POST" class="meeting-schedule-form" style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin-bottom:1rem;">
+       <input type="datetime-local" name="scheduled_at" required style="padding:0.75rem; border-radius:8px; border:1px solid #ddd; min-width:220px;">
+       <select name="platform" required style="padding:0.75rem; border-radius:8px; border:1px solid #ddd; min-width:180px; background:#ffffff; color:#282A35;">
+        <option value="">Select platform</option>
+        <option value="jitsi">Jitsi</option>
+        <option value="zoom">Zoom</option>
+        <option value="google-meet">Google Meet</option>
+        <option value="teams">Teams</option>
+        <option value="other">Other</option>
+       </select>
+       <input type="url" name="meeting_link" placeholder="Meeting link (required for Zoom/Google Meet/Teams)" style="padding:0.75rem; border-radius:8px; border:1px solid #ddd; flex:1; min-width:220px;">
+       <label style="display:flex; align-items:center; gap:0.5rem; padding:0.5rem;">
+        <input type="checkbox" name="camera_enabled" checked>
+        <i class="fas fa-camera"></i> Camera
+       </label>
+       <label style="display:flex; align-items:center; gap:0.5rem; padding:0.5rem;">
+        <input type="checkbox" name="mic_enabled" checked>
+        <i class="fas fa-microphone"></i> Mic
+       </label>
+       <button type="submit" class="btn btn-primary" style="white-space:nowrap;">Schedule</button>
+      </form>
+     <% } %>
+
+     <% if (app.interview_score !== null) { %>
+      <div style="background: linear-gradient(135deg, #04AA6D, #059862); color: white; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; text-align: center;">
+       <strong>Interview Score: <%= app.interview_score %>%</strong>
+      </div>
+     <% } %>
+
+     <div class="app-item-actions">
+      <% if (app.status === 'pending') { %>
+       <form action="/admin/application/<%= app.id %>/shortlist" method="POST" style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+        <select name="field" style="padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; color: #282A35;">
+         <option value="">Shortlist by Field</option>
+         <option value="DSA">DSA</option>
+         <option value="Python">Python</option>
+         <option value="Java">Java</option>
+         <option value="Software Engineering">Software Engineering</option>
+         <option value="Data Science">Data Science</option>
+        </select>
+        <button type="submit" class="btn btn-primary">
+         <i class="fas fa-check"></i> Shortlist
+        </button>
+       </form>
+       <a href="/interview/<%= app.id %>" class="btn btn-secondary" style="text-decoration: none;">
+        <i class="fas fa-microphone"></i> Start Interview
+       </a>
+      <% } %>
+      <% if (app.resume_path) { %>
+       <a href="/<%= app.resume_path %>" target="_blank" class="btn btn-secondary" style="text-decoration: none;">
+        <i class="fas fa-download"></i> View Resume
+       </a>
+      <% } %>
+     </div>
     </div>
+   <% }); } %>
   </div>
-
-  <!-- RESUME SUBMISSIONS SECTION -->
-  <div class="applications-section">
-    <h3 class="section-title"><i class="fas fa-file"></i> Resume Submissions</h3>
-    <div class="applications-list">
-      <% if (!resumeUsers || resumeUsers.length === 0) { %>
-        <div class="empty-state">
-          <i class="fas fa-inbox"></i>
-          <p>No resume submissions yet.</p>
-        </div>
-      <% } else { resumeUsers.forEach(u => { %>
-        <div class="application-item">
-          <div class="app-item-header">
-            <div>
-              <h4 class="app-item-title"><i class="fas fa-user"></i> <%= u.name %> &nbsp; <small style="color:#666; font-weight:600;">(&lt;<%= u.email %>&gt;)</small></h4>
-            </div>
-            <span class="app-status status-<%= (u.resume_review_status || 'pending').toLowerCase() %>">
-              <i class="fas fa-tag"></i> <%= (u.resume_review_status || 'pending').charAt(0).toUpperCase() + (u.resume_review_status || 'pending').slice(1) %>
-            </span>
-          </div>
-
-          <p style="margin:0.5rem 0 0; color:#475569;"><strong>Submitted Resume:</strong>
-            <% if (u.resume_path) { %>
-              <a href="/<%= u.resume_path %>" target="_blank" style="margin-left:0.5rem; text-decoration:none; color:#282A35;">View Resume</a>
-            <% } %>
-          </p>
-
-          <% if (u.resume_scan_score || u.resume_scan_report) { %>
-            <div style="margin-top:0.75rem; background:#f1f1f1; border-radius:12px; padding:1rem; color:#334155;">
-              <strong>AICTE Scan Summary:</strong>
-              <p style="margin:0.5rem 0 0;">Score: <strong><%= u.resume_scan_score || 'N/A' %>%</strong> | Status: <strong><%= u.resume_aicte_status || 'pending' %></strong></p>
-              <% if (u.resume_scan_report) { %>
-                <pre style="white-space:pre-wrap; margin-top:0.75rem; font-size:0.92rem; line-height:1.55; background:#ffffff; border:1px solid #ddd; padding:0.9rem; border-radius:10px;"><%= u.resume_scan_report %></pre>
-              <% } %>
-            </div>
-          <% } %>
-
-          <div style="margin-top:0.75rem;">
-            <strong>Scores:</strong>
-            <div style="margin-top:0.5rem; color:#475569;">
-              <% 
-                const userSessions = (sessions || []).filter(s => s.user_id === u.id);
-                const userInterviews = (interviews || []).filter(i => i.user_id === u.id);
-              %>
-              <% if (userSessions.length === 0 && userInterviews.length === 0) { %>
-                <span style="color:#94a3b8;">No interview scores available yet.</span>
-              <% } %>
-              <% userSessions.forEach(s => { %>
-                <% const performanceSummary = (typeof buildPracticePerformanceSummary === 'function') ? buildPracticePerformanceSummary({ user: { role: 'admin' }, totalScore: s.total_score, averageScore: s.average_score, totalQuestions: s.total_questions, completedQuestions: s.completed_questions, sessionType: s.session_type || 'practice' }) : null; %>
-                <div style="margin-bottom:0.7rem; padding:0.75rem 0.85rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;">
-                  <div>Session #<%= s.id %> (<%= s.session_type ? s.session_type : 'practice' %>): total_score: <strong><%= s.total_score %></strong>, average_score: <strong><%= s.average_score %></strong></div>
-                  <% if (performanceSummary) { %>
-                    <div style="margin-top:0.4rem; color:#0f172a; font-weight:600;">Band: <%= performanceSummary.band %></div>
-                    <div style="margin-top:0.2rem; color:#475569; line-height:1.5;"><%= performanceSummary.summary %></div>
-                  <% } %>
-                </div>
-                <% const respForSession = (responses || []).filter(r => r.session_id === s.id); %>
-                <% if (respForSession.length > 0) { %>
-                  <div style="margin-left:0.5rem; color:#475569;">
-                    <strong>Responses:</strong>
-                    <% respForSession.forEach(r => { %>
-                      <div style="margin-top:0.25rem; font-size:0.95rem;">- <%= r.question_text %>: <em><%= r.user_answer %></em></div>
-                    <% }); %>
-                  </div>
-                <% } %>
-              <% }); %>
-              <% userInterviews.forEach(i => { %>
-                <div>Interview #<%= i.id %>: score: <strong><%= i.score %></strong></div>
-              <% }); %>
-            </div>
-          </div>
-
-          <div class="app-item-actions" style="margin-top:1rem;">
-            <form action="/admin/resume/<%= u.id %>/review" method="POST" style="display:flex; gap:0.5rem; align-items:center;">
-              <select name="action" style="padding: 0.6rem 0.9rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; color: #282A35;">
-                <option value="pending" <%= (!u.resume_review_status || u.resume_review_status === 'pending') ? 'selected' : '' %>>Pending</option>
-                <option value="shortlist">Shortlist</option>
-                <option value="reject">Reject</option>
-              </select>
-              <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Update</button>
-            </form>
-          </div>
-        </div>
-      <% }); } %>
-    </div>
-  </div>
-
-  <!-- APPLICATIONS SECTION -->
-  <div class="applications-section">
-    <h3 class="section-title"><i class="fas fa-file-alt"></i> Candidate Applications</h3>
-    <div style="margin-bottom: 1rem;">
-      <label for="statusFilter" style="font-weight: 600; margin-right: 0.5rem;">Filter by Status:</label>
-      <select id="statusFilter" onchange="filterApplications()" style="padding: 0.5rem; border-radius: 6px; border: 1px solid #ddd;">
-        <option value="all">All Applications</option>
-        <option value="pending">Pending</option>
-        <option value="shortlisted">Shortlisted</option>
-      </select>
-    </div>
-    <div class="applications-list" id="applicationsList">
-      <% if (applications.length === 0) { %>
-        <div class="empty-state">
-          <i class="fas fa-inbox"></i>
-          <p>No applications yet. Candidates will appear here once they apply!</p>
-        </div>
-      <% } else { applications.forEach(app => { %>
-        <div class="application-item" data-status="<%= app.status %>">
-          <div class="app-item-header">
-            <div>
-              <h4 class="app-item-title"><i class="fas fa-file-alt"></i> <%= app.job_title %></h4>
-              <div class="app-item-meta">
-                <span><i class="fas fa-user"></i> <%= app.candidate_name %></span>
-                <span><i class="fas fa-calendar"></i> <%= new Date(app.applied_at).toLocaleDateString() %></span>
-                <% if (app.candidate_score != null) { %>
-                  <span><i class="fas fa-star"></i> Score: <strong><%= app.candidate_score %>%</strong></span>
-                <% } %>
-              </div>
-            </div>
-            <span class="app-status status-<%= app.status.toLowerCase() %>">
-              <i class="fas fa-tag"></i> <%= app.status.charAt(0).toUpperCase() + app.status.slice(1) %>
-            </span>
-          </div>
-          <% if (app.candidate_skills) { %>
-            <p style="margin:0.5rem 0 0; color:#475569;"><strong>Skills:</strong> <%= app.candidate_skills %></p>
-          <% } %>
-          <% if (app.shortlisted_field) { %>
-            <p style="margin:0.35rem 0 1rem; color:#0f766e;"><strong>Shortlisted Field:</strong> <%= app.shortlisted_field %></p>
-          <% } %>
-          <% if (app.resume_scan_score != null || app.resume_aicte_status) { %>
-            <div style="margin:0.35rem 0 1rem; padding:0.9rem; border-radius:10px; background:#f8fafc; border:1px solid #e2e8f0; color:#334155;">
-              <strong>AICTE recommendation:</strong> <%= app.resume_aicte_status || 'pending' %>
-              <% if (app.resume_scan_score != null) { %>
-                <span style="display:inline-block; margin-left:0.5rem; font-weight:700; color:#0f766e;">Score: <%= app.resume_scan_score %>%</span>
-              <% } %>
-            </div>
-          <% } %>
-
-          <% const meeting = (meetingByApp || {})[app.id]; %>
-          <% if (meeting) { %>
-            <div style="background: #f1f1f1; border: 1px solid #bfdbfe; border-radius: 8px; padding: 0.95rem; margin-bottom: 1rem;">
-              <strong style="display:block; margin-bottom:0.5rem; color:#059862;">Scheduled Interview Meeting</strong>
-              <div style="color:#334155; line-height:1.5;">
-                <div><i class="fas fa-calendar-alt"></i> <%= new Date(meeting.scheduled_at).toLocaleString() %></div>
-                <div><i class="fas fa-video"></i> <%= meeting.platform %></div>
-                <div><strong>Link:</strong> <a href="<%= meeting.meeting_link %>" target="_blank" style="color:#425b65; text-decoration:underline;"><%= meeting.meeting_link %></a></div>
-                <div style="margin-top:0.5rem;">
-                  <span style="<%= meeting.camera_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem; margin-right:0.5rem;">
-                    <i class="fas fa-camera"></i> <%= meeting.camera_enabled ? 'Camera ON' : 'Camera OFF' %>
-                  </span>
-                  <span style="<%= meeting.mic_enabled ? 'color:#059669; background:#d1fae5;' : 'color:#dc2626; background:#fee2e2;' %> padding:0.25rem 0.5rem; border-radius:4px; font-size:0.85rem;">
-                    <i class="fas fa-microphone"></i> <%= meeting.mic_enabled ? 'Mic ON' : 'Mic OFF' %>
-                  </span>
-                </div>
-              </div>
-              <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
-                <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
-                <button class="btn btn-secondary" onclick="openEditMeetingModal(<%= meeting.id %>, '<%= meeting.scheduled_at %>', '<%= meeting.platform %>', '<%= meeting.meeting_link %>', <%= meeting.camera_enabled %>, <%= meeting.mic_enabled %>)" style="background:#6b7280; color:white; border:none; padding:0.5rem 1rem; border-radius:6px; cursor:pointer;">
-                  <i class="fas fa-edit"></i> Edit
-                </button>
-              </div>
-            </div>
-          <% } else { %>
-            <form action="/admin/application/<%= app.id %>/meeting" method="POST" class="meeting-schedule-form" style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin-bottom:1rem;">
-              <input type="datetime-local" name="scheduled_at" required style="padding:0.75rem; border-radius:8px; border:1px solid #ddd; min-width:220px;">
-              <select name="platform" required style="padding:0.75rem; border-radius:8px; border:1px solid #ddd; min-width:180px; background:#ffffff; color:#282A35;">
-                <option value="">Select platform</option>
-                <option value="jitsi">Jitsi</option>
-                <option value="zoom">Zoom</option>
-                <option value="google-meet">Google Meet</option>
-                <option value="teams">Teams</option>
-                <option value="other">Other</option>
-              </select>
-              <input type="url" name="meeting_link" placeholder="Meeting link (required for Zoom/Google Meet/Teams)" style="padding:0.75rem; border-radius:8px; border:1px solid #ddd; flex:1; min-width:220px;">
-              <label style="display:flex; align-items:center; gap:0.5rem; padding:0.5rem;">
-                <input type="checkbox" name="camera_enabled" checked>
-                <i class="fas fa-camera"></i> Camera
-              </label>
-              <label style="display:flex; align-items:center; gap:0.5rem; padding:0.5rem;">
-                <input type="checkbox" name="mic_enabled" checked>
-                <i class="fas fa-microphone"></i> Mic
-              </label>
-              <button type="submit" class="btn btn-primary" style="white-space:nowrap;">Schedule</button>
-            </form>
-          <% } %>
-
-          <% if (app.interview_score !== null) { %>
-            <div style="background: linear-gradient(135deg, #04AA6D, #059862); color: white; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; text-align: center;">
-              <strong>Interview Score: <%= app.interview_score %>%</strong>
-            </div>
-          <% } %>
-
-          <div class="app-item-actions">
-            <% if (app.status === 'pending') { %>
-              <form action="/admin/application/<%= app.id %>/shortlist" method="POST" style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
-                <select name="field" style="padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; color: #282A35;">
-                  <option value="">Shortlist by Field</option>
-                  <option value="DSA">DSA</option>
-                  <option value="Python">Python</option>
-                  <option value="Java">Java</option>
-                  <option value="Software Engineering">Software Engineering</option>
-                  <option value="Data Science">Data Science</option>
-                </select>
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-check"></i> Shortlist
-                </button>
-              </form>
-              <a href="/interview/<%= app.id %>" class="btn btn-secondary" style="text-decoration: none;">
-                <i class="fas fa-microphone"></i> Start Interview
-              </a>
-            <% } %>
-            <% if (app.resume_path) { %>
-              <a href="/<%= app.resume_path %>" target="_blank" class="btn btn-secondary" style="text-decoration: none;">
-                <i class="fas fa-download"></i> View Resume
-              </a>
-            <% } %>
-          </div>
-        </div>
-      <% }); } %>
-    </div>
-  </div>
+ </div>
 </div>
 
 <script>
 function filterApplications() {
-  const filter = document.getElementById('statusFilter').value;
-  const items = document.querySelectorAll('.application-item');
-  items.forEach(item => {
-    if (filter === 'all' || item.getAttribute('data-status') === filter) {
-      item.style.display = 'block';
-    } else {
-      item.style.display = 'none';
-    }
-  });
+ const filter = document.getElementById('statusFilter').value;
+ const items = document.querySelectorAll('.application-item');
+ items.forEach(item => {
+  if (filter === 'all' || item.getAttribute('data-status') === filter) {
+   item.style.display = 'block';
+  } else {
+   item.style.display = 'none';
+  }
+ });
 }
 
 // Initialize filter
@@ -765,90 +765,90 @@ filterApplications();
 
 // Edit Meeting Modal Functions
 function openEditMeetingModal(meetingId, scheduledAt, platform, meetingLink, cameraEnabled, micEnabled) {
-  const modal = document.createElement('div');
-  modal.id = 'editMeetingModal';
-  modal.innerHTML = `
-    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-      <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Edit Meeting</h3>
-        <form id="editMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
-            <input type="datetime-local" id="editScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
-            <input type="text" id="editPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
-            <input type="url" id="editMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div style="display: flex; gap: 1rem;">
-            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
-              <input type="checkbox" id="editCameraEnabled" ${cameraEnabled ? 'checked' : ''}>
-              <i class="fas fa-camera"></i> Camera Enabled
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
-              <input type="checkbox" id="editMicEnabled" ${micEnabled ? 'checked' : ''}>
-              <i class="fas fa-microphone"></i> Mic Enabled
-            </label>
-          </div>
-          <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-            <button type="button" onclick="closeEditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
-            <button type="button" onclick="submitEditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #6f8090; color: white; cursor: pointer; font-weight: 600;">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
+ const modal = document.createElement('div');
+ modal.id = 'editMeetingModal';
+ modal.innerHTML = `
+  <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+   <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+    <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Edit Meeting</h3>
+    <form id="editMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
+      <input type="datetime-local" id="editScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
+      <input type="text" id="editPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
+      <input type="url" id="editMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div style="display: flex; gap: 1rem;">
+      <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+       <input type="checkbox" id="editCameraEnabled" ${cameraEnabled ? 'checked' : ''}>
+       <i class="fas fa-camera"></i> Camera Enabled
+      </label>
+      <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+       <input type="checkbox" id="editMicEnabled" ${micEnabled ? 'checked' : ''}>
+       <i class="fas fa-microphone"></i> Mic Enabled
+      </label>
+     </div>
+     <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+      <button type="button" onclick="closeEditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
+      <button type="button" onclick="submitEditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #6f8090; color: white; cursor: pointer; font-weight: 600;">Save</button>
+     </div>
+    </form>
+   </div>
+  </div>
+ `;
+ document.body.appendChild(modal);
 }
 
 function closeEditMeetingModal() {
-  const modal = document.getElementById('editMeetingModal');
-  if (modal) modal.remove();
+ const modal = document.getElementById('editMeetingModal');
+ if (modal) modal.remove();
 }
 
 function submitEditMeeting(meetingId) {
-  const scheduledAt = document.getElementById('editScheduledAt').value;
-  const platform = document.getElementById('editPlatform').value;
-  const meetingLink = document.getElementById('editMeetingLink').value;
-  const cameraEnabled = document.getElementById('editCameraEnabled').checked;
-  const micEnabled = document.getElementById('editMicEnabled').checked;
+ const scheduledAt = document.getElementById('editScheduledAt').value;
+ const platform = document.getElementById('editPlatform').value;
+ const meetingLink = document.getElementById('editMeetingLink').value;
+ const cameraEnabled = document.getElementById('editCameraEnabled').checked;
+ const micEnabled = document.getElementById('editMicEnabled').checked;
 
-  const normalizedPlatform = String(platform || '').toLowerCase();
-  if (!scheduledAt || !platform || (!['jitsi', 'zoom', 'google-meet'].includes(normalizedPlatform) && !meetingLink)) {
-    alert('Please fill all fields. Leave the link blank for Jitsi, Zoom, or Google Meet and it will be generated automatically.');
-    return;
+ const normalizedPlatform = String(platform || '').toLowerCase();
+ if (!scheduledAt || !platform || (!['jitsi', 'zoom', 'google-meet'].includes(normalizedPlatform) && !meetingLink)) {
+  alert('Please fill all fields. Leave the link blank for Jitsi, Zoom, or Google Meet and it will be generated automatically.');
+  return;
+ }
+
+ fetch(`/meeting/${meetingId}/modify`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ scheduled_at: scheduledAt, platform, meeting_link: meetingLink, camera_enabled: cameraEnabled, mic_enabled: micEnabled })
+ })
+ .then(res => res.json())
+ .then(data => {
+  if (data.success) {
+   alert('Meeting updated successfully');
+   location.reload();
+  } else {
+   alert('Error: ' + data.message);
   }
-
-  fetch(`/meeting/${meetingId}/modify`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ scheduled_at: scheduledAt, platform, meeting_link: meetingLink, camera_enabled: cameraEnabled, mic_enabled: micEnabled })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      alert('Meeting updated successfully');
-      location.reload();
-    } else {
-      alert('Error: ' + data.message);
-    }
-  })
-  .catch(err => alert('Error updating meeting: ' + err));
+ })
+ .catch(err => alert('Error updating meeting: ' + err));
 }
 function filterApplications() {
-  const filter = document.getElementById('statusFilter').value;
-  const items = document.querySelectorAll('.application-item');
-  items.forEach(item => {
-    if (filter === 'all' || item.getAttribute('data-status') === filter) {
-      item.style.display = 'block';
-    } else {
-      item.style.display = 'none';
-    }
-  });
+ const filter = document.getElementById('statusFilter').value;
+ const items = document.querySelectorAll('.application-item');
+ items.forEach(item => {
+  if (filter === 'all' || item.getAttribute('data-status') === filter) {
+   item.style.display = 'block';
+  } else {
+   item.style.display = 'none';
+  }
+ });
 }
 
 // Initialize filter
@@ -858,114 +858,114 @@ const requirementsField = document.getElementById('requirements');
 const aiRequirementsBtn = document.getElementById('aiRequirementsBtn');
 
 if (aiRequirementsBtn && requirementsField) {
-  aiRequirementsBtn.addEventListener('click', async () => {
-    const title = document.getElementById('title')?.value || '';
-    const university = document.getElementById('university')?.value || '';
-    const category = document.getElementById('category')?.value || '';
-    const location = document.getElementById('location')?.value || '';
+ aiRequirementsBtn.addEventListener('click', async () => {
+  const title = document.getElementById('title')?.value || '';
+  const university = document.getElementById('university')?.value || '';
+  const category = document.getElementById('category')?.value || '';
+  const location = document.getElementById('location')?.value || '';
 
-    if (!title && !university) {
-      alert('Add a role title or university before generating AI requirements.');
-      return;
-    }
+  if (!title && !university) {
+   alert('Add a role title or university before generating AI requirements.');
+   return;
+  }
 
-    aiRequirementsBtn.disabled = true;
-    aiRequirementsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+  aiRequirementsBtn.disabled = true;
+  aiRequirementsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
 
-    try {
-      const response = await fetch('/jobs/ai-requirements', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, university, category, location })
-      });
+  try {
+   const response = await fetch('/jobs/ai-requirements', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title, university, category, location })
+   });
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Unable to generate requirement details');
-      requirementsField.value = data.requirements;
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      aiRequirementsBtn.disabled = false;
-      aiRequirementsBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate with AI';
-    }
-  });
+   const data = await response.json();
+   if (!response.ok) throw new Error(data.error || 'Unable to generate requirement details');
+   requirementsField.value = data.requirements;
+  } catch (error) {
+   alert(error.message);
+  } finally {
+   aiRequirementsBtn.disabled = false;
+   aiRequirementsBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate with AI';
+  }
+ });
 }
 
 // Edit Meeting Modal Functions
 function openEditMeetingModal(meetingId, scheduledAt, platform, meetingLink, cameraEnabled, micEnabled) {
-  const modal = document.createElement('div');
-  modal.id = 'editMeetingModal';
-  modal.innerHTML = `
-    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
-      <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-        <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Edit Meeting</h3>
-        <form id="editMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
-            <input type="datetime-local" id="editScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
-            <input type="text" id="editPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div>
-            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
-            <input type="url" id="editMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
-          </div>
-          <div style="display: flex; gap: 1rem;">
-            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
-              <input type="checkbox" id="editCameraEnabled" ${cameraEnabled ? 'checked' : ''}>
-              <i class="fas fa-camera"></i> Camera Enabled
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
-              <input type="checkbox" id="editMicEnabled" ${micEnabled ? 'checked' : ''}>
-              <i class="fas fa-microphone"></i> Mic Enabled
-            </label>
-          </div>
-          <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-            <button type="button" onclick="closeEditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
-            <button type="button" onclick="submitEditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #6f8090; color: white; cursor: pointer; font-weight: 600;">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
+ const modal = document.createElement('div');
+ modal.id = 'editMeetingModal';
+ modal.innerHTML = `
+  <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+   <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+    <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: #059862;">Edit Meeting</h3>
+    <form id="editMeetingForm" style="display: flex; flex-direction: column; gap: 1rem;">
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Date & Time</label>
+      <input type="datetime-local" id="editScheduledAt" value="${scheduledAt}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Platform</label>
+      <input type="text" id="editPlatform" value="${platform}" placeholder="Zoom/Teams" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div>
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Meeting Link</label>
+      <input type="url" id="editMeetingLink" value="${meetingLink}" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd;">
+     </div>
+     <div style="display: flex; gap: 1rem;">
+      <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+       <input type="checkbox" id="editCameraEnabled" ${cameraEnabled ? 'checked' : ''}>
+       <i class="fas fa-camera"></i> Camera Enabled
+      </label>
+      <label style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+       <input type="checkbox" id="editMicEnabled" ${micEnabled ? 'checked' : ''}>
+       <i class="fas fa-microphone"></i> Mic Enabled
+      </label>
+     </div>
+     <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+      <button type="button" onclick="closeEditMeetingModal()" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid #ddd; background: #f1f1f1; cursor: pointer; font-weight: 600;">Cancel</button>
+      <button type="button" onclick="submitEditMeeting(${meetingId})" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: none; background: #6f8090; color: white; cursor: pointer; font-weight: 600;">Save</button>
+     </div>
+    </form>
+   </div>
+  </div>
+ `;
+ document.body.appendChild(modal);
 }
 
 function closeEditMeetingModal() {
-  const modal = document.getElementById('editMeetingModal');
-  if (modal) modal.remove();
+ const modal = document.getElementById('editMeetingModal');
+ if (modal) modal.remove();
 }
 
 function submitEditMeeting(meetingId) {
-  const scheduledAt = document.getElementById('editScheduledAt').value;
-  const platform = document.getElementById('editPlatform').value;
-  const meetingLink = document.getElementById('editMeetingLink').value;
-  const cameraEnabled = document.getElementById('editCameraEnabled').checked;
-  const micEnabled = document.getElementById('editMicEnabled').checked;
+ const scheduledAt = document.getElementById('editScheduledAt').value;
+ const platform = document.getElementById('editPlatform').value;
+ const meetingLink = document.getElementById('editMeetingLink').value;
+ const cameraEnabled = document.getElementById('editCameraEnabled').checked;
+ const micEnabled = document.getElementById('editMicEnabled').checked;
 
-  const normalizedPlatform = String(platform || '').toLowerCase();
-  if (!scheduledAt || !platform || (!['jitsi', 'zoom', 'google-meet'].includes(normalizedPlatform) && !meetingLink)) {
-    alert('Please fill all fields. Leave the link blank for Jitsi, Zoom, or Google Meet and it will be generated automatically.');
-    return;
+ const normalizedPlatform = String(platform || '').toLowerCase();
+ if (!scheduledAt || !platform || (!['jitsi', 'zoom', 'google-meet'].includes(normalizedPlatform) && !meetingLink)) {
+  alert('Please fill all fields. Leave the link blank for Jitsi, Zoom, or Google Meet and it will be generated automatically.');
+  return;
+ }
+
+ fetch(`/meeting/${meetingId}/modify`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ scheduled_at: scheduledAt, platform, meeting_link: meetingLink, camera_enabled: cameraEnabled, mic_enabled: micEnabled })
+ })
+ .then(res => res.json())
+ .then(data => {
+  if (data.success) {
+   alert('Meeting updated successfully');
+   location.reload();
+  } else {
+   alert('Error: ' + data.message);
   }
-
-  fetch(`/meeting/${meetingId}/modify`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ scheduled_at: scheduledAt, platform, meeting_link: meetingLink, camera_enabled: cameraEnabled, mic_enabled: micEnabled })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      alert('Meeting updated successfully');
-      location.reload();
-    } else {
-      alert('Error: ' + data.message);
-    }
-  })
-  .catch(err => alert('Error updating meeting: ' + err));
+ })
+ .catch(err => alert('Error updating meeting: ' + err));
 }
 </script>
 

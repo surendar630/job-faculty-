@@ -8,14 +8,14 @@
 <link href="/styles.css" rel="stylesheet">
 <style>
 :root{
-  --bg:#07090f;--surface:#0e1117;--surface2:#151820;--surface3:#1a1f2e;
-  --border:#1e2330;--border2:#252b3d;
-  --accent:#4f7cff;--accent2:#00d4aa;--accent3:#ff6b6b;
-  --text:#e8ecf5;--muted:#6b7594;--label:#9ba3bc;
-  --green:#22c55e;--yellow:#ff9800;--red:#ef4444;--purple:#a855f7;
-  --radius:12px;
-  --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
-  --nav-w:220px;
+ --bg:#07090f;--surface:#0e1117;--surface2:#151820;--surface3:#1a1f2e;
+ --border:#1e2330;--border2:#252b3d;
+ --accent:#4f7cff;--accent2:#00d4aa;--accent3:#ff6b6b;
+ --text:#e8ecf5;--muted:#6b7594;--label:#9ba3bc;
+ --green:#22c55e;--yellow:#ff9800;--red:#ef4444;--purple:#a855f7;
+ --radius:12px;
+ --font-head:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+ --nav-w:220px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font-body);background:transparent;color:var(--text);min-height:100vh;overflow-x:hidden;}
@@ -27,21 +27,21 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 /* ══════════════════════ SIDEBAR NAV ══════════════════════ */
 .app-shell{display:flex;min-height:100vh;width:100%;}
 .sidenav{
-  width:var(--nav-w);background:var(--surface);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:30;
-  transition:transform 0.3s;
+ width:var(--nav-w);background:var(--surface);border-right:1px solid var(--border);
+ display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;z-index:30;
+ transition:transform 0.3s;
 }
 .sidenav-logo{padding:24px 20px 16px;border-bottom:1px solid var(--border);}
 .logo{font-family:var(--font-head);font-weight:800;font-size:1.2rem;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+ background:linear-gradient(135deg,var(--accent),var(--accent2));
+ -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .logo-sub{font-size:0.7rem;color:var(--muted);margin-top:2px;font-weight:400;}
 
 .nav-section{padding:12px 10px 4px;font-size:0.65rem;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .nav-item{
-  display:flex;align-items:center;gap:10px;padding:10px 14px;margin:1px 6px;border-radius:8px;
-  cursor:pointer;color:var(--label);font-size:0.88rem;font-weight:500;transition:all 0.15s;
-  position:relative;
+ display:flex;align-items:center;gap:10px;padding:10px 14px;margin:1px 6px;border-radius:8px;
+ cursor:pointer;color:var(--label);font-size:0.88rem;font-weight:500;transition:all 0.15s;
+ position:relative;
 }
 .nav-item:hover{background:var(--surface2);color:var(--text);}
 .nav-item.active{background:rgba(79,124,255,0.12);color:var(--accent);}
@@ -55,7 +55,7 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 .user-card{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;cursor:pointer;}
 .user-card:hover{background:var(--surface2);}
 .user-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;font-size:0.85rem;color:#fff;flex-shrink:0;}
+ display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;font-size:0.85rem;color:#fff;flex-shrink:0;}
 .user-name{font-weight:600;font-size:0.82rem;}
 .user-role{font-size:0.7rem;color:var(--muted);}
 
@@ -64,14 +64,14 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 
 /* Top bar */
 .topbar{
-  padding:14px 28px;display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;position:sticky;top:0;z-index:20;
+ padding:14px 28px;display:flex;align-items:center;justify-content:space-between;
+ border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;position:sticky;top:0;z-index:20;
 }
 .topbar-left{display:flex;align-items:center;gap:12px;}
 .back-btn{
-  display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;
-  background:var(--surface2);border:1px solid var(--border);color:var(--label);
-  cursor:pointer;font-size:0.82rem;font-weight:600;transition:all 0.2s;font-family:var(--font-head);
+ display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;
+ background:var(--surface2);border:1px solid var(--border);color:var(--label);
+ cursor:pointer;font-size:0.82rem;font-weight:600;transition:all 0.2s;font-family:var(--font-head);
 }
 .back-btn:hover{border-color:var(--accent);color:var(--accent);}
 .topbar-breadcrumb{display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--muted);}
@@ -79,9 +79,9 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 .topbar-breadcrumb span{color:var(--border);}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .topbar-icon{
-  width:36px;height:36px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;
-  color:var(--label);transition:all 0.2s;position:relative;
+ width:36px;height:36px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);
+ display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;
+ color:var(--label);transition:all 0.2s;position:relative;
 }
 .topbar-icon:hover{border-color:var(--accent);color:var(--accent);}
 .notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--red);border:1.5px solid var(--surface);}
@@ -114,8 +114,8 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 .card-body{padding:16px 20px;}
 
 .interview-row{
-  display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;
-  transition:background 0.15s;border-radius:8px;padding:10px 8px;margin:0 -8px;
+ display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;
+ transition:background 0.15s;border-radius:8px;padding:10px 8px;margin:0 -8px;
 }
 .interview-row:last-child{border-bottom:none;}
 .interview-row:hover{background:var(--surface2);}
@@ -132,8 +132,8 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 
 .quick-actions{display:flex;flex-direction:column;gap:10px;}
 .qa-btn{
-  display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;
-  border:1px solid var(--border);background:var(--surface2);cursor:pointer;transition:all 0.2s;
+ display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;
+ border:1px solid var(--border);background:var(--surface2);cursor:pointer;transition:all 0.2s;
 }
 .qa-btn:hover{border-color:var(--accent);transform:translateX(4px);}
 .qa-icon{font-size:1.2rem;width:28px;text-align:center;}
@@ -164,8 +164,8 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 .cal-day-head{padding:10px;text-align:center;font-size:0.72rem;font-weight:700;color:var(--muted);font-family:var(--font-head);letter-spacing:0.5px;}
 .cal-body{display:grid;grid-template-columns:repeat(7,1fr);}
 .cal-cell{
-  min-height:80px;padding:8px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);
-  cursor:pointer;transition:background 0.15s;position:relative;
+ min-height:80px;padding:8px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+ cursor:pointer;transition:background 0.15s;position:relative;
 }
 .cal-cell:nth-child(7n){border-right:none;}
 .cal-cell:hover{background:var(--surface2);}
@@ -173,8 +173,8 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 .cal-date{font-size:0.78rem;font-weight:600;color:var(--label);margin-bottom:4px;}
 .cal-cell.today .cal-date{color:var(--accent);font-weight:800;}
 .cal-event{
-  font-size:0.65rem;padding:2px 5px;border-radius:4px;margin-bottom:2px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;
+ font-size:0.65rem;padding:2px 5px;border-radius:4px;margin-bottom:2px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;
 }
 .ev-blue{background:rgba(79,124,255,0.2);color:var(--accent);}
 .ev-green{background:rgba(0,212,170,0.2);color:var(--accent2);}
@@ -182,8 +182,8 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 
 .upcoming-list{display:flex;flex-direction:column;gap:12px;}
 .upcoming-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;
-  display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;
+ background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;
+ display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.2s;
 }
 .upcoming-card:hover{border-color:var(--accent);transform:translateY(-1px);}
 .upcoming-date{text-align:center;min-width:50px;}
@@ -197,17 +197,17 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 /* ══════════════════════ CANDIDATES ══════════════════════ */
 .search-filter{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
 .search-input{
-  flex:1;min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;
-  padding:10px 14px 10px 36px;color:var(--text);font-family:var(--font-body);font-size:0.9rem;outline:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7594' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.44 1.905a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:12px center;
-  transition:border-color 0.2s;
+ flex:1;min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:8px;
+ padding:10px 14px 10px 36px;color:var(--text);font-family:var(--font-body);font-size:0.9rem;outline:none;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7594' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.44 1.905a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z'/%3E%3C/svg%3E");
+ background-repeat:no-repeat;background-position:12px center;
+ transition:border-color 0.2s;
 }
 .search-input:focus{border-color:var(--accent);}
 .filter-select{
-  background:var(--surface);border:1px solid var(--border);border-radius:8px;
-  padding:10px 14px;color:var(--text);font-family:var(--font-body);font-size:0.88rem;
-  outline:none;cursor:pointer;
+ background:var(--surface);border:1px solid var(--border);border-radius:8px;
+ padding:10px 14px;color:var(--text);font-family:var(--font-body);font-size:0.88rem;
+ outline:none;cursor:pointer;
 }
 
 .candidates-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
@@ -229,8 +229,8 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 
 .row-actions{display:flex;gap:6px;}
 .row-btn{
-  padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);
-  color:var(--label);cursor:pointer;font-size:0.72rem;font-weight:600;transition:all 0.15s;font-family:var(--font-head);
+ padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);
+ color:var(--label);cursor:pointer;font-size:0.72rem;font-weight:600;transition:all 0.15s;font-family:var(--font-head);
 }
 .row-btn:hover{border-color:var(--accent);color:var(--accent);}
 .row-btn.green:hover{border-color:var(--green);color:var(--green);}
@@ -275,16 +275,16 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 .setting-label{font-size:0.88rem;font-weight:500;}
 .setting-desc{font-size:0.75rem;color:var(--muted);margin-top:2px;}
 .toggle{
-  width:44px;height:24px;border-radius:100px;border:none;cursor:pointer;position:relative;
-  background:var(--surface3);transition:background 0.2s;flex-shrink:0;
+ width:44px;height:24px;border-radius:100px;border:none;cursor:pointer;position:relative;
+ background:var(--surface3);transition:background 0.2s;flex-shrink:0;
 }
 .toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform 0.2s;}
 .toggle.on{background:var(--accent);}
 .toggle.on::after{transform:translateX(20px);}
 .settings-input{
-  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
-  padding:9px 12px;color:var(--text);font-family:var(--font-body);font-size:0.88rem;
-  outline:none;width:100%;margin-top:6px;transition:border-color 0.2s;
+ background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+ padding:9px 12px;color:var(--text);font-family:var(--font-body);font-size:0.88rem;
+ outline:none;width:100%;margin-top:6px;transition:border-color 0.2s;
 }
 .settings-input:focus{border-color:var(--accent);}
 
@@ -457,18 +457,18 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 .empty-state .e-title{font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--label);margin-bottom:6px;}
 
 @media(max-width:900px){
-  .sidenav{transform:translateX(-100%);}
-  .sidenav.mobile-open{transform:translateX(0);}
-  .main-content{margin-left:0;}
-  .stats-grid{grid-template-columns:1fr 1fr;}
-  .dash-grid{grid-template-columns:1fr;}
-  .reports-grid{grid-template-columns:1fr;}
-  .settings-layout{grid-template-columns:1fr;}
-  .lobby-hero{grid-template-columns:1fr;}
-  .hero-right{display:none;}
-  .table-head,.table-row{grid-template-columns:2fr 1fr 1fr 80px;}
-  .table-head .th:nth-child(3),.table-row .td:nth-child(3),
-  .table-head .th:nth-child(4),.table-row .td:nth-child(4){display:none;}
+ .sidenav{transform:translateX(-100%);}
+ .sidenav.mobile-open{transform:translateX(0);}
+ .main-content{margin-left:0;}
+ .stats-grid{grid-template-columns:1fr 1fr;}
+ .dash-grid{grid-template-columns:1fr;}
+ .reports-grid{grid-template-columns:1fr;}
+ .settings-layout{grid-template-columns:1fr;}
+ .lobby-hero{grid-template-columns:1fr;}
+ .hero-right{display:none;}
+ .table-head,.table-row{grid-template-columns:2fr 1fr 1fr 80px;}
+ .table-head .th:nth-child(3),.table-row .td:nth-child(3),
+ .table-head .th:nth-child(4),.table-row .td:nth-child(4){display:none;}
 }
 </style>
 </head>
@@ -482,773 +482,773 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 
 <!-- ══════════════════════ WAITING OVERLAY ══════════════════════ -->
 <div id="waiting-overlay" style="display:none;">
-  <div class="waiting-card fade-in">
-    <div class="waiting-spinner"></div>
-    <div class="waiting-title">Candidate Waiting</div>
-    <p class="waiting-sub" id="waiting-name-text">Alex Sharma is in the waiting room and wants to join the session.</p>
-    <button class="admit-btn" onclick="admitCandidate()">✓ Admit</button>
-    <button class="deny-btn" onclick="denyCandidate()">✕ Deny</button>
-  </div>
+ <div class="waiting-card fade-in">
+  <div class="waiting-spinner"></div>
+  <div class="waiting-title">Candidate Waiting</div>
+  <p class="waiting-sub" id="waiting-name-text">Alex Sharma is in the waiting room and wants to join the session.</p>
+  <button class="admit-btn" onclick="admitCandidate()">✓ Admit</button>
+  <button class="deny-btn" onclick="denyCandidate()">✕ Deny</button>
+ </div>
 </div>
 
 <!-- ══════════════════════ SCHEDULE MODAL ══════════════════════ -->
 <div class="modal-overlay" id="scheduleModal">
-  <div class="modal fade-in">
-    <div class="modal-title">📅 Schedule New Interview</div>
-    <div class="modal-sub">Set up a new interview session and send invite</div>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div class="field"><label>CANDIDATE NAME</label><input class="settings-input" id="sched-name" placeholder="Alex Sharma" style="margin-top:0;"></div>
-      <div class="field"><label>POSITION</label><input class="settings-input" id="sched-pos" placeholder="Full Stack Developer" style="margin-top:0;"></div>
-      <div class="field"><label>DATE & TIME</label><input class="settings-input" type="datetime-local" id="sched-dt" style="margin-top:0;"></div>
-      <div class="field"><label>DURATION</label>
-        <select class="settings-input" style="margin-top:0;">
-          <option>30 minutes</option><option selected>45 minutes</option><option>60 minutes</option><option>90 minutes</option>
-        </select>
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-outline" style="padding:9px 18px;font-size:0.85rem;" onclick="closeModal('scheduleModal')">Cancel</button>
-      <button class="btn-primary" style="padding:9px 18px;font-size:0.85rem;" onclick="saveSchedule()">Schedule Interview</button>
-    </div>
+ <div class="modal fade-in">
+  <div class="modal-title">📅 Schedule New Interview</div>
+  <div class="modal-sub">Set up a new interview session and send invite</div>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+   <div class="field"><label>CANDIDATE NAME</label><input class="settings-input" id="sched-name" placeholder="Alex Sharma" style="margin-top:0;"></div>
+   <div class="field"><label>POSITION</label><input class="settings-input" id="sched-pos" placeholder="Full Stack Developer" style="margin-top:0;"></div>
+   <div class="field"><label>DATE & TIME</label><input class="settings-input" type="datetime-local" id="sched-dt" style="margin-top:0;"></div>
+   <div class="field"><label>DURATION</label>
+    <select class="settings-input" style="margin-top:0;">
+     <option>30 minutes</option><option selected>45 minutes</option><option>60 minutes</option><option>90 minutes</option>
+    </select>
+   </div>
   </div>
+  <div class="modal-actions">
+   <button class="btn-outline" style="padding:9px 18px;font-size:0.85rem;" onclick="closeModal('scheduleModal')">Cancel</button>
+   <button class="btn-primary" style="padding:9px 18px;font-size:0.85rem;" onclick="saveSchedule()">Schedule Interview</button>
+  </div>
+ </div>
 </div>
 
 <!-- ══════════════════════ INVITE MODAL ══════════════════════ -->
 <div class="modal-overlay" id="inviteModal">
-  <div class="modal fade-in">
-    <div class="modal-title">🔗 Invite Candidate</div>
-    <div class="modal-sub">Share this link or code with the candidate</div>
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;">
-      <div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;">MEETING LINK</div>
-      <div style="font-family:var(--font-head);font-weight:700;font-size:0.88rem;color:var(--accent);word-break:break-all;">https://interviewlink.app/join/IVW-2026-7834</div>
-    </div>
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
-      <div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;">MEETING CODE</div>
-      <div style="font-family:var(--font-head);font-weight:800;font-size:1.4rem;color:var(--accent);letter-spacing:2px;">IVW-2026-7834</div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-outline" style="padding:9px 18px;font-size:0.85rem;" onclick="closeModal('inviteModal')">Close</button>
-      <button class="btn-primary" style="padding:9px 18px;font-size:0.85rem;" onclick="copyInvite()">📋 Copy Link</button>
-    </div>
+ <div class="modal fade-in">
+  <div class="modal-title">🔗 Invite Candidate</div>
+  <div class="modal-sub">Share this link or code with the candidate</div>
+  <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;">
+   <div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;">MEETING LINK</div>
+   <div style="font-family:var(--font-head);font-weight:700;font-size:0.88rem;color:var(--accent);word-break:break-all;">https://interviewlink.app/join/IVW-2026-7834</div>
   </div>
+  <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;">
+   <div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;">MEETING CODE</div>
+   <div style="font-family:var(--font-head);font-weight:800;font-size:1.4rem;color:var(--accent);letter-spacing:2px;">IVW-2026-7834</div>
+  </div>
+  <div class="modal-actions">
+   <button class="btn-outline" style="padding:9px 18px;font-size:0.85rem;" onclick="closeModal('inviteModal')">Close</button>
+   <button class="btn-primary" style="padding:9px 18px;font-size:0.85rem;" onclick="copyInvite()">📋 Copy Link</button>
+  </div>
+ </div>
 </div>
 
 <!-- ══════════════════════ PAGE: LOBBY ══════════════════════ -->
 <div class="page active" id="page-lobby" style="flex-direction:column;">
-  <nav class="lobby-nav">
-    <div class="logo">InterviewLink</div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div style="background:rgba(79,124,255,0.12);border:1px solid rgba(79,124,255,0.3);color:var(--accent);padding:4px 12px;border-radius:100px;font-size:0.72rem;font-weight:600;">ACADEMIC & PROFESSIONAL</div>
-      <button class="btn-outline" style="padding:7px 16px;font-size:0.82rem;" onclick="navigateTo('dashboard')">🏠 Dashboard</button>
-    </div>
-  </nav>
-  <div class="lobby-hero">
-    <div class="hero-left fade-in">
-      <h1>One-on-One<br><span class="hl">Video Interviews</span><br>Reimagined</h1>
-      <p>Structured sessions with real-time scoring, notes & decision tools — built for professors & hiring committees.</p>
-      <div class="hero-actions">
-        <div class="role-tabs">
-          <div class="role-tab active" onclick="switchRole('interviewer')" id="tab-interviewer">👨‍🏫 Interviewer</div>
-          <div class="role-tab" onclick="switchRole('candidate')" id="tab-candidate">🎓 Candidate</div>
-        </div>
-        <div id="interviewer-fields" style="display:flex;flex-direction:column;gap:10px;">
-          <div class="field"><label>YOUR NAME</label><input type="text" id="interviewer-name" placeholder="Prof. Sarah Johnson" value="Prof. Sarah Johnson"></div>
-          <div class="field"><label>POSITION / ROLE</label><input type="text" id="position" placeholder="Full Stack Developer — Batch 2026" value="Full Stack Developer — Batch 2026"></div>
-          <button class="btn-primary" onclick="hostMeeting()"><span>🎥</span> Start Interview Session</button>
-        </div>
-        <div id="candidate-fields" style="display:none;flex-direction:column;gap:10px;">
-          <div class="field"><label>YOUR NAME</label><input type="text" id="candidate-name" placeholder="Alex Sharma" value="Alex Sharma"></div>
-          <div class="field"><label>MEETING CODE</label><input type="text" id="meeting-code" placeholder="IVW-2026-XXXX" value="IVW-2026-7834"></div>
-          <button class="btn-primary" onclick="joinMeeting()"><span>🚀</span> Join Interview Room</button>
-        </div>
-        <div class="divider">or</div>
-        <button class="btn-outline" onclick="quickDemo()"><span>⚡</span> Quick Demo</button>
-      </div>
-    </div>
-    <div class="hero-right fade-in" style="animation-delay:0.2s;">
-      <div class="preview-card">
-        <div class="preview-header">
-          <div class="preview-title">Live Session</div>
-          <div class="live-dot">Active</div>
-        </div>
-        <div class="video-slots">
-          <div class="video-slot slot-speaking">
-            <div class="avatar av-blue">SJ</div>
-            <div class="name-tag">Prof. Johnson</div>
-          </div>
-          <div class="video-slot">
-            <div class="avatar av-green">AS</div>
-            <div class="name-tag">Alex Sharma</div>
-          </div>
-        </div>
-        <div class="preview-controls">
-          <button class="ctrl-btn active">🎤</button>
-          <button class="ctrl-btn active">📹</button>
-          <button class="ctrl-btn active">💬</button>
-          <button class="ctrl-btn end">📵</button>
-        </div>
-        <div class="feat-strip">
-          <div class="feat-tag">📝 Live Notes</div>
-          <div class="feat-tag">⭐ Scoring</div>
-          <div class="feat-tag green">🎯 Decision</div>
-          <div class="feat-tag green">🔴 Recording</div>
-        </div>
-      </div>
-    </div>
+ <nav class="lobby-nav">
+  <div class="logo">InterviewLink</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+   <div style="background:rgba(79,124,255,0.12);border:1px solid rgba(79,124,255,0.3);color:var(--accent);padding:4px 12px;border-radius:100px;font-size:0.72rem;font-weight:600;">ACADEMIC & PROFESSIONAL</div>
+   <button class="btn-outline" style="padding:7px 16px;font-size:0.82rem;" onclick="navigateTo('dashboard')">🏠 Dashboard</button>
   </div>
+ </nav>
+ <div class="lobby-hero">
+  <div class="hero-left fade-in">
+   <h1>One-on-One<br><span class="hl">Video Interviews</span><br>Reimagined</h1>
+   <p>Structured sessions with real-time scoring, notes & decision tools — built for professors & hiring committees.</p>
+   <div class="hero-actions">
+    <div class="role-tabs">
+     <div class="role-tab active" onclick="switchRole('interviewer')" id="tab-interviewer">👨‍🏫 Interviewer</div>
+     <div class="role-tab" onclick="switchRole('candidate')" id="tab-candidate">🎓 Candidate</div>
+    </div>
+    <div id="interviewer-fields" style="display:flex;flex-direction:column;gap:10px;">
+     <div class="field"><label>YOUR NAME</label><input type="text" id="interviewer-name" placeholder="Prof. Sarah Johnson" value="Prof. Sarah Johnson"></div>
+     <div class="field"><label>POSITION / ROLE</label><input type="text" id="position" placeholder="Full Stack Developer — Batch 2026" value="Full Stack Developer — Batch 2026"></div>
+     <button class="btn-primary" onclick="hostMeeting()"><span>🎥</span> Start Interview Session</button>
+    </div>
+    <div id="candidate-fields" style="display:none;flex-direction:column;gap:10px;">
+     <div class="field"><label>YOUR NAME</label><input type="text" id="candidate-name" placeholder="Alex Sharma" value="Alex Sharma"></div>
+     <div class="field"><label>MEETING CODE</label><input type="text" id="meeting-code" placeholder="IVW-2026-XXXX" value="IVW-2026-7834"></div>
+     <button class="btn-primary" onclick="joinMeeting()"><span>🚀</span> Join Interview Room</button>
+    </div>
+    <div class="divider">or</div>
+    <button class="btn-outline" onclick="quickDemo()"><span>⚡</span> Quick Demo</button>
+   </div>
+  </div>
+  <div class="hero-right fade-in" style="animation-delay:0.2s;">
+   <div class="preview-card">
+    <div class="preview-header">
+     <div class="preview-title">Live Session</div>
+     <div class="live-dot">Active</div>
+    </div>
+    <div class="video-slots">
+     <div class="video-slot slot-speaking">
+      <div class="avatar av-blue">SJ</div>
+      <div class="name-tag">Prof. Johnson</div>
+     </div>
+     <div class="video-slot">
+      <div class="avatar av-green">AS</div>
+      <div class="name-tag">Alex Sharma</div>
+     </div>
+    </div>
+    <div class="preview-controls">
+     <button class="ctrl-btn active">🎤</button>
+     <button class="ctrl-btn active">📹</button>
+     <button class="ctrl-btn active">💬</button>
+     <button class="ctrl-btn end">📵</button>
+    </div>
+    <div class="feat-strip">
+     <div class="feat-tag">📝 Live Notes</div>
+     <div class="feat-tag">⭐ Scoring</div>
+     <div class="feat-tag green">🎯 Decision</div>
+     <div class="feat-tag green">🔴 Recording</div>
+    </div>
+   </div>
+  </div>
+ </div>
 </div>
 
 <!-- ══════════════════════ APP SHELL (Dashboard + sub-pages) ══════════════════════ -->
 <div class="page" id="page-app" style="flex-direction:row;">
-  <!-- Sidebar Nav -->
-  <nav class="sidenav" id="sidenav">
-    <div class="sidenav-logo">
-      <div class="logo">InterviewLink</div>
-      <div class="logo-sub">Professional Interview Platform</div>
+ <!-- Sidebar Nav -->
+ <nav class="sidenav" id="sidenav">
+  <div class="sidenav-logo">
+   <div class="logo">InterviewLink</div>
+   <div class="logo-sub">Professional Interview Platform</div>
+  </div>
+
+  <div class="nav-section">Main</div>
+  <div class="nav-item active" id="nav-dashboard" onclick="showView('dashboard')">
+   <span class="nav-icon">🏠</span> Dashboard
+  </div>
+  <div class="nav-item" id="nav-newinterview" onclick="showView('newinterview')">
+   <span class="nav-icon">🎥</span> New Interview
+  </div>
+  <div class="nav-item" id="nav-schedule" onclick="showView('schedule')">
+   <span class="nav-icon">📅</span> Schedule
+   <span class="nav-badge yellow">3</span>
+  </div>
+
+  <div class="nav-section">Manage</div>
+  <div class="nav-item" id="nav-candidates" onclick="showView('candidates')">
+   <span class="nav-icon">👥</span> Candidates
+   <span class="nav-badge">12</span>
+  </div>
+  <div class="nav-item" id="nav-reports" onclick="showView('reports')">
+   <span class="nav-icon">📊</span> Reports
+  </div>
+  <div class="nav-item" id="nav-recordings" onclick="showView('recordings')">
+   <span class="nav-icon">🎬</span> Recordings
+  </div>
+
+  <div class="nav-section">Account</div>
+  <div class="nav-item" id="nav-settings" onclick="showView('settings')">
+   <span class="nav-icon">⚙️</span> Settings
+  </div>
+  <div class="nav-item" id="nav-help" onclick="showView('help')">
+   <span class="nav-icon">❓</span> Help & Docs
+  </div>
+
+  <div class="sidenav-footer">
+   <div class="user-card">
+    <div class="user-av" id="sideUserAv">SJ</div>
+    <div>
+     <div class="user-name" id="sideUserName">Prof. Sarah Johnson</div>
+     <div class="user-role">Interviewer</div>
+    </div>
+   </div>
+  </div>
+ </nav>
+
+ <!-- Main Content -->
+ <div class="main-content">
+  <!-- Topbar -->
+  <div class="topbar">
+   <div class="topbar-left">
+    <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none;">← Back</button>
+    <div class="topbar-breadcrumb" id="breadcrumb">
+     <span>Home</span><span>›</span><span class="crumb-active" id="crumbActive">Dashboard</span>
+    </div>
+   </div>
+   <div class="topbar-right">
+    <div class="topbar-icon" onclick="navigateTo('lobby')" title="Back to Lobby">🏠</div>
+    <div class="topbar-icon" onclick="openModal('scheduleModal')" title="Schedule Interview">📅</div>
+    <div class="topbar-icon" onclick="openModal('inviteModal')" title="Invite">🔗</div>
+    <div class="topbar-icon" title="Notifications">
+     🔔<div class="notif-dot"></div>
+    </div>
+    <div class="topbar-icon" onclick="showView('settings')" title="Settings">⚙️</div>
+    <div class="user-av" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;font-size:0.8rem;color:#fff;cursor:pointer;" id="topUserAv">SJ</div>
+   </div>
+  </div>
+
+  <!-- ── DASHBOARD VIEW ── -->
+  <div class="content-view active" id="view-dashboard">
+   <div class="page-header">
+    <div class="page-title">Good Morning 👋 <span id="dash-name">Prof. Johnson</span></div>
+    <div class="page-sub">You have 3 interviews scheduled today</div>
+   </div>
+
+   <div class="stats-grid">
+    <div class="stat-card fade-in">
+     <div class="stat-icon">🎤</div>
+     <div class="stat-value" style="color:var(--accent);">47</div>
+     <div class="stat-label">Total Interviews</div>
+     <div class="stat-trend up">↑ +8 this month</div>
+    </div>
+    <div class="stat-card fade-in" style="animation-delay:0.1s;">
+     <div class="stat-icon">✅</div>
+     <div class="stat-value" style="color:var(--green);">18</div>
+     <div class="stat-label">Candidates Accepted</div>
+     <div class="stat-trend up">↑ 38% acceptance rate</div>
+    </div>
+    <div class="stat-card fade-in" style="animation-delay:0.15s;">
+     <div class="stat-icon">📅</div>
+     <div class="stat-value" style="color:var(--yellow);">3</div>
+     <div class="stat-label">Today's Sessions</div>
+     <div class="stat-trend" style="color:var(--accent);">Next: 2:00 PM</div>
+    </div>
+    <div class="stat-card fade-in" style="animation-delay:0.2s;">
+     <div class="stat-icon">⭐</div>
+     <div class="stat-value" style="color:var(--purple);">4.2</div>
+     <div class="stat-label">Avg. Candidate Score</div>
+     <div class="stat-trend up">↑ +0.3 from last batch</div>
+    </div>
+   </div>
+
+   <div class="dash-grid">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+     <!-- Upcoming interviews -->
+     <div class="card">
+      <div class="card-header">
+       <div class="card-title">Today's Interviews</div>
+       <div class="card-action" onclick="showView('schedule')">View all →</div>
+      </div>
+      <div class="card-body">
+       <div class="interview-row" onclick="quickStartInterview('Alex Sharma')">
+        <div class="iv-av av-green">AS</div>
+        <div class="iv-info">
+         <div class="iv-name">Alex Sharma</div>
+         <div class="iv-meta">Full Stack Developer · 2:00 PM — 45 min</div>
+        </div>
+        <div class="iv-status status-live">🔴 Now</div>
+       </div>
+       <div class="interview-row" onclick="quickStartInterview('Priya Patel')">
+        <div class="iv-av" style="background:rgba(168,85,247,0.2);color:var(--purple);">PP</div>
+        <div class="iv-info">
+         <div class="iv-name">Priya Patel</div>
+         <div class="iv-meta">Backend Engineer · 3:30 PM — 60 min</div>
+        </div>
+        <div class="iv-status status-scheduled">Scheduled</div>
+       </div>
+       <div class="interview-row" onclick="quickStartInterview('Rahul Kumar')">
+        <div class="iv-av" style="background:rgba(245,158,11,0.2);color:var(--yellow);">RK</div>
+        <div class="iv-info">
+         <div class="iv-name">Rahul Kumar</div>
+         <div class="iv-meta">React Developer · 5:00 PM — 45 min</div>
+        </div>
+        <div class="iv-status status-scheduled">Scheduled</div>
+       </div>
+      </div>
+     </div>
+
+     <!-- Weekly chart -->
+     <div class="card">
+      <div class="card-header">
+       <div class="card-title">Interviews This Week</div>
+       <div class="card-action">May 2026</div>
+      </div>
+      <div class="card-body">
+       <div style="display:flex;align-items:flex-end;gap:6px;height:70px;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+         <div class="bar" style="height:40%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:3px 3px 0 0;width:100%;"></div>
+         <div style="font-size:0.62rem;color:var(--muted);">Mon</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+         <div class="bar" style="height:70%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:3px 3px 0 0;width:100%;"></div>
+         <div style="font-size:0.62rem;color:var(--muted);">Tue</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+         <div class="bar" style="height:55%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:3px 3px 0 0;width:100%;"></div>
+         <div style="font-size:0.62rem;color:var(--muted);">Wed</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+         <div class="bar" style="height:90%;background:linear-gradient(180deg,var(--accent2),rgba(0,212,170,0.3));border-radius:3px 3px 0 0;width:100%;"></div>
+         <div style="font-size:0.62rem;color:var(--muted);">Thu</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+         <div class="bar" style="height:100%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:3px 3px 0 0;width:100%;animation:pulse2 1s infinite;"></div>
+         <div style="font-size:0.62rem;color:var(--accent);">Today</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+         <div class="bar" style="height:30%;background:rgba(30,35,48,0.8);border-radius:3px 3px 0 0;width:100%;border:1px dashed var(--border);"></div>
+         <div style="font-size:0.62rem;color:var(--muted);">Fri</div>
+        </div>
+       </div>
+      </div>
+     </div>
     </div>
 
-    <div class="nav-section">Main</div>
-    <div class="nav-item active" id="nav-dashboard" onclick="showView('dashboard')">
-      <span class="nav-icon">🏠</span> Dashboard
-    </div>
-    <div class="nav-item" id="nav-newinterview" onclick="showView('newinterview')">
-      <span class="nav-icon">🎥</span> New Interview
-    </div>
-    <div class="nav-item" id="nav-schedule" onclick="showView('schedule')">
-      <span class="nav-icon">📅</span> Schedule
-      <span class="nav-badge yellow">3</span>
-    </div>
+    <!-- Right column -->
+    <div style="display:flex;flex-direction:column;gap:18px;">
+     <!-- Quick actions -->
+     <div class="card">
+      <div class="card-header"><div class="card-title">Quick Actions</div></div>
+      <div class="card-body" style="padding:14px;">
+       <div class="quick-actions">
+        <div class="qa-btn" onclick="showView('newinterview')">
+         <div class="qa-icon">🎥</div>
+         <div><div class="qa-text">New Interview</div><div class="qa-sub">Start or join now</div></div>
+        </div>
+        <div class="qa-btn" onclick="openModal('scheduleModal')">
+         <div class="qa-icon">📅</div>
+         <div><div class="qa-text">Schedule</div><div class="qa-sub">Plan upcoming sessions</div></div>
+        </div>
+        <div class="qa-btn" onclick="openModal('inviteModal')">
+         <div class="qa-icon">🔗</div>
+         <div><div class="qa-text">Invite Candidate</div><div class="qa-sub">Share meeting link</div></div>
+        </div>
+        <div class="qa-btn" onclick="showView('reports')">
+         <div class="qa-icon">📊</div>
+         <div><div class="qa-text">View Reports</div><div class="qa-sub">Batch analytics</div></div>
+        </div>
+        <div class="qa-btn" onclick="showView('candidates')">
+         <div class="qa-icon">👥</div>
+         <div><div class="qa-text">Candidate List</div><div class="qa-sub">12 awaiting review</div></div>
+        </div>
+       </div>
+      </div>
+     </div>
 
-    <div class="nav-section">Manage</div>
-    <div class="nav-item" id="nav-candidates" onclick="showView('candidates')">
-      <span class="nav-icon">👥</span> Candidates
-      <span class="nav-badge">12</span>
+     <!-- Activity -->
+     <div class="card">
+      <div class="card-header"><div class="card-title">Recent Activity</div></div>
+      <div class="card-body" style="padding:14px 20px;">
+       <div class="activity-item">
+        <div class="activity-dot" style="background:var(--green);"></div>
+        <div><div class="activity-text">Rohan Verma — <b>Accepted</b> for Full Stack role</div><div class="activity-time">2 hours ago</div></div>
+       </div>
+       <div class="activity-item">
+        <div class="activity-dot" style="background:var(--accent);"></div>
+        <div><div class="activity-text">New application from <b>Sneha Nair</b></div><div class="activity-time">4 hours ago</div></div>
+       </div>
+       <div class="activity-item">
+        <div class="activity-dot" style="background:var(--yellow);"></div>
+        <div><div class="activity-text">Karan Mehta evaluation — <b>On Hold</b></div><div class="activity-time">Yesterday</div></div>
+       </div>
+       <div class="activity-item">
+        <div class="activity-dot" style="background:var(--red);"></div>
+        <div><div class="activity-text">Interview session recorded — <b>45 min</b></div><div class="activity-time">Yesterday</div></div>
+       </div>
+      </div>
+     </div>
     </div>
-    <div class="nav-item" id="nav-reports" onclick="showView('reports')">
-      <span class="nav-icon">📊</span> Reports
+   </div>
+  </div>
+
+  <!-- ── NEW INTERVIEW VIEW ── -->
+  <div class="content-view" id="view-newinterview">
+   <div class="page-header">
+    <div class="page-title">🎥 Start Interview</div>
+    <div class="page-sub">Launch a new session or join an existing one</div>
+   </div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:800px;">
+    <div class="card">
+     <div class="card-header"><div class="card-title">👨‍🏫 Host as Interviewer</div></div>
+     <div class="card-body" style="display:flex;flex-direction:column;gap:12px;">
+      <div class="field"><label>YOUR NAME</label><input type="text" id="ni-name" class="settings-input" placeholder="Prof. Sarah Johnson" value="Prof. Sarah Johnson" style="margin-top:0;"></div>
+      <div class="field"><label>POSITION</label><input type="text" id="ni-pos" class="settings-input" placeholder="Full Stack Developer" value="Full Stack Developer — Batch 2026" style="margin-top:0;"></div>
+      <button class="btn-primary" onclick="hostFromDash()">🎥 Start Session</button>
+     </div>
     </div>
-    <div class="nav-item" id="nav-recordings" onclick="showView('recordings')">
-      <span class="nav-icon">🎬</span> Recordings
+    <div class="card">
+     <div class="card-header"><div class="card-title">🎓 Join as Candidate</div></div>
+     <div class="card-body" style="display:flex;flex-direction:column;gap:12px;">
+      <div class="field"><label>YOUR NAME</label><input type="text" id="ni-cname" class="settings-input" placeholder="Alex Sharma" value="Alex Sharma" style="margin-top:0;"></div>
+      <div class="field"><label>MEETING CODE</label><input type="text" id="ni-code" class="settings-input" placeholder="IVW-2026-XXXX" value="IVW-2026-7834" style="margin-top:0;"></div>
+      <button class="btn-primary" style="background:linear-gradient(135deg,var(--accent2),#00b894);" onclick="joinFromDash()">🚀 Join Session</button>
+     </div>
     </div>
+   </div>
+  </div>
 
-    <div class="nav-section">Account</div>
-    <div class="nav-item" id="nav-settings" onclick="showView('settings')">
-      <span class="nav-icon">⚙️</span> Settings
+  <!-- ── SCHEDULE VIEW ── -->
+  <div class="content-view" id="view-schedule">
+   <div class="page-header">
+    <div class="page-title">📅 Interview Schedule</div>
+    <div class="page-sub">Manage and plan your interview sessions</div>
+   </div>
+   <div class="schedule-controls">
+    <button class="sched-btn active">Week</button>
+    <button class="sched-btn">Month</button>
+    <button class="sched-btn">List</button>
+    <div style="flex:1;"></div>
+    <button class="sched-btn primary" onclick="openModal('scheduleModal')">+ Schedule Interview</button>
+   </div>
+   <div class="calendar-grid">
+    <div class="cal-header">
+     <div class="cal-day-head">SUN</div><div class="cal-day-head">MON</div><div class="cal-day-head">TUE</div>
+     <div class="cal-day-head">WED</div><div class="cal-day-head">THU</div><div class="cal-day-head">FRI</div><div class="cal-day-head">SAT</div>
     </div>
-    <div class="nav-item" id="nav-help" onclick="showView('help')">
-      <span class="nav-icon">❓</span> Help & Docs
+    <div class="cal-body" id="calBody"></div>
+   </div>
+   <div style="font-family:var(--font-head);font-size:0.85rem;font-weight:700;color:var(--label);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">UPCOMING SESSIONS</div>
+   <div class="upcoming-list">
+    <div class="upcoming-card" onclick="quickStartInterview('Alex Sharma')">
+     <div class="upcoming-date"><div class="upcoming-day">23</div><div class="upcoming-month">May</div></div>
+     <div class="upcoming-info">
+      <div class="upcoming-title">Alex Sharma — Full Stack Developer</div>
+      <div class="upcoming-meta">🕑 2:00 PM — 45 min · Code: IVW-2026-7834</div>
+     </div>
+     <div class="upcoming-actions">
+      <button class="sched-btn" onclick="event.stopPropagation();quickStartInterview('Alex Sharma')">▶ Start</button>
+     </div>
     </div>
-
-    <div class="sidenav-footer">
-      <div class="user-card">
-        <div class="user-av" id="sideUserAv">SJ</div>
-        <div>
-          <div class="user-name" id="sideUserName">Prof. Sarah Johnson</div>
-          <div class="user-role">Interviewer</div>
-        </div>
-      </div>
+    <div class="upcoming-card">
+     <div class="upcoming-date"><div class="upcoming-day">23</div><div class="upcoming-month">May</div></div>
+     <div class="upcoming-info">
+      <div class="upcoming-title">Priya Patel — Backend Engineer</div>
+      <div class="upcoming-meta">🕞 3:30 PM — 60 min · Code: IVW-2026-7835</div>
+     </div>
+     <div class="upcoming-actions">
+      <button class="sched-btn" onclick="event.stopPropagation();quickStartInterview('Priya Patel')">▶ Start</button>
+     </div>
     </div>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Topbar -->
-    <div class="topbar">
-      <div class="topbar-left">
-        <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none;">← Back</button>
-        <div class="topbar-breadcrumb" id="breadcrumb">
-          <span>Home</span><span>›</span><span class="crumb-active" id="crumbActive">Dashboard</span>
-        </div>
-      </div>
-      <div class="topbar-right">
-        <div class="topbar-icon" onclick="navigateTo('lobby')" title="Back to Lobby">🏠</div>
-        <div class="topbar-icon" onclick="openModal('scheduleModal')" title="Schedule Interview">📅</div>
-        <div class="topbar-icon" onclick="openModal('inviteModal')" title="Invite">🔗</div>
-        <div class="topbar-icon" title="Notifications">
-          🔔<div class="notif-dot"></div>
-        </div>
-        <div class="topbar-icon" onclick="showView('settings')" title="Settings">⚙️</div>
-        <div class="user-av" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;font-size:0.8rem;color:#fff;cursor:pointer;" id="topUserAv">SJ</div>
-      </div>
+    <div class="upcoming-card">
+     <div class="upcoming-date"><div class="upcoming-day">24</div><div class="upcoming-month">May</div></div>
+     <div class="upcoming-info">
+      <div class="upcoming-title">Rahul Kumar — React Developer</div>
+      <div class="upcoming-meta">🕐 10:00 AM — 45 min · Code: IVW-2026-7836</div>
+     </div>
+     <div class="upcoming-actions">
+      <button class="sched-btn" onclick="event.stopPropagation();openModal('scheduleModal')">Edit</button>
+     </div>
     </div>
+   </div>
+  </div>
 
-    <!-- ── DASHBOARD VIEW ── -->
-    <div class="content-view active" id="view-dashboard">
-      <div class="page-header">
-        <div class="page-title">Good Morning 👋 <span id="dash-name">Prof. Johnson</span></div>
-        <div class="page-sub">You have 3 interviews scheduled today</div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card fade-in">
-          <div class="stat-icon">🎤</div>
-          <div class="stat-value" style="color:var(--accent);">47</div>
-          <div class="stat-label">Total Interviews</div>
-          <div class="stat-trend up">↑ +8 this month</div>
-        </div>
-        <div class="stat-card fade-in" style="animation-delay:0.1s;">
-          <div class="stat-icon">✅</div>
-          <div class="stat-value" style="color:var(--green);">18</div>
-          <div class="stat-label">Candidates Accepted</div>
-          <div class="stat-trend up">↑ 38% acceptance rate</div>
-        </div>
-        <div class="stat-card fade-in" style="animation-delay:0.15s;">
-          <div class="stat-icon">📅</div>
-          <div class="stat-value" style="color:var(--yellow);">3</div>
-          <div class="stat-label">Today's Sessions</div>
-          <div class="stat-trend" style="color:var(--accent);">Next: 2:00 PM</div>
-        </div>
-        <div class="stat-card fade-in" style="animation-delay:0.2s;">
-          <div class="stat-icon">⭐</div>
-          <div class="stat-value" style="color:var(--purple);">4.2</div>
-          <div class="stat-label">Avg. Candidate Score</div>
-          <div class="stat-trend up">↑ +0.3 from last batch</div>
-        </div>
-      </div>
-
-      <div class="dash-grid">
-        <div style="display:flex;flex-direction:column;gap:18px;">
-          <!-- Upcoming interviews -->
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Today's Interviews</div>
-              <div class="card-action" onclick="showView('schedule')">View all →</div>
-            </div>
-            <div class="card-body">
-              <div class="interview-row" onclick="quickStartInterview('Alex Sharma')">
-                <div class="iv-av av-green">AS</div>
-                <div class="iv-info">
-                  <div class="iv-name">Alex Sharma</div>
-                  <div class="iv-meta">Full Stack Developer · 2:00 PM — 45 min</div>
-                </div>
-                <div class="iv-status status-live">🔴 Now</div>
-              </div>
-              <div class="interview-row" onclick="quickStartInterview('Priya Patel')">
-                <div class="iv-av" style="background:rgba(168,85,247,0.2);color:var(--purple);">PP</div>
-                <div class="iv-info">
-                  <div class="iv-name">Priya Patel</div>
-                  <div class="iv-meta">Backend Engineer · 3:30 PM — 60 min</div>
-                </div>
-                <div class="iv-status status-scheduled">Scheduled</div>
-              </div>
-              <div class="interview-row" onclick="quickStartInterview('Rahul Kumar')">
-                <div class="iv-av" style="background:rgba(245,158,11,0.2);color:var(--yellow);">RK</div>
-                <div class="iv-info">
-                  <div class="iv-name">Rahul Kumar</div>
-                  <div class="iv-meta">React Developer · 5:00 PM — 45 min</div>
-                </div>
-                <div class="iv-status status-scheduled">Scheduled</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Weekly chart -->
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Interviews This Week</div>
-              <div class="card-action">May 2026</div>
-            </div>
-            <div class="card-body">
-              <div style="display:flex;align-items:flex-end;gap:6px;height:70px;">
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <div class="bar" style="height:40%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:3px 3px 0 0;width:100%;"></div>
-                  <div style="font-size:0.62rem;color:var(--muted);">Mon</div>
-                </div>
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <div class="bar" style="height:70%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:3px 3px 0 0;width:100%;"></div>
-                  <div style="font-size:0.62rem;color:var(--muted);">Tue</div>
-                </div>
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <div class="bar" style="height:55%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:3px 3px 0 0;width:100%;"></div>
-                  <div style="font-size:0.62rem;color:var(--muted);">Wed</div>
-                </div>
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <div class="bar" style="height:90%;background:linear-gradient(180deg,var(--accent2),rgba(0,212,170,0.3));border-radius:3px 3px 0 0;width:100%;"></div>
-                  <div style="font-size:0.62rem;color:var(--muted);">Thu</div>
-                </div>
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <div class="bar" style="height:100%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:3px 3px 0 0;width:100%;animation:pulse2 1s infinite;"></div>
-                  <div style="font-size:0.62rem;color:var(--accent);">Today</div>
-                </div>
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
-                  <div class="bar" style="height:30%;background:rgba(30,35,48,0.8);border-radius:3px 3px 0 0;width:100%;border:1px dashed var(--border);"></div>
-                  <div style="font-size:0.62rem;color:var(--muted);">Fri</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right column -->
-        <div style="display:flex;flex-direction:column;gap:18px;">
-          <!-- Quick actions -->
-          <div class="card">
-            <div class="card-header"><div class="card-title">Quick Actions</div></div>
-            <div class="card-body" style="padding:14px;">
-              <div class="quick-actions">
-                <div class="qa-btn" onclick="showView('newinterview')">
-                  <div class="qa-icon">🎥</div>
-                  <div><div class="qa-text">New Interview</div><div class="qa-sub">Start or join now</div></div>
-                </div>
-                <div class="qa-btn" onclick="openModal('scheduleModal')">
-                  <div class="qa-icon">📅</div>
-                  <div><div class="qa-text">Schedule</div><div class="qa-sub">Plan upcoming sessions</div></div>
-                </div>
-                <div class="qa-btn" onclick="openModal('inviteModal')">
-                  <div class="qa-icon">🔗</div>
-                  <div><div class="qa-text">Invite Candidate</div><div class="qa-sub">Share meeting link</div></div>
-                </div>
-                <div class="qa-btn" onclick="showView('reports')">
-                  <div class="qa-icon">📊</div>
-                  <div><div class="qa-text">View Reports</div><div class="qa-sub">Batch analytics</div></div>
-                </div>
-                <div class="qa-btn" onclick="showView('candidates')">
-                  <div class="qa-icon">👥</div>
-                  <div><div class="qa-text">Candidate List</div><div class="qa-sub">12 awaiting review</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Activity -->
-          <div class="card">
-            <div class="card-header"><div class="card-title">Recent Activity</div></div>
-            <div class="card-body" style="padding:14px 20px;">
-              <div class="activity-item">
-                <div class="activity-dot" style="background:var(--green);"></div>
-                <div><div class="activity-text">Rohan Verma — <b>Accepted</b> for Full Stack role</div><div class="activity-time">2 hours ago</div></div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-dot" style="background:var(--accent);"></div>
-                <div><div class="activity-text">New application from <b>Sneha Nair</b></div><div class="activity-time">4 hours ago</div></div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-dot" style="background:var(--yellow);"></div>
-                <div><div class="activity-text">Karan Mehta evaluation — <b>On Hold</b></div><div class="activity-time">Yesterday</div></div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-dot" style="background:var(--red);"></div>
-                <div><div class="activity-text">Interview session recorded — <b>45 min</b></div><div class="activity-time">Yesterday</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- ── CANDIDATES VIEW ── -->
+  <div class="content-view" id="view-candidates">
+   <div class="page-header">
+    <div class="page-title">👥 Candidates</div>
+    <div class="page-sub" id="candidatePageSub">12 candidates across all positions</div>
+   </div>
+   <div class="search-filter">
+    <input class="search-input" id="candidateSearchInput" placeholder="Search by name, position, email…" oninput="buildCandidates()">
+    <select class="filter-select" id="candidatePositionFilter" onchange="buildCandidates()"><option>All Positions</option><option>Full Stack</option><option>Backend</option><option>Frontend</option></select>
+    <select class="filter-select" id="candidateStatusFilter" onchange="buildCandidates()"><option>All Status</option><option>Accepted</option><option>Pending</option><option>On Hold</option><option>Rejected</option></select>
+    <button class="sched-btn primary" onclick="openModal('scheduleModal')">+ Add Candidate</button>
+   </div>
+   <div class="candidates-table">
+    <div class="table-head">
+     <div class="th">Candidate</div>
+     <div class="th">Position</div>
+     <div class="th">Score</div>
+     <div class="th">Interview</div>
+     <div class="th">Status</div>
+     <div class="th">Actions</div>
     </div>
+    <div id="candidatesBody"></div>
+   </div>
+  </div>
 
-    <!-- ── NEW INTERVIEW VIEW ── -->
-    <div class="content-view" id="view-newinterview">
-      <div class="page-header">
-        <div class="page-title">🎥 Start Interview</div>
-        <div class="page-sub">Launch a new session or join an existing one</div>
+  <!-- ── REPORTS VIEW ── -->
+  <div class="content-view" id="view-reports">
+   <div class="page-header">
+    <div class="page-title">📊 Reports & Analytics</div>
+    <div class="page-sub">Batch 2026 interview performance overview</div>
+   </div>
+   <div class="reports-grid">
+    <div class="report-card">
+     <div class="report-title">Decision Breakdown</div>
+     <div class="donut-wrap">
+      <div class="donut">
+       <svg width="90" height="90" viewBox="0 0 90 90">
+        <circle cx="45" cy="45" r="35" fill="none" stroke="var(--surface2)" stroke-width="12"/>
+        <circle cx="45" cy="45" r="35" fill="none" stroke="var(--green)" stroke-width="12" stroke-dasharray="88 132" stroke-linecap="round"/>
+        <circle cx="45" cy="45" r="35" fill="none" stroke="var(--yellow)" stroke-width="12" stroke-dasharray="44 176" stroke-dashoffset="-88" stroke-linecap="round"/>
+        <circle cx="45" cy="45" r="35" fill="none" stroke="var(--red)" stroke-width="12" stroke-dasharray="88 132" stroke-dashoffset="-132" stroke-linecap="round"/>
+       </svg>
+       <div class="donut-center"><div class="donut-val">47</div><div class="donut-sub">Total</div></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:800px;">
-        <div class="card">
-          <div class="card-header"><div class="card-title">👨‍🏫 Host as Interviewer</div></div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:12px;">
-            <div class="field"><label>YOUR NAME</label><input type="text" id="ni-name" class="settings-input" placeholder="Prof. Sarah Johnson" value="Prof. Sarah Johnson" style="margin-top:0;"></div>
-            <div class="field"><label>POSITION</label><input type="text" id="ni-pos" class="settings-input" placeholder="Full Stack Developer" value="Full Stack Developer — Batch 2026" style="margin-top:0;"></div>
-            <button class="btn-primary" onclick="hostFromDash()">🎥 Start Session</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">🎓 Join as Candidate</div></div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:12px;">
-            <div class="field"><label>YOUR NAME</label><input type="text" id="ni-cname" class="settings-input" placeholder="Alex Sharma" value="Alex Sharma" style="margin-top:0;"></div>
-            <div class="field"><label>MEETING CODE</label><input type="text" id="ni-code" class="settings-input" placeholder="IVW-2026-XXXX" value="IVW-2026-7834" style="margin-top:0;"></div>
-            <button class="btn-primary" style="background:linear-gradient(135deg,var(--accent2),#00b894);" onclick="joinFromDash()">🚀 Join Session</button>
-          </div>
-        </div>
+      <div class="legend">
+       <div class="legend-row"><div class="legend-dot" style="background:var(--green);"></div><div class="legend-label">Accepted</div><div class="legend-val" style="color:var(--green);">18</div></div>
+       <div class="legend-row"><div class="legend-dot" style="background:var(--yellow);"></div><div class="legend-label">On Hold</div><div class="legend-val" style="color:var(--yellow);">8</div></div>
+       <div class="legend-row"><div class="legend-dot" style="background:var(--red);"></div><div class="legend-label">Rejected</div><div class="legend-val" style="color:var(--red);">21</div></div>
       </div>
+     </div>
     </div>
+    <div class="report-card">
+     <div class="report-title">Avg. Scores by Criteria</div>
+     <div class="bar-chart">
+      <div class="bar-row"><div class="bar-label">Technical</div><div class="bar-track"><div class="bar-fill" style="width:78%;"></div></div><div class="bar-val">3.9</div></div>
+      <div class="bar-row"><div class="bar-label">Comms</div><div class="bar-track"><div class="bar-fill" style="width:85%;"></div></div><div class="bar-val">4.3</div></div>
+      <div class="bar-row"><div class="bar-label">Problem</div><div class="bar-track"><div class="bar-fill" style="width:70%;"></div></div><div class="bar-val">3.5</div></div>
+      <div class="bar-row"><div class="bar-label">Culture</div><div class="bar-track"><div class="bar-fill" style="width:88%;"></div></div><div class="bar-val">4.4</div></div>
+      <div class="bar-row"><div class="bar-label">Experience</div><div class="bar-track"><div class="bar-fill" style="width:65%;"></div></div><div class="bar-val">3.3</div></div>
+     </div>
+    </div>
+    <div class="report-card">
+     <div class="report-title">Interview Duration Trend</div>
+     <div style="display:flex;align-items:flex-end;gap:8px;height:80px;margin-top:8px;">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+       <div style="flex:1;display:flex;align-items:flex-end;width:100%;"><div style="width:100%;height:60%;background:linear-gradient(180deg,var(--purple),rgba(168,85,247,0.3));border-radius:4px 4px 0 0;"></div></div>
+       <div style="font-size:0.6rem;color:var(--muted);">Mar</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+       <div style="flex:1;display:flex;align-items:flex-end;width:100%;"><div style="width:100%;height:80%;background:linear-gradient(180deg,var(--purple),rgba(168,85,247,0.3));border-radius:4px 4px 0 0;"></div></div>
+       <div style="font-size:0.6rem;color:var(--muted);">Apr</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+       <div style="flex:1;display:flex;align-items:flex-end;width:100%;"><div style="width:100%;height:100%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:4px 4px 0 0;"></div></div>
+       <div style="font-size:0.6rem;color:var(--accent);">May</div>
+      </div>
+     </div>
+     <div style="font-size:0.75rem;color:var(--muted);margin-top:8px;">Avg. 42 min this month <span style="color:var(--green);">↓ 3 min</span></div>
+    </div>
+    <div class="report-card">
+     <div class="report-title">Position Breakdown</div>
+     <div class="bar-chart" style="margin-top:8px;">
+      <div class="bar-row"><div class="bar-label">Full Stack</div><div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div><div class="bar-val">18</div></div>
+      <div class="bar-row"><div class="bar-label">Backend</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,var(--purple),var(--accent));"></div></div><div class="bar-val">11</div></div>
+      <div class="bar-row"><div class="bar-label">Frontend</div><div class="bar-track"><div class="bar-fill" style="width:45%;background:linear-gradient(90deg,var(--accent2),var(--green));"></div></div><div class="bar-val">9</div></div>
+      <div class="bar-row"><div class="bar-label">DevOps</div><div class="bar-track"><div class="bar-fill" style="width:25%;background:linear-gradient(90deg,var(--yellow),var(--red));"></div></div><div class="bar-val">5</div></div>
+     </div>
+    </div>
+   </div>
+   <div class="recent-evals card">
+    <div class="card-header"><div class="card-title">Recent Evaluations</div><div class="card-action" onclick="showView('candidates')">All candidates →</div></div>
+    <div class="card-body" style="padding:0;">
+     <div id="reportEvals"></div>
+    </div>
+   </div>
+  </div>
 
-    <!-- ── SCHEDULE VIEW ── -->
-    <div class="content-view" id="view-schedule">
-      <div class="page-header">
-        <div class="page-title">📅 Interview Schedule</div>
-        <div class="page-sub">Manage and plan your interview sessions</div>
-      </div>
-      <div class="schedule-controls">
-        <button class="sched-btn active">Week</button>
-        <button class="sched-btn">Month</button>
-        <button class="sched-btn">List</button>
-        <div style="flex:1;"></div>
-        <button class="sched-btn primary" onclick="openModal('scheduleModal')">+ Schedule Interview</button>
-      </div>
-      <div class="calendar-grid">
-        <div class="cal-header">
-          <div class="cal-day-head">SUN</div><div class="cal-day-head">MON</div><div class="cal-day-head">TUE</div>
-          <div class="cal-day-head">WED</div><div class="cal-day-head">THU</div><div class="cal-day-head">FRI</div><div class="cal-day-head">SAT</div>
-        </div>
-        <div class="cal-body" id="calBody"></div>
-      </div>
-      <div style="font-family:var(--font-head);font-size:0.85rem;font-weight:700;color:var(--label);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">UPCOMING SESSIONS</div>
-      <div class="upcoming-list">
-        <div class="upcoming-card" onclick="quickStartInterview('Alex Sharma')">
-          <div class="upcoming-date"><div class="upcoming-day">23</div><div class="upcoming-month">May</div></div>
-          <div class="upcoming-info">
-            <div class="upcoming-title">Alex Sharma — Full Stack Developer</div>
-            <div class="upcoming-meta">🕑 2:00 PM — 45 min · Code: IVW-2026-7834</div>
-          </div>
-          <div class="upcoming-actions">
-            <button class="sched-btn" onclick="event.stopPropagation();quickStartInterview('Alex Sharma')">▶ Start</button>
-          </div>
-        </div>
-        <div class="upcoming-card">
-          <div class="upcoming-date"><div class="upcoming-day">23</div><div class="upcoming-month">May</div></div>
-          <div class="upcoming-info">
-            <div class="upcoming-title">Priya Patel — Backend Engineer</div>
-            <div class="upcoming-meta">🕞 3:30 PM — 60 min · Code: IVW-2026-7835</div>
-          </div>
-          <div class="upcoming-actions">
-            <button class="sched-btn" onclick="event.stopPropagation();quickStartInterview('Priya Patel')">▶ Start</button>
-          </div>
-        </div>
-        <div class="upcoming-card">
-          <div class="upcoming-date"><div class="upcoming-day">24</div><div class="upcoming-month">May</div></div>
-          <div class="upcoming-info">
-            <div class="upcoming-title">Rahul Kumar — React Developer</div>
-            <div class="upcoming-meta">🕐 10:00 AM — 45 min · Code: IVW-2026-7836</div>
-          </div>
-          <div class="upcoming-actions">
-            <button class="sched-btn" onclick="event.stopPropagation();openModal('scheduleModal')">Edit</button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- ── RECORDINGS VIEW ── -->
+  <div class="content-view" id="view-recordings">
+   <div class="page-header">
+    <div class="page-title">🎬 Recordings</div>
+    <div class="page-sub">Recorded interview sessions for review</div>
+   </div>
+   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;" id="recordingsGrid"></div>
+  </div>
 
-    <!-- ── CANDIDATES VIEW ── -->
-    <div class="content-view" id="view-candidates">
-      <div class="page-header">
-        <div class="page-title">👥 Candidates</div>
-        <div class="page-sub" id="candidatePageSub">12 candidates across all positions</div>
-      </div>
-      <div class="search-filter">
-        <input class="search-input" id="candidateSearchInput" placeholder="Search by name, position, email…" oninput="buildCandidates()">
-        <select class="filter-select" id="candidatePositionFilter" onchange="buildCandidates()"><option>All Positions</option><option>Full Stack</option><option>Backend</option><option>Frontend</option></select>
-        <select class="filter-select" id="candidateStatusFilter" onchange="buildCandidates()"><option>All Status</option><option>Accepted</option><option>Pending</option><option>On Hold</option><option>Rejected</option></select>
-        <button class="sched-btn primary" onclick="openModal('scheduleModal')">+ Add Candidate</button>
-      </div>
-      <div class="candidates-table">
-        <div class="table-head">
-          <div class="th">Candidate</div>
-          <div class="th">Position</div>
-          <div class="th">Score</div>
-          <div class="th">Interview</div>
-          <div class="th">Status</div>
-          <div class="th">Actions</div>
-        </div>
-        <div id="candidatesBody"></div>
-      </div>
+  <!-- ── SETTINGS VIEW ── -->
+  <div class="content-view" id="view-settings">
+   <div class="page-header">
+    <div class="page-title">⚙️ Settings</div>
+    <div class="page-sub">Manage your account, preferences and integrations</div>
+   </div>
+   <div class="settings-layout">
+    <div class="settings-nav">
+     <div class="snav-item active" onclick="switchSettingsTab(this,'profile')">👤 Profile</div>
+     <div class="snav-item" onclick="switchSettingsTab(this,'audio-video')">🎥 Audio & Video</div>
+     <div class="snav-item" onclick="switchSettingsTab(this,'notifications')">🔔 Notifications</div>
+     <div class="snav-item" onclick="switchSettingsTab(this,'interview')">📝 Interview</div>
+     <div class="snav-item" onclick="switchSettingsTab(this,'integrations')">🔗 Integrations</div>
+     <div class="snav-item" onclick="switchSettingsTab(this,'security')">🔒 Security</div>
     </div>
+    <div class="settings-content" id="settingsContent">
+     <!-- Injected by JS -->
+    </div>
+   </div>
+  </div>
 
-    <!-- ── REPORTS VIEW ── -->
-    <div class="content-view" id="view-reports">
-      <div class="page-header">
-        <div class="page-title">📊 Reports & Analytics</div>
-        <div class="page-sub">Batch 2026 interview performance overview</div>
-      </div>
-      <div class="reports-grid">
-        <div class="report-card">
-          <div class="report-title">Decision Breakdown</div>
-          <div class="donut-wrap">
-            <div class="donut">
-              <svg width="90" height="90" viewBox="0 0 90 90">
-                <circle cx="45" cy="45" r="35" fill="none" stroke="var(--surface2)" stroke-width="12"/>
-                <circle cx="45" cy="45" r="35" fill="none" stroke="var(--green)" stroke-width="12" stroke-dasharray="88 132" stroke-linecap="round"/>
-                <circle cx="45" cy="45" r="35" fill="none" stroke="var(--yellow)" stroke-width="12" stroke-dasharray="44 176" stroke-dashoffset="-88" stroke-linecap="round"/>
-                <circle cx="45" cy="45" r="35" fill="none" stroke="var(--red)" stroke-width="12" stroke-dasharray="88 132" stroke-dashoffset="-132" stroke-linecap="round"/>
-              </svg>
-              <div class="donut-center"><div class="donut-val">47</div><div class="donut-sub">Total</div></div>
-            </div>
-            <div class="legend">
-              <div class="legend-row"><div class="legend-dot" style="background:var(--green);"></div><div class="legend-label">Accepted</div><div class="legend-val" style="color:var(--green);">18</div></div>
-              <div class="legend-row"><div class="legend-dot" style="background:var(--yellow);"></div><div class="legend-label">On Hold</div><div class="legend-val" style="color:var(--yellow);">8</div></div>
-              <div class="legend-row"><div class="legend-dot" style="background:var(--red);"></div><div class="legend-label">Rejected</div><div class="legend-val" style="color:var(--red);">21</div></div>
-            </div>
-          </div>
-        </div>
-        <div class="report-card">
-          <div class="report-title">Avg. Scores by Criteria</div>
-          <div class="bar-chart">
-            <div class="bar-row"><div class="bar-label">Technical</div><div class="bar-track"><div class="bar-fill" style="width:78%;"></div></div><div class="bar-val">3.9</div></div>
-            <div class="bar-row"><div class="bar-label">Comms</div><div class="bar-track"><div class="bar-fill" style="width:85%;"></div></div><div class="bar-val">4.3</div></div>
-            <div class="bar-row"><div class="bar-label">Problem</div><div class="bar-track"><div class="bar-fill" style="width:70%;"></div></div><div class="bar-val">3.5</div></div>
-            <div class="bar-row"><div class="bar-label">Culture</div><div class="bar-track"><div class="bar-fill" style="width:88%;"></div></div><div class="bar-val">4.4</div></div>
-            <div class="bar-row"><div class="bar-label">Experience</div><div class="bar-track"><div class="bar-fill" style="width:65%;"></div></div><div class="bar-val">3.3</div></div>
-          </div>
-        </div>
-        <div class="report-card">
-          <div class="report-title">Interview Duration Trend</div>
-          <div style="display:flex;align-items:flex-end;gap:8px;height:80px;margin-top:8px;">
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
-              <div style="flex:1;display:flex;align-items:flex-end;width:100%;"><div style="width:100%;height:60%;background:linear-gradient(180deg,var(--purple),rgba(168,85,247,0.3));border-radius:4px 4px 0 0;"></div></div>
-              <div style="font-size:0.6rem;color:var(--muted);">Mar</div>
-            </div>
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
-              <div style="flex:1;display:flex;align-items:flex-end;width:100%;"><div style="width:100%;height:80%;background:linear-gradient(180deg,var(--purple),rgba(168,85,247,0.3));border-radius:4px 4px 0 0;"></div></div>
-              <div style="font-size:0.6rem;color:var(--muted);">Apr</div>
-            </div>
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
-              <div style="flex:1;display:flex;align-items:flex-end;width:100%;"><div style="width:100%;height:100%;background:linear-gradient(180deg,var(--accent),rgba(79,124,255,0.3));border-radius:4px 4px 0 0;"></div></div>
-              <div style="font-size:0.6rem;color:var(--accent);">May</div>
-            </div>
-          </div>
-          <div style="font-size:0.75rem;color:var(--muted);margin-top:8px;">Avg. 42 min this month <span style="color:var(--green);">↓ 3 min</span></div>
-        </div>
-        <div class="report-card">
-          <div class="report-title">Position Breakdown</div>
-          <div class="bar-chart" style="margin-top:8px;">
-            <div class="bar-row"><div class="bar-label">Full Stack</div><div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div><div class="bar-val">18</div></div>
-            <div class="bar-row"><div class="bar-label">Backend</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,var(--purple),var(--accent));"></div></div><div class="bar-val">11</div></div>
-            <div class="bar-row"><div class="bar-label">Frontend</div><div class="bar-track"><div class="bar-fill" style="width:45%;background:linear-gradient(90deg,var(--accent2),var(--green));"></div></div><div class="bar-val">9</div></div>
-            <div class="bar-row"><div class="bar-label">DevOps</div><div class="bar-track"><div class="bar-fill" style="width:25%;background:linear-gradient(90deg,var(--yellow),var(--red));"></div></div><div class="bar-val">5</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="recent-evals card">
-        <div class="card-header"><div class="card-title">Recent Evaluations</div><div class="card-action" onclick="showView('candidates')">All candidates →</div></div>
-        <div class="card-body" style="padding:0;">
-          <div id="reportEvals"></div>
-        </div>
-      </div>
+  <!-- ── HELP VIEW ─═════════════════════ -->
+  <div class="content-view" id="view-help">
+   <div class="page-header">
+    <div class="page-title">❓ Help & Documentation</div>
+    <div class="page-sub">Get started and learn how to use InterviewLink</div>
+   </div>
+   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+    <div class="card" style="cursor:pointer;" onclick="showToast('📖 Opening documentation…')">
+     <div class="card-body" style="text-align:center;padding:28px 20px;">
+      <div style="font-size:2rem;margin-bottom:12px;">📖</div>
+      <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">Getting Started</div>
+      <div style="font-size:0.8rem;color:var(--muted);">Step-by-step guide to running your first interview</div>
+     </div>
     </div>
-
-    <!-- ── RECORDINGS VIEW ── -->
-    <div class="content-view" id="view-recordings">
-      <div class="page-header">
-        <div class="page-title">🎬 Recordings</div>
-        <div class="page-sub">Recorded interview sessions for review</div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;" id="recordingsGrid"></div>
+    <div class="card" style="cursor:pointer;" onclick="showToast('🎥 Opening video tutorials…')">
+     <div class="card-body" style="text-align:center;padding:28px 20px;">
+      <div style="font-size:2rem;margin-bottom:12px;">🎥</div>
+      <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">Video Tutorials</div>
+      <div style="font-size:0.8rem;color:var(--muted);">Watch walkthroughs of all key features</div>
+     </div>
     </div>
-
-    <!-- ── SETTINGS VIEW ── -->
-    <div class="content-view" id="view-settings">
-      <div class="page-header">
-        <div class="page-title">⚙️ Settings</div>
-        <div class="page-sub">Manage your account, preferences and integrations</div>
-      </div>
-      <div class="settings-layout">
-        <div class="settings-nav">
-          <div class="snav-item active" onclick="switchSettingsTab(this,'profile')">👤 Profile</div>
-          <div class="snav-item" onclick="switchSettingsTab(this,'audio-video')">🎥 Audio & Video</div>
-          <div class="snav-item" onclick="switchSettingsTab(this,'notifications')">🔔 Notifications</div>
-          <div class="snav-item" onclick="switchSettingsTab(this,'interview')">📝 Interview</div>
-          <div class="snav-item" onclick="switchSettingsTab(this,'integrations')">🔗 Integrations</div>
-          <div class="snav-item" onclick="switchSettingsTab(this,'security')">🔒 Security</div>
-        </div>
-        <div class="settings-content" id="settingsContent">
-          <!-- Injected by JS -->
-        </div>
-      </div>
+    <div class="card" style="cursor:pointer;" onclick="showToast('💬 Opening live chat…')">
+     <div class="card-body" style="text-align:center;padding:28px 20px;">
+      <div style="font-size:2rem;margin-bottom:12px;">💬</div>
+      <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">Live Support</div>
+      <div style="font-size:0.8rem;color:var(--muted);">Chat with our support team in real time</div>
+     </div>
     </div>
-
-    <!-- ── HELP VIEW ─═════════════════════ -->
-    <div class="content-view" id="view-help">
-      <div class="page-header">
-        <div class="page-title">❓ Help & Documentation</div>
-        <div class="page-sub">Get started and learn how to use InterviewLink</div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-        <div class="card" style="cursor:pointer;" onclick="showToast('📖 Opening documentation…')">
-          <div class="card-body" style="text-align:center;padding:28px 20px;">
-            <div style="font-size:2rem;margin-bottom:12px;">📖</div>
-            <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">Getting Started</div>
-            <div style="font-size:0.8rem;color:var(--muted);">Step-by-step guide to running your first interview</div>
-          </div>
-        </div>
-        <div class="card" style="cursor:pointer;" onclick="showToast('🎥 Opening video tutorials…')">
-          <div class="card-body" style="text-align:center;padding:28px 20px;">
-            <div style="font-size:2rem;margin-bottom:12px;">🎥</div>
-            <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">Video Tutorials</div>
-            <div style="font-size:0.8rem;color:var(--muted);">Watch walkthroughs of all key features</div>
-          </div>
-        </div>
-        <div class="card" style="cursor:pointer;" onclick="showToast('💬 Opening live chat…')">
-          <div class="card-body" style="text-align:center;padding:28px 20px;">
-            <div style="font-size:2rem;margin-bottom:12px;">💬</div>
-            <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">Live Support</div>
-            <div style="font-size:0.8rem;color:var(--muted);">Chat with our support team in real time</div>
-          </div>
-        </div>
-        <div class="card" style="cursor:pointer;" onclick="showToast('📋 Opening FAQ…')">
-          <div class="card-body" style="text-align:center;padding:28px 20px;">
-            <div style="font-size:2rem;margin-bottom:12px;">📋</div>
-            <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">FAQ</div>
-            <div style="font-size:0.8rem;color:var(--muted);">Answers to commonly asked questions</div>
-          </div>
-        </div>
-        <div class="card" style="cursor:pointer;" onclick="showToast('⌨️ Opening shortcuts…')">
-          <div class="card-body" style="text-align:center;padding:28px 20px;">
-            <div style="font-size:2rem;margin-bottom:12px;">⌨️</div>
-            <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">Keyboard Shortcuts</div>
-            <div style="font-size:0.8rem;color:var(--muted);">Speed up your workflow with hotkeys</div>
-          </div>
-        </div>
-        <div class="card" style="cursor:pointer;" onclick="showToast('🔄 Checking for updates…')">
-          <div class="card-body" style="text-align:center;padding:28px 20px;">
-            <div style="font-size:2rem;margin-bottom:12px;">🔄</div>
-            <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">What's New</div>
-            <div style="font-size:0.8rem;color:var(--muted);">Latest features and release notes</div>
-          </div>
-        </div>
-      </div>
+    <div class="card" style="cursor:pointer;" onclick="showToast('📋 Opening FAQ…')">
+     <div class="card-body" style="text-align:center;padding:28px 20px;">
+      <div style="font-size:2rem;margin-bottom:12px;">📋</div>
+      <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">FAQ</div>
+      <div style="font-size:0.8rem;color:var(--muted);">Answers to commonly asked questions</div>
+     </div>
     </div>
-  </div><!-- /main-content -->
+    <div class="card" style="cursor:pointer;" onclick="showToast('⌨️ Opening shortcuts…')">
+     <div class="card-body" style="text-align:center;padding:28px 20px;">
+      <div style="font-size:2rem;margin-bottom:12px;">⌨️</div>
+      <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">Keyboard Shortcuts</div>
+      <div style="font-size:0.8rem;color:var(--muted);">Speed up your workflow with hotkeys</div>
+     </div>
+    </div>
+    <div class="card" style="cursor:pointer;" onclick="showToast('🔄 Checking for updates…')">
+     <div class="card-body" style="text-align:center;padding:28px 20px;">
+      <div style="font-size:2rem;margin-bottom:12px;">🔄</div>
+      <div style="font-family:var(--font-head);font-weight:700;margin-bottom:6px;">What's New</div>
+      <div style="font-size:0.8rem;color:var(--muted);">Latest features and release notes</div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div><!-- /main-content -->
 </div><!-- /page-app -->
 
 <!-- ══════════════════════ PAGE: ROOM ══════════════════════ -->
 <div class="page" id="page-room" style="flex-direction:column;height:100vh;">
-  <div class="room-topbar">
-    <div class="room-left">
-      <button class="room-back-btn" onclick="leaveRoom()">← Leave</button>
-      <div class="room-title-wrap">
-        <div class="room-title" id="room-title">Full Stack Developer — Batch 2026</div>
-        <div class="room-meta" id="room-meta">IVW-2026-7834 · 2 participants</div>
+ <div class="room-topbar">
+  <div class="room-left">
+   <button class="room-back-btn" onclick="leaveRoom()">← Leave</button>
+   <div class="room-title-wrap">
+    <div class="room-title" id="room-title">Full Stack Developer — Batch 2026</div>
+    <div class="room-meta" id="room-meta">IVW-2026-7834 · 2 participants</div>
+   </div>
+  </div>
+  <div class="room-center">
+   <div class="room-timer" id="room-timer">00:00</div>
+   <div class="rec-indicator" id="rec-badge" style="display:none;"><div class="rec-dot"></div> REC</div>
+  </div>
+  <div class="room-right">
+   <button class="room-icon-btn" onclick="copyRoomLink()">🔗 Invite</button>
+   <button class="room-icon-btn" id="recBtn" onclick="toggleRecording()">🔴 Record</button>
+   <button class="room-icon-btn active-btn" id="notesToggleBtn" onclick="toggleSidebar()">📝 Notes</button>
+   <button class="room-icon-btn" onclick="showView('dashboard');navigateTo('dashboard')">🏠 Dashboard</button>
+  </div>
+ </div>
+
+ <div class="room-body">
+  <div class="video-area">
+   <div class="main-video-grid layout-2" id="videoGrid">
+    <div class="video-tile" id="tile-interviewer">
+     <video id="localVideo" autoplay muted playsinline></video>
+     <div class="video-off-overlay" id="localVideoOff" style="display:none;">
+      <div class="tile-avatar av-blue" id="localAvatarLetter">SJ</div>
+      <div class="person-name" id="localNameDisplay">Prof. Sarah Johnson</div>
+     </div>
+     <div class="tile-bottom">
+      <div class="tile-name">
+       <span id="localTileName">Prof. Sarah Johnson</span>
+       <div class="tile-mic-off" id="localMicOff" style="display:none;">🔇</div>
       </div>
+      <div class="tile-badge badge-prof" id="localBadge">INTERVIEWER</div>
+     </div>
     </div>
-    <div class="room-center">
-      <div class="room-timer" id="room-timer">00:00</div>
-      <div class="rec-indicator" id="rec-badge" style="display:none;"><div class="rec-dot"></div> REC</div>
+    <div class="video-tile" id="tile-candidate">
+     <div class="video-off-overlay" id="remoteVideoOff">
+      <div class="tile-avatar av-green">AS</div>
+      <div class="person-name" id="remoteName">Alex Sharma</div>
+     </div>
+     <div class="tile-bottom">
+      <div class="tile-name"><span id="remoteTileName">Alex Sharma</span></div>
+      <div class="tile-badge badge-cand">CANDIDATE</div>
+     </div>
     </div>
-    <div class="room-right">
-      <button class="room-icon-btn" onclick="copyRoomLink()">🔗 Invite</button>
-      <button class="room-icon-btn" id="recBtn" onclick="toggleRecording()">🔴 Record</button>
-      <button class="room-icon-btn active-btn" id="notesToggleBtn" onclick="toggleSidebar()">📝 Notes</button>
-      <button class="room-icon-btn" onclick="showView('dashboard');navigateTo('dashboard')">🏠 Dashboard</button>
-    </div>
+   </div>
   </div>
 
-  <div class="room-body">
-    <div class="video-area">
-      <div class="main-video-grid layout-2" id="videoGrid">
-        <div class="video-tile" id="tile-interviewer">
-          <video id="localVideo" autoplay muted playsinline></video>
-          <div class="video-off-overlay" id="localVideoOff" style="display:none;">
-            <div class="tile-avatar av-blue" id="localAvatarLetter">SJ</div>
-            <div class="person-name" id="localNameDisplay">Prof. Sarah Johnson</div>
-          </div>
-          <div class="tile-bottom">
-            <div class="tile-name">
-              <span id="localTileName">Prof. Sarah Johnson</span>
-              <div class="tile-mic-off" id="localMicOff" style="display:none;">🔇</div>
-            </div>
-            <div class="tile-badge badge-prof" id="localBadge">INTERVIEWER</div>
-          </div>
-        </div>
-        <div class="video-tile" id="tile-candidate">
-          <div class="video-off-overlay" id="remoteVideoOff">
-            <div class="tile-avatar av-green">AS</div>
-            <div class="person-name" id="remoteName">Alex Sharma</div>
-          </div>
-          <div class="tile-bottom">
-            <div class="tile-name"><span id="remoteTileName">Alex Sharma</span></div>
-            <div class="tile-badge badge-cand">CANDIDATE</div>
-          </div>
-        </div>
-      </div>
+  <div class="room-sidebar" id="room-sidebar">
+   <div class="sidebar-tabs">
+    <div class="stab active" onclick="switchPanel('chat')" id="stab-chat">💬 Chat</div>
+    <div class="stab" onclick="switchPanel('notes')" id="stab-notes">📝 Eval</div>
+    <div class="stab" onclick="switchPanel('info')" id="stab-info">ℹ️ Info</div>
+   </div>
+
+   <!-- Chat -->
+   <div class="panel active" id="panel-chat">
+    <div class="chat-messages" id="chatMessages">
+     <div class="msg">
+      <div class="msg-header"><span class="msg-sender">Prof. Johnson</span><span>just now</span></div>
+      <div class="msg-bubble">Welcome! Please introduce yourself briefly.</div>
+     </div>
+     <div class="msg mine">
+      <div class="msg-header"><span>just now</span><span class="msg-sender">You</span></div>
+      <div class="msg-bubble">Thank you, Professor. Excited to be here!</div>
+     </div>
     </div>
-
-    <div class="room-sidebar" id="room-sidebar">
-      <div class="sidebar-tabs">
-        <div class="stab active" onclick="switchPanel('chat')" id="stab-chat">💬 Chat</div>
-        <div class="stab" onclick="switchPanel('notes')" id="stab-notes">📝 Eval</div>
-        <div class="stab" onclick="switchPanel('info')" id="stab-info">ℹ️ Info</div>
-      </div>
-
-      <!-- Chat -->
-      <div class="panel active" id="panel-chat">
-        <div class="chat-messages" id="chatMessages">
-          <div class="msg">
-            <div class="msg-header"><span class="msg-sender">Prof. Johnson</span><span>just now</span></div>
-            <div class="msg-bubble">Welcome! Please introduce yourself briefly.</div>
-          </div>
-          <div class="msg mine">
-            <div class="msg-header"><span>just now</span><span class="msg-sender">You</span></div>
-            <div class="msg-bubble">Thank you, Professor. Excited to be here!</div>
-          </div>
-        </div>
-        <div class="chat-input-area">
-          <textarea class="chat-input" id="chatInput" placeholder="Type a message…" onkeydown="handleChatKey(event)" rows="1"></textarea>
-          <button class="send-btn" onclick="sendChat()">➤</button>
-        </div>
-      </div>
-
-      <!-- Evaluation -->
-      <div class="panel" id="panel-notes">
-        <div class="notes-panel-inner">
-          <div class="notes-header-label">Candidate Evaluation</div>
-          <div id="scoreSection"></div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <div class="notes-header-label">Notes</div>
-            <textarea class="notes-textarea" id="notesArea" placeholder="Observations, strengths, concerns…" rows="4"></textarea>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <div class="notes-header-label">Decision</div>
-            <div class="decision-btns">
-              <button class="dec-btn dec-accept" onclick="setDecision(this,'accept')">✓ Accept</button>
-              <button class="dec-btn dec-hold" onclick="setDecision(this,'hold')">⏸ Hold</button>
-              <button class="dec-btn dec-reject" onclick="setDecision(this,'reject')">✗ Reject</button>
-            </div>
-          </div>
-          <button class="btn-primary" onclick="exportEvaluation()" style="font-size:0.82rem;padding:9px 14px;">📄 Export Evaluation</button>
-        </div>
-      </div>
-
-      <!-- Info -->
-      <div class="panel" id="panel-info">
-        <div class="info-panel">
-          <div class="info-block">
-            <div class="info-block-label">Meeting Code</div>
-            <div class="info-block-val" style="color:var(--accent);font-family:var(--font-head);font-size:1rem;">IVW-2026-7834</div>
-          </div>
-          <div class="info-block">
-            <div class="info-block-label">Position</div>
-            <div class="info-block-val" id="info-position">Full Stack Developer</div>
-          </div>
-          <div class="info-block">
-            <div class="info-block-label">Participants</div>
-            <div class="info-block-val" style="font-size:0.82rem;line-height:1.8;">
-              👨‍🏫 <span id="info-interviewer">Prof. Johnson</span><br>
-              🎓 <span id="info-candidate">Alex Sharma</span>
-            </div>
-          </div>
-          <div class="info-block">
-            <div class="info-block-label">Tips</div>
-            <div style="font-size:0.75rem;color:var(--label);line-height:1.7;">
-              • Score in real-time with the Eval tab<br>
-              • Take notes on key responses<br>
-              • Record with candidate's consent<br>
-              • Use Chat for sharing links/code
-            </div>
-          </div>
-          <button class="btn-outline" style="font-size:0.82rem;padding:9px 14px;" onclick="leaveRoom()">🚪 Leave Session</button>
-        </div>
-      </div>
+    <div class="chat-input-area">
+     <textarea class="chat-input" id="chatInput" placeholder="Type a message…" onkeydown="handleChatKey(event)" rows="1"></textarea>
+     <button class="send-btn" onclick="sendChat()">➤</button>
     </div>
+   </div>
+
+   <!-- Evaluation -->
+   <div class="panel" id="panel-notes">
+    <div class="notes-panel-inner">
+     <div class="notes-header-label">Candidate Evaluation</div>
+     <div id="scoreSection"></div>
+     <div style="display:flex;flex-direction:column;gap:5px;">
+      <div class="notes-header-label">Notes</div>
+      <textarea class="notes-textarea" id="notesArea" placeholder="Observations, strengths, concerns…" rows="4"></textarea>
+     </div>
+     <div style="display:flex;flex-direction:column;gap:5px;">
+      <div class="notes-header-label">Decision</div>
+      <div class="decision-btns">
+       <button class="dec-btn dec-accept" onclick="setDecision(this,'accept')">✓ Accept</button>
+       <button class="dec-btn dec-hold" onclick="setDecision(this,'hold')">⏸ Hold</button>
+       <button class="dec-btn dec-reject" onclick="setDecision(this,'reject')">✗ Reject</button>
+      </div>
+     </div>
+     <button class="btn-primary" onclick="exportEvaluation()" style="font-size:0.82rem;padding:9px 14px;">📄 Export Evaluation</button>
+    </div>
+   </div>
+
+   <!-- Info -->
+   <div class="panel" id="panel-info">
+    <div class="info-panel">
+     <div class="info-block">
+      <div class="info-block-label">Meeting Code</div>
+      <div class="info-block-val" style="color:var(--accent);font-family:var(--font-head);font-size:1rem;">IVW-2026-7834</div>
+     </div>
+     <div class="info-block">
+      <div class="info-block-label">Position</div>
+      <div class="info-block-val" id="info-position">Full Stack Developer</div>
+     </div>
+     <div class="info-block">
+      <div class="info-block-label">Participants</div>
+      <div class="info-block-val" style="font-size:0.82rem;line-height:1.8;">
+       👨‍🏫 <span id="info-interviewer">Prof. Johnson</span><br>
+       🎓 <span id="info-candidate">Alex Sharma</span>
+      </div>
+     </div>
+     <div class="info-block">
+      <div class="info-block-label">Tips</div>
+      <div style="font-size:0.75rem;color:var(--label);line-height:1.7;">
+       • Score in real-time with the Eval tab<br>
+       • Take notes on key responses<br>
+       • Record with candidate's consent<br>
+       • Use Chat for sharing links/code
+      </div>
+     </div>
+     <button class="btn-outline" style="font-size:0.82rem;padding:9px 14px;" onclick="leaveRoom()">🚪 Leave Session</button>
+    </div>
+   </div>
   </div>
+ </div>
 
-  <div class="controls-bar">
-    <div class="controls-group">
-      <button class="control-btn" id="micBtn" onclick="toggleMic()"><span id="micIcon">🎤</span><span class="ctrl-label">Mute</span></button>
-      <button class="control-btn" id="camBtn" onclick="toggleCamera()"><span id="camIcon">📹</span><span class="ctrl-label">Camera</span></button>
-    </div>
-    <div class="ctrl-sep"></div>
-    <div class="controls-group">
-      <button class="control-btn" onclick="toggleScreenShare()" id="screenBtn"><span id="screenIcon">🖥️</span><span class="ctrl-label">Share</span></button>
-    </div>
-    <div class="ctrl-sep"></div>
-    <div class="controls-group">
-      <button class="control-btn end-call" onclick="endCall()">📵</button>
-    </div>
-    <div class="ctrl-sep"></div>
-    <div class="controls-group">
-      <button class="control-btn" onclick="switchPanel('chat');showSidebar();">💬<span class="ctrl-label">Chat</span></button>
-      <button class="control-btn" onclick="switchPanel('notes');showSidebar();">📝<span class="ctrl-label">Evaluate</span></button>
-      <button class="control-btn" onclick="switchPanel('info');showSidebar();">ℹ️<span class="ctrl-label">Info</span></button>
-    </div>
+ <div class="controls-bar">
+  <div class="controls-group">
+   <button class="control-btn" id="micBtn" onclick="toggleMic()"><span id="micIcon">🎤</span><span class="ctrl-label">Mute</span></button>
+   <button class="control-btn" id="camBtn" onclick="toggleCamera()"><span id="camIcon">📹</span><span class="ctrl-label">Camera</span></button>
   </div>
+  <div class="ctrl-sep"></div>
+  <div class="controls-group">
+   <button class="control-btn" onclick="toggleScreenShare()" id="screenBtn"><span id="screenIcon">🖥️</span><span class="ctrl-label">Share</span></button>
+  </div>
+  <div class="ctrl-sep"></div>
+  <div class="controls-group">
+   <button class="control-btn end-call" onclick="endCall()">📵</button>
+  </div>
+  <div class="ctrl-sep"></div>
+  <div class="controls-group">
+   <button class="control-btn" onclick="switchPanel('chat');showSidebar();">💬<span class="ctrl-label">Chat</span></button>
+   <button class="control-btn" onclick="switchPanel('notes');showSidebar();">📝<span class="ctrl-label">Evaluate</span></button>
+   <button class="control-btn" onclick="switchPanel('info');showSidebar();">ℹ️<span class="ctrl-label">Info</span></button>
+  </div>
+ </div>
 </div>
 
 <script>
@@ -1266,546 +1266,546 @@ scoreCategories.forEach(c=>scores[c]=0);
 
 // ══════════════════════ PARTICLES ══════════════════════
 (function(){
-  const bg=document.getElementById('particleBg');
-  for(let i=0;i<14;i++){
-    const p=document.createElement('div');p.className='particle';
-    p.style.cssText=`left:${Math.random()*100}vw;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s;`;
-    bg.appendChild(p);
-  }
+ const bg=document.getElementById('particleBg');
+ for(let i=0;i<14;i++){
+  const p=document.createElement('div');p.className='particle';
+  p.style.cssText=`left:${Math.random()*100}vw;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s;`;
+  bg.appendChild(p);
+ }
 })();
 
 // ══════════════════════ NAVIGATION ══════════════════════
 function navigateTo(page){
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  if(page==='lobby'){
-    document.getElementById('page-lobby').style.display='flex';
-  } else if(page==='dashboard'){
-    document.getElementById('page-app').style.display='flex';
-    showView('dashboard');
-  } else if(page==='room'){
-    document.getElementById('page-room').style.display='flex';
-  }
+ document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+ if(page==='lobby'){
+  document.getElementById('page-lobby').style.display='flex';
+ } else if(page==='dashboard'){
+  document.getElementById('page-app').style.display='flex';
+  showView('dashboard');
+ } else if(page==='room'){
+  document.getElementById('page-room').style.display='flex';
+ }
 }
 
 function showView(view){
-  document.querySelectorAll('.content-view').forEach(v=>v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const el=document.getElementById('view-'+view);
-  if(el) el.classList.add('active');
-  const nav=document.getElementById('nav-'+view);
-  if(nav) nav.classList.add('active');
+ document.querySelectorAll('.content-view').forEach(v=>v.classList.remove('active'));
+ document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+ const el=document.getElementById('view-'+view);
+ if(el) el.classList.add('active');
+ const nav=document.getElementById('nav-'+view);
+ if(nav) nav.classList.add('active');
 
-  const labels={dashboard:'Dashboard',newinterview:'New Interview',schedule:'Schedule',candidates:'Candidates',reports:'Reports',recordings:'Recordings',settings:'Settings',help:'Help'};
-  document.getElementById('crumbActive').textContent=labels[view]||view;
+ const labels={dashboard:'Dashboard',newinterview:'New Interview',schedule:'Schedule',candidates:'Candidates',reports:'Reports',recordings:'Recordings',settings:'Settings',help:'Help'};
+ document.getElementById('crumbActive').textContent=labels[view]||view;
 
-  if(view!=='dashboard'){
-    document.getElementById('backBtn').style.display='flex';
-  } else {
-    document.getElementById('backBtn').style.display='none';
-  }
+ if(view!=='dashboard'){
+  document.getElementById('backBtn').style.display='flex';
+ } else {
+  document.getElementById('backBtn').style.display='none';
+ }
 
-  if(viewHistory[viewHistory.length-1]!==view) viewHistory.push(view);
-  currentView=view;
+ if(viewHistory[viewHistory.length-1]!==view) viewHistory.push(view);
+ currentView=view;
 
-  if(view==='schedule') buildCalendar();
-  if(view==='candidates') buildCandidates();
-  if(view==='reports') buildReportEvals();
-  if(view==='recordings') buildRecordings();
-  if(view==='settings') buildSettings('profile');
+ if(view==='schedule') buildCalendar();
+ if(view==='candidates') buildCandidates();
+ if(view==='reports') buildReportEvals();
+ if(view==='recordings') buildRecordings();
+ if(view==='settings') buildSettings('profile');
 
-  document.getElementById('page-app').style.display='flex';
+ document.getElementById('page-app').style.display='flex';
 }
 
 function goBack(){
-  if(viewHistory.length>1){
-    viewHistory.pop();
-    const prev=viewHistory[viewHistory.length-1];
-    showView(prev);
-  } else {
-    showView('dashboard');
-  }
+ if(viewHistory.length>1){
+  viewHistory.pop();
+  const prev=viewHistory[viewHistory.length-1];
+  showView(prev);
+ } else {
+  showView('dashboard');
+ }
 }
 
 // ══════════════════════ LOBBY ══════════════════════
 function switchRole(role){
-  currentRole=role;
-  document.getElementById('tab-interviewer').classList.toggle('active',role==='interviewer');
-  document.getElementById('tab-candidate').classList.toggle('active',role==='candidate');
-  document.getElementById('interviewer-fields').style.display=role==='interviewer'?'flex':'none';
-  document.getElementById('candidate-fields').style.display=role==='candidate'?'flex':'none';
+ currentRole=role;
+ document.getElementById('tab-interviewer').classList.toggle('active',role==='interviewer');
+ document.getElementById('tab-candidate').classList.toggle('active',role==='candidate');
+ document.getElementById('interviewer-fields').style.display=role==='interviewer'?'flex':'none';
+ document.getElementById('candidate-fields').style.display=role==='candidate'?'flex':'none';
 }
 
 function hostMeeting(){
-  const name=document.getElementById('interviewer-name').value.trim()||'Interviewer';
-  const pos=document.getElementById('position').value.trim()||'Position';
-  enterRoom(name,'interviewer',pos);
+ const name=document.getElementById('interviewer-name').value.trim()||'Interviewer';
+ const pos=document.getElementById('position').value.trim()||'Position';
+ enterRoom(name,'interviewer',pos);
 }
 
 function joinMeeting(){
-  const name=document.getElementById('candidate-name').value.trim()||'Candidate';
-  enterRoom(name,'candidate','Full Stack Developer — Batch 2026');
+ const name=document.getElementById('candidate-name').value.trim()||'Candidate';
+ enterRoom(name,'candidate','Full Stack Developer — Batch 2026');
 }
 
 function quickDemo(){
-  enterRoom('Prof. Sarah Johnson','interviewer','Full Stack Developer — Batch 2026');
+ enterRoom('Prof. Sarah Johnson','interviewer','Full Stack Developer — Batch 2026');
 }
 
 // ══════════════════════ ROOM ══════════════════════
 function enterRoom(name,role,position){
-  navigateTo('room');
-  document.getElementById('room-title').textContent=position;
-  document.getElementById('info-position').textContent=position;
+ navigateTo('room');
+ document.getElementById('room-title').textContent=position;
+ document.getElementById('info-position').textContent=position;
 
-  const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  document.getElementById('localTileName').textContent=name;
-  document.getElementById('localNameDisplay').textContent=name;
-  document.getElementById('localAvatarLetter').textContent=initials;
-  document.getElementById('localBadge').textContent=role==='interviewer'?'INTERVIEWER':'CANDIDATE';
+ const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+ document.getElementById('localTileName').textContent=name;
+ document.getElementById('localNameDisplay').textContent=name;
+ document.getElementById('localAvatarLetter').textContent=initials;
+ document.getElementById('localBadge').textContent=role==='interviewer'?'INTERVIEWER':'CANDIDATE';
 
-  if(role==='interviewer'){
-    document.getElementById('info-interviewer').textContent=name;
-    document.getElementById('sideUserName').textContent=name;
-    document.getElementById('sideUserAv').textContent=initials;
-    document.getElementById('topUserAv').textContent=initials;
-    setTimeout(()=>{
-      document.getElementById('waiting-overlay').style.display='flex';
-    },2500);
-  } else {
-    document.getElementById('info-candidate').textContent=name;
-    document.getElementById('remoteTileName').textContent='Interviewer';
-    document.getElementById('remoteName').textContent='Interviewer';
-  }
-  buildScoreSection();
-  initCamera();
-  startTimer();
+ if(role==='interviewer'){
+  document.getElementById('info-interviewer').textContent=name;
+  document.getElementById('sideUserName').textContent=name;
+  document.getElementById('sideUserAv').textContent=initials;
+  document.getElementById('topUserAv').textContent=initials;
+  setTimeout(()=>{
+   document.getElementById('waiting-overlay').style.display='flex';
+  },2500);
+ } else {
+  document.getElementById('info-candidate').textContent=name;
+  document.getElementById('remoteTileName').textContent='Interviewer';
+  document.getElementById('remoteName').textContent='Interviewer';
+ }
+ buildScoreSection();
+ initCamera();
+ startTimer();
 }
 
 function hostFromDash(){
-  const name=document.getElementById('ni-name').value.trim()||'Interviewer';
-  const pos=document.getElementById('ni-pos').value.trim()||'Position';
-  enterRoom(name,'interviewer',pos);
+ const name=document.getElementById('ni-name').value.trim()||'Interviewer';
+ const pos=document.getElementById('ni-pos').value.trim()||'Position';
+ enterRoom(name,'interviewer',pos);
 }
 
 function joinFromDash(){
-  const name=document.getElementById('ni-cname').value.trim()||'Candidate';
-  enterRoom(name,'candidate','Full Stack Developer — Batch 2026');
+ const name=document.getElementById('ni-cname').value.trim()||'Candidate';
+ enterRoom(name,'candidate','Full Stack Developer — Batch 2026');
 }
 
 function quickStartInterview(candidateName){
-  document.getElementById('remoteTileName').textContent=candidateName;
-  document.getElementById('remoteName').textContent=candidateName;
-  document.getElementById('info-candidate').textContent=candidateName;
-  enterRoom('Prof. Sarah Johnson','interviewer','Full Stack Developer — Batch 2026');
+ document.getElementById('remoteTileName').textContent=candidateName;
+ document.getElementById('remoteName').textContent=candidateName;
+ document.getElementById('info-candidate').textContent=candidateName;
+ enterRoom('Prof. Sarah Johnson','interviewer','Full Stack Developer — Batch 2026');
 }
 
 function leaveRoom(){
-  if(confirm('Leave the interview session?')){
-    if(localStream) localStream.getTracks().forEach(t=>t.stop());
-    clearInterval(timerInterval);
-    navigateTo('dashboard');
-    showToast('Session ended · Returning to dashboard');
-  }
+ if(confirm('Leave the interview session?')){
+  if(localStream) localStream.getTracks().forEach(t=>t.stop());
+  clearInterval(timerInterval);
+  navigateTo('dashboard');
+  showToast('Session ended · Returning to dashboard');
+ }
 }
 
 function endCall(){
-  if(confirm('End the interview session?')){
-    if(localStream) localStream.getTracks().forEach(t=>t.stop());
-    clearInterval(timerInterval);
-    navigateTo('dashboard');
-    showToast('✅ Session ended · Evaluation saved');
-  }
+ if(confirm('End the interview session?')){
+  if(localStream) localStream.getTracks().forEach(t=>t.stop());
+  clearInterval(timerInterval);
+  navigateTo('dashboard');
+  showToast('✅ Session ended · Evaluation saved');
+ }
 }
 
 function admitCandidate(){
-  document.getElementById('waiting-overlay').style.display='none';
-  document.getElementById('remoteVideoOff').style.display='none';
-  showToast('✓ Candidate admitted to session');
-  simulateRemoteVideo();
+ document.getElementById('waiting-overlay').style.display='none';
+ document.getElementById('remoteVideoOff').style.display='none';
+ showToast('✓ Candidate admitted to session');
+ simulateRemoteVideo();
 }
 
 function denyCandidate(){
-  document.getElementById('waiting-overlay').style.display='none';
-  showToast('✕ Candidate denied entry');
+ document.getElementById('waiting-overlay').style.display='none';
+ showToast('✕ Candidate denied entry');
 }
 
 function simulateRemoteVideo(){
-  const tile=document.getElementById('tile-candidate');
-  const canvas=document.createElement('canvas');
-  canvas.width=640;canvas.height=480;
-  canvas.style.cssText='width:100%;height:100%;object-fit:cover;';
-  const ctx=canvas.getContext('2d');
-  let hue=160;
-  const animate=()=>{
-    hue=(hue+0.3)%360;
-    const g=ctx.createLinearGradient(0,0,640,480);
-    g.addColorStop(0,`hsl(${hue},35%,18%)`);
-    g.addColorStop(1,`hsl(${hue+40},25%,12%)`);
-    ctx.fillStyle=g;ctx.fillRect(0,0,640,480);
-    ctx.fillStyle=`hsl(${hue},20%,28%)`;
-    ctx.beginPath();ctx.arc(320,180,70,0,Math.PI*2);ctx.fill();
-    ctx.fillRect(220,250,200,180);
-    requestAnimationFrame(animate);
-  };animate();
-  tile.insertBefore(canvas,tile.querySelector('.tile-bottom'));
+ const tile=document.getElementById('tile-candidate');
+ const canvas=document.createElement('canvas');
+ canvas.width=640;canvas.height=480;
+ canvas.style.cssText='width:100%;height:100%;object-fit:cover;';
+ const ctx=canvas.getContext('2d');
+ let hue=160;
+ const animate=()=>{
+  hue=(hue+0.3)%360;
+  const g=ctx.createLinearGradient(0,0,640,480);
+  g.addColorStop(0,`hsl(${hue},35%,18%)`);
+  g.addColorStop(1,`hsl(${hue+40},25%,12%)`);
+  ctx.fillStyle=g;ctx.fillRect(0,0,640,480);
+  ctx.fillStyle=`hsl(${hue},20%,28%)`;
+  ctx.beginPath();ctx.arc(320,180,70,0,Math.PI*2);ctx.fill();
+  ctx.fillRect(220,250,200,180);
+  requestAnimationFrame(animate);
+ };animate();
+ tile.insertBefore(canvas,tile.querySelector('.tile-bottom'));
 }
 
 // ══════════════════════ CAMERA ══════════════════════
 async function initCamera(){
-  try{
-    localStream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});
-    document.getElementById('localVideo').srcObject=localStream;
-    document.getElementById('localVideoOff').style.display='none';
-  }catch(e){
-    document.getElementById('localVideoOff').style.display='flex';
-    showToast('📷 Camera unavailable — showing avatar');
-  }
+ try{
+  localStream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});
+  document.getElementById('localVideo').srcObject=localStream;
+  document.getElementById('localVideoOff').style.display='none';
+ }catch(e){
+  document.getElementById('localVideoOff').style.display='flex';
+  showToast('📷 Camera unavailable — showing avatar');
+ }
 }
 
 // ══════════════════════ CONTROLS ══════════════════════
 function toggleMic(){
-  micOn=!micOn;
-  if(localStream) localStream.getAudioTracks().forEach(t=>t.enabled=micOn);
-  document.getElementById('micBtn').classList.toggle('off',!micOn);
-  document.getElementById('micIcon').textContent=micOn?'🎤':'🔇';
-  document.getElementById('localMicOff').style.display=micOn?'none':'flex';
-  showToast(micOn?'🎤 Microphone on':'🔇 Muted');
+ micOn=!micOn;
+ if(localStream) localStream.getAudioTracks().forEach(t=>t.enabled=micOn);
+ document.getElementById('micBtn').classList.toggle('off',!micOn);
+ document.getElementById('micIcon').textContent=micOn?'🎤':'🔇';
+ document.getElementById('localMicOff').style.display=micOn?'none':'flex';
+ showToast(micOn?'🎤 Microphone on':'🔇 Muted');
 }
 function toggleCamera(){
-  camOn=!camOn;
-  if(localStream) localStream.getVideoTracks().forEach(t=>t.enabled=camOn);
-  document.getElementById('camBtn').classList.toggle('off',!camOn);
-  document.getElementById('camIcon').textContent=camOn?'📹':'📷';
-  document.getElementById('localVideoOff').style.display=camOn?'none':'flex';
-  document.getElementById('localVideo').style.display=camOn?'block':'none';
-  showToast(camOn?'📹 Camera on':'📷 Camera off');
+ camOn=!camOn;
+ if(localStream) localStream.getVideoTracks().forEach(t=>t.enabled=camOn);
+ document.getElementById('camBtn').classList.toggle('off',!camOn);
+ document.getElementById('camIcon').textContent=camOn?'📹':'📷';
+ document.getElementById('localVideoOff').style.display=camOn?'none':'flex';
+ document.getElementById('localVideo').style.display=camOn?'block':'none';
+ showToast(camOn?'📹 Camera on':'📷 Camera off');
 }
 async function toggleScreenShare(){
-  if(!screenSharing){
-    try{
-      const ss=await navigator.mediaDevices.getDisplayMedia({video:true});
-      document.getElementById('localVideo').srcObject=ss;
-      document.getElementById('localVideoOff').style.display='none';
-      document.getElementById('screenBtn').classList.add('off');
-      document.getElementById('screenIcon').textContent='🛑';
-      screenSharing=true;
-      showToast('🖥️ Screen sharing started');
-      ss.getVideoTracks()[0].onended=()=>stopScreenShare();
-    }catch(e){showToast('Screen share cancelled');}
-  } else stopScreenShare();
+ if(!screenSharing){
+  try{
+   const ss=await navigator.mediaDevices.getDisplayMedia({video:true});
+   document.getElementById('localVideo').srcObject=ss;
+   document.getElementById('localVideoOff').style.display='none';
+   document.getElementById('screenBtn').classList.add('off');
+   document.getElementById('screenIcon').textContent='🛑';
+   screenSharing=true;
+   showToast('🖥️ Screen sharing started');
+   ss.getVideoTracks()[0].onended=()=>stopScreenShare();
+  }catch(e){showToast('Screen share cancelled');}
+ } else stopScreenShare();
 }
 function stopScreenShare(){
-  screenSharing=false;
-  document.getElementById('screenBtn').classList.remove('off');
-  document.getElementById('screenIcon').textContent='🖥️';
-  if(localStream) document.getElementById('localVideo').srcObject=localStream;
-  showToast('🛑 Screen sharing stopped');
+ screenSharing=false;
+ document.getElementById('screenBtn').classList.remove('off');
+ document.getElementById('screenIcon').textContent='🖥️';
+ if(localStream) document.getElementById('localVideo').srcObject=localStream;
+ showToast('🛑 Screen sharing stopped');
 }
 function toggleRecording(){
-  recording=!recording;
-  document.getElementById('rec-badge').style.display=recording?'flex':'none';
-  document.getElementById('recBtn').textContent=recording?'⏹ Stop':'🔴 Record';
-  showToast(recording?'🔴 Recording started':'⏹ Recording stopped');
+ recording=!recording;
+ document.getElementById('rec-badge').style.display=recording?'flex':'none';
+ document.getElementById('recBtn').textContent=recording?'⏹ Stop':'🔴 Record';
+ showToast(recording?'🔴 Recording started':'⏹ Recording stopped');
 }
 function copyRoomLink(){
-  navigator.clipboard.writeText('https://interviewlink.app/join/IVW-2026-7834').catch(()=>{});
-  showToast('🔗 Invite link copied!');
+ navigator.clipboard.writeText('https://interviewlink.app/join/IVW-2026-7834').catch(()=>{});
+ showToast('🔗 Invite link copied!');
 }
 
 // ══════════════════════ TIMER ══════════════════════
 function startTimer(){
-  clearInterval(timerInterval);seconds=0;
-  timerInterval=setInterval(()=>{
-    seconds++;
-    const m=String(Math.floor(seconds/60)).padStart(2,'0');
-    const s=String(seconds%60).padStart(2,'0');
-    document.getElementById('room-timer').textContent=m+':'+s;
-  },1000);
+ clearInterval(timerInterval);seconds=0;
+ timerInterval=setInterval(()=>{
+  seconds++;
+  const m=String(Math.floor(seconds/60)).padStart(2,'0');
+  const s=String(seconds%60).padStart(2,'0');
+  document.getElementById('room-timer').textContent=m+':'+s;
+ },1000);
 }
 
 // ══════════════════════ SIDEBAR (room) ══════════════════════
 function toggleSidebar(){
-  sidebarVisible=!sidebarVisible;
-  document.getElementById('room-sidebar').classList.toggle('hidden',!sidebarVisible);
-  document.getElementById('notesToggleBtn').classList.toggle('active-btn',sidebarVisible);
+ sidebarVisible=!sidebarVisible;
+ document.getElementById('room-sidebar').classList.toggle('hidden',!sidebarVisible);
+ document.getElementById('notesToggleBtn').classList.toggle('active-btn',sidebarVisible);
 }
 function showSidebar(){
-  sidebarVisible=true;
-  document.getElementById('room-sidebar').classList.remove('hidden');
-  document.getElementById('notesToggleBtn').classList.add('active-btn');
+ sidebarVisible=true;
+ document.getElementById('room-sidebar').classList.remove('hidden');
+ document.getElementById('notesToggleBtn').classList.add('active-btn');
 }
 function switchPanel(name){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('panel-'+name).classList.add('active');
-  document.getElementById('stab-'+name).classList.add('active');
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+ document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+ document.getElementById('panel-'+name).classList.add('active');
+ document.getElementById('stab-'+name).classList.add('active');
 }
 
 // ══════════════════════ CHAT ══════════════════════
 function handleChatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}}
 function sendChat(){
-  const input=document.getElementById('chatInput');
-  const text=input.value.trim();if(!text)return;
-  input.value='';
-  const container=document.getElementById('chatMessages');
-  const div=document.createElement('div');div.className='msg mine';
-  div.innerHTML=`<div class="msg-header"><span>now</span><span class="msg-sender">You</span></div><div class="msg-bubble">${escHtml(text)}</div>`;
-  container.appendChild(div);container.scrollTop=container.scrollHeight;
-  setTimeout(()=>simulateReply(container),1500);
+ const input=document.getElementById('chatInput');
+ const text=input.value.trim();if(!text)return;
+ input.value='';
+ const container=document.getElementById('chatMessages');
+ const div=document.createElement('div');div.className='msg mine';
+ div.innerHTML=`<div class="msg-header"><span>now</span><span class="msg-sender">You</span></div><div class="msg-bubble">${escHtml(text)}</div>`;
+ container.appendChild(div);container.scrollTop=container.scrollHeight;
+ setTimeout(()=>simulateReply(container),1500);
 }
 function simulateReply(container){
-  const replies=[
-    "That's a great point. Can you elaborate on your React experience?",
-    "Walk me through a challenging project you've completed.",
-    "How do you approach system design for high-traffic applications?",
-    "Tell me about your database experience — SQL and NoSQL?",
-    "How would you handle tight deadlines with changing requirements?",
-    "What's your approach to code review and testing?",
-    "Describe your experience with CI/CD pipelines.",
-  ];
-  const div=document.createElement('div');div.className='msg';
-  div.innerHTML=`<div class="msg-header"><span class="msg-sender">Prof. Johnson</span><span>now</span></div><div class="msg-bubble">${replies[Math.floor(Math.random()*replies.length)]}</div>`;
-  container.appendChild(div);container.scrollTop=container.scrollHeight;
+ const replies=[
+  "That's a great point. Can you elaborate on your React experience?",
+  "Walk me through a challenging project you've completed.",
+  "How do you approach system design for high-traffic applications?",
+  "Tell me about your database experience — SQL and NoSQL?",
+  "How would you handle tight deadlines with changing requirements?",
+  "What's your approach to code review and testing?",
+  "Describe your experience with CI/CD pipelines.",
+ ];
+ const div=document.createElement('div');div.className='msg';
+ div.innerHTML=`<div class="msg-header"><span class="msg-sender">Prof. Johnson</span><span>now</span></div><div class="msg-bubble">${replies[Math.floor(Math.random()*replies.length)]}</div>`;
+ container.appendChild(div);container.scrollTop=container.scrollHeight;
 }
 function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 // ══════════════════════ EVALUATION ══════════════════════
 function buildScoreSection(){
-  const sec=document.getElementById('scoreSection');sec.innerHTML='';
-  scoreCategories.forEach(cat=>{
-    const row=document.createElement('div');row.className='score-row';
-    const stars=[1,2,3,4,5].map(i=>`<div class="star" onclick="setScore('${cat}',${i})" id="star-${cat.replace(/\s/g,'_')}-${i}">★</div>`).join('');
-    row.innerHTML=`<div class="score-label">${cat}</div><div class="score-stars">${stars}</div>`;
-    sec.appendChild(row);
-  });
+ const sec=document.getElementById('scoreSection');sec.innerHTML='';
+ scoreCategories.forEach(cat=>{
+  const row=document.createElement('div');row.className='score-row';
+  const stars=[1,2,3,4,5].map(i=>`<div class="star" onclick="setScore('${cat}',${i})" id="star-${cat.replace(/\s/g,'_')}-${i}">★</div>`).join('');
+  row.innerHTML=`<div class="score-label">${cat}</div><div class="score-stars">${stars}</div>`;
+  sec.appendChild(row);
+ });
 }
 function setScore(cat,val){
-  scores[cat]=val;
-  [1,2,3,4,5].forEach(i=>{
-    const s=document.getElementById(`star-${cat.replace(/\s/g,'_')}-${i}`);
-    if(s) s.classList.toggle('filled',i<=val);
-  });
+ scores[cat]=val;
+ [1,2,3,4,5].forEach(i=>{
+  const s=document.getElementById(`star-${cat.replace(/\s/g,'_')}-${i}`);
+  if(s) s.classList.toggle('filled',i<=val);
+ });
 }
 function setDecision(btn,decision){
-  currentDecision=decision;
-  document.querySelectorAll('.dec-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
+ currentDecision=decision;
+ document.querySelectorAll('.dec-btn').forEach(b=>b.classList.remove('selected'));
+ btn.classList.add('selected');
 }
 function exportEvaluation(){
-  const notes=document.getElementById('notesArea').value;
-  const lines=Object.entries(scores).map(([k,v])=>`${k}: ${'★'.repeat(v)}${'☆'.repeat(5-v)} (${v}/5)`).join('\n');
-  const avg=(Object.values(scores).reduce((a,b)=>a+b,0)/scoreCategories.length).toFixed(1);
-  const text=`INTERVIEW EVALUATION REPORT\n${'='.repeat(40)}\nPosition: Full Stack Developer\nDate: ${new Date().toLocaleDateString()}\nDuration: ${document.getElementById('room-timer').textContent}\n\nSCORES\n------\n${lines}\n\nAVERAGE: ${avg}/5\nDECISION: ${(currentDecision||'Not set').toUpperCase()}\n\nNOTES\n-----\n${notes||'(none)'}`;
-  const blob=new Blob([text],{type:'text/plain'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`evaluation-${Date.now()}.txt`;a.click();
-  showToast('📄 Evaluation exported!');
+ const notes=document.getElementById('notesArea').value;
+ const lines=Object.entries(scores).map(([k,v])=>`${k}: ${'★'.repeat(v)}${'☆'.repeat(5-v)} (${v}/5)`).join('\n');
+ const avg=(Object.values(scores).reduce((a,b)=>a+b,0)/scoreCategories.length).toFixed(1);
+ const text=`INTERVIEW EVALUATION REPORT\n${'='.repeat(40)}\nPosition: Full Stack Developer\nDate: ${new Date().toLocaleDateString()}\nDuration: ${document.getElementById('room-timer').textContent}\n\nSCORES\n------\n${lines}\n\nAVERAGE: ${avg}/5\nDECISION: ${(currentDecision||'Not set').toUpperCase()}\n\nNOTES\n-----\n${notes||'(none)'}`;
+ const blob=new Blob([text],{type:'text/plain'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`evaluation-${Date.now()}.txt`;a.click();
+ showToast('📄 Evaluation exported!');
 }
 
 // ══════════════════════ CALENDAR ══════════════════════
 function buildCalendar(){
-  const body=document.getElementById('calBody');body.innerHTML='';
-  const today=new Date();
-  const year=today.getFullYear();const month=today.getMonth();
-  const first=new Date(year,month,1).getDay();
-  const days=new Date(year,month+1,0).getDate();
-  const events={
-    [today.getDate()]:[{label:'Alex Sharma 2PM',cls:'ev-blue'},{label:'Priya Patel 3:30PM',cls:'ev-green'}],
-    [(today.getDate()+1)%days||1]:[{label:'Rahul Kumar 10AM',cls:'ev-yellow'}],
-    [(today.getDate()-2+days)%days||1]:[{label:'Sneha Nair — Done',cls:'ev-green'}],
-  };
-  for(let i=0;i<first;i++){
-    const cell=document.createElement('div');cell.className='cal-cell';cell.style.background='rgba(0,0,0,0.2)';
-    body.appendChild(cell);
-  }
-  for(let d=1;d<=days;d++){
-    const cell=document.createElement('div');
-    cell.className='cal-cell'+(d===today.getDate()?' today':'');
-    let html=`<div class="cal-date">${d}</div>`;
-    (events[d]||[]).forEach(ev=>html+=`<div class="cal-event ${ev.cls}">${ev.label}</div>`);
-    cell.innerHTML=html;
-    cell.onclick=()=>showToast(`📅 ${d} ${today.toLocaleString('default',{month:'long'})} selected`);
-    body.appendChild(cell);
-  }
+ const body=document.getElementById('calBody');body.innerHTML='';
+ const today=new Date();
+ const year=today.getFullYear();const month=today.getMonth();
+ const first=new Date(year,month,1).getDay();
+ const days=new Date(year,month+1,0).getDate();
+ const events={
+  [today.getDate()]:[{label:'Alex Sharma 2PM',cls:'ev-blue'},{label:'Priya Patel 3:30PM',cls:'ev-green'}],
+  [(today.getDate()+1)%days||1]:[{label:'Rahul Kumar 10AM',cls:'ev-yellow'}],
+  [(today.getDate()-2+days)%days||1]:[{label:'Sneha Nair — Done',cls:'ev-green'}],
+ };
+ for(let i=0;i<first;i++){
+  const cell=document.createElement('div');cell.className='cal-cell';cell.style.background='rgba(0,0,0,0.2)';
+  body.appendChild(cell);
+ }
+ for(let d=1;d<=days;d++){
+  const cell=document.createElement('div');
+  cell.className='cal-cell'+(d===today.getDate()?' today':'');
+  let html=`<div class="cal-date">${d}</div>`;
+  (events[d]||[]).forEach(ev=>html+=`<div class="cal-event ${ev.cls}">${ev.label}</div>`);
+  cell.innerHTML=html;
+  cell.onclick=()=>showToast(`📅 ${d} ${today.toLocaleString('default',{month:'long'})} selected`);
+  body.appendChild(cell);
+ }
 }
 
 // ══════════════════════ CANDIDATES ══════════════════════
 const candidateData=[
-  {av:'AS',c:'av-green',name:'Alex Sharma',email:'alex@email.com',pos:'Full Stack',score:4.2,date:'May 23',status:'pending'},
-  {av:'PP',c:'',name:'Priya Patel',email:'priya@email.com',pos:'Backend',score:4.5,date:'May 22',status:'accepted',sc:'rgba(168,85,247,0.2)',tc:'var(--purple)'},
-  {av:'RK',c:'',name:'Rahul Kumar',email:'rahul@email.com',pos:'Frontend',score:3.8,date:'May 21',status:'hold',sc:'rgba(245,158,11,0.2)',tc:'var(--yellow)'},
-  {av:'SN',c:'',name:'Sneha Nair',email:'sneha@email.com',pos:'Full Stack',score:4.8,date:'May 20',status:'accepted',sc:'rgba(0,212,170,0.2)',tc:'var(--accent2)'},
-  {av:'KM',c:'',name:'Karan Mehta',email:'karan@email.com',pos:'DevOps',score:3.2,date:'May 19',status:'rejected',sc:'rgba(239,68,68,0.2)',tc:'var(--red)'},
-  {av:'DP',c:'av-blue',name:'Divya Pandey',email:'divya@email.com',pos:'Backend',score:4.0,date:'May 18',status:'pending'},
+ {av:'AS',c:'av-green',name:'Alex Sharma',email:'alex@email.com',pos:'Full Stack',score:4.2,date:'May 23',status:'pending'},
+ {av:'PP',c:'',name:'Priya Patel',email:'priya@email.com',pos:'Backend',score:4.5,date:'May 22',status:'accepted',sc:'rgba(168,85,247,0.2)',tc:'var(--purple)'},
+ {av:'RK',c:'',name:'Rahul Kumar',email:'rahul@email.com',pos:'Frontend',score:3.8,date:'May 21',status:'hold',sc:'rgba(245,158,11,0.2)',tc:'var(--yellow)'},
+ {av:'SN',c:'',name:'Sneha Nair',email:'sneha@email.com',pos:'Full Stack',score:4.8,date:'May 20',status:'accepted',sc:'rgba(0,212,170,0.2)',tc:'var(--accent2)'},
+ {av:'KM',c:'',name:'Karan Mehta',email:'karan@email.com',pos:'DevOps',score:3.2,date:'May 19',status:'rejected',sc:'rgba(239,68,68,0.2)',tc:'var(--red)'},
+ {av:'DP',c:'av-blue',name:'Divya Pandey',email:'divya@email.com',pos:'Backend',score:4.0,date:'May 18',status:'pending'},
 ];
 function buildCandidates(){
-  const query=document.getElementById('candidateSearchInput').value.trim().toLowerCase();
-  const positionFilter=document.getElementById('candidatePositionFilter').value;
-  const statusFilter=document.getElementById('candidateStatusFilter').value;
-  const body=document.getElementById('candidatesBody');body.innerHTML='';
-  const filtered=candidateData.filter(c=>{
-    const matchesQuery=!query||[c.name,c.email,c.pos].some(v=>v.toLowerCase().includes(query));
-    const matchesPosition=positionFilter==='All Positions'||c.pos===positionFilter;
-    const labelStatus=c.status==='hold'?'On Hold':c.status.charAt(0).toUpperCase()+c.status.slice(1);
-    const matchesStatus=statusFilter==='All Status'||labelStatus===statusFilter||c.status===statusFilter.toLowerCase();
-    return matchesQuery&&matchesPosition&&matchesStatus;
-  });
-  const subtitle = !query && positionFilter==='All Positions' && statusFilter==='All Status'
-    ? `${filtered.length} candidates across all positions`
-    : `${filtered.length} candidates matching your search`;
-  document.getElementById('candidatePageSub').textContent=subtitle;
-  if(!filtered.length){
-    body.innerHTML='<div class="table-row" style="grid-template-columns:1fr;justify-items:center;color:var(--muted);">No candidates found.</div>';
-    return;
-  }
-  filtered.forEach(c=>{
-    const statusMap={accepted:['status-completed','✓ Accepted'],pending:['status-pending','Pending'],hold:['status-pending','On Hold'],rejected:['status-scheduled','✗ Rejected']};
-    const [scls,slabel]=statusMap[c.status]||['status-pending','Pending'];
-    const scoreClass=c.score>=4.2?'high':c.score>=3.5?'mid':'low';
-    const avStyle=c.sc?`background:${c.sc};color:${c.tc};`:'';
-    const row=document.createElement('div');row.className='table-row';
-    row.innerHTML=`
-      <div class="td"><div class="cand-info"><div class="cand-av ${c.c}" style="${avStyle}">${c.av}</div><div><div class="cand-name">${c.name}</div><div class="cand-email">${c.email}</div></div></div></div>
-      <div class="td" style="color:var(--label);font-size:0.82rem;">${c.pos}</div>
-      <div class="td"><div class="score-pill ${scoreClass}">★ ${c.score}</div></div>
-      <div class="td" style="color:var(--muted);font-size:0.78rem;">${c.date}</div>
-      <div class="td"><div class="iv-status ${scls}">${slabel}</div></div>
-      <div class="td"><div class="row-actions"><button class="row-btn green" onclick="quickStartInterview('${c.name}')">▶ Start</button><button class="row-btn" onclick="showToast('📄 Opening ${c.name} profile…')">View</button></div></div>
-    `;
-    body.appendChild(row);
-  });
+ const query=document.getElementById('candidateSearchInput').value.trim().toLowerCase();
+ const positionFilter=document.getElementById('candidatePositionFilter').value;
+ const statusFilter=document.getElementById('candidateStatusFilter').value;
+ const body=document.getElementById('candidatesBody');body.innerHTML='';
+ const filtered=candidateData.filter(c=>{
+  const matchesQuery=!query||[c.name,c.email,c.pos].some(v=>v.toLowerCase().includes(query));
+  const matchesPosition=positionFilter==='All Positions'||c.pos===positionFilter;
+  const labelStatus=c.status==='hold'?'On Hold':c.status.charAt(0).toUpperCase()+c.status.slice(1);
+  const matchesStatus=statusFilter==='All Status'||labelStatus===statusFilter||c.status===statusFilter.toLowerCase();
+  return matchesQuery&&matchesPosition&&matchesStatus;
+ });
+ const subtitle = !query && positionFilter==='All Positions' && statusFilter==='All Status'
+  ? `${filtered.length} candidates across all positions`
+  : `${filtered.length} candidates matching your search`;
+ document.getElementById('candidatePageSub').textContent=subtitle;
+ if(!filtered.length){
+  body.innerHTML='<div class="table-row" style="grid-template-columns:1fr;justify-items:center;color:var(--muted);">No candidates found.</div>';
+  return;
+ }
+ filtered.forEach(c=>{
+  const statusMap={accepted:['status-completed','✓ Accepted'],pending:['status-pending','Pending'],hold:['status-pending','On Hold'],rejected:['status-scheduled','✗ Rejected']};
+  const [scls,slabel]=statusMap[c.status]||['status-pending','Pending'];
+  const scoreClass=c.score>=4.2?'high':c.score>=3.5?'mid':'low';
+  const avStyle=c.sc?`background:${c.sc};color:${c.tc};`:'';
+  const row=document.createElement('div');row.className='table-row';
+  row.innerHTML=`
+   <div class="td"><div class="cand-info"><div class="cand-av ${c.c}" style="${avStyle}">${c.av}</div><div><div class="cand-name">${c.name}</div><div class="cand-email">${c.email}</div></div></div></div>
+   <div class="td" style="color:var(--label);font-size:0.82rem;">${c.pos}</div>
+   <div class="td"><div class="score-pill ${scoreClass}">★ ${c.score}</div></div>
+   <div class="td" style="color:var(--muted);font-size:0.78rem;">${c.date}</div>
+   <div class="td"><div class="iv-status ${scls}">${slabel}</div></div>
+   <div class="td"><div class="row-actions"><button class="row-btn green" onclick="quickStartInterview('${c.name}')">▶ Start</button><button class="row-btn" onclick="showToast('📄 Opening ${c.name} profile…')">View</button></div></div>
+  `;
+  body.appendChild(row);
+ });
 }
 function buildReportEvals(){
-  const div=document.getElementById('reportEvals');div.innerHTML='';
-  candidateData.slice(0,4).forEach(c=>{
-    const scoreClass=c.score>=4.2?'high':c.score>=3.5?'mid':'low';
-    const avStyle=c.sc?`background:${c.sc};color:${c.tc};`:'';
-    div.innerHTML+=`<div class="interview-row" style="padding:12px 20px;margin:0;" onclick="showToast('Opening ${c.name} evaluation…')">
-      <div class="iv-av ${c.c}" style="${avStyle}">${c.av}</div>
-      <div class="iv-info"><div class="iv-name">${c.name}</div><div class="iv-meta">${c.pos} · ${c.date}</div></div>
-      <div class="score-pill ${scoreClass}" style="margin-right:12px;">★ ${c.score}</div>
-      <div class="iv-status ${c.status==='accepted'?'status-completed':c.status==='rejected'?'status-scheduled':'status-pending'}">${c.status}</div>
-    </div>`;
-  });
+ const div=document.getElementById('reportEvals');div.innerHTML='';
+ candidateData.slice(0,4).forEach(c=>{
+  const scoreClass=c.score>=4.2?'high':c.score>=3.5?'mid':'low';
+  const avStyle=c.sc?`background:${c.sc};color:${c.tc};`:'';
+  div.innerHTML+=`<div class="interview-row" style="padding:12px 20px;margin:0;" onclick="showToast('Opening ${c.name} evaluation…')">
+   <div class="iv-av ${c.c}" style="${avStyle}">${c.av}</div>
+   <div class="iv-info"><div class="iv-name">${c.name}</div><div class="iv-meta">${c.pos} · ${c.date}</div></div>
+   <div class="score-pill ${scoreClass}" style="margin-right:12px;">★ ${c.score}</div>
+   <div class="iv-status ${c.status==='accepted'?'status-completed':c.status==='rejected'?'status-scheduled':'status-pending'}">${c.status}</div>
+  </div>`;
+ });
 }
 
 // ══════════════════════ RECORDINGS ══════════════════════
 function buildRecordings(){
-  const grid=document.getElementById('recordingsGrid');grid.innerHTML='';
-  const recs=[
-    {name:'Alex Sharma',pos:'Full Stack',dur:'44:12',date:'May 22',size:'238 MB'},
-    {name:'Rohan Verma',pos:'Backend',dur:'38:05',date:'May 21',size:'198 MB'},
-    {name:'Sneha Nair',pos:'Full Stack',dur:'51:44',date:'May 20',size:'276 MB'},
-    {name:'Karan Mehta',pos:'DevOps',dur:'29:18',date:'May 19',size:'155 MB'},
-    {name:'Divya Pandey',pos:'Backend',dur:'46:33',date:'May 18',size:'248 MB'},
-    {name:'Aryan Singh',pos:'Frontend',dur:'33:50',date:'May 17',size:'180 MB'},
-  ];
-  recs.forEach(r=>{
-    grid.innerHTML+=`<div class="card" style="cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'" onclick="showToast('▶ Playing ${r.name} recording…')">
-      <div style="background:var(--surface2);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:2.5rem;border-radius:var(--radius) var(--radius) 0 0;">🎬</div>
-      <div class="card-body">
-        <div style="font-weight:700;font-size:0.88rem;margin-bottom:4px;">${r.name}</div>
-        <div style="font-size:0.75rem;color:var(--muted);margin-bottom:10px;">${r.pos} · ${r.date}</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div style="font-family:var(--font-head);font-size:0.78rem;color:var(--accent);">⏱ ${r.dur}</div>
-          <div style="font-size:0.72rem;color:var(--muted);">${r.size}</div>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:10px;">
-          <button class="row-btn" style="flex:1;" onclick="event.stopPropagation();showToast('▶ Playing…')">▶ Play</button>
-          <button class="row-btn" style="flex:1;" onclick="event.stopPropagation();showToast('⬇ Downloading…')">⬇ Save</button>
-        </div>
-      </div>
-    </div>`;
-  });
+ const grid=document.getElementById('recordingsGrid');grid.innerHTML='';
+ const recs=[
+  {name:'Alex Sharma',pos:'Full Stack',dur:'44:12',date:'May 22',size:'238 MB'},
+  {name:'Rohan Verma',pos:'Backend',dur:'38:05',date:'May 21',size:'198 MB'},
+  {name:'Sneha Nair',pos:'Full Stack',dur:'51:44',date:'May 20',size:'276 MB'},
+  {name:'Karan Mehta',pos:'DevOps',dur:'29:18',date:'May 19',size:'155 MB'},
+  {name:'Divya Pandey',pos:'Backend',dur:'46:33',date:'May 18',size:'248 MB'},
+  {name:'Aryan Singh',pos:'Frontend',dur:'33:50',date:'May 17',size:'180 MB'},
+ ];
+ recs.forEach(r=>{
+  grid.innerHTML+=`<div class="card" style="cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'" onclick="showToast('▶ Playing ${r.name} recording…')">
+   <div style="background:var(--surface2);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:2.5rem;border-radius:var(--radius) var(--radius) 0 0;">🎬</div>
+   <div class="card-body">
+    <div style="font-weight:700;font-size:0.88rem;margin-bottom:4px;">${r.name}</div>
+    <div style="font-size:0.75rem;color:var(--muted);margin-bottom:10px;">${r.pos} · ${r.date}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+     <div style="font-family:var(--font-head);font-size:0.78rem;color:var(--accent);">⏱ ${r.dur}</div>
+     <div style="font-size:0.72rem;color:var(--muted);">${r.size}</div>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:10px;">
+     <button class="row-btn" style="flex:1;" onclick="event.stopPropagation();showToast('▶ Playing…')">▶ Play</button>
+     <button class="row-btn" style="flex:1;" onclick="event.stopPropagation();showToast('⬇ Downloading…')">⬇ Save</button>
+    </div>
+   </div>
+  </div>`;
+ });
 }
 
 // ══════════════════════ SETTINGS ══════════════════════
 const settingsData={
-  profile:`<div class="settings-section"><div class="section-title">Profile Information</div>
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-      <div class="user-av" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;font-size:1.4rem;color:#fff;flex-shrink:0;">SJ</div>
-      <div><button class="sched-btn">Change Photo</button><div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">JPG, PNG max 5MB</div></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div class="field"><label>FIRST NAME</label><input class="settings-input" value="Sarah"></div>
-      <div class="field"><label>LAST NAME</label><input class="settings-input" value="Johnson"></div>
-      <div class="field"><label>EMAIL</label><input class="settings-input" value="sarah.johnson@university.edu" type="email"></div>
-      <div class="field"><label>PHONE</label><input class="settings-input" value="+91 98765 43210"></div>
-      <div class="field" style="grid-column:1/-1;"><label>DEPARTMENT</label><input class="settings-input" value="Computer Science & Engineering"></div>
-    </div>
-    <div style="margin-top:16px;display:flex;gap:10px;">
-      <button class="btn-primary" style="padding:9px 20px;font-size:0.85rem;" onclick="showToast('✅ Profile saved!')">Save Changes</button>
-    </div>
-  </div>`,
-  'audio-video':`<div class="settings-section"><div class="section-title">Audio & Video Settings</div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Microphone</div><div class="setting-desc">Default system microphone</div></div><select class="filter-select" style="min-width:160px;"><option>Default Microphone</option><option>External Mic</option></select></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Camera</div><div class="setting-desc">Default system camera</div></div><select class="filter-select" style="min-width:160px;"><option>Default Camera</option><option>External Webcam</option></select></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Speaker</div><div class="setting-desc">Audio output device</div></div><select class="filter-select" style="min-width:160px;"><option>Default Speaker</option></select></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Noise Suppression</div><div class="setting-desc">Reduce background noise during calls</div></div><button class="toggle on" onclick="this.classList.toggle('on');showToast('Setting updated')"></button></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">HD Video</div><div class="setting-desc">Stream in 1080p when available</div></div><button class="toggle on" onclick="this.classList.toggle('on');showToast('Setting updated')"></button></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Virtual Background</div><div class="setting-desc">Apply blur or custom background</div></div><button class="toggle" onclick="this.classList.toggle('on');showToast('Setting updated')"></button></div>
-  </div>`,
-  notifications:`<div class="settings-section"><div class="section-title">Notification Preferences</div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Session Reminders</div><div class="setting-desc">Get notified 15 min before interview</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">New Candidate Application</div><div class="setting-desc">Alert when a new application arrives</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Candidate Joins Waiting Room</div><div class="setting-desc">Notify when candidate is ready</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Email Digest</div><div class="setting-desc">Daily summary of interviews and decisions</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Recording Ready</div><div class="setting-desc">Alert when recording is processed</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-  </div>`,
-  interview:`<div class="settings-section"><div class="section-title">Interview Defaults</div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Default Duration</div><div class="setting-desc">Session length for new interviews</div></div><select class="filter-select"><option>30 min</option><option selected>45 min</option><option>60 min</option><option>90 min</option></select></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Auto-Record Sessions</div><div class="setting-desc">Start recording automatically</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Waiting Room</div><div class="setting-desc">Require approval before candidate joins</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Show Candidate Score Live</div><div class="setting-desc">Display running score to interviewer</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
-    <div style="margin-top:16px;"><div class="setting-label" style="margin-bottom:8px;">Default Evaluation Categories</div>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;">
-      ${['Technical','Communication','Problem Solving','Culture Fit','Experience','Leadership'].map(t=>`<button class="sched-btn active" onclick="this.classList.toggle('active')">${t}</button>`).join('')}
-    </div></div>
-  </div>`,
-  integrations:`<div class="settings-section"><div class="section-title">Integrations</div>
-    ${[['📧','Google Calendar','Sync interviews with your calendar','Connect'],['📋','Microsoft Teams','Join from Teams meetings','Connect'],['💼','LinkedIn','Import candidate profiles','Connected'],['🗂','Notion','Export evaluations to Notion','Connect'],['📊','Google Sheets','Auto-export candidate data','Connect'],['🔔','Slack','Get notifications in Slack','Connect']].map(([ico,name,desc,status])=>`
-    <div class="setting-row"><div class="setting-info" style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.2rem;">${ico}</span><div><div class="setting-label">${name}</div><div class="setting-desc">${desc}</div></div></div><button class="sched-btn${status==='Connected'?' primary':''}" onclick="showToast('${status==='Connected'?'✓ Already connected':'🔗 Opening OAuth…'}')">${status}</button></div>`).join('')}
-  </div>`,
-  security:`<div class="settings-section"><div class="section-title">Security</div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Two-Factor Authentication</div><div class="setting-desc">Secure your account with 2FA</div></div><button class="toggle" onclick="this.classList.toggle('on');showToast('2FA toggled')"></button></div>
-    <div class="setting-row"><div class="setting-info"><div class="setting-label">Session Timeout</div><div class="setting-desc">Auto-logout after inactivity</div></div><select class="filter-select"><option>30 minutes</option><option selected>1 hour</option><option>4 hours</option><option>Never</option></select></div>
-    <div style="margin-top:16px;display:flex;gap:10px;">
-      <button class="sched-btn" onclick="showToast('🔑 Change password email sent!')">Change Password</button>
-      <button class="sched-btn" style="color:var(--red);border-color:var(--red);" onclick="showToast('⚠️ All sessions revoked!')">Revoke All Sessions</button>
-    </div>
-  </div>`
+ profile:`<div class="settings-section"><div class="section-title">Profile Information</div>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+   <div class="user-av" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;font-size:1.4rem;color:#fff;flex-shrink:0;">SJ</div>
+   <div><button class="sched-btn">Change Photo</button><div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">JPG, PNG max 5MB</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+   <div class="field"><label>FIRST NAME</label><input class="settings-input" value="Sarah"></div>
+   <div class="field"><label>LAST NAME</label><input class="settings-input" value="Johnson"></div>
+   <div class="field"><label>EMAIL</label><input class="settings-input" value="sarah.johnson@university.edu" type="email"></div>
+   <div class="field"><label>PHONE</label><input class="settings-input" value="+91 98765 43210"></div>
+   <div class="field" style="grid-column:1/-1;"><label>DEPARTMENT</label><input class="settings-input" value="Computer Science & Engineering"></div>
+  </div>
+  <div style="margin-top:16px;display:flex;gap:10px;">
+   <button class="btn-primary" style="padding:9px 20px;font-size:0.85rem;" onclick="showToast('✅ Profile saved!')">Save Changes</button>
+  </div>
+ </div>`,
+ 'audio-video':`<div class="settings-section"><div class="section-title">Audio & Video Settings</div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Microphone</div><div class="setting-desc">Default system microphone</div></div><select class="filter-select" style="min-width:160px;"><option>Default Microphone</option><option>External Mic</option></select></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Camera</div><div class="setting-desc">Default system camera</div></div><select class="filter-select" style="min-width:160px;"><option>Default Camera</option><option>External Webcam</option></select></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Speaker</div><div class="setting-desc">Audio output device</div></div><select class="filter-select" style="min-width:160px;"><option>Default Speaker</option></select></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Noise Suppression</div><div class="setting-desc">Reduce background noise during calls</div></div><button class="toggle on" onclick="this.classList.toggle('on');showToast('Setting updated')"></button></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">HD Video</div><div class="setting-desc">Stream in 1080p when available</div></div><button class="toggle on" onclick="this.classList.toggle('on');showToast('Setting updated')"></button></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Virtual Background</div><div class="setting-desc">Apply blur or custom background</div></div><button class="toggle" onclick="this.classList.toggle('on');showToast('Setting updated')"></button></div>
+ </div>`,
+ notifications:`<div class="settings-section"><div class="section-title">Notification Preferences</div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Session Reminders</div><div class="setting-desc">Get notified 15 min before interview</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">New Candidate Application</div><div class="setting-desc">Alert when a new application arrives</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Candidate Joins Waiting Room</div><div class="setting-desc">Notify when candidate is ready</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Email Digest</div><div class="setting-desc">Daily summary of interviews and decisions</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Recording Ready</div><div class="setting-desc">Alert when recording is processed</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+ </div>`,
+ interview:`<div class="settings-section"><div class="section-title">Interview Defaults</div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Default Duration</div><div class="setting-desc">Session length for new interviews</div></div><select class="filter-select"><option>30 min</option><option selected>45 min</option><option>60 min</option><option>90 min</option></select></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Auto-Record Sessions</div><div class="setting-desc">Start recording automatically</div></div><button class="toggle" onclick="this.classList.toggle('on')"></button></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Waiting Room</div><div class="setting-desc">Require approval before candidate joins</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Show Candidate Score Live</div><div class="setting-desc">Display running score to interviewer</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+  <div style="margin-top:16px;"><div class="setting-label" style="margin-bottom:8px;">Default Evaluation Categories</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;">
+   ${['Technical','Communication','Problem Solving','Culture Fit','Experience','Leadership'].map(t=>`<button class="sched-btn active" onclick="this.classList.toggle('active')">${t}</button>`).join('')}
+  </div></div>
+ </div>`,
+ integrations:`<div class="settings-section"><div class="section-title">Integrations</div>
+  ${[['📧','Google Calendar','Sync interviews with your calendar','Connect'],['📋','Microsoft Teams','Join from Teams meetings','Connect'],['💼','LinkedIn','Import candidate profiles','Connected'],['🗂','Notion','Export evaluations to Notion','Connect'],['📊','Google Sheets','Auto-export candidate data','Connect'],['🔔','Slack','Get notifications in Slack','Connect']].map(([ico,name,desc,status])=>`
+  <div class="setting-row"><div class="setting-info" style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.2rem;">${ico}</span><div><div class="setting-label">${name}</div><div class="setting-desc">${desc}</div></div></div><button class="sched-btn${status==='Connected'?' primary':''}" onclick="showToast('${status==='Connected'?'✓ Already connected':'🔗 Opening OAuth…'}')">${status}</button></div>`).join('')}
+ </div>`,
+ security:`<div class="settings-section"><div class="section-title">Security</div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Two-Factor Authentication</div><div class="setting-desc">Secure your account with 2FA</div></div><button class="toggle" onclick="this.classList.toggle('on');showToast('2FA toggled')"></button></div>
+  <div class="setting-row"><div class="setting-info"><div class="setting-label">Session Timeout</div><div class="setting-desc">Auto-logout after inactivity</div></div><select class="filter-select"><option>30 minutes</option><option selected>1 hour</option><option>4 hours</option><option>Never</option></select></div>
+  <div style="margin-top:16px;display:flex;gap:10px;">
+   <button class="sched-btn" onclick="showToast('🔑 Change password email sent!')">Change Password</button>
+   <button class="sched-btn" style="color:var(--red);border-color:var(--red);" onclick="showToast('⚠️ All sessions revoked!')">Revoke All Sessions</button>
+  </div>
+ </div>`
 };
 function buildSettings(tab){
-  document.getElementById('settingsContent').innerHTML=settingsData[tab]||settingsData['profile'];
+ document.getElementById('settingsContent').innerHTML=settingsData[tab]||settingsData['profile'];
 }
 function switchSettingsTab(el,tab){
-  document.querySelectorAll('.snav-item').forEach(i=>i.classList.remove('active'));
-  el.classList.add('active');
-  buildSettings(tab);
+ document.querySelectorAll('.snav-item').forEach(i=>i.classList.remove('active'));
+ el.classList.add('active');
+ buildSettings(tab);
 }
 
 // ══════════════════════ MODALS ══════════════════════
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function saveSchedule(){
-  const name=document.getElementById('sched-name').value||'Candidate';
-  closeModal('scheduleModal');
-  showToast(`✅ Interview scheduled for ${name}!`);
+ const name=document.getElementById('sched-name').value||'Candidate';
+ closeModal('scheduleModal');
+ showToast(`✅ Interview scheduled for ${name}!`);
 }
 function copyInvite(){
-  navigator.clipboard.writeText('https://interviewlink.app/join/IVW-2026-7834').catch(()=>{});
-  showToast('📋 Link copied!');
+ navigator.clipboard.writeText('https://interviewlink.app/join/IVW-2026-7834').catch(()=>{});
+ showToast('📋 Link copied!');
 }
 document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m) m.classList.remove('open');}));
 
 // ══════════════════════ TOAST ══════════════════════
 let toastTimer=null;
 function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+ const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
 }
 
 // ══════════════════════ INIT ══════════════════════
 (function init(){
-  navigateTo('lobby');
+ navigateTo('lobby');
 })();
 </script>
 </body>

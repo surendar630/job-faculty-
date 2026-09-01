@@ -3,404 +3,404 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard | Cloud AI</title>
+<title>Dashboard | </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
 .welcome-section {
-  background: linear-gradient(115deg, #123d48 0%, #176c6b 68%, #b47a28 150%);
-  color: white;
-  padding: 3rem 2rem;
-  border-radius: 4px;
-  margin-bottom: 3rem;
-  box-shadow: var(--shadow-lg);
+ background: linear-gradient(115deg, #123d48 0%, #176c6b 68%, #b47a28 150%);
+ color: white;
+ padding: 3rem 2rem;
+ border-radius: 4px;
+ margin-bottom: 3rem;
+ box-shadow: var(--shadow-lg);
 }
 
 .welcome-section h1 {
-  color: white;
-  font: 700 2.4rem 'Source Serif 4', serif;
-  margin-bottom: 0.5rem;
+ color: white;
+ font: 700 2.4rem 'Source Serif 4', serif;
+ margin-bottom: 0.5rem;
 }
 
 .welcome-section p {
-  color: rgba(255,255,255,0.9);
-  font-size: 1.1rem;
-  margin: 0;
+ color: rgba(255,255,255,0.9);
+ font-size: 1.1rem;
+ margin: 0;
 }
 
 .dashboard-sidebar {
-  background: white;
-  border-radius: 4px;
-  box-shadow: var(--shadow-md);
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  border-left: 4px solid #b47a28;
+ background: white;
+ border-radius: 4px;
+ box-shadow: var(--shadow-md);
+ padding: 1.5rem;
+ margin-bottom: 2rem;
+ border-left: 4px solid #b47a28;
 }
 
 .dashboard-sidebar h3 {
-  margin-top: 0;
-  color: #282A35;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+ margin-top: 0;
+ color: #282A35;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
 }
 
 .quick-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+ gap: 1rem;
+ margin: 1.5rem 0;
 }
 
 .quick-stat {
-  background: #eef3f1;
-  padding: 1rem;
-  border-radius: 4px;
-  text-align: center;
+ background: #eef3f1;
+ padding: 1rem;
+ border-radius: 4px;
+ text-align: center;
 }
 
 .quick-stat-number {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #0b6b68;
+ font-size: 1.8rem;
+ font-weight: 700;
+ color: #0b6b68;
 }
 
 .quick-stat-label {
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 0.5rem;
+ font-size: 0.85rem;
+ color: #666;
+ margin-top: 0.5rem;
 }
 
-  .training-hero {
-    display: grid;
-    grid-template-columns: 1.4fr 0.9fr;
-    gap: 1.25rem;
-    background: linear-gradient(135deg, #ffffff 0%, #f4fff8 100%);
-    border: 1px solid #dff6e8;
-    border-radius: 18px;
-    padding: 1.5rem;
-    box-shadow: var(--shadow-md);
-    margin-bottom: 2rem;
-  }
+ .training-hero {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 1.25rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f4fff8 100%);
+  border: 1px solid #dff6e8;
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+ }
 
-  .training-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    background: #e9fdf2;
-    color: #0f7d4d;
-    padding: 0.45rem 0.8rem;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    margin-bottom: 0.8rem;
-  }
+ .training-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #e9fdf2;
+  color: #0f7d4d;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+ }
 
-  .training-hero h2 {
-    margin: 0 0 0.6rem;
-    font-size: 1.45rem;
-    color: #282A35;
-  }
+ .training-hero h2 {
+  margin: 0 0 0.6rem;
+  font-size: 1.45rem;
+  color: #282A35;
+ }
 
-  .training-hero p {
-    margin: 0;
-    color: #4b5563;
-    line-height: 1.6;
-  }
+ .training-hero p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+ }
 
-  .training-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1rem;
-  }
+ .training-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+ }
 
-  .training-highlight {
-    display: grid;
-    gap: 0.75rem;
-  }
+ .training-highlight {
+  display: grid;
+  gap: 0.75rem;
+ }
 
-  .training-highlight-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.85rem 1rem;
-    border-radius: 12px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    color: #334155;
-    font-weight: 600;
-  }
+ .training-highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  font-weight: 600;
+ }
 
-  .training-highlight-item i {
-    color: #04AA6D;
-    font-size: 1.05rem;
-  }
+ .training-highlight-item i {
+  color: #04AA6D;
+  font-size: 1.05rem;
+ }
 
-  .training-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
+ .training-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+ }
 
-  .training-card {
-    background: white;
-    border-radius: 14px;
-    border: 1px solid #e5f7ed;
-    box-shadow: var(--shadow-sm);
-    padding: 1.1rem;
-  }
+ .training-card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e5f7ed;
+  box-shadow: var(--shadow-sm);
+  padding: 1.1rem;
+ }
 
-  .training-card-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(135deg, #04AA6D, #059862);
-    color: white;
-    margin-bottom: 0.8rem;
-  }
+ .training-card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #04AA6D, #059862);
+  color: white;
+  margin-bottom: 0.8rem;
+ }
 
-  .training-card h3 {
-    margin: 0 0 0.45rem;
-    font-size: 1rem;
-    color: #282A35;
-  }
+ .training-card h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+  color: #282A35;
+ }
 
-  .training-card p {
-    margin: 0;
-    color: #64748b;
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
+ .training-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+ }
 
 
 .dashboard-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  text-align: center;
-  transition: var(--transition);
-  border-top: 4px solid #04AA6D;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
+ background: white;
+ padding: 2rem;
+ border-radius: 12px;
+ box-shadow: var(--shadow-md);
+ text-align: center;
+ transition: var(--transition);
+ border-top: 4px solid #04AA6D;
+ cursor: pointer;
+ display: flex;
+ flex-direction: column;
 }
 
 .attendance-actions .btn {
-  min-width: 160px;
+ min-width: 160px;
 }
 
 .dashboard-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
-  border-top-color: #059862;
+ transform: translateY(-8px);
+ box-shadow: var(--shadow-lg);
+ border-top-color: #059862;
 }
 
-  .insight-strip {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
+ .insight-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+ }
 
-  .insight-card {
-    background: linear-gradient(135deg, #f1f1f1 0%, #f1f1f1 100%);
-    border: 1px solid #e8f5e9;
-    border-radius: 14px;
-    padding: 1.2rem 1.25rem;
-    display: flex;
-    gap: 0.9rem;
-    align-items: flex-start;
-    box-shadow: var(--shadow-sm);
-  }
+ .insight-card {
+  background: linear-gradient(135deg, #f1f1f1 0%, #f1f1f1 100%);
+  border: 1px solid #e8f5e9;
+  border-radius: 14px;
+  padding: 1.2rem 1.25rem;
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  box-shadow: var(--shadow-sm);
+ }
 
-  .insight-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: #04AA6D;
-    color: white;
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-  }
+ .insight-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #04AA6D;
+  color: white;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+ }
 
-  .insight-card h3 {
-    margin: 0 0 0.35rem;
-    color: #282A35;
-    font-size: 1rem;
-  }
+ .insight-card h3 {
+  margin: 0 0 0.35rem;
+  color: #282A35;
+  font-size: 1rem;
+ }
 
-  .insight-card p {
-    margin: 0;
-    color: #475569;
-    font-size: 0.95rem;
-  }
+ .insight-card p {
+  margin: 0;
+  color: #475569;
+  font-size: 0.95rem;
+ }
 
-  .recommendation-card {
-    background: white;
-    padding: 1.35rem;
-    border-radius: 12px;
-    box-shadow: var(--shadow-md);
-    border-left: 4px solid #04AA6D;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
+ .recommendation-card {
+  background: white;
+  padding: 1.35rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  border-left: 4px solid #04AA6D;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+ }
 
-  .recommendation-card h4 {
-    margin: 0;
-    color: #282A35;
-    font-size: 1.05rem;
-  }
+ .recommendation-card h4 {
+  margin: 0;
+  color: #282A35;
+  font-size: 1.05rem;
+ }
 
-  .recommendation-meta {
-    color: #666;
-    font-size: 0.95rem;
-  }
+ .recommendation-meta {
+  color: #666;
+  font-size: 0.95rem;
+ }
 
-  .recommendation-actions {
-    margin-top: 0.5rem;
-  }
+ .recommendation-actions {
+  margin-top: 0.5rem;
+ }
 
-  .meeting-panel {
-    margin-top: 2rem;
-    background: white;
-    border-radius: 18px;
-    box-shadow: var(--shadow-md);
-    padding: 1.75rem;
-  }
+ .meeting-panel {
+  margin-top: 2rem;
+  background: white;
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+  padding: 1.75rem;
+ }
 
-  .meeting-panel-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
+ .meeting-panel-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+ }
 
-  .meeting-tabs {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
+ .meeting-tabs {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+ }
 
-  .meeting-tab {
-    border: 1px solid #ddd;
-    background: #f1f1f1;
-    color: #282A35;
-    padding: 0.75rem 1rem;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-weight: 700;
-  }
+ .meeting-tab {
+  border: 1px solid #ddd;
+  background: #f1f1f1;
+  color: #282A35;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 700;
+ }
 
-  .meeting-tab.active {
-    background: linear-gradient(135deg, #04AA6D, #059862);
-    color: white;
-    border-color: transparent;
-  }
+ .meeting-tab.active {
+  background: linear-gradient(135deg, #04AA6D, #059862);
+  color: white;
+  border-color: transparent;
+ }
 
-  .meeting-panel-content {
-    display: none;
-    gap: 1.5rem;
-  }
+ .meeting-panel-content {
+  display: none;
+  gap: 1.5rem;
+ }
 
-  .meeting-panel-content.active {
-    display: block;
-  }
+ .meeting-panel-content.active {
+  display: block;
+ }
 
-  .meeting-card {
-    padding: 1.5rem;
-    border-radius: 16px;
-    background: #f1f1f1;
-    border: 1px solid #ddd;
-    margin-bottom: 1rem;
-  }
+ .meeting-card {
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: #f1f1f1;
+  border: 1px solid #ddd;
+  margin-bottom: 1rem;
+ }
 
-  .meeting-card-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
+ .meeting-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+ }
 
-  .meeting-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-  }
+ .meeting-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+ }
 
-  .participant-card {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 14px;
-    padding: 1rem;
-    text-align: left;
-  }
+ .participant-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  padding: 1rem;
+  text-align: left;
+ }
 
-  .participant-card h4 {
-    margin: 0 0 0.5rem;
-    font-size: 1rem;
-  }
+ .participant-card h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+ }
 
-  .participant-status {
-    margin-top: 0.75rem;
-    font-size: 0.85rem;
-    color: #16a34a;
-  }
+ .participant-status {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #16a34a;
+ }
 
-  .meeting-actions {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
+ .meeting-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+ }
 
-  .meeting-actions .btn {
-    min-width: 140px;
-  }
+ .meeting-actions .btn {
+  min-width: 140px;
+ }
 
-  .meeting-create-panel {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
+ .meeting-create-panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+ }
 
-  .meeting-create-info {
-    background: #eef2ff;
-    padding: 1.25rem;
-    border-radius: 14px;
-    border: 1px solid #f3f3f3;
-  }
+ .meeting-create-info {
+  background: #eef2ff;
+  padding: 1.25rem;
+  border-radius: 14px;
+  border: 1px solid #f3f3f3;
+ }
 
-  .meeting-create-info h3 {
-    margin-top: 0;
-  }
+ .meeting-create-info h3 {
+  margin-top: 0;
+ }
 
 .dashboard-card h3 {
-  margin: 1rem 0 0.5rem;
-  color: #282A35;
+ margin: 1rem 0 0.5rem;
+ color: #282A35;
 }
 
 .dashboard-card p {
-  color: #666;
-  font-size: 0.95rem;
-  margin: 0.5rem 0 1.5rem;
-  flex-grow: 1;
+ color: #666;
+ font-size: 0.95rem;
+ margin: 0.5rem 0 1.5rem;
+ flex-grow: 1;
 }
 
 .card-btn {
-  align-self: center;
+ align-self: center;
 }
 </style>
 </head>
@@ -408,335 +408,335 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo"><i class="fas fa-graduation-cap"></i> Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
-    <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
-    <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
-    <span onclick="window.location.href='/meetings'"><i class="fas fa-video"></i> Meetings</span>
-    <% if (user.role === 'hr') { %><span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span><% } %>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
-    <form action="/logout" method="POST" style="display:inline;">
-      <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </form>
-  </div>
+ <div class="logo"><i class="fas fa-graduation-cap"></i> </div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
+  <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
+  <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+  <span onclick="window.location.href='/meetings'"><i class="fas fa-video"></i> Meetings</span>
+  <% if (user.role === 'hr') { %><span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span><% } %>
+  <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
+  <form action="/logout" method="POST" style="display:inline;">
+   <button type="submit" style="background:none;border:none;color:#ddd;cursor:pointer;font-weight:500;transition:var(--transition);" onmouseover="this.style.color='#04AA6D'" onmouseout="this.style.color='#ddd'"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </form>
+ </div>
 </nav>
 
 <div class="container">
-  <!-- WELCOME SECTION -->
-  <div class="welcome-section">
-    <h1><i class="fas fa-wave-hand"></i> Welcome back, <%= user.name %>!</h1>
-    <p>Navigate and explore your opportunities with Cloud AI</p>
-  </div>
+ <!-- WELCOME SECTION -->
+ <div class="welcome-section">
+  <h1><i class="fas fa-wave-hand"></i> Welcome back, <%= user.name %>!</h1>
+  <p>Navigate and explore your opportunities with </p>
+ </div>
 
-  <!-- QUICK STATS -->
-  <div class="dashboard-sidebar">
-    <h3><i class="fas fa-chart-bar"></i> Your Activity</h3>
-    <div class="quick-stats">
-      <div class="quick-stat">
-        <div class="quick-stat-number"><%= stats.applications %></div>
-        <div class="quick-stat-label">Applications</div>
-      </div>
-      <div class="quick-stat">
-        <div class="quick-stat-number"><%= stats.interviews %></div>
-        <div class="quick-stat-label">Interviews</div>
-      </div>
-      <div class="quick-stat">
-        <div class="quick-stat-number"><%= stats.offers %></div>
-        <div class="quick-stat-label">Completed</div>
-      </div>
-      <div class="quick-stat">
-        <div class="quick-stat-number"><%= stats.favorites %></div>
-        <div class="quick-stat-label">Favorites</div>
-      </div>
+ <!-- QUICK STATS -->
+ <div class="dashboard-sidebar">
+  <h3><i class="fas fa-chart-bar"></i> Your Activity</h3>
+  <div class="quick-stats">
+   <div class="quick-stat">
+    <div class="quick-stat-number"><%= stats.applications %></div>
+    <div class="quick-stat-label">Applications</div>
+   </div>
+   <div class="quick-stat">
+    <div class="quick-stat-number"><%= stats.interviews %></div>
+    <div class="quick-stat-label">Interviews</div>
+   </div>
+   <div class="quick-stat">
+    <div class="quick-stat-number"><%= stats.offers %></div>
+    <div class="quick-stat-label">Completed</div>
+   </div>
+   <div class="quick-stat">
+    <div class="quick-stat-number"><%= stats.favorites %></div>
+    <div class="quick-stat-label">Favorites</div>
+   </div>
+  </div>
+ </div>
+
+ <div class="insight-strip">
+  <% if (aiInsights && aiInsights.length) { %>
+   <% aiInsights.forEach((insight) => { %>
+    <div class="insight-card">
+     <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+     <div>
+      <h3><%= insight.title %></h3>
+      <p><%= insight.description %></p>
+     </div>
     </div>
+   <% }); %>
+  <% } else { %>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-bullseye"></i></div>
+    <div>
+     <h3><%= nextAction.title %></h3>
+     <p><%= nextAction.description %></p>
+    </div>
+   </div>
+   <div class="insight-card">
+    <div class="insight-icon"><i class="fas fa-percent"></i></div>
+    <div>
+     <h3>Profile completeness</h3>
+     <p><%= profileCompletion %>% complete</p>
+    </div>
+   </div>
+  <% } %>
+ </div>
+
+ <div class="-status <%= aiEnabled ? 'is-ready' : 'is-pending' %>">
+  <i class="fas fa-wand-magic-sparkles"></i>
+  <div><strong> interview coach</strong><p><%= aiEnabled ? 'Ready for answer evaluation, follow-up questions, and structured feedback.' : 'Available after the administrator connects the service.' %></p></div>
+  <a href="/practice" class="text-link">Open practice lab <i class="fas fa-arrow-right"></i></a>
+ </div>
+
+ <div class="-grid">
+  <% (cloudAiActions || []).forEach((item) => { %>
+   <div class="-card">
+    <span class="-badge"><i class="fas fa-wand-magic-sparkles"></i> </span>
+    <h3><%= item.title %></h3>
+    <p><%= item.description %></p>
+   </div>
+  <% }); %>
+ </div>
+
+ <div style="padding: 0 0 2rem;">
+   <h2 style="font-size: 1.8rem; margin-bottom: 2rem;"><i class="fas fa-th-large"></i> Priority actions</h2>
+   <div class="dashboard-grid">
+   <div class="dashboard-card" onclick="window.location.href='/jobs'">
+    <i class="fas fa-briefcase"></i>
+    <h3>Explore roles</h3>
+    <p>Review the strongest faculty and researcher opportunities matched to your profile.</p>
+    <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> View jobs</button>
+   </div>
+
+   <div class="dashboard-card" onclick="window.location.href='/profile'">
+    <i class="fas fa-user-circle"></i>
+    <h3>My profile</h3>
+    <p>Update academic background, experience, and career signals for better placement matching.</p>
+    <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Open profile</button>
+   </div>
+
+   <div class="dashboard-card" onclick="window.location.href='/practice'">
+    <i class="fas fa-robot"></i>
+    <h3> practice</h3>
+    <p>Run structured interview practice and sharpen your responses using AI-guided evaluation.</p>
+    <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Start practice</button>
+   </div>
+
+   <div class="dashboard-card" onclick="window.location.href='/favorites'">
+    <i class="fas fa-heart"></i>
+    <h3>Saved roles</h3>
+    <p>Track the opportunities you want to revisit, compare, and apply to later.</p>
+    <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Review saved</button>
+   </div>
+
+   <div class="dashboard-card" onclick="document.getElementById('resumeModal').style.display='block'">
+    <i class="fas fa-file-upload"></i>
+    <h3>Resume update</h3>
+    <p>Upload the latest CV and keep your application pipeline fresh for recruiters.</p>
+    <button class="btn btn-primary card-btn" type="button"><i class="fas fa-upload"></i> Upload resume</button>
+   </div>
+
+   <% if (user.role === 'admin') { %>
+   <div class="dashboard-card" onclick="window.location.href='/admin'">
+    <i class="fas fa-check-circle"></i>
+    <h3>Shortlisting</h3>
+    <p>Review applications, score quality, and move strong candidates forward.</p>
+    <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Manage candidates</button>
+   </div>
+   <% } %>
+   <% if (user.role === 'hr') { %>
+   <div class="dashboard-card" onclick="window.location.href='/office'">
+    <i class="fas fa-building"></i>
+    <h3>HR workspace</h3>
+    <p>Access shortlisted pipelines and a focused hiring overview for your team.</p>
+    <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Open workspace</button>
+   </div>
+   <% } %>
+  </div>
+ </div>
+
+ <% if (recommendations && recommendations.length) { %>
+ <div class="section" style="margin-top: 2rem; margin-bottom: 2rem;">
+  <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;"><i class="fas fa-sparkles"></i> Recommended for you</h2>
+  <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+   <% recommendations.forEach(job => { %>
+   <div class="recommendation-card">
+    <h4><%= job.title %></h4>
+    <div class="recommendation-meta"><i class="fas fa-school"></i> <%= job.university %></div>
+    <div class="recommendation-meta"><i class="fas fa-map-marker-alt"></i> <%= job.location %></div>
+    <div class="recommendation-meta"><i class="fas fa-rupee-sign"></i> <%= job.salary %></div>
+    <div class="recommendation-actions">
+     <a href="/job/<%= job.id %>" class="btn btn-primary" style="text-decoration:none;"><i class="fas fa-arrow-right"></i> View</a>
+    </div>
+   </div>
+   <% }); %>
+  </div>
+ </div>
+ <% } %>
+
+ <div class="meeting-panel">
+  <div class="meeting-panel-header">
+   <div>
+    <h2><i class="fas fa-video"></i> Interview Meetings</h2>
+    <p>Attend scheduled sessions from your dashboard.</p>
+   </div>
+   <% if (user.role === 'hr' || user.role === 'admin') { %>
+   <div class="meeting-tabs">
+    <button class="meeting-tab active" data-target="attend">Attend Meeting</button>
+    <button class="meeting-tab" data-target="create">Create Meeting Link</button>
+   </div>
+   <% } %>
   </div>
 
-  <div class="insight-strip">
-    <% if (aiInsights && aiInsights.length) { %>
-      <% aiInsights.forEach((insight) => { %>
-        <div class="insight-card">
-          <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-          <div>
-            <h3><%= insight.title %></h3>
-            <p><%= insight.description %></p>
-          </div>
-        </div>
-      <% }); %>
-    <% } else { %>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-bullseye"></i></div>
-        <div>
-          <h3><%= nextAction.title %></h3>
-          <p><%= nextAction.description %></p>
-        </div>
+  <div id="meeting-panel-attend" class="meeting-panel-content active">
+   <% if (meetings && meetings.length) { %>
+    <% meetings.forEach(meeting => { %>
+     <div class="meeting-card">
+      <div class="meeting-card-header">
+       <div>
+        <h3><%= meeting.job_title || 'Interview Meeting' %> <span style="font-size:0.9rem; color:#666; display:block;">(<%= meeting.university || 'University' %>)</span></h3>
+        <p><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></p>
+        <p><strong>Platform:</strong> <%= meeting.platform ? meeting.platform.toUpperCase() : 'JITSI' %></p>
+       </div>
+       <div class="attendance-actions">
+        <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
+        <% if (meeting.meeting_link) { %>
+        <a href="<%= meeting.meeting_link %>" target="_blank" class="btn btn-secondary" style="text-decoration:none;">Open Jitsi</a>
+        <% } %>
+       </div>
       </div>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-percent"></i></div>
-        <div>
-          <h3>Profile completeness</h3>
-          <p><%= profileCompletion %>% complete</p>
-        </div>
-      </div>
-    <% } %>
-  </div>
 
-  <div class="cloud-ai-status <%= aiEnabled ? 'is-ready' : 'is-pending' %>">
-    <i class="fas fa-wand-magic-sparkles"></i>
-    <div><strong>Cloud AI interview coach</strong><p><%= aiEnabled ? 'Ready for answer evaluation, follow-up questions, and structured feedback.' : 'Available after the administrator connects the cloud AI service.' %></p></div>
-    <a href="/practice" class="text-link">Open practice lab <i class="fas fa-arrow-right"></i></a>
-  </div>
-
-  <div class="cloud-ai-grid">
-    <% (cloudAiActions || []).forEach((item) => { %>
-      <div class="cloud-ai-card">
-        <span class="cloud-ai-badge"><i class="fas fa-wand-magic-sparkles"></i> Cloud AI</span>
-        <h3><%= item.title %></h3>
-        <p><%= item.description %></p>
+      <div class="meeting-row">
+       <% const attendees = meeting.participants && meeting.participants.length ? meeting.participants.slice(0, 3) : [
+          { name: meeting.candidate_name || 'Candidate', role: 'candidate', email: meeting.candidate_email },
+          { name: 'HR Representative', role: 'hr' },
+          { name: 'Admin', role: 'admin' }
+         ];
+         while (attendees.length < 3) attendees.push({ name: 'Pending participant', role: 'participant' });
+       %>
+       <% attendees.forEach(member => { %>
+       <div class="participant-card">
+        <h4><i class="fas fa-user-circle"></i> <%= member.name %></h4>
+        <p><strong>Role:</strong> <%= member.role ? member.role.charAt(0).toUpperCase() + member.role.slice(1) : 'Participant' %></p>
+        <% if (member.email) { %><p><strong>Email:</strong> <%= member.email %></p><% } %>
+        <div class="participant-status"><i class="fas fa-circle"></i> Active</div>
+       </div>
+       <% }); %>
       </div>
+     </div>
     <% }); %>
+   <% } else { %>
+    <div class="meeting-create-info">
+     <h3>No scheduled meetings found</h3>
+     <p>There are currently no upcoming interview meetings for your account. Use the create tab to start a new session or check your portal.</p>
+    </div>
+   <% } %>
   </div>
 
-  <div style="padding: 0 0 2rem;">
-      <h2 style="font-size: 1.8rem; margin-bottom: 2rem;"><i class="fas fa-th-large"></i> Priority actions</h2>
-      <div class="dashboard-grid">
-      <div class="dashboard-card" onclick="window.location.href='/jobs'">
-        <i class="fas fa-briefcase"></i>
-        <h3>Explore roles</h3>
-        <p>Review the strongest faculty and researcher opportunities matched to your profile.</p>
-        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> View jobs</button>
-      </div>
-
-      <div class="dashboard-card" onclick="window.location.href='/profile'">
-        <i class="fas fa-user-circle"></i>
-        <h3>My profile</h3>
-        <p>Update academic background, experience, and career signals for better placement matching.</p>
-        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Open profile</button>
-      </div>
-
-      <div class="dashboard-card" onclick="window.location.href='/practice'">
-        <i class="fas fa-robot"></i>
-        <h3>Cloud AI practice</h3>
-        <p>Run structured interview practice and sharpen your responses using AI-guided evaluation.</p>
-        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Start practice</button>
-      </div>
-
-      <div class="dashboard-card" onclick="window.location.href='/favorites'">
-        <i class="fas fa-heart"></i>
-        <h3>Saved roles</h3>
-        <p>Track the opportunities you want to revisit, compare, and apply to later.</p>
-        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Review saved</button>
-      </div>
-
-      <div class="dashboard-card" onclick="document.getElementById('resumeModal').style.display='block'">
-        <i class="fas fa-file-upload"></i>
-        <h3>Resume update</h3>
-        <p>Upload the latest CV and keep your application pipeline fresh for recruiters.</p>
-        <button class="btn btn-primary card-btn" type="button"><i class="fas fa-upload"></i> Upload resume</button>
-      </div>
-
-      <% if (user.role === 'admin') { %>
-      <div class="dashboard-card" onclick="window.location.href='/admin'">
-        <i class="fas fa-check-circle"></i>
-        <h3>Shortlisting</h3>
-        <p>Review applications, score quality, and move strong candidates forward.</p>
-        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Manage candidates</button>
-      </div>
-      <% } %>
-      <% if (user.role === 'hr') { %>
-      <div class="dashboard-card" onclick="window.location.href='/office'">
-        <i class="fas fa-building"></i>
-        <h3>HR workspace</h3>
-        <p>Access shortlisted pipelines and a focused hiring overview for your team.</p>
-        <button class="btn btn-primary card-btn"><i class="fas fa-arrow-right"></i> Open workspace</button>
-      </div>
-      <% } %>
+  <% if (user.role === 'hr' || user.role === 'admin') { %>
+  <div id="meeting-panel-create" class="meeting-panel-content">
+   <div class="meeting-create-panel">
+    <div class="meeting-create-info">
+     <h3>Create a new meeting link</h3>
+     <p>Schedule a Jitsi or custom meeting from your portal. Create and share links with candidates directly from the HR/Admin workspace.</p>
     </div>
-  </div>
-
-  <% if (recommendations && recommendations.length) { %>
-  <div class="section" style="margin-top: 2rem; margin-bottom: 2rem;">
-    <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;"><i class="fas fa-sparkles"></i> Recommended for you</h2>
-    <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-      <% recommendations.forEach(job => { %>
-      <div class="recommendation-card">
-        <h4><%= job.title %></h4>
-        <div class="recommendation-meta"><i class="fas fa-school"></i> <%= job.university %></div>
-        <div class="recommendation-meta"><i class="fas fa-map-marker-alt"></i> <%= job.location %></div>
-        <div class="recommendation-meta"><i class="fas fa-rupee-sign"></i> <%= job.salary %></div>
-        <div class="recommendation-actions">
-          <a href="/job/<%= job.id %>" class="btn btn-primary" style="text-decoration:none;"><i class="fas fa-arrow-right"></i> View</a>
-        </div>
-      </div>
-      <% }); %>
+    <div class="meeting-actions">
+     <button class="btn btn-primary" onclick="window.location.href='/meetings'">Open Meeting Center</button>
+     <button class="btn btn-secondary" onclick="window.location.href='/candidate/portal'">View Candidate Portal</button>
     </div>
+   </div>
   </div>
   <% } %>
+ </div>
 
-  <div class="meeting-panel">
-    <div class="meeting-panel-header">
-      <div>
-        <h2><i class="fas fa-video"></i> Interview Meetings</h2>
-        <p>Attend scheduled sessions from your dashboard.</p>
-      </div>
-      <% if (user.role === 'hr' || user.role === 'admin') { %>
-      <div class="meeting-tabs">
-        <button class="meeting-tab active" data-target="attend">Attend Meeting</button>
-        <button class="meeting-tab" data-target="create">Create Meeting Link</button>
-      </div>
-      <% } %>
+ <script>
+  document.querySelectorAll('.meeting-tab').forEach(tab => {
+   tab.addEventListener('click', () => {
+    document.querySelectorAll('.meeting-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.meeting-panel-content').forEach(panel => panel.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.getAttribute('data-target');
+    document.getElementById(`meeting-panel-${target}`).classList.add('active');
+   });
+  });
+ </script>
+
+ <div class="section" style="margin-top: 3rem; margin-bottom: 3rem;">
+  <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;"><i class="fas fa-star"></i> recommendations</h2>
+  <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+   <% if (recommendations && recommendations.length) { %>
+    <% recommendations.slice(0, 3).forEach(job => { %>
+     <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
+      <h4 style="color: #04AA6D; margin-top: 0;"><%= job.title %></h4>
+      <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-school"></i> <%= job.university %></p>
+      <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-map-marker-alt"></i> <%= job.location %></p>
+      <p style="font-weight: 600; margin: 1rem 0; color: #04AA6D;"><i class="fas fa-indian-rupee"></i> <%= job.salary %></p>
+      <a href="/job/<%= job.id %>" class="btn btn-primary" style="width: 100%; text-decoration: none; text-align: center;"><i class="fas fa-arrow-right"></i> View details</a>
+     </div>
+    <% }); %>
+   <% } else { %>
+    <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
+     <h4 style="color: #04AA6D; margin-top: 0;">Profile optimization</h4>
+     <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-user-check"></i> Improve your research profile to unlock more relevant roles.</p>
+     <p style="font-weight: 600; margin: 1rem 0; color: #04AA6D;"><i class="fas fa-brain"></i> AI suggests a stronger academic positioning.</p>
+     <a href="/profile" class="btn btn-primary" style="width: 100%; text-decoration: none; text-align: center;"><i class="fas fa-arrow-right"></i> Update profile</a>
     </div>
-
-    <div id="meeting-panel-attend" class="meeting-panel-content active">
-      <% if (meetings && meetings.length) { %>
-        <% meetings.forEach(meeting => { %>
-          <div class="meeting-card">
-            <div class="meeting-card-header">
-              <div>
-                <h3><%= meeting.job_title || 'Interview Meeting' %> <span style="font-size:0.9rem; color:#666; display:block;">(<%= meeting.university || 'University' %>)</span></h3>
-                <p><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></p>
-                <p><strong>Platform:</strong> <%= meeting.platform ? meeting.platform.toUpperCase() : 'JITSI' %></p>
-              </div>
-              <div class="attendance-actions">
-                <a href="/meeting/<%= meeting.id %>/join-redirect" class="btn btn-primary" style="text-decoration:none;">Join Meeting</a>
-                <% if (meeting.meeting_link) { %>
-                <a href="<%= meeting.meeting_link %>" target="_blank" class="btn btn-secondary" style="text-decoration:none;">Open Jitsi</a>
-                <% } %>
-              </div>
-            </div>
-
-            <div class="meeting-row">
-              <% const attendees = meeting.participants && meeting.participants.length ? meeting.participants.slice(0, 3) : [
-                   { name: meeting.candidate_name || 'Candidate', role: 'candidate', email: meeting.candidate_email },
-                   { name: 'HR Representative', role: 'hr' },
-                   { name: 'Admin', role: 'admin' }
-                 ];
-                 while (attendees.length < 3) attendees.push({ name: 'Pending participant', role: 'participant' });
-              %>
-              <% attendees.forEach(member => { %>
-              <div class="participant-card">
-                <h4><i class="fas fa-user-circle"></i> <%= member.name %></h4>
-                <p><strong>Role:</strong> <%= member.role ? member.role.charAt(0).toUpperCase() + member.role.slice(1) : 'Participant' %></p>
-                <% if (member.email) { %><p><strong>Email:</strong> <%= member.email %></p><% } %>
-                <div class="participant-status"><i class="fas fa-circle"></i> Active</div>
-              </div>
-              <% }); %>
-            </div>
-          </div>
-        <% }); %>
-      <% } else { %>
-        <div class="meeting-create-info">
-          <h3>No scheduled meetings found</h3>
-          <p>There are currently no upcoming interview meetings for your account. Use the create tab to start a new session or check your portal.</p>
-        </div>
-      <% } %>
-    </div>
-
-    <% if (user.role === 'hr' || user.role === 'admin') { %>
-    <div id="meeting-panel-create" class="meeting-panel-content">
-      <div class="meeting-create-panel">
-        <div class="meeting-create-info">
-          <h3>Create a new meeting link</h3>
-          <p>Schedule a Jitsi or custom meeting from your portal. Create and share links with candidates directly from the HR/Admin workspace.</p>
-        </div>
-        <div class="meeting-actions">
-          <button class="btn btn-primary" onclick="window.location.href='/meetings'">Open Meeting Center</button>
-          <button class="btn btn-secondary" onclick="window.location.href='/candidate/portal'">View Candidate Portal</button>
-        </div>
-      </div>
-    </div>
-    <% } %>
+   <% } %>
   </div>
-
-  <script>
-    document.querySelectorAll('.meeting-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.meeting-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.meeting-panel-content').forEach(panel => panel.classList.remove('active'));
-        tab.classList.add('active');
-        const target = tab.getAttribute('data-target');
-        document.getElementById(`meeting-panel-${target}`).classList.add('active');
-      });
-    });
-  </script>
-
-  <div class="section" style="margin-top: 3rem; margin-bottom: 3rem;">
-    <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;"><i class="fas fa-star"></i> Cloud AI recommendations</h2>
-    <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-      <% if (recommendations && recommendations.length) { %>
-        <% recommendations.slice(0, 3).forEach(job => { %>
-          <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
-            <h4 style="color: #04AA6D; margin-top: 0;"><%= job.title %></h4>
-            <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-school"></i> <%= job.university %></p>
-            <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-map-marker-alt"></i> <%= job.location %></p>
-            <p style="font-weight: 600; margin: 1rem 0; color: #04AA6D;"><i class="fas fa-indian-rupee"></i> <%= job.salary %></p>
-            <a href="/job/<%= job.id %>" class="btn btn-primary" style="width: 100%; text-decoration: none; text-align: center;"><i class="fas fa-arrow-right"></i> View details</a>
-          </div>
-        <% }); %>
-      <% } else { %>
-        <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
-          <h4 style="color: #04AA6D; margin-top: 0;">Profile optimization</h4>
-          <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-user-check"></i> Improve your research profile to unlock more relevant roles.</p>
-          <p style="font-weight: 600; margin: 1rem 0; color: #04AA6D;"><i class="fas fa-brain"></i> AI suggests a stronger academic positioning.</p>
-          <a href="/profile" class="btn btn-primary" style="width: 100%; text-decoration: none; text-align: center;"><i class="fas fa-arrow-right"></i> Update profile</a>
-        </div>
-      <% } %>
-    </div>
-  </div>
+ </div>
 </div>
 
 <!-- RESUME UPLOAD MODAL -->
 <div id="resumeModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
-  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-2xl); width: 90%; max-width: 500px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-      <h3 style="margin: 0; color: #282A35;"><i class="fas fa-file-upload"></i> Upload Your Resume</h3>
-      <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">&times;</button>
-    </div>
-    
-    <form action="/profile/resume" method="POST" enctype="multipart/form-data">
-      <div style="margin-bottom: 1.5rem;">
-        <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #111;">
-          <i class="fas fa-file-upload"></i> Select Resume File
-        </label>
-        <input type="file" id="resume" name="resume" accept=".pdf,image/*" required 
-               style="width: 100%; padding: 1rem; border: 2px dashed #ddd; border-radius: 8px; background: #f1f1f1; transition: var(--transition); cursor: pointer;">
-        <small style="color: #666; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
-          <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, JPG, PNG
-        </small>
-      </div>
-      
-      <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-        <button type="button" onclick="document.getElementById('resumeModal').style.display='none'" 
-                style="padding: 0.75rem 1.5rem; background: #f3f4f6; color: #374151; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
-          Cancel
-        </button>
-        <button type="submit" class="btn btn-primary" style="border: none;">
-          <i class="fas fa-upload"></i> Upload Resume
-        </button>
-      </div>
-    </form>
+ <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow-2xl); width: 90%; max-width: 500px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+   <h3 style="margin: 0; color: #282A35;"><i class="fas fa-file-upload"></i> Upload Your Resume</h3>
+   <button onclick="document.getElementById('resumeModal').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">&times;</button>
   </div>
+  
+  <form action="/profile/resume" method="POST" enctype="multipart/form-data">
+   <div style="margin-bottom: 1.5rem;">
+    <label for="resume" style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #111;">
+     <i class="fas fa-file-upload"></i> Select Resume File
+    </label>
+    <input type="file" id="resume" name="resume" accept=".pdf,image/*" required 
+        style="width: 100%; padding: 1rem; border: 2px dashed #ddd; border-radius: 8px; background: #f1f1f1; transition: var(--transition); cursor: pointer;">
+    <small style="color: #666; font-size: 0.85rem; margin-top: 0.5rem; display: block;">
+     <i class="fas fa-info-circle"></i> Maximum file size: 5MB. Accepted formats: PDF, JPG, PNG
+    </small>
+   </div>
+   
+   <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+    <button type="button" onclick="document.getElementById('resumeModal').style.display='none'" 
+        style="padding: 0.75rem 1.5rem; background: #f3f4f6; color: #374151; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+     Cancel
+    </button>
+    <button type="submit" class="btn btn-primary" style="border: none;">
+     <i class="fas fa-upload"></i> Upload Resume
+    </button>
+   </div>
+  </form>
+ </div>
 </div>
 
 <script>
 // Close modal when clicking outside
 window.onclick = function(event) {
-  const modal = document.getElementById('resumeModal');
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+ const modal = document.getElementById('resumeModal');
+ if (event.target == modal) {
+  modal.style.display = "none";
+ }
 }
 
 // File input styling
 const resumeInput = document.getElementById('resume');
 if (resumeInput) {
-  resumeInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-      // You could add file validation here
-      console.log('Selected file:', file.name);
-    }
-  });
+ resumeInput.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+   // You could add file validation here
+   console.log('Selected file:', file.name);
+  }
+ });
 }
 </script>
 

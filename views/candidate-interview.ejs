@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interview - Cloud AI</title>
+<title>Interview </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
 :root {
-  --primary: #0f766e;
-  --primary-dark: #0b5b55;
-  --secondary: #047857;
-  --accent: #f59e0b;
-  --surface: #ffffff;
-  --surface-soft: #f3fbf8;
-  --border: #d7f3e8;
-  --text: #122033;
-  --muted: #4b5563;
+ --primary: #0f766e;
+ --primary-dark: #0b5b55;
+ --secondary: #047857;
+ --accent: #f59e0b;
+ --surface: #ffffff;
+ --surface-soft: #f3fbf8;
+ --border: #d7f3e8;
+ --text: #122033;
+ --muted: #4b5563;
 }
 body { font-family: 'DM Sans', sans-serif; background: transparent; color: var(--text); margin: 0; }
 nav { background: linear-gradient(135deg, #0f766e 0%, #047857 100%); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 24px rgba(15, 118, 110, 0.15); }
@@ -47,85 +47,85 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; border: 1p
 </head>
 <body>
 <nav>
-  <div class="logo">Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'">Dashboard</span>
-    <span onclick="window.location.href='/jobs'">Jobs</span>
-    <span onclick="window.location.href='/profile'">Profile</span>
-    <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
-    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
-  </div>
+ <div class="logo"></div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/dashboard'">Dashboard</span>
+  <span onclick="window.location.href='/jobs'">Jobs</span>
+  <span onclick="window.location.href='/profile'">Profile</span>
+  <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'">Admin</span><% } %>
+  <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+ </div>
 </nav>
 
 <div style="padding:20px;" id="interviewContent">
-  <h1>Software AI Interview Coach</h1>
-  <p>Practice a real software-hiring interview for <%= job_title %>. The AI asks technical questions, scores your responses, and can follow up with deeper prompts.</p>
+ <h1>Software AI Interview Coach</h1>
+ <p>Practice a real software-hiring interview for <%= job_title %>. The AI asks technical questions, scores your responses, and can follow up with deeper prompts.</p>
 
-  <div class="media-controls">
-    <button class="media-btn active" id="cam-toggle" onclick="toggleCandidateCamera()">📹 Camera</button>
-    <button class="media-btn active" id="mic-toggle" onclick="toggleCandidateMic()">🎤 Microphone</button>
+ <div class="media-controls">
+  <button class="media-btn active" id="cam-toggle" onclick="toggleCandidateCamera()">📹 Camera</button>
+  <button class="media-btn active" id="mic-toggle" onclick="toggleCandidateMic()">🎤 Microphone</button>
+ </div>
+
+ <div class="reference-box">
+  <h3>Software Interview Training Reference</h3>
+  <p>Use W3Schools, GeeksforGeeks, MDN, and freeCodeCamp to prepare for software interview topics such as JavaScript, Python, Java, SQL, data structures, API design, and debugging.</p>
+  <p><a href="https://www.w3schools.com/" target="_blank">Visit W3Schools</a> · <a href="https://www.geeksforgeeks.org/" target="_blank">GeeksforGeeks</a> · <a href="https://developer.mozilla.org/" target="_blank">MDN</a></p>
+ </div>
+ <div class="sample-mcq">
+  <h3>Sample MCQ practice</h3>
+  <p>Select a field and review a few sample multiple-choice questions before your interview.</p>
+  <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; margin-top:0.75rem;">
+   <label for="sampleField" style="font-weight:600; color:#111;">Field:</label>
+   <select id="sampleField">
+    <option value="DSA" <%= job_category && job_category.toLowerCase().includes('computer science') ? 'selected' : '' %>>DSA</option>
+    <option value="Python" <%= job_category && job_category.toLowerCase().includes('python') ? 'selected' : '' %>>Python</option>
+    <option value="Java" <%= job_category && job_category.toLowerCase().includes('java') ? 'selected' : '' %>>Java</option>
+    <option value="JavaScript" <%= job_category && job_category.toLowerCase().includes('javascript') ? 'selected' : '' %>>JavaScript</option>
+    <option value="Software Engineering" <%= job_category && job_category.toLowerCase().includes('software') ? 'selected' : '' %>>Software Engineering</option>
+    <option value="Web Development" <%= job_category && job_category.toLowerCase().includes('web') ? 'selected' : '' %>>Web Development</option>
+    <option value="HTML" <%= job_category && job_category.toLowerCase().includes('html') ? 'selected' : '' %>>HTML</option>
+    <option value="CSS" <%= job_category && job_category.toLowerCase().includes('css') ? 'selected' : '' %>>CSS</option>
+    <option value="SQL" <%= job_category && job_category.toLowerCase().includes('sql') ? 'selected' : '' %>>SQL</option>
+    <option value="C" <%= job_category && job_category.toLowerCase().includes('c') ? 'selected' : '' %>>C</option>
+    <option value="C++" <%= job_category && job_category.toLowerCase().includes('c++') ? 'selected' : '' %>>C++</option>
+    <option value="PHP" <%= job_category && job_category.toLowerCase().includes('php') ? 'selected' : '' %>>PHP</option>
+   </select>
+   <button class="btn" type="button" onclick="showSampleMCQs()">Show Sample MCQs</button>
   </div>
+  <div id="sampleMCQContainer" class="sample-mcq-list"></div>
+ </div>
 
-  <div class="reference-box">
-    <h3>Software Interview Training Reference</h3>
-    <p>Use W3Schools, GeeksforGeeks, MDN, and freeCodeCamp to prepare for software interview topics such as JavaScript, Python, Java, SQL, data structures, API design, and debugging.</p>
-    <p><a href="https://www.w3schools.com/" target="_blank">Visit W3Schools</a> · <a href="https://www.geeksforgeeks.org/" target="_blank">GeeksforGeeks</a> · <a href="https://developer.mozilla.org/" target="_blank">MDN</a></p>
+ <div class="question" id="codingRound">
+  <h3>Coding Round</h3>
+  <p>Type a simple code example inspired by W3Schools. Create a working HTML page with a button that displays an alert when clicked.</p>
+  <textarea id="codingAnswer" placeholder="Type your code here..."></textarea>
+  <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; margin-top:0.5rem;">
+   <button class="btn" type="button" onclick="loadSampleCode()">Load W3Schools Example</button>
+   <button class="btn" type="button" onclick="runCode()">Run Code</button>
+   <button class="btn" type="button" onclick="submitCodingRound()">Submit Coding Round</button>
   </div>
-  <div class="sample-mcq">
-    <h3>Sample MCQ practice</h3>
-    <p>Select a field and review a few sample multiple-choice questions before your interview.</p>
-    <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; margin-top:0.75rem;">
-      <label for="sampleField" style="font-weight:600; color:#111;">Field:</label>
-      <select id="sampleField">
-        <option value="DSA" <%= job_category && job_category.toLowerCase().includes('computer science') ? 'selected' : '' %>>DSA</option>
-        <option value="Python" <%= job_category && job_category.toLowerCase().includes('python') ? 'selected' : '' %>>Python</option>
-        <option value="Java" <%= job_category && job_category.toLowerCase().includes('java') ? 'selected' : '' %>>Java</option>
-        <option value="JavaScript" <%= job_category && job_category.toLowerCase().includes('javascript') ? 'selected' : '' %>>JavaScript</option>
-        <option value="Software Engineering" <%= job_category && job_category.toLowerCase().includes('software') ? 'selected' : '' %>>Software Engineering</option>
-        <option value="Web Development" <%= job_category && job_category.toLowerCase().includes('web') ? 'selected' : '' %>>Web Development</option>
-        <option value="HTML" <%= job_category && job_category.toLowerCase().includes('html') ? 'selected' : '' %>>HTML</option>
-        <option value="CSS" <%= job_category && job_category.toLowerCase().includes('css') ? 'selected' : '' %>>CSS</option>
-        <option value="SQL" <%= job_category && job_category.toLowerCase().includes('sql') ? 'selected' : '' %>>SQL</option>
-        <option value="C" <%= job_category && job_category.toLowerCase().includes('c') ? 'selected' : '' %>>C</option>
-        <option value="C++" <%= job_category && job_category.toLowerCase().includes('c++') ? 'selected' : '' %>>C++</option>
-        <option value="PHP" <%= job_category && job_category.toLowerCase().includes('php') ? 'selected' : '' %>>PHP</option>
-      </select>
-      <button class="btn" type="button" onclick="showSampleMCQs()">Show Sample MCQs</button>
-    </div>
-    <div id="sampleMCQContainer" class="sample-mcq-list"></div>
+  <div id="codingResult" class="score" style="margin-top:0.75rem;"></div>
+  <div id="codingPreview" style="background:#ffffff; border:1px solid #ddd; padding:18px; border-radius:12px; margin-top:18px;">
+   <h4 style="margin-top:0;">Live Preview</h4>
+   <iframe id="codePreviewFrame" sandbox="allow-scripts" style="width:100%; min-height:250px; border:1px solid #ddd; border-radius:10px;"></iframe>
   </div>
+ </div>
 
-  <div class="question" id="codingRound">
-    <h3>Coding Round</h3>
-    <p>Type a simple code example inspired by W3Schools. Create a working HTML page with a button that displays an alert when clicked.</p>
-    <textarea id="codingAnswer" placeholder="Type your code here..."></textarea>
-    <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; margin-top:0.5rem;">
-      <button class="btn" type="button" onclick="loadSampleCode()">Load W3Schools Example</button>
-      <button class="btn" type="button" onclick="runCode()">Run Code</button>
-      <button class="btn" type="button" onclick="submitCodingRound()">Submit Coding Round</button>
-    </div>
-    <div id="codingResult" class="score" style="margin-top:0.75rem;"></div>
-    <div id="codingPreview" style="background:#ffffff; border:1px solid #ddd; padding:18px; border-radius:12px; margin-top:18px;">
-      <h4 style="margin-top:0;">Live Preview</h4>
-      <iframe id="codePreviewFrame" sandbox="allow-scripts" style="width:100%; min-height:250px; border:1px solid #ddd; border-radius:10px;"></iframe>
-    </div>
+ <div class="progress">
+  <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+ </div>
+
+ <% questions.forEach((q, index) => { %>
+  <div class="question" id="question<%= index %>">
+   <h3>Question <%= index + 1 %>: <%= q.question %></h3>
+   <textarea id="answer<%= q.id %>" placeholder="Type or speak your answer..."><%= q.answer || '' %></textarea>
+   <button class="btn voice-btn" onclick="startVoice(<%= q.id %>)">🎤 Voice Input</button>
+   <button class="btn" onclick="submitAnswer(<%= q.id %>, <%= index %>)">Submit Answer</button>
+   <div class="score"><% if (q.score !== null) { %>Score: <%= q.score %>%<% } %></div>
   </div>
+ <% }); %>
 
-  <div class="progress">
-    <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
-  </div>
-
-  <% questions.forEach((q, index) => { %>
-    <div class="question" id="question<%= index %>">
-      <h3>Question <%= index + 1 %>: <%= q.question %></h3>
-      <textarea id="answer<%= q.id %>" placeholder="Type or speak your answer..."><%= q.answer || '' %></textarea>
-      <button class="btn voice-btn" onclick="startVoice(<%= q.id %>)">🎤 Voice Input</button>
-      <button class="btn" onclick="submitAnswer(<%= q.id %>, <%= index %>)">Submit Answer</button>
-      <div class="score"><% if (q.score !== null) { %>Score: <%= q.score %>%<% } %></div>
-    </div>
-  <% }); %>
-
-  <button class="btn" id="completeBtn" onclick="completeInterview()" style="display:none;">Complete Interview</button>
+ <button class="btn" id="completeBtn" onclick="completeInterview()" style="display:none;">Complete Interview</button>
 </div>
 
 <script>
@@ -135,218 +135,218 @@ let codingCompleted = false;
 let totalQuestions = <%= questions.length %>;
 
 function updateProgress() {
-  const completed = answeredCount + (codingCompleted ? 1 : 0);
-  const total = totalQuestions + 1;
-  const progress = Math.round((completed / total) * 100);
-  document.getElementById('progressBar').style.width = progress + '%';
-  if (completed === total) {
-    document.getElementById('completeBtn').style.display = 'block';
-  }
+ const completed = answeredCount + (codingCompleted ? 1 : 0);
+ const total = totalQuestions + 1;
+ const progress = Math.round((completed / total) * 100);
+ document.getElementById('progressBar').style.width = progress + '%';
+ if (completed === total) {
+  document.getElementById('completeBtn').style.display = 'block';
+ }
 }
 
 function startVoice(questionId) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    alert('Voice recognition not supported in this browser.');
-    return;
-  }
+ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+ if (!SpeechRecognition) {
+  alert('Voice recognition not supported in this browser.');
+  return;
+ }
 
-  recognition = new SpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  recognition.lang = 'en-US';
+ recognition = new SpeechRecognition();
+ recognition.continuous = false;
+ recognition.interimResults = false;
+ recognition.lang = 'en-US';
 
-  recognition.onresult = function(event) {
-    const transcript = event.results[0][0].transcript;
-    document.getElementById('answer' + questionId).value = transcript;
-  };
+ recognition.onresult = function(event) {
+  const transcript = event.results[0][0].transcript;
+  document.getElementById('answer' + questionId).value = transcript;
+ };
 
-  recognition.start();
+ recognition.start();
 }
 
 function submitAnswer(questionId, questionIndex) {
-  const answer = document.getElementById('answer' + questionId).value;
-  if (!answer.trim()) {
-    alert('Please provide an answer.');
-    return;
+ const answer = document.getElementById('answer' + questionId).value;
+ if (!answer.trim()) {
+  alert('Please provide an answer.');
+  return;
+ }
+
+ fetch('/candidate-interview/<%= interviewId %>/answer', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ questionId, answer })
+ })
+ .then(res => res.json())
+ .then(data => {
+  alert('Answer submitted. Score: ' + data.score + '%');
+  document.querySelector('#question' + questionIndex + ' .score').innerHTML = 'Score: ' + data.score + '%';
+  answeredCount++;
+  updateProgress();
+  document.getElementById('question' + questionIndex).style.opacity = '0.5';
+
+  if (data.followUp) {
+   totalQuestions++;
+   addFollowUpQuestion(data.followUp, totalQuestions);
   }
-
-  fetch('/candidate-interview/<%= interviewId %>/answer', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ questionId, answer })
-  })
-  .then(res => res.json())
-  .then(data => {
-    alert('Answer submitted. Score: ' + data.score + '%');
-    document.querySelector('#question' + questionIndex + ' .score').innerHTML = 'Score: ' + data.score + '%';
-    answeredCount++;
-    updateProgress();
-    document.getElementById('question' + questionIndex).style.opacity = '0.5';
-
-    if (data.followUp) {
-      totalQuestions++;
-      addFollowUpQuestion(data.followUp, totalQuestions);
-    }
-  });
+ });
 }
 
 function submitCodingRound() {
-  const code = document.getElementById('codingAnswer').value;
-  if (!code.trim()) {
-    alert('Please type your coding answer before submitting.');
-    return;
-  }
+ const code = document.getElementById('codingAnswer').value;
+ if (!code.trim()) {
+  alert('Please type your coding answer before submitting.');
+  return;
+ }
 
-  const score = gradeCodingAnswer(code);
-  codingCompleted = true;
-  document.getElementById('codingResult').innerText = `Coding round submitted. Score: ${score}%`;
-  document.getElementById('codingAnswer').style.borderColor = '#0f766e';
-  updateProgress();
+ const score = gradeCodingAnswer(code);
+ codingCompleted = true;
+ document.getElementById('codingResult').innerText = `Coding round submitted. Score: ${score}%`;
+ document.getElementById('codingAnswer').style.borderColor = '#0f766e';
+ updateProgress();
 }
 
 function gradeCodingAnswer(code) {
-  let score = 0;
-  const lowerCode = code.toLowerCase();
-  if (lowerCode.includes('<button')) score += 25;
-  if (lowerCode.includes('onclick')) score += 25;
-  if (lowerCode.includes('alert(') || lowerCode.includes('window.alert(')) score += 25;
-  if (lowerCode.includes('<script') || lowerCode.includes('function')) score += 25;
-  if (code.trim().length > 150) score += 10;
-  return Math.min(score, 100);
+ let score = 0;
+ const lowerCode = code.toLowerCase();
+ if (lowerCode.includes('<button')) score += 25;
+ if (lowerCode.includes('onclick')) score += 25;
+ if (lowerCode.includes('alert(') || lowerCode.includes('window.alert(')) score += 25;
+ if (lowerCode.includes('<script') || lowerCode.includes('function')) score += 25;
+ if (code.trim().length > 150) score += 10;
+ return Math.min(score, 100);
 }
 
 function runCode() {
-  const code = document.getElementById('codingAnswer').value;
-  if (!code.trim()) {
-    alert('Please write some code first to preview.');
-    return;
-  }
+ const code = document.getElementById('codingAnswer').value;
+ if (!code.trim()) {
+  alert('Please write some code first to preview.');
+  return;
+ }
 
-  const iframe = document.getElementById('codePreviewFrame');
-  iframe.srcdoc = code.includes('<html') ? code : `<html><body>${code}</body></html>`;
+ const iframe = document.getElementById('codePreviewFrame');
+ iframe.srcdoc = code.includes('<html') ? code : `<html><body>${code}</body></html>`;
 }
 
 function loadSampleCode() {
-  const sample = `<!DOCTYPE html>
+ const sample = `<!DOCTYPE html>
 <html>
 <head>
-  <title>W3Schools Button Example</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; }
-    .btn-sample { padding: 12px 22px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; }
-  </style>
+ <title>W3Schools Button Example</title>
+ <style>
+  body { font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; }
+  .btn-sample { padding: 12px 22px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; }
+ </style>
 </head>
 <body>
-  <h2>W3Schools-style Button Example</h2>
-  <button class="btn-sample" onclick="showMessage()">Click me</button>
-  <script>
-    function showMessage() {
-      alert('Hello! This code uses a button event from W3Schools.');
-    }
-  </script>
+ <h2>W3Schools-style Button Example</h2>
+ <button class="btn-sample" onclick="showMessage()">Click me</button>
+ <script>
+  function showMessage() {
+   alert('Hello! This code uses a button event from W3Schools.');
+  }
+ </script>
 </body>
 </html>`;
-  document.getElementById('codingAnswer').value = sample;
-  document.getElementById('codePreviewFrame').srcdoc = sample;
+ document.getElementById('codingAnswer').value = sample;
+ document.getElementById('codePreviewFrame').srcdoc = sample;
 }
 
 function addFollowUpQuestion(followUp, questionIndex) {
-  const questionDiv = document.createElement('div');
-  questionDiv.className = 'question';
-  questionDiv.id = 'question' + questionIndex;
-  questionDiv.innerHTML = `
-    <h3>Follow-up Question: ${followUp.question}</h3>
-    <textarea id="answer${followUp.id}" placeholder="Type or speak your answer..."></textarea>
-    <button class="btn voice-btn" onclick="startVoice(${followUp.id})">🎤 Voice Input</button>
-    <button class="btn" onclick="submitAnswer(${followUp.id}, ${questionIndex})">Submit Answer</button>
-    <div class="score"></div>
-  `;
-  document.getElementById('interviewContent').appendChild(questionDiv);
+ const questionDiv = document.createElement('div');
+ questionDiv.className = 'question';
+ questionDiv.id = 'question' + questionIndex;
+ questionDiv.innerHTML = `
+  <h3>Follow-up Question: ${followUp.question}</h3>
+  <textarea id="answer${followUp.id}" placeholder="Type or speak your answer..."></textarea>
+  <button class="btn voice-btn" onclick="startVoice(${followUp.id})">🎤 Voice Input</button>
+  <button class="btn" onclick="submitAnswer(${followUp.id}, ${questionIndex})">Submit Answer</button>
+  <div class="score"></div>
+ `;
+ document.getElementById('interviewContent').appendChild(questionDiv);
 }
 
 function showSampleMCQs() {
-  const field = document.getElementById('sampleField').value;
-  const sampleMCQs = {
-    DSA: [
-      { question: 'What is the average-case time complexity of quicksort?', choices: ['O(n)', 'O(log n)', 'O(n log n)', 'O(n^2)'], answer: 2 },
-      { question: 'Which data structure is best for implementing a LIFO order?', choices: ['Queue', 'Stack', 'Heap', 'Graph'], answer: 1 }
-    ],
-    Python: [
-      { question: 'Which keyword is used to define a function in Python?', choices: ['func', 'define', 'def', 'function'], answer: 2 },
-      { question: 'Which data type is immutable in Python?', choices: ['List', 'Dictionary', 'Tuple', 'Set'], answer: 2 }
-    ],
-    Java: [
-      { question: 'Which of these is a valid Java access modifier?', choices: ['public', 'protected', 'private', 'All of the above'], answer: 3 },
-      { question: 'Which keyword is used to inherit a class in Java?', choices: ['extends', 'implements', 'inherits', 'uses'], answer: 0 }
-    ],
-    'Software Engineering': [
-      { question: 'What is the difference between a stack and a queue in software design?', choices: ['Both are FIFO', 'Stack is LIFO and queue is FIFO', 'Queue is LIFO and stack is FIFO', 'Both are LIFO'], answer: 1 },
-      { question: 'Which practice best improves maintainability in a growing codebase?', choices: ['Writing code without tests', 'Refactoring and modular design', 'Avoiding comments', 'Hard-coding values'], answer: 1 }
-    ],
-    'Web Development': [
-      { question: 'Which HTML attribute specifies the destination of a link?', choices: ['src', 'href', 'alt', 'class'], answer: 1 },
-      { question: 'What does CSS Flexbox help with?', choices: ['Database storage', 'Layout alignment', 'Server-side rendering', 'Encryption'], answer: 1 }
-    ]
-  };
+ const field = document.getElementById('sampleField').value;
+ const sampleMCQs = {
+  DSA: [
+   { question: 'What is the average-case time complexity of quicksort?', choices: ['O(n)', 'O(log n)', 'O(n log n)', 'O(n^2)'], answer: 2 },
+   { question: 'Which data structure is best for implementing a LIFO order?', choices: ['Queue', 'Stack', 'Heap', 'Graph'], answer: 1 }
+  ],
+  Python: [
+   { question: 'Which keyword is used to define a function in Python?', choices: ['func', 'define', 'def', 'function'], answer: 2 },
+   { question: 'Which data type is immutable in Python?', choices: ['List', 'Dictionary', 'Tuple', 'Set'], answer: 2 }
+  ],
+  Java: [
+   { question: 'Which of these is a valid Java access modifier?', choices: ['public', 'protected', 'private', 'All of the above'], answer: 3 },
+   { question: 'Which keyword is used to inherit a class in Java?', choices: ['extends', 'implements', 'inherits', 'uses'], answer: 0 }
+  ],
+  'Software Engineering': [
+   { question: 'What is the difference between a stack and a queue in software design?', choices: ['Both are FIFO', 'Stack is LIFO and queue is FIFO', 'Queue is LIFO and stack is FIFO', 'Both are LIFO'], answer: 1 },
+   { question: 'Which practice best improves maintainability in a growing codebase?', choices: ['Writing code without tests', 'Refactoring and modular design', 'Avoiding comments', 'Hard-coding values'], answer: 1 }
+  ],
+  'Web Development': [
+   { question: 'Which HTML attribute specifies the destination of a link?', choices: ['src', 'href', 'alt', 'class'], answer: 1 },
+   { question: 'What does CSS Flexbox help with?', choices: ['Database storage', 'Layout alignment', 'Server-side rendering', 'Encryption'], answer: 1 }
+  ]
+ };
 
-  const container = document.getElementById('sampleMCQContainer');
-  container.innerHTML = '';
-  const selectedQuestions = sampleMCQs[field] || sampleMCQs.DSA;
+ const container = document.getElementById('sampleMCQContainer');
+ container.innerHTML = '';
+ const selectedQuestions = sampleMCQs[field] || sampleMCQs.DSA;
 
-  selectedQuestions.forEach((item, index) => {
-    const questionEl = document.createElement('div');
-    questionEl.className = 'sample-mcq-question';
-    questionEl.innerHTML = `<strong>Q${index + 1}.</strong> ${item.question}`;
-    item.choices.forEach((choice, idx) => {
-      const label = document.createElement('label');
-      label.className = 'sample-mcq-option';
-      label.innerHTML = `<input type="radio" name="mcq${index}" value="${idx}"> ${choice}`;
-      questionEl.appendChild(label);
-    });
-    container.appendChild(questionEl);
+ selectedQuestions.forEach((item, index) => {
+  const questionEl = document.createElement('div');
+  questionEl.className = 'sample-mcq-question';
+  questionEl.innerHTML = `<strong>Q${index + 1}.</strong> ${item.question}`;
+  item.choices.forEach((choice, idx) => {
+   const label = document.createElement('label');
+   label.className = 'sample-mcq-option';
+   label.innerHTML = `<input type="radio" name="mcq${index}" value="${idx}"> ${choice}`;
+   questionEl.appendChild(label);
   });
+  container.appendChild(questionEl);
+ });
 
-  const gradeBtn = document.createElement('button');
-  gradeBtn.className = 'btn';
-  gradeBtn.type = 'button';
-  gradeBtn.textContent = 'Check Answers';
-  gradeBtn.onclick = () => {
-    let score = 0;
-    selectedQuestions.forEach((item, index) => {
-      const selected = document.querySelector(`input[name="mcq${index}"]:checked`);
-      if (selected && parseInt(selected.value, 10) === item.answer) score += 1;
-    });
-    alert(`Your sample MCQ score for ${field}: ${score} / ${selectedQuestions.length}`);
-  };
-  container.appendChild(gradeBtn);
+ const gradeBtn = document.createElement('button');
+ gradeBtn.className = 'btn';
+ gradeBtn.type = 'button';
+ gradeBtn.textContent = 'Check Answers';
+ gradeBtn.onclick = () => {
+  let score = 0;
+  selectedQuestions.forEach((item, index) => {
+   const selected = document.querySelector(`input[name="mcq${index}"]:checked`);
+   if (selected && parseInt(selected.value, 10) === item.answer) score += 1;
+  });
+  alert(`Your sample MCQ score for ${field}: ${score} / ${selectedQuestions.length}`);
+ };
+ container.appendChild(gradeBtn);
 }
 
 function completeInterview() {
-  fetch('/candidate-interview/<%= interviewId %>/complete', { method: 'POST' })
-  .then(() => {
-    alert('Interview completed! Check your profile for results.');
-    window.location.href = '/profile';
-  });
+ fetch('/candidate-interview/<%= interviewId %>/complete', { method: 'POST' })
+ .then(() => {
+  alert('Interview completed! Check your profile for results.');
+  window.location.href = '/profile';
+ });
 }
 
 // Initialize progress
 updateProgress();
 
 function toggleCandidateCamera(){
-  const btn=document.getElementById('cam-toggle');
-  btn.classList.toggle('active');
-  btn.style.background=btn.classList.contains('active')?'#28a745':'#e5e7eb';
-  btn.style.color=btn.classList.contains('active')?'white':'#111';
-  btn.textContent=btn.classList.contains('active')?'🎥 Camera ON':'🎥 Camera OFF';
+ const btn=document.getElementById('cam-toggle');
+ btn.classList.toggle('active');
+ btn.style.background=btn.classList.contains('active')?'#28a745':'#e5e7eb';
+ btn.style.color=btn.classList.contains('active')?'white':'#111';
+ btn.textContent=btn.classList.contains('active')?'🎥 Camera ON':'🎥 Camera OFF';
 }
 
 function toggleCandidateMic(){
-  const btn=document.getElementById('mic-toggle');
-  btn.classList.toggle('active');
-  btn.style.background=btn.classList.contains('active')?'#28a745':'#e5e7eb';
-  btn.style.color=btn.classList.contains('active')?'white':'#111';
-  btn.textContent=btn.classList.contains('active')?'🎤 Microphone ON':'🎤 Microphone OFF';
+ const btn=document.getElementById('mic-toggle');
+ btn.classList.toggle('active');
+ btn.style.background=btn.classList.contains('active')?'#28a745':'#e5e7eb';
+ btn.style.color=btn.classList.contains('active')?'white':'#111';
+ btn.textContent=btn.classList.contains('active')?'🎤 Microphone ON':'🎤 Microphone OFF';
 }
 </script>
 </body>

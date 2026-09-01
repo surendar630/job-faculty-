@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interview - Cloud AI</title>
+<title>Interview </title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="/styles.css" rel="stylesheet">
 <style>
@@ -20,75 +20,75 @@ textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0; }
 </head>
 <body>
 <nav>
-  <div class="logo">Cloud AI</div>
-  <div class="nav-links">
-    <span onclick="window.location.href='/dashboard'">Dashboard</span>
-    <span onclick="window.location.href='/admin'">Admin</span>
-    <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
-  </div>
+ <div class="logo"></div>
+ <div class="nav-links">
+  <span onclick="window.location.href='/dashboard'">Dashboard</span>
+  <span onclick="window.location.href='/admin'">Admin</span>
+  <form action="/logout" method="POST" style="display:inline;"><button type="submit" style="background:none;border:none;color:white;cursor:pointer;">Logout</button></form>
+ </div>
 </nav>
 
 <div style="padding:20px;">
-  <h1>AI Interview for <%= job_title %></h1>
-  <p>Use voice input for answers. The AI will evaluate and score your responses.</p>
+ <h1>AI Interview for <%= job_title %></h1>
+ <p>Use voice input for answers. The AI will evaluate and score your responses.</p>
 
-  <% questions.forEach((q, index) => { %>
-    <div class="question">
-      <h3>Question <%= index + 1 %>: <%= q.question %></h3>
-      <textarea id="answer<%= q.id %>" placeholder="Type or speak your answer..."><%= q.answer || '' %></textarea>
-      <button class="btn voice-btn" onclick="startVoice(<%= q.id %>)">🎤 Voice Input</button>
-      <button class="btn" onclick="submitAnswer(<%= q.id %>)">Submit Answer</button>
-      <% if (q.score !== null) { %>
-        <div class="score">Score: <%= q.score %>%</div>
-      <% } %>
-    </div>
-  <% }); %>
+ <% questions.forEach((q, index) => { %>
+  <div class="question">
+   <h3>Question <%= index + 1 %>: <%= q.question %></h3>
+   <textarea id="answer<%= q.id %>" placeholder="Type or speak your answer..."><%= q.answer || '' %></textarea>
+   <button class="btn voice-btn" onclick="startVoice(<%= q.id %>)">🎤 Voice Input</button>
+   <button class="btn" onclick="submitAnswer(<%= q.id %>)">Submit Answer</button>
+   <% if (q.score !== null) { %>
+    <div class="score">Score: <%= q.score %>%</div>
+   <% } %>
+  </div>
+ <% }); %>
 
-  <button class="btn" onclick="completeInterview()">Complete Interview</button>
+ <button class="btn" onclick="completeInterview()">Complete Interview</button>
 </div>
 
 <script>
 let recognition;
 
 function startVoice(questionId) {
-  if (!('webkitSpeechRecognition' in window)) {
-    alert('Voice recognition not supported in this browser.');
-    return;
-  }
+ if (!('webkitSpeechRecognition' in window)) {
+  alert('Voice recognition not supported in this browser.');
+  return;
+ }
 
-  recognition = new webkitSpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  recognition.lang = 'en-US';
+ recognition = new webkitSpeechRecognition();
+ recognition.continuous = false;
+ recognition.interimResults = false;
+ recognition.lang = 'en-US';
 
-  recognition.onresult = function(event) {
-    const transcript = event.results[0][0].transcript;
-    document.getElementById('answer' + questionId).value = transcript;
-  };
+ recognition.onresult = function(event) {
+  const transcript = event.results[0][0].transcript;
+  document.getElementById('answer' + questionId).value = transcript;
+ };
 
-  recognition.start();
+ recognition.start();
 }
 
 function submitAnswer(questionId) {
-  const answer = document.getElementById('answer' + questionId).value;
-  fetch('/interview/<%= interviewId %>/answer', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ questionId, answer })
-  })
-  .then(res => res.json())
-  .then(data => {
-    alert('Answer submitted. Score: ' + data.score + '%');
-    location.reload();
-  });
+ const answer = document.getElementById('answer' + questionId).value;
+ fetch('/interview/<%= interviewId %>/answer', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ questionId, answer })
+ })
+ .then(res => res.json())
+ .then(data => {
+  alert('Answer submitted. Score: ' + data.score + '%');
+  location.reload();
+ });
 }
 
 function completeInterview() {
-  fetch('/interview/<%= interviewId %>/complete', { method: 'POST' })
-  .then(() => {
-    alert('Interview completed!');
-    window.location.href = '/admin';
-  });
+ fetch('/interview/<%= interviewId %>/complete', { method: 'POST' })
+ .then(() => {
+  alert('Interview completed!');
+  window.location.href = '/admin';
+ });
 }
 </script>
 </body>
