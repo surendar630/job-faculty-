@@ -1140,7 +1140,19 @@ nav {
 .cloud-ai-badge { display:inline-flex; align-items:center; gap:.45rem; color:#0b6b68; background:#eafaf7; padding:.38rem .68rem; border-radius:999px; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
 .cloud-ai-card h3 { margin:.85rem 0 .45rem; font-size:1rem; color:#17212b; }
 .cloud-ai-card p { margin:0; color:#607080; font-size:.9rem; line-height:1.6; }
-.logo::after { content:'Designed by SURENDAR R S'; display:block; position:static; width:auto; height:auto; background:none; color:#8a989e; font-size:.55rem; font-weight:500; letter-spacing:.04em; line-height:1.2; margin-top:.15rem; }
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  visibility: visible;
+  line-height: 1.2;
+}
+.logo i {
+  display: inline-block;
+  font-size: 1.5rem;
+  color: #17212b;
+}
+.logo::after { content: none; display: none; }
 @media (max-width:700px) {
   .cloud-ai-status { align-items:flex-start; flex-wrap:wrap; }
   .cloud-ai-status .text-link { margin-left:2.25rem; }
