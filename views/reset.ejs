@@ -228,7 +228,7 @@ body {
 </div>
 </body>
 <script type="module">
-  import { initFirebaseAuth } from '/firebase-config.js';
+  import { initFirebaseAuth, isFirebaseAppCheckError, describeFirebaseAuthError } from '/firebase-config.js';
 
   const firebaseResetForm = document.getElementById('firebaseResetForm');
   const firebaseStatus = document.createElement('div');
@@ -256,6 +256,13 @@ body {
       showFirebaseMessage(`A Firebase password reset email has been sent to ${email}. Check your inbox and follow the link to reset your password.`);
       firebaseResetForm.reset();
     } catch (error) {
+      if (isFirebaseAppCheckError(error)) {
+        const manualEmail = document.getElementById('manual_email');
+        if (manualEmail) manualEmail.value = email;
+        showFirebaseMessage(describeFirebaseAuthError(error), true);
+        document.getElementById('manual_email')?.focus();
+        return;
+      }
       const message = error?.code === 'auth/user-not-found'
         ? 'No user found with this email address in Firebase.'
         : error?.message || 'Unable to send the password reset email right now.';

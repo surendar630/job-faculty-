@@ -246,7 +246,7 @@ body {
 </div>
 </body>
 <script type="module">
- import { describeFirebaseAuthError, initFirebaseAuth, signInWithPopup } from '/firebase-config.js';
+ import { describeFirebaseAuthError, initFirebaseAuth, isFirebaseAppCheckError, signInWithPopup } from '/firebase-config.js';
  import { setupEmailLinkAuth } from '/email-link-auth.js';
 
  setupEmailLinkAuth({ emailId: 'email', buttonId: 'emailLinkBtn', statusId: 'emailLinkStatus', redirectFallback: '/dashboard' });
@@ -275,11 +275,19 @@ body {
     await completeGoogleSignIn(await signInWithPopup(firebaseAuth.auth, firebaseAuth.googleProvider));
    } catch (error) {
     if (error?.code === 'auth/popup-closed-by-user' || error?.code === 'auth/cancelled-popup-request') throw error;
+    if (isFirebaseAppCheckError(error)) {
+     alert(describeFirebaseAuthError(error));
+     window.location.assign('/auth/google');
+     return;
+    }
     window.location.assign('/auth/google');
    }
   } catch (error) {
    console.error('Firebase Google sign-in error:', error);
    alert(describeFirebaseAuthError(error));
+   if (isFirebaseAppCheckError(error)) {
+     window.location.assign('/auth/google');
+   }
   }
  });
 </script>

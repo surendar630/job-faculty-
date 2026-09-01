@@ -66,8 +66,16 @@ export async function initFirebaseAuth() {
   return { app, analytics, auth, googleProvider, getRedirectResult, isSignInWithEmailLink, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect, signInWithEmailAndPassword };
 }
 
+export function isFirebaseAppCheckError(error) {
+  const code = error?.code || error?.message || '';
+  return code.includes('firebase-app-check-token-is-invalid') || code.includes('App Check');
+}
+
 export function describeFirebaseAuthError(error) {
   const code = error?.code || '';
+  if (code === 'auth/firebase-app-check-token-is-invalid') {
+    return 'Firebase App Check is blocking this sign-in. In Firebase Console, go to App Check and either disable enforcement for this project or set a valid debug/production token for this site.';
+  }
   if (code === 'auth/unauthorized-domain') {
     return 'Google sign-in is not enabled for this website. Add job-fa.onrender.com in Firebase Authentication > Settings > Authorized domains.';
   }
