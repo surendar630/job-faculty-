@@ -7,6 +7,7 @@ import {
   getRedirectResult,
   GoogleAuthProvider,
   isSignInWithEmailLink,
+  sendPasswordResetEmail,
   sendSignInLinkToEmail,
   setPersistence,
   signInWithEmailLink,
@@ -62,7 +63,7 @@ export async function initFirebaseAuth() {
   googleProvider.setCustomParameters({
     prompt: 'select_account',
   });
-  return { app, analytics, auth, googleProvider, getRedirectResult, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect, signInWithEmailAndPassword };
+  return { app, analytics, auth, googleProvider, getRedirectResult, isSignInWithEmailLink, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect, signInWithEmailAndPassword };
 }
 
 export function describeFirebaseAuthError(error) {
@@ -85,4 +86,4 @@ export function describeFirebaseAuthError(error) {
   return error?.message || 'Google sign-in failed. Please try again.';
 }
 
-export { getRedirectResult, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect, signInWithEmailAndPassword, browserLocalPersistence, setPersistence };
+export { getRedirectResult, isSignInWithEmailLink, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, signInWithPopup, signInWithRedirect, signInWithEmailAndPassword, browserLocalPersistence, setPersistence };

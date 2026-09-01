@@ -193,7 +193,7 @@ body {
    <% if (info) { %>
     <div class="alert alert-info"><%= info %></div>
    <% } %>
-   <form action="/reset-request" method="POST">
+   <form id="firebaseResetForm" action="/reset-request" method="POST">
     <div class="form-group">
      <label for="email"><i class="fas fa-envelope"></i> Email</label>
      <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" autofocus>
@@ -227,4 +227,41 @@ body {
  </div>
 </div>
 </body>
+<script type="module">
+  import { initFirebaseAuth } from '/firebase-config.js';
+
+  const firebaseResetForm = document.getElementById('firebaseResetForm');
+  const firebaseStatus = document.createElement('div');
+  firebaseStatus.className = 'alert alert-info';
+  firebaseStatus.style.display = 'none';
+  firebaseResetForm.insertAdjacentElement('afterend', firebaseStatus);
+
+  const showFirebaseMessage = (message, isError = false) => {
+    firebaseStatus.textContent = message;
+    firebaseStatus.className = isError ? 'alert alert-error' : 'alert alert-info';
+    firebaseStatus.style.display = 'block';
+  };
+
+  firebaseResetForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = document.getElementById('email')?.value?.trim();
+    if (!email) {
+      showFirebaseMessage('Please enter your email address.', true);
+      return;
+    }
+
+    try {
+      const firebaseAuth = await initFirebaseAuth();
+      await firebaseAuth.sendPasswordResetEmail(firebaseAuth.auth, email);
+      showFirebaseMessage(`A Firebase password reset email has been sent to ${email}. Check your inbox and follow the link to reset your password.`);
+      firebaseResetForm.reset();
+    } catch (error) {
+      const message = error?.code === 'auth/user-not-found'
+        ? 'No user found with this email address in Firebase.'
+        : error?.message || 'Unable to send the password reset email right now.';
+      showFirebaseMessage(message, true);
+      console.error('Firebase password reset error:', error);
+    }
+  });
+</script>
 </html>
