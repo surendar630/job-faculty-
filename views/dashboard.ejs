@@ -481,21 +481,7 @@
   <% } %>
  </div>
 
- <div class="-status <%= aiEnabled ? 'is-ready' : 'is-pending' %>">
-  <i class="fas fa-wand-magic-sparkles"></i>
-  <div><strong> interview coach</strong><p><%= aiEnabled ? 'Ready for answer evaluation, follow-up questions, and structured feedback.' : 'Available after the administrator connects the service.' %></p></div>
-  <a href="/practice" class="text-link">Open practice lab <i class="fas fa-arrow-right"></i></a>
- </div>
 
- <div class="-grid">
-  <% (cloudAiActions || []).forEach((item) => { %>
-   <div class="-card">
-    <span class="-badge"><i class="fas fa-wand-magic-sparkles"></i> </span>
-    <h3><%= item.title %></h3>
-    <p><%= item.description %></p>
-   </div>
-  <% }); %>
- </div>
 
  <div style="padding: 0 0 2rem;">
    <h2 style="font-size: 1.8rem; margin-bottom: 2rem;"><i class="fas fa-th-large"></i> Priority actions</h2>
