@@ -1152,7 +1152,21 @@ nav {
   font-size: 1.5rem;
   color: #17212b;
 }
-.logo::after { content: none; display: none; }
+.logo::after {
+  content: 'Designed by SURENDAR R S';
+  display: block;
+  position: static;
+  width: auto;
+  height: auto;
+  background: none;
+  color: #8a989e;
+  font-size: .55rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  margin-top: .15rem;
+  white-space: nowrap;
+}
 @media (max-width:700px) {
   .cloud-ai-status { align-items:flex-start; flex-wrap:wrap; }
   .cloud-ai-status .text-link { margin-left:2.25rem; }
