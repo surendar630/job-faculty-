@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><%= role === 'hr' ? 'HR Live Interview Portal' : 'Candidate Live Interview Portal' %> - AcademiaPro</title>
+<title><%= role === 'hr' ? 'HR Live Interview Portal' : 'Candidate Live Interview Portal' %> - Cloud AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 :root { --bg:#07101d; --surface:#101828; --surface2:#192a4d; --surface3:#282A35; --border:#223248; --accent:#5b8dff; --accent2:#22c55e; --text:#f1f1f1; --muted:#94a3b8; --radius:16px; --font-head:'Syne',sans-serif; --font-body:'DM Sans',sans-serif; }
@@ -80,7 +80,7 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
 <body>
 <div class="header">
   <div>
-    <div class="brand">AcademiaPro</div>
+    <div class="brand">Cloud AI</div>
     <div class="role-badge"><%= role === 'hr' ? 'HR Interview Portal' : 'Candidate Interview Portal' %></div>
   </div>
   <div class="header-actions">
@@ -115,7 +115,7 @@ body{font-family:var(--font-body);background:transparent;color:var(--text);min-h
         <h2>Upcoming interview sessions</h2>
         <% meetings.forEach((meeting, index) => { %>
           <div class="meeting-card">
-            <h3><%= meeting.job_title %> — <%= meeting.university || 'AcademiaPro Interview' %></h3>
+            <h3><%= meeting.job_title %> — <%= meeting.university || 'Cloud AI Interview' %></h3>
             <div class="meeting-meta">
               <span><strong>Scheduled:</strong> <%= new Date(meeting.scheduled_at).toLocaleString() %></span>
               <span><strong>Platform:</strong> <%= meeting.platform || 'Jitsi' %></span>

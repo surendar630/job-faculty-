@@ -195,104 +195,12 @@ const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key'; // In production, use environment variable
 const AI_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
-app.get('/privacy', (req, res) => {
-  const privacyHtml = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-site-verification" content="google9a428d7d0a30a656" />
-  <title>Privacy Policy - AcademiaPro</title>
-  <style>
-    body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 2rem; background: #f9f9f9; }
-    h1, h2 { color: #17212b; }
-    a { color: #0b6b68; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ddd; font-size: 0.9rem; color: #666; text-align: center; }
-  </style>
-</head>
-<body>
-  <h1>Privacy Policy</h1>
-  <p><strong>Effective Date:</strong> August 30, 2026</p>
-
-  <h2>1. Introduction</h2>
-  <p>AcademiaPro ("we", "us", "our", or "Company") is committed to protecting your privacy. This Privacy Policy explains our policies and practices regarding the collection, use, and disclosure of your personal information when you use our website and services.</p>
-
-  <h2>2. Information We Collect</h2>
-  <p>We collect information in the following ways:</p>
-  <ul>
-    <li><strong>Authentication Data:</strong> When you sign in using Google Sign-In, we receive your name, email address, and profile picture from Google.</li>
-    <li><strong>Application Data:</strong> Information you voluntarily provide when applying for jobs, such as resume, qualifications, and work history.</li>
-    <li><strong>Usage Data:</strong> We may collect information about how you interact with our site, including pages visited, time spent, and actions taken.</li>
-    <li><strong>Device Information:</strong> Browser type, IP address, operating system, and other technical information.</li>
-  </ul>
-
-  <h2>3. How We Use Your Information</h2>
-  <p>We use the information we collect for the following purposes:</p>
-  <ul>
-    <li>To authenticate users and manage user accounts</li>
-    <li>To process job applications and connect candidates with opportunities</li>
-    <li>To improve and maintain our services</li>
-    <li>To communicate with you about your applications and account</li>
-    <li>To comply with legal obligations</li>
-  </ul>
-
-  <h2>4. Google Sign-In</h2>
-  <p>AcademiaPro uses Google Sign-In for user authentication. When you sign in using Google:</p>
-  <ul>
-    <li>You are redirected to Google's secure authentication servers</li>
-    <li>We receive your authentication token and basic profile information</li>
-    <li>We do not store your Google password</li>
-    <li>Your data is protected according to Google's privacy policies and our own practices</li>
-  </ul>
-  <p>For more information on how Google handles your data, please visit <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</p>
-
-  <h2>5. Data Security</h2>
-  <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet or electronic storage is 100% secure.</p>
-
-  <h2>6. Data Retention</h2>
-  <p>We retain your personal information for as long as necessary to provide our services and fulfill the purposes outlined in this policy. You can request deletion of your account and associated data at any time.</p>
-
-  <h2>7. Third-Party Services</h2>
-  <p>We may use third-party services to assist in our operations, including:</p>
-  <ul>
-    <li><strong>Google Authentication:</strong> For secure user sign-in</li>
-    <li><strong>Firebase:</strong> For backend infrastructure and database services</li>
-    <li><strong>OpenAI:</strong> For AI-powered interview features (if enabled)</li>
-  </ul>
-  <p>These services have their own privacy policies, and we encourage you to review them.</p>
-
-  <h2>8. Your Rights</h2>
-  <p>Depending on your location, you may have the following rights:</p>
-  <ul>
-    <li>The right to access your personal information</li>
-    <li>The right to correct inaccurate data</li>
-    <li>The right to request deletion of your data</li>
-    <li>The right to opt-out of certain processing activities</li>
-  </ul>
-
-  <h2>9. Contact Us</h2>
-  <p>If you have questions about this Privacy Policy or our privacy practices, please contact us at:</p>
-  <p>
-    <strong>AcademiaPro</strong><br>
-    Email: support@academiapro.com<br>
-    Website: <a href="https://job-fa.onrender.com">https://job-fa.onrender.com</a>
-  </p>
-
-  <h2>10. Changes to This Policy</h2>
-  <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Effective Date" above.</p>
-
-  <div class="footer">
-    <p>&copy; 2026 AcademiaPro. All rights reserved.</p>
-  </div>
-</body>
-</html>
-  `;
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.send(privacyHtml);
-});
-
+const requireRoles = (...allowedRoles) => (req, res, next) => {
+  if (!req.user || !allowedRoles.includes(req.user.role)) {
+    return res.status(403).send('Access denied');
+  }
+  next();
+};
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -675,45 +583,63 @@ function analyzeResumeForAICTE(job, resumeText) {
   const title = (job && job.title) ? job.title : 'Faculty role';
   let text = String(resumeText || '');
 
-  // If resumeText looks like a file path under uploads, try to read file contents
   try {
     if (typeof resumeText === 'string' && (resumeText.includes('/') || resumeText.startsWith('uploads') || resumeText.match(/\.(pdf|docx?|txt|md)$/i))) {
       const possiblePath = path.isAbsolute(resumeText) ? resumeText : path.join(__dirname, resumeText);
       if (fs.existsSync(possiblePath)) {
         const buf = fs.readFileSync(possiblePath);
-        // Attempt to convert buffer to utf8 text. For binary formats this will be noisy
-        // but often contains searchable text fragments (PDFs/text-based DOCX). This
-        // is a pragmatic fallback when specialized parsers are not available.
         text = buf.toString('utf8');
       }
     }
   } catch (e) {
     // ignore file read errors and fall back to raw input
   }
-  text = String(text || '').toLowerCase();
-  const hasPhD = /ph\.?d|doctorate|doctoral|phd/i.test(text);
-  const hasPublications = /publication|journal|conference|scopus|ieee|springer|sciencedirect|research paper/i.test(text);
-  const hasTeaching = /teaching|lecturer|professor|assistant professor|associate professor|faculty|course instructor|academy/i.test(text);
-  const hasAdmin = /hod|head of department|dean|director|coordinator|chairperson|advisor/i.test(text);
-  const degreeMatch = /(ph\.?d|doctorate|doctoral|master's|masters|bachelor's|first class|distinction|cgpa|percentage)/i.test(text);
-  const experienceScore = Math.min(20, Math.max(0, (text.match(/\d+\s+years?|\d+yrs?/g) || []).length * 5));
-  const publicationScore = hasPublications ? 15 : 0;
-  const teachingScore = hasTeaching ? 15 : 0;
-  const adminScore = hasAdmin ? 10 : 0;
-  const qualificationScore = degreeMatch ? 20 : 10;
-  const phdScore = hasPhD ? 20 : 0;
-  const score = Math.min(100, qualificationScore + phdScore + experienceScore + publicationScore + teachingScore + adminScore);
+
+  const normalized = String(text || '').toLowerCase();
+  const hasPhD = /ph\.?d|doctorate|doctoral|phd/i.test(normalized);
+  const hasMaster = /(m\.?tech|mtech|m\.sc|m\.sc\.|master(?:'s)?|postgraduate|pg)/i.test(normalized);
+  const hasBachelor = /(b\.e|b\.tech|btech|b\.sc|b\.a|b\.?com|bachelor(?:'s)?|engineering)/i.test(normalized);
+  const hasTeaching = /teaching|lecturer|professor|assistant professor|associate professor|faculty|course instructor|instructor|mentor/i.test(normalized);
+  const hasAdmin = /hod|head of department|dean|director|coordinator|chairperson|advisor|committee/i.test(normalized);
+  const publicationMatches = normalized.match(/\b(?:publication|publications|journal|journals|conference|conferences|scopus|ieee|springer|research paper|patent|patents|paper)\b/g) || [];
+  const hasPublications = publicationMatches.length > 0;
+  const degreeMatch = /(first class|distinction|cgpa|gpa|percentage|aggregate|class|grade)/i.test(normalized);
+  const experienceMatches = normalized.match(/\b(\d{1,2})\s*(?:years?|yrs?)\b/g) || [];
+  const yearCount = experienceMatches.length;
+  const teachingYears = Math.min(20, (normalized.match(/\b(\d{1,2})\s*(?:years?|yrs?)\b/g) || []).length * 1.5);
+
+  let score = 0;
+  if (hasPhD) score += 30;
+  else if (hasMaster) score += 15;
+  else if (hasBachelor) score += 10;
+
+  if (hasTeaching) score += Math.min(25, 8 + teachingYears * 5);
+  if (hasPublications) score += Math.min(25, 10 + publicationMatches.length * 4);
+  if (hasAdmin) score += 10;
+  if (degreeMatch) score += 8;
+  if (yearCount > 0) score += Math.min(12, yearCount * 2);
+
+  if (!hasPhD && !hasTeaching && !hasPublications) {
+    score = Math.min(score, 42);
+  }
+
+  if (!hasPhD && !hasTeaching) {
+    score = Math.min(score, 58);
+  }
+
   const aicteStatus = score >= 70 ? 'AICTE-compliant' : 'AICTE-review-needed';
   const suggestedPosition = (() => {
-    const titleLower = title.toLowerCase();
+    const titleLower = String(title || '').toLowerCase();
     if (hasPhD && /assistant professor|associate professor|professor|lecturer/.test(titleLower)) return title;
-    if (hasPhD && experienceScore >= 10) return 'Associate Professor';
+    if (hasPhD && yearCount >= 3) return 'Associate Professor';
     if (hasPhD) return 'Assistant Professor';
     if (/lecturer|instructor|faculty/.test(titleLower)) return 'Lecturer';
     return 'Assistant Professor';
   })();
-  const suitability = Math.min(100, Math.max(45, score + (hasPublications ? 5 : 0)));
-  const report = `AICTE resume scan for ${title} (${category}).\n- Compliance score: ${score}%\n- Suitability score: ${suitability}%\n- AICTE status: ${aicteStatus}.\n- Suggested position: ${suggestedPosition}.\n- Key strengths: ${hasPhD ? 'Strong academic qualification' : 'Academic qualification requires closer review'}; ${hasPublications ? 'Research publications detected' : 'Few publication signals'}; ${hasTeaching ? 'Teaching experience visible' : 'Teaching experience not clearly highlighted'}.`;
+
+  const suitability = Math.min(100, Math.max(40, score + (hasPublications ? 5 : 0) + (hasTeaching ? 5 : 0)));
+  const report = `AICTE resume scan for ${title} (${category}).\n- Compliance score: ${score}%\n- Suitability score: ${suitability}%\n- AICTE status: ${aicteStatus}.\n- Suggested position: ${suggestedPosition}.\n- Key strengths: ${hasPhD ? 'Strong academic qualification' : 'Academic qualification needs closer review'}; ${hasPublications ? 'Research publication evidence detected' : 'Limited research and publication evidence'}; ${hasTeaching ? 'Teaching experience visible' : 'Teaching experience is not clearly highlighted'}.`;
+
   return {
     report,
     score,
@@ -721,12 +647,21 @@ function analyzeResumeForAICTE(job, resumeText) {
     suggestedPosition,
     suitabilityScore: suitability,
     complianceScore: score,
-    overallVerdict: score >= 60 ? 'QUALIFIED' : (score >= 50 ? 'PARTIALLY_QUALIFIED' : 'NOT_QUALIFIED'),
+    overallVerdict: score >= 70 ? 'QUALIFIED' : (score >= 55 ? 'PARTIALLY_QUALIFIED' : 'NOT_QUALIFIED'),
     recommendation: score >= 70 ? 'STRONGLY_RECOMMEND' : score >= 55 ? 'RECOMMEND' : 'CONDITIONAL',
-    strengths: [hasPhD ? 'PhD or equivalent academic qualiﬁcation' : 'Relevant academic background', hasPublications ? 'Research output indicative of faculty readiness' : 'Limited publication evidence', hasTeaching ? 'Teaching or instructional experience' : 'Teaching experience needs emphasis'].filter(Boolean),
-    gaps: [!hasPhD ? 'PhD not clearly identified' : '', !hasPublications ? 'Insufficient publication evidence' : '', !hasTeaching ? 'Teaching experience not highlighted' : ''].filter(Boolean),
-    suggestedPosition,
-    suitabilityReason: hasPhD ? 'Resume aligns well with academic faculty standards' : 'Resume needs further review for academic suitability'
+    strengths: [
+      hasPhD ? 'PhD or equivalent academic qualification' : 'Academic degree evidence noted',
+      hasPublications ? 'Research and publication output' : 'Research output needs strengthening',
+      hasTeaching ? 'Teaching or classroom experience' : 'Teaching contribution needs clearer emphasis'
+    ].filter(Boolean),
+    gaps: [
+      !hasPhD ? 'PhD or equivalent doctoral track not clearly established' : '',
+      !hasPublications ? 'Publications, research output, or patents are limited' : '',
+      !hasTeaching ? 'Teaching experience, course delivery, or mentorship is not prominent' : ''
+    ].filter(Boolean),
+    suitabilityReason: hasPhD || hasTeaching || hasPublications
+      ? 'Resume aligns with core AICTE academic hiring expectations for faculty review.'
+      : 'Resume needs stronger teaching, research, or doctoral evidence to meet AICTE faculty norms.'
   };
 }
 

@@ -1,6 +1,7 @@
 const assert = require('assert');
+const fs = require('fs');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary, generateProfessionalPracticeSet } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary, generateProfessionalPracticeSet, analyzeResumeForAICTE } = require('../server');
 
 (async function run() {
   const insights = buildRealtimeAIInsights({
@@ -105,6 +106,18 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions,
   assert.ok(aiPracticeSet && Array.isArray(aiPracticeSet.mcqs), 'Generated practice set should include MCQ questions');
   assert.ok(aiPracticeSet.mcqs.length >= 4, 'Generated practice set should include multiple MCQ questions');
   assert.ok(Array.isArray(aiPracticeSet.coding), 'Generated practice set should include coding challenges');
+
+  const weakResume = analyzeResumeForAICTE(
+    { title: 'Assistant Professor', category: 'Computer Science' },
+    'B.Tech in Computer Science, 2019, 2 years software engineer at an IT company. No teaching, no research publications, no PhD, no grant work, no patents.'
+  );
+  assert.strictEqual(weakResume.aicteStatus, 'AICTE-review-needed', 'Weak resumes should be flagged for AICTE review');
+  assert.ok(weakResume.report.toLowerCase().includes('aicte') && weakResume.report.toLowerCase().includes('teaching'), 'AICTE reports should include teaching and compliance review details');
+
+  const homeTemplate = fs.readFileSync(path.join(__dirname, '../views/index.ejs'), 'utf8');
+  const uploadTemplate = fs.readFileSync(path.join(__dirname, '../views/upload-portal.ejs'), 'utf8');
+  assert.ok(!homeTemplate.includes('AcademiaPro'), 'Public pages should not display the product name AcademiaPro');
+  assert.ok(!uploadTemplate.includes('AICTE Faculty'), 'Upload portal should not display the product name AICTE Faculty');
 
   console.log('shortlist rule tests passed');
 })();
