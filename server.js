@@ -904,6 +904,10 @@ app.get('/login', (req, res) => {
   res.render('login', { error: null, info: null });
 });
 
+app.get('/privacy', (req, res) => {
+  res.render('privacy', { user: req.user || null });
+});
+
 app.get('/hr-login', (req, res) => {
   res.render('hr-login', { error: null, info: null });
 });
