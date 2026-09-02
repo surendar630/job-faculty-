@@ -374,9 +374,9 @@ body::after {
  </div>
 
  <div class="insight-strip" style="margin-bottom: 2rem;">
-  <% const adminAiOps = (typeof adminAiOps !== 'undefined' && adminAiOps) ? adminAiOps : { overview: aiInsights || [], riskAlerts: [], actions: [], priority: 'Keep the hiring pipeline moving' }; %>
-  <% if (adminAiOps && adminAiOps.overview && adminAiOps.overview.length) { %>
-   <% adminAiOps.overview.forEach((insight) => { %>
+  <% const adminAiOpsState = (typeof adminAiOps !== 'undefined' && adminAiOps) ? adminAiOps : { overview: aiInsights || [], riskAlerts: [], actions: [], priority: 'Keep the hiring pipeline moving' }; %>
+  <% if (adminAiOpsState && adminAiOpsState.overview && adminAiOpsState.overview.length) { %>
+   <% adminAiOpsState.overview.forEach((insight) => { %>
     <div class="insight-card">
      <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
      <div>
@@ -424,7 +424,7 @@ body::after {
   <h3 class="section-title"><i class="fas fa-rocket"></i> AI Admin Priority</h3>
   <p style="margin-top: 0.5rem; color: #475569;">Primary focus for the next review cycle.</p>
   <div style="margin-top: 1rem; background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(59,130,246,0.05)); border: 1px solid rgba(124,58,237,0.15); border-radius: 16px; padding: 1.25rem;">
-   <strong style="display:block; margin-bottom: 0.35rem; color:#312e81;"><%= adminAiOps.priority %></strong>
+   <strong style="display:block; margin-bottom: 0.35rem; color:#312e81;"><%= adminAiOpsState.priority %></strong>
    <span style="color:#475569;">AI is triaging screening speed, shortlist concentration, and interviewer readiness to protect hiring momentum.</span>
   </div>
  </div>
@@ -432,8 +432,8 @@ body::after {
  <div class="applications-section" style="border-left: 4px solid #f59e0b; margin-bottom: 2rem;">
   <h3 class="section-title"><i class="fas fa-triangle-exclamation"></i> AI Risk Alerts</h3>
   <div style="margin-top: 1rem; display: grid; gap: 0.9rem;">
-   <% if (adminAiOps && adminAiOps.riskAlerts && adminAiOps.riskAlerts.length) { %>
-    <% adminAiOps.riskAlerts.forEach((alert) => { %>
+   <% if (adminAiOpsState && adminAiOpsState.riskAlerts && adminAiOpsState.riskAlerts.length) { %>
+    <% adminAiOpsState.riskAlerts.forEach((alert) => { %>
      <div class="application-item" style="border-left-color: #f59e0b; background: rgba(255,251,235,0.7);">
       <div class="app-item-header">
        <div>
@@ -452,8 +452,8 @@ body::after {
  <div class="applications-section" style="border-left: 4px solid #10b981; margin-bottom: 2rem;">
   <h3 class="section-title"><i class="fas fa-list-check"></i> AI Action Queue</h3>
   <div style="margin-top: 1rem; display: grid; gap: 0.75rem;">
-   <% if (adminAiOps && adminAiOps.actions && adminAiOps.actions.length) { %>
-    <% adminAiOps.actions.forEach((action) => { %>
+   <% if (adminAiOpsState && adminAiOpsState.actions && adminAiOpsState.actions.length) { %>
+    <% adminAiOpsState.actions.forEach((action) => { %>
      <div style="display:flex; align-items:flex-start; gap:0.7rem; padding:0.7rem 0.9rem; border-radius:10px; background: rgba(236,253,245,0.7); border: 1px solid rgba(16,185,129,0.15);">
       <i class="fas fa-check-circle" style="color:#10b981; margin-top:0.15rem;"></i>
       <span style="color:#0f172a; line-height:1.5;"><%= action %></span>
