@@ -1851,9 +1851,25 @@ app.get('/office/shortlisted', verifyToken, (req, res) => {
     const cloudAiOverview = buildCloudAIOverview(shortlistedInsightsContext);
 
     fetchRealtimeAIInsights(shortlistedInsightsContext).then((aiInsights) => {
-      res.render('shortlisted', { applications, user: req.user, aiInsights, aiEnabled: !!openaiClient, resumeTraining, cloudAiOverview });
+      res.render('shortlisted', {
+        applications,
+        user: req.user,
+        aiInsights,
+        aiEnabled: !!openaiClient,
+        resumeTraining,
+        cloudAiOverview,
+        cloudAiSummary: 'Cloud AI shortlist review is active and ready for committee review.'
+      });
     }).catch(() => {
-      res.render('shortlisted', { applications, user: req.user, aiInsights: buildRealtimeAIInsights(shortlistedInsightsContext), aiEnabled: !!openaiClient, resumeTraining, cloudAiOverview });
+      res.render('shortlisted', {
+        applications,
+        user: req.user,
+        aiInsights: buildRealtimeAIInsights(shortlistedInsightsContext),
+        aiEnabled: !!openaiClient,
+        resumeTraining,
+        cloudAiOverview,
+        cloudAiSummary: 'Cloud AI shortlist review is active and ready for committee review.'
+      });
     });
   });
 });
@@ -2190,7 +2206,27 @@ app.get('/shortlisted', verifyToken, requireRoles('admin', 'hr'), (req, res) => 
     if (err) return res.status(500).send('Error');
     const resumeTraining = buildResumeTrainingCards({ applications });
     const aiScreening = buildShortlistCloudAI({ applications });
-    res.render('shortlisted', { applications, user: req.user, aiInsights: aiScreening.cards || [], resumeTraining, cloudAiSummary: aiScreening.summary || 'Cloud AI shortlist review ready.' });
+    const shortlistInsightsContext = {
+      user: req.user,
+      jobs: (applications || []).slice(0, 5).map(app => ({
+        title: app.job_title,
+        category: 'Shortlist pipeline',
+        university: app.university,
+        location: app.location || 'Global'
+      })),
+      stats: { applications: (applications || []).length, interviews: 0, favorites: (applications || []).length },
+      profileCompletion: 90
+    };
+    const cloudAiOverview = buildCloudAIOverview(shortlistInsightsContext);
+
+    res.render('shortlisted', {
+      applications,
+      user: req.user,
+      aiInsights: aiScreening.cards || [],
+      cloudAiOverview,
+      resumeTraining,
+      cloudAiSummary: aiScreening.summary || 'Cloud AI shortlist review ready.'
+    });
   });
 });
 
