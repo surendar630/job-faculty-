@@ -1,7 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary, generateProfessionalPracticeSet, analyzeResumeForAICTE, buildCloudAIOverview, buildCandidateMatchDashboard, buildAIJobRecommendations, buildHRExportReport, buildRecruiterAnalyticsDashboard, buildCandidateAIPlan, buildAdminAIOperations } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary, generateProfessionalPracticeSet, analyzeResumeForAICTE, buildCloudAIOverview, buildCandidateMatchDashboard, buildAIJobRecommendations, buildHRExportReport, buildRecruiterAnalyticsDashboard, buildCandidateAIPlan, buildAdminAIOperations, getProAccessStatus } = require('../server');
 
 (async function run() {
   const insights = buildRealtimeAIInsights({
@@ -119,6 +119,11 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions,
   assert.ok(Array.isArray(adminAiOps.riskAlerts) && adminAiOps.riskAlerts.length >= 2, 'Admin risk alerts should identify key review items');
   assert.ok(Array.isArray(adminAiOps.actions) && adminAiOps.actions.length >= 3, 'Admin AI actions should include a complete set of operational steps');
   assert.ok(adminAiOps.priority && typeof adminAiOps.priority === 'string', 'Admin AI operations should identify a priority focus');
+
+  const proAccess = getProAccessStatus({ is_pro: 1, pro_plan: 'pro', pro_paid_at: '2026-09-01', pro_expires_at: '2026-10-01' });
+  assert.ok(proAccess && proAccess.isPro === true, 'Pro access should be recognized for paid users');
+  assert.ok(proAccess.plan === 'pro', 'Pro plan should be exposed in the access object');
+  assert.ok(Array.isArray(proAccess.features) && proAccess.features.length >= 3, 'Pro features should include premium capabilities');
 
   const cases = [
     {

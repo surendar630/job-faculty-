@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upgrade to Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="/styles.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(180deg, #f7f4f1 0%, #edf9f4 100%);
+      color: #1f2937;
+    }
+    .billing-shell {
+      max-width: 1100px;
+      margin: 3rem auto;
+      padding: 0 1.25rem 2rem;
+    }
+    .billing-header {
+      background: linear-gradient(135deg, #0f172a 0%, #134e4a 100%);
+      color: white;
+      border-radius: 24px;
+      padding: 2rem 2rem 1.5rem;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+    }
+    .billing-header h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.05em;
+    }
+    .billing-header p {
+      margin: 0;
+      color: rgba(255,255,255,0.85);
+    }
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .plan-card {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(148,163,184,0.2);
+      border-radius: 22px;
+      padding: 1.5rem;
+      box-shadow: 0 18px 40px rgba(15,23,42,0.06);
+    }
+    .plan-card.featured {
+      border: 2px solid #0f766e;
+      transform: translateY(-4px);
+    }
+    .plan-card h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.5rem;
+    }
+    .plan-price {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
+      color: #0f172a;
+    }
+    .plan-price span {
+      font-size: 1rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .plan-card p {
+      color: #475569;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.25rem;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .plan-features i {
+      color: #10b981;
+      margin-top: 0.2rem;
+    }
+    .upgrade-form {
+      margin-top: 1rem;
+    }
+    .upgrade-btn {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0f766e, #14b8a6);
+      color: white;
+      padding: 0.9rem 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(20,184,166,0.25);
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.25);
+      color: #065f46;
+      padding: 0.6rem 0.9rem;
+      border-radius: 999px;
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+    .notice {
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.15);
+      color: #1d4ed8;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      margin-top: 1.5rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="billing-shell">
+    <div class="billing-header">
+      <h1><i class="fas fa-crown"></i> Pro Access</h1>
+      <p>Unlock premium AI hiring intelligence for candidates and HR teams.</p>
+      <% if (proStatus && proStatus.isPro) { %>
+        <div class="status-pill"><i class="fas fa-check-circle"></i> Pro active · <%= proStatus.plan %></div>
+      <% } %>
+    </div>
+
+    <% if (message) { %>
+      <div class="notice"><%= message %></div>
+    <% } %>
+
+    <div class="plan-grid">
+      <% plans.forEach((plan) => { %>
+        <div class="plan-card <%= plan.id === 'pro' ? 'featured' : '' %>">
+          <h3><%= plan.name %></h3>
+          <div class="plan-price"><%= plan.price %><span>/ month</span></div>
+          <p><%= plan.description %></p>
+          <ul class="plan-features">
+            <% if (plan.id === 'pro') { %>
+              <li><i class="fas fa-check"></i> AI-powered role match and fit insights</li>
+              <li><i class="fas fa-check"></i> Advanced candidate strategy coaching</li>
+              <li><i class="fas fa-check"></i> Premium shortlisting and hiring visibility</li>
+            <% } else { %>
+              <li><i class="fas fa-check"></i> HR and admin workflow prioritization</li>
+              <li><i class="fas fa-check"></i> Team-level pipeline operations</li>
+              <li><i class="fas fa-check"></i> Multi-user hiring intelligence</li>
+            <% } %>
+          </ul>
+          <form class="upgrade-form" action="/billing/upgrade" method="POST">
+            <input type="hidden" name="plan" value="<%= plan.id %>">
+            <button class="upgrade-btn" type="submit"><%= proStatus && proStatus.isPro ? 'Upgrade plan' : 'Activate ' + plan.name %></button>
+          </form>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</body>
+</html>

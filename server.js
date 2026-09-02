@@ -277,8 +277,29 @@ db.serialize(() => {
     website TEXT,
     bio TEXT,
     current_position TEXT,
-    institution TEXT
+    institution TEXT,
+    is_pro INTEGER DEFAULT 0,
+    pro_plan TEXT DEFAULT 'free',
+    pro_paid_at DATETIME,
+    pro_expires_at DATETIME
   )`);
+
+  db.all('PRAGMA table_info(users)', [], (err, cols) => {
+    if (!err && Array.isArray(cols)) {
+      const names = cols.map((column) => column.name);
+      const columnsToAdd = [
+        { name: 'is_pro', sql: 'ALTER TABLE users ADD COLUMN is_pro INTEGER DEFAULT 0' },
+        { name: 'pro_plan', sql: "ALTER TABLE users ADD COLUMN pro_plan TEXT DEFAULT 'free'" },
+        { name: 'pro_paid_at', sql: 'ALTER TABLE users ADD COLUMN pro_paid_at DATETIME' },
+        { name: 'pro_expires_at', sql: 'ALTER TABLE users ADD COLUMN pro_expires_at DATETIME' }
+      ];
+      columnsToAdd.forEach(({ name, sql }) => {
+        if (!names.includes(name)) {
+          try { db.run(sql); } catch (e) {}
+        }
+      });
+    }
+  });
 
   db.run(`CREATE TABLE IF NOT EXISTS user_logins (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -551,6 +572,35 @@ function getClientIp(req) {
   if (typeof forwarded === 'string') return forwarded.split(',')[0].trim();
   if (Array.isArray(forwarded) && forwarded.length) return String(forwarded[0]).trim();
   return req.socket && req.socket.remoteAddress ? req.socket.remoteAddress : 'unknown';
+}
+
+function getProAccessStatus(user = {}) {
+  const plan = String(user.pro_plan || 'free').toLowerCase();
+  const isProFromFlag = Number(user.is_pro || 0) === 1;
+  const expiresAt = user.pro_expires_at ? new Date(user.pro_expires_at) : null;
+  const hasValidExpiry = expiresAt && expiresAt.getTime() > Date.now();
+  const isPro = Boolean(isProFromFlag || hasValidExpiry || plan !== 'free');
+  const normalizedPlan = isPro && plan && plan !== 'free' ? plan : 'free';
+  const features = normalizedPlan !== 'free'
+    ? [
+      'AI-powered match intelligence',
+      'Priority shortlist visibility',
+      'Advanced job and candidate dashboards',
+      'Premium hiring automation and coaching'
+    ]
+    : [
+      'Basic dashboard access',
+      'Standard shortlist tracking',
+      'Core hiring visibility'
+    ];
+
+  return {
+    isPro,
+    plan: normalizedPlan,
+    status: isPro ? 'active' : 'inactive',
+    expiresAt: expiresAt ? expiresAt.toISOString() : null,
+    features
+  };
 }
 
 function recordUserLogin({ userId, email, role, method, req }) {
@@ -910,6 +960,39 @@ app.get('/privacy', (req, res) => {
 
 app.get('/hr-login', (req, res) => {
   res.render('hr-login', { error: null, info: null });
+});
+
+app.get('/billing', verifyToken, (req, res) => {
+  const proStatus = getProAccessStatus(req.user);
+  const message = req.query.success === '1'
+    ? 'Pro access has been activated successfully. Premium AI features are now unlocked.'
+    : null;
+
+  res.render('billing', {
+    user: req.user,
+    proStatus,
+    plans: [
+      { id: 'pro', name: 'Pro', price: '$29', description: 'Premium AI dashboard and shortlist intelligence for candidates and HR teams.', accent: '#0f766e' },
+      { id: 'team', name: 'Team', price: '$79', description: 'Advanced hiring workflow and faster review operations for HR and admin.', accent: '#312e81' }
+    ],
+    message
+  });
+});
+
+app.post('/billing/upgrade', verifyToken, (req, res) => {
+  const selectedPlan = String(req.body.plan || 'pro').toLowerCase();
+  const validPlan = selectedPlan === 'team' ? 'team' : 'pro';
+  const paidAt = new Date();
+  const expiresAt = new Date(paidAt.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+  db.run(
+    'UPDATE users SET is_pro = 1, pro_plan = ?, pro_paid_at = ?, pro_expires_at = ? WHERE id = ?',
+    [validPlan, paidAt.toISOString(), expiresAt.toISOString(), req.user.id],
+    (err) => {
+      if (err) return res.status(500).send('Unable to activate Pro access');
+      res.redirect('/billing?success=1');
+    }
+  );
 });
 
 app.post('/login', (req, res) => {
@@ -1343,7 +1426,8 @@ app.get('/dashboard', verifyToken, (req, res) => {
                      ORDER BY m.scheduled_at DESC
                      LIMIT 5`;
                 const params = req.user.role === 'admin' || req.user.role === 'hr' ? [] : [req.user.id];
-                const dashboardInsightsContext = {
+                const proStatus = getProAccessStatus(req.user);
+  const dashboardInsightsContext = {
                   user: req.user,
                   jobs: recommendations || [],
                   stats,
@@ -1369,7 +1453,8 @@ app.get('/dashboard', verifyToken, (req, res) => {
                         aiInsights,
                         cloudAiOverview,
                         cloudAiActions,
-                        candidateAiPlan
+                        candidateAiPlan,
+                        proStatus
                       });
                     }).catch(() => {
                       res.render('dashboard', {
@@ -1383,7 +1468,8 @@ app.get('/dashboard', verifyToken, (req, res) => {
                         aiInsights: buildRealtimeAIInsights(dashboardInsightsContext),
                         cloudAiOverview,
                         cloudAiActions,
-                        candidateAiPlan
+                        candidateAiPlan,
+                        proStatus
                       });
                     });
                   };
@@ -1608,6 +1694,7 @@ app.get('/office', verifyToken, (req, res) => {
               },
               profileCompletion: 88
             };
+            const proStatus = getProAccessStatus(req.user);
             const cloudAiOverview = buildCloudAIOverview(officeInsightsContext);
             const cloudAiActions = buildCloudAIActions(officeInsightsContext);
             const recruiterDashboard = buildRecruiterAnalyticsDashboard({
@@ -1630,7 +1717,8 @@ app.get('/office', verifyToken, (req, res) => {
                 aiInsights,
                 cloudAiOverview,
                 cloudAiActions,
-                recruiterDashboard
+                recruiterDashboard,
+                proStatus
               });
             }).catch(() => {
               res.render('office', {
@@ -1646,7 +1734,8 @@ app.get('/office', verifyToken, (req, res) => {
                 aiInsights: buildRealtimeAIInsights(officeInsightsContext),
                 cloudAiOverview,
                 cloudAiActions,
-                recruiterDashboard
+                recruiterDashboard,
+                proStatus
               });
             });
           });
@@ -3788,6 +3877,7 @@ module.exports = {
   buildRecruiterAnalyticsDashboard,
   buildAdminAIOperations,
   buildCandidateAIPlan,
+  getProAccessStatus,
   fetchRealtimeAIInsights,
   generateProfessionalPracticeSet,
   getUniversityOpenings,

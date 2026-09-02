@@ -413,6 +413,7 @@
   <span onclick="window.location.href='/dashboard'"><i class="fas fa-home"></i> Dashboard</span>
   <span onclick="window.location.href='/jobs'"><i class="fas fa-briefcase"></i> Jobs</span>
   <span onclick="window.location.href='/profile'"><i class="fas fa-user"></i> Profile</span>
+  <span onclick="window.location.href='/billing'"><i class="fas fa-crown"></i> <%= proStatus && proStatus.isPro ? 'Pro Active' : 'Go Pro' %></span>
   <span onclick="window.location.href='/meetings'"><i class="fas fa-video"></i> Meetings</span>
   <% if (user.role === 'hr') { %><span onclick="window.location.href='/office'"><i class="fas fa-building"></i> Office</span><% } %>
   <% if (user.role === 'admin') { %><span onclick="window.location.href='/admin'"><i class="fas fa-cog"></i> Admin</span><% } %>
