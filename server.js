@@ -972,8 +972,8 @@ app.get('/billing', verifyToken, (req, res) => {
     user: req.user,
     proStatus,
     plans: [
-      { id: 'pro', name: 'Pro', price: '$29', description: 'Premium AI dashboard and shortlist intelligence for candidates and HR teams.', accent: '#0f766e' },
-      { id: 'team', name: 'Team', price: '$79', description: 'Advanced hiring workflow and faster review operations for HR and admin.', accent: '#312e81' }
+      { id: 'pro', name: 'Pro', price: '₹2,999', description: 'Premium AI dashboard and shortlist intelligence for candidates and HR teams.', accent: '#0f766e' },
+      { id: 'team', name: 'Team', price: '₹7,999', description: 'Advanced hiring workflow and faster review operations for HR and admin.', accent: '#312e81' }
     ],
     message
   });
