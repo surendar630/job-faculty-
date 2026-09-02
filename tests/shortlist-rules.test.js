@@ -1,7 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary, generateProfessionalPracticeSet, analyzeResumeForAICTE } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary, generateProfessionalPracticeSet, analyzeResumeForAICTE, buildCloudAIOverview, buildCandidateMatchDashboard, buildAIJobRecommendations, buildHRExportReport, buildRecruiterAnalyticsDashboard } = require('../server');
 
 (async function run() {
   const insights = buildRealtimeAIInsights({
@@ -32,6 +32,61 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions,
   assert.ok(Array.isArray(cloudRecommendations), 'Cloud AI recommendations should return an array');
   assert.ok(cloudRecommendations.length >= 3, 'Cloud AI recommendations should provide multiple guidance cards');
   assert.ok(cloudRecommendations.every(item => item.title && item.description), 'Each recommendation should include a clear title and description');
+
+  const cloudOverview = buildCloudAIOverview({ user: { name: 'Dr. Priya', role: 'user' }, jobs: [{ title: 'Professor - AI', category: 'Computer Science' }], stats: { applications: 5, interviews: 2, favorites: 4 }, profileCompletion: 88 });
+  assert.ok(Array.isArray(cloudOverview), 'Cloud AI overview should return an array');
+  assert.ok(cloudOverview.length >= 3, 'Cloud AI overview should provide multiple capability cards');
+  assert.ok(cloudOverview.every(item => item.title && item.description), 'Each cloud AI overview card should include a clear title and description');
+
+  const matchDashboard = buildCandidateMatchDashboard({
+    user: { name: 'Dr. Priya', role: 'user', skills: 'AI, research, teaching, machine learning', bio: 'Research and teaching in AI and data science', experience: 7 },
+    jobs: [
+      { id: 1, title: 'Professor - AI', category: 'Computer Science', university: 'IISc Bangalore', location: 'Bangalore' },
+      { id: 2, title: 'Assistant Professor - Data Science', category: 'Data Science', university: 'IIIT Delhi', location: 'Delhi' },
+      { id: 3, title: 'Lecturer - Mathematics', category: 'Mathematics', university: 'BITS Pilani', location: 'Pilani' }
+    ]
+  });
+  assert.ok(Array.isArray(matchDashboard), 'Candidate match dashboard should return an array');
+  assert.ok(matchDashboard.length >= 3, 'Candidate match dashboard should include multiple ranked matches');
+  assert.ok(matchDashboard[0].score >= matchDashboard[1].score, 'Dashboard ranking should sort matches by strongest match score');
+
+  const rankedJobs = buildAIJobRecommendations({
+    user: { skills: 'AI, research, teaching, machine learning', bio: 'Research and teaching in AI and machine learning', experience: 6 },
+    jobs: [
+      { id: 1, title: 'Professor - AI', category: 'Computer Science', university: 'IISc Bangalore', location: 'Bangalore', salary: '₹18L' },
+      { id: 2, title: 'Assistant Professor - Mathematics', category: 'Mathematics', university: 'BITS', location: 'Pilani', salary: '₹12L' },
+      { id: 3, title: 'Associate Professor - Cybersecurity', category: 'Cybersecurity', university: 'IIIT', location: 'Hyderabad', salary: '₹15L' }
+    ]
+  });
+  assert.ok(Array.isArray(rankedJobs), 'AI job recommendations should return an array');
+  assert.ok(rankedJobs.length >= 3, 'AI job recommendations should include ranked jobs');
+  assert.ok(rankedJobs[0].score >= rankedJobs[1].score, 'Ranking should place the strongest role first');
+
+  const exportReport = buildHRExportReport({
+    applications: [
+      { candidate_name: 'Dr. Meera', candidate_email: 'meera@example.com', job_title: 'Professor - AI', university: 'IISc Bangalore', status: 'shortlisted', score: 92 },
+      { candidate_name: 'Arun', candidate_email: 'arun@example.com', job_title: 'Assistant Professor - Data Science', university: 'IIIT Delhi', status: 'pending', score: 74 }
+    ]
+  });
+  assert.ok(exportReport && typeof exportReport === 'object', 'HR export report should be returned');
+  assert.ok(typeof exportReport.csv === 'string' && exportReport.csv.includes('candidate_name'), 'Export CSV should include a header row');
+  assert.ok(exportReport.summary && exportReport.summary.toLowerCase().includes('shortlisted') || exportReport.summary.toLowerCase().includes('candidate'), 'Export summary should describe the candidate shortlist');
+
+  const recruiterDashboard = buildRecruiterAnalyticsDashboard({
+    jobs: [{ title: 'Professor - AI', category: 'Computer Science' }, { title: 'Assistant Professor - Data Science', category: 'Data Science' }, { title: 'Professor - Mathematics', category: 'Mathematics' }],
+    applications: [
+      { status: 'shortlisted', job_title: 'Professor - AI' },
+      { status: 'pending', job_title: 'Assistant Professor - Data Science' },
+      { status: 'rejected', job_title: 'Professor - AI' },
+      { status: 'shortlisted', job_title: 'Professor - Mathematics' },
+      { status: 'pending', job_title: 'Professor - AI' }
+    ],
+    meetings: [{ platform: 'Zoom' }, { platform: 'Google Meet' }, { platform: 'Microsoft Teams' }]
+  });
+  assert.ok(recruiterDashboard && typeof recruiterDashboard === 'object', 'Recruiter analytics dashboard should be returned');
+  assert.ok(typeof recruiterDashboard.conversionRate === 'number', 'Conversion rate should be numeric');
+  assert.ok(Array.isArray(recruiterDashboard.pipelineTrend) && recruiterDashboard.pipelineTrend.length >= 3, 'Pipeline trend should include time buckets');
+  assert.ok(Array.isArray(recruiterDashboard.topDepartments) && recruiterDashboard.topDepartments.length >= 1, 'Top departments should be included');
 
   const cases = [
     {

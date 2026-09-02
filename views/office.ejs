@@ -120,7 +120,17 @@
  </div>
 
  <div class="insight-strip">
-  <% if (aiInsights && aiInsights.length) { %>
+  <% if (cloudAiOverview && cloudAiOverview.length) { %>
+   <% cloudAiOverview.forEach((insight) => { %>
+    <div class="insight-card">
+     <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+     <div>
+      <h3><%= insight.title %></h3>
+      <p><%= insight.description %></p>
+     </div>
+    </div>
+   <% }); %>
+  <% } else if (aiInsights && aiInsights.length) { %>
    <% aiInsights.forEach((insight) => { %>
     <div class="insight-card">
      <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
@@ -181,6 +191,63 @@
    <div class="stat-number"><%= stats.resumes %></div>
    <p>Uploaded resumes across the platform. View, filter, and download candidate documents from the shortlist view.</p>
   </div>
+ </div>
+
+ <% if (recruiterDashboard) { %>
+  <div class="analytics-panel">
+   <div class="analytics-header">
+    <div>
+     <h3>AI Recruiter Dashboard</h3>
+     <p>Pipeline health and hiring momentum across your faculty hiring funnel.</p>
+    </div>
+    <div class="analytics-kpi">
+     <span>Conversion</span>
+     <strong><%= recruiterDashboard.conversionRate %>%</strong>
+    </div>
+   </div>
+
+   <div class="chart-grid">
+    <div class="chart-card">
+     <h4>Pipeline trend</h4>
+     <div class="bar-chart">
+      <% recruiterDashboard.pipelineTrend.forEach((bucket) => { %>
+       <div class="bar-group">
+        <div class="bar" style="height: <%= Math.max(18, (bucket.value / Math.max(...recruiterDashboard.pipelineTrend.map(item => item.value), 1)) * 100) %>%"></div>
+        <label><%= bucket.label %></label>
+       </div>
+      <% }); %>
+     </div>
+    </div>
+
+    <div class="chart-card">
+     <h4>Department mix</h4>
+     <ul class="department-list">
+      <% recruiterDashboard.topDepartments.forEach((dept) => { %>
+       <li>
+        <div class="department-row">
+         <span><%= dept.label %></span>
+         <strong><%= dept.count %></strong>
+        </div>
+        <div class="department-track">
+         <span style="width:<%= dept.share %>%"></span>
+        </div>
+       </li>
+      <% }); %>
+     </ul>
+    </div>
+   </div>
+
+   <div class="analytics-actions">
+    <% (recruiterDashboard.actions || []).forEach((action) => { %>
+     <div class="mini-action"><i class="fas fa-check"></i> <span><%= action %></span></div>
+    <% }); %>
+   </div>
+  </div>
+ <% } %>
+
+ <div class="office-actions" style="margin-bottom: 1.5rem;">
+  <a href="/hr/export"><i class="fas fa-file-export"></i> Export shortlist CSV</a>
+  <a href="/shortlisted"><i class="fas fa-check-circle"></i> Review shortlisted candidates</a>
  </div>
 
  <% if (meetings && meetings.length > 0) { %>

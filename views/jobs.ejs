@@ -420,6 +420,20 @@
   <% } %>
  </div>
 
+ <div class="insight-strip" style="margin-top: 1rem;">
+  <% if (candidateMatchDashboard && candidateMatchDashboard.length) { %>
+   <% candidateMatchDashboard.forEach((match) => { %>
+    <div class="insight-card">
+     <div class="insight-icon" style="background:#ecfdf5; color:#0f766e;"><i class="fas fa-bullseye"></i></div>
+     <div>
+      <h3><%= match.title %> · <%= match.score %>%</h3>
+      <p><%= match.university %> · <%= match.location %> · <strong><%= match.label %></strong></p>
+     </div>
+    </div>
+   <% }); %>
+  <% } %>
+ </div>
+
  <div class="-grid">
   <% (cloudAiActions || []).forEach((item) => { %>
    <div class="-card">

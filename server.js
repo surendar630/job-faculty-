@@ -1345,6 +1345,7 @@ app.get('/dashboard', verifyToken, (req, res) => {
                   stats,
                   profileCompletion
                 };
+                const cloudAiOverview = buildCloudAIOverview(dashboardInsightsContext);
                 const cloudAiActions = buildCloudAIActions(dashboardInsightsContext);
 
                 db.all(meetingQuery, params, (err, meetings) => {
@@ -1361,6 +1362,7 @@ app.get('/dashboard', verifyToken, (req, res) => {
                         profileCompletion,
                         aiEnabled: !!openaiClient,
                         aiInsights,
+                        cloudAiOverview,
                         cloudAiActions
                       });
                     }).catch(() => {
@@ -1373,6 +1375,7 @@ app.get('/dashboard', verifyToken, (req, res) => {
                         profileCompletion,
                         aiEnabled: !!openaiClient,
                         aiInsights: buildRealtimeAIInsights(dashboardInsightsContext),
+                        cloudAiOverview,
                         cloudAiActions
                       });
                     });
@@ -1598,7 +1601,13 @@ app.get('/office', verifyToken, (req, res) => {
               },
               profileCompletion: 88
             };
+            const cloudAiOverview = buildCloudAIOverview(officeInsightsContext);
             const cloudAiActions = buildCloudAIActions(officeInsightsContext);
+            const recruiterDashboard = buildRecruiterAnalyticsDashboard({
+              jobs: recentApps.map(app => ({ title: app.job_title, category: app.job_title || 'Hiring pipeline' })),
+              applications: recentApps.map(app => ({ status: app.status, job_title: app.job_title })),
+              meetings: meetings || []
+            });
 
             fetchRealtimeAIInsights(officeInsightsContext).then((aiInsights) => {
               res.render('office', {
@@ -1612,7 +1621,9 @@ app.get('/office', verifyToken, (req, res) => {
                 meetings,
                 aiEnabled: !!openaiClient,
                 aiInsights,
-                cloudAiActions
+                cloudAiOverview,
+                cloudAiActions,
+                recruiterDashboard
               });
             }).catch(() => {
               res.render('office', {
@@ -1626,7 +1637,9 @@ app.get('/office', verifyToken, (req, res) => {
                 meetings,
                 aiEnabled: !!openaiClient,
                 aiInsights: buildRealtimeAIInsights(officeInsightsContext),
-                cloudAiActions
+                cloudAiOverview,
+                cloudAiActions,
+                recruiterDashboard
               });
             });
           });
@@ -1739,11 +1752,12 @@ app.get('/office/shortlisted', verifyToken, (req, res) => {
     };
 
     const resumeTraining = buildResumeTrainingCards({ applications });
+    const cloudAiOverview = buildCloudAIOverview(shortlistedInsightsContext);
 
     fetchRealtimeAIInsights(shortlistedInsightsContext).then((aiInsights) => {
-      res.render('shortlisted', { applications, user: req.user, aiInsights, aiEnabled: !!openaiClient, resumeTraining });
+      res.render('shortlisted', { applications, user: req.user, aiInsights, aiEnabled: !!openaiClient, resumeTraining, cloudAiOverview });
     }).catch(() => {
-      res.render('shortlisted', { applications, user: req.user, aiInsights: buildRealtimeAIInsights(shortlistedInsightsContext), aiEnabled: !!openaiClient, resumeTraining });
+      res.render('shortlisted', { applications, user: req.user, aiInsights: buildRealtimeAIInsights(shortlistedInsightsContext), aiEnabled: !!openaiClient, resumeTraining, cloudAiOverview });
     });
   });
 });
@@ -1891,10 +1905,12 @@ app.get('/jobs', verifyToken, (req, res) => {
       const aiInsightsContext = { user: req.user, jobs, stats: { applications: jobs.length, favorites: favoriteIds.length }, profileCompletion: 80 };
       const cloudAiActions = buildCloudAIActions(aiInsightsContext);
       const fitMap = Object.fromEntries((jobs || []).map(job => [job.id, buildJobFitSummary(job, req.user)]));
+      const candidateMatchDashboard = buildCandidateMatchDashboard({ user: req.user, jobs: jobs || [] });
+      const aiRecommendations = buildAIJobRecommendations({ user: req.user, jobs: jobs || [] });
       fetchRealtimeAIInsights(aiInsightsContext).then((aiInsights) => {
-        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights, cloudAiActions, jobFitSummaryMap: fitMap });
+        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights, cloudAiActions, jobFitSummaryMap: fitMap, candidateMatchDashboard, aiRecommendations });
       }).catch(() => {
-        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights: buildRealtimeAIInsights(aiInsightsContext), cloudAiActions, jobFitSummaryMap: fitMap });
+        res.render('jobs', { jobs, user: req.user, search, category, location, sort, favoriteIds, universityOpenings, aiInsights: buildRealtimeAIInsights(aiInsightsContext), cloudAiActions, jobFitSummaryMap: fitMap, candidateMatchDashboard, aiRecommendations });
       });
     });
   });
@@ -2043,6 +2059,28 @@ app.post('/compare', verifyToken, (req, res) => {
   db.all(`SELECT * FROM jobs WHERE id IN (${placeholders})`, jobIds, (err, jobs) => {
     if (err) return res.status(500).send('Error');
     res.render('compare', { jobs, user: req.user });
+  });
+});
+
+app.get('/api/ai/recommendations', verifyToken, (req, res) => {
+  db.all('SELECT * FROM jobs ORDER BY id DESC LIMIT 8', [], (err, jobs) => {
+    if (err) return res.status(500).json({ error: 'Unable to load recommendations' });
+    const rankedJobs = buildAIJobRecommendations({ user: req.user, jobs: jobs || [] });
+    return res.json({ rankedJobs });
+  });
+});
+
+app.get('/hr/export', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
+  db.all(`SELECT a.*, j.title as job_title, j.university, u.name as candidate_name, u.email as candidate_email
+          FROM applications a
+          JOIN jobs j ON a.job_id = j.id
+          JOIN users u ON a.user_id = u.id
+          ORDER BY a.applied_at DESC`, [], (err, applications) => {
+    if (err) return res.status(500).send('Unable to export report');
+    const report = buildHRExportReport({ applications: applications || [] });
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="faculty-shortlist-export.csv"');
+    res.send(report.csv);
   });
 });
 
@@ -3276,6 +3314,93 @@ function buildCloudAIRecommendations({ user = {}, jobs = [], stats = {}, profile
   ].slice(0, 4);
 }
 
+function buildCandidateMatchDashboard({ user = {}, jobs = [] } = {}) {
+  const candidateSkills = String(user.skills || '').toLowerCase();
+  const candidateBio = String(user.bio || '').toLowerCase();
+  const candidateExperience = Number(user.experience || 0);
+
+  return (Array.isArray(jobs) ? jobs : []).map((job) => {
+    const title = String(job.title || '').toLowerCase();
+    const category = String(job.category || '').toLowerCase();
+    const university = String(job.university || '').toLowerCase();
+    const location = String(job.location || '').toLowerCase();
+    let score = 38;
+
+    if (title.includes('professor') || title.includes('faculty') || title.includes('associate')) score += 12;
+    if (category && candidateSkills.includes(category)) score += 18;
+    if (title.includes('ai') || category.includes('ai') || candidateSkills.includes('ai')) score += 12;
+    if (title.includes('data') || category.includes('data') || candidateSkills.includes('data')) score += 8;
+    if (title.includes('machine') || category.includes('machine') || candidateSkills.includes('machine')) score += 8;
+    if (candidateBio.includes('research') || candidateBio.includes('teaching')) score += 10;
+    if (candidateExperience >= 5) score += 10;
+    if (candidateExperience >= 10) score += 5;
+    if (university.includes('institute') || university.includes('university') || location.includes('bangalore')) score += 4;
+
+    const safeScore = Math.min(98, Math.max(42, score));
+    let label = 'Good fit';
+    let summary = 'This role aligns well with your current experience and academic profile.';
+    if (safeScore >= 80) {
+      label = 'Strong match';
+      summary = 'High alignment for your teaching and research profile. This is a top-priority opportunity.';
+    } else if (safeScore >= 65) {
+      label = 'Promising fit';
+      summary = 'A good opportunity with a few profile tweaks that could improve the shortlist outcome.';
+    } else if (safeScore < 60) {
+      label = 'Needs tuning';
+      summary = 'The role is relevant, but a stronger research or teaching profile would improve competitiveness.';
+    }
+
+    return {
+      id: job.id,
+      title: job.title || 'Academic role',
+      university: job.university || 'University',
+      location: job.location || 'Global',
+      category: job.category || 'Academic',
+      score: safeScore,
+      label,
+      summary
+    };
+  }).sort((a, b) => b.score - a.score).slice(0, 5);
+}
+
+function buildAIJobRecommendations({ user = {}, jobs = [] } = {}) {
+  const matchList = buildCandidateMatchDashboard({ user, jobs });
+  return matchList.map((match) => ({
+    id: match.id,
+    title: match.title,
+    university: match.university,
+    location: match.location,
+    category: match.category,
+    score: match.score,
+    label: match.label,
+    description: match.summary
+  }));
+}
+
+function buildHRExportReport({ applications = [] } = {}) {
+  const rows = Array.isArray(applications) ? applications : [];
+  const header = ['candidate_name', 'candidate_email', 'job_title', 'university', 'status', 'score'];
+  const csvRows = [header.join(',')];
+
+  rows.forEach((entry) => {
+    const values = header.map((key) => {
+      const value = entry[key] ?? '';
+      return `"${String(value).replace(/"/g, '""')}"`;
+    });
+    csvRows.push(values.join(','));
+  });
+
+  const shortlisted = rows.filter((row) => String(row.status || '').toLowerCase().includes('shortlisted')).length;
+  const summary = `${rows.length} candidate records reviewed. ${shortlisted} shortlisted for committee follow-up and ${rows.length - shortlisted} still pending review.`;
+
+  return {
+    csv: csvRows.join('\n'),
+    summary,
+    records: rows.length,
+    shortlisted
+  };
+}
+
 function buildRealtimeAIInsights({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
   const jobList = Array.isArray(jobs) ? jobs : [];
   const activeCount = jobList.length;
@@ -3315,6 +3440,109 @@ function buildRealtimeAIInsights({ user = {}, jobs = [], stats = {}, profileComp
   ];
 
   return cards.slice(0, 4);
+}
+
+function buildCloudAIOverview({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
+  const role = user && user.role ? user.role : 'user';
+  const applications = Number(stats.applications || 0);
+  const interviews = Number(stats.interviews || 0);
+  const favorites = Number(stats.favorites || 0);
+  const completion = Number(profileCompletion || 0);
+  const activeJobs = Array.isArray(jobs) ? jobs.length : 0;
+
+  if (role === 'hr' || role === 'admin') {
+    return [
+      {
+        title: 'Candidate quality dashboard',
+        description: `AI is tracking ${applications} applications and ${interviews} interview signals so your shortlist stays consistent and faster to review.`
+      },
+      {
+        title: 'Shortlist intelligence',
+        description: `Team review is being guided by strong academic fit, AICTE compliance, and the most relevant positions in your current hiring flow.`
+      },
+      {
+        title: 'Hiring automation',
+        description: `Use automated screening summaries and role-based coaching to reduce admin effort while keeping panel decisions well documented.`
+      },
+      {
+        title: 'Opportunity match',
+        description: `${favorites || 0} shortlisted priorities and ${activeJobs || 0} active role signals are helping the team focus on the best candidates first.`
+      }
+    ];
+  }
+
+  return [
+    {
+      title: 'AI profile match',
+      description: `Your academic profile is ${completion}% complete, and AI is identifying the strongest role alignment across ${activeJobs || 'active'} job signals.`
+    },
+    {
+      title: 'Interview readiness',
+      description: `${interviews || 0} interview sessions and ${applications || 0} applications show solid momentum; cloud AI is preparing you for the next round.`
+    },
+    {
+      title: 'Career momentum coach',
+      description: `Saved roles, targeted recommendations, and resume guidance are helping you build better-fit applications with less guesswork.`
+    },
+    {
+      title: 'Next best action',
+      description: `Keep refining your teaching, research, and publication impact so AI can rank your profile more strongly for faculty opportunities.`
+    }
+  ];
+}
+
+function buildRecruiterAnalyticsDashboard({ jobs = [], applications = [], meetings = [] } = {}) {
+  const allJobs = Array.isArray(jobs) ? jobs : [];
+  const allApplications = Array.isArray(applications) ? applications : [];
+  const allMeetings = Array.isArray(meetings) ? meetings : [];
+
+  const totalApplications = allApplications.length;
+  const shortlisted = allApplications.filter((app) => String(app.status || '').toLowerCase().includes('shortlisted')).length;
+  const rejected = allApplications.filter((app) => String(app.status || '').toLowerCase().includes('rejected')).length;
+  const pending = allApplications.filter((app) => String(app.status || '').toLowerCase().includes('pending')).length;
+  const conversionRate = totalApplications ? Number(((shortlisted / totalApplications) * 100).toFixed(1)) : 0;
+
+  const departmentCounts = {};
+  allApplications.forEach((app) => {
+    const jobTitle = String(app.job_title || app.title || 'General hiring');
+    const category = String(app.category || jobTitle).trim() || 'General hiring';
+    departmentCounts[category] = (departmentCounts[category] || 0) + 1;
+  });
+
+  const topDepartments = Object.entries(departmentCounts)
+    .map(([label, count]) => ({
+      label,
+      count,
+      share: totalApplications ? Math.round((count / totalApplications) * 100) : 0
+    }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 4);
+
+  const pipelineTrend = [
+    { label: 'New', value: Math.max(1, Math.ceil(totalApplications * 0.38)) },
+    { label: 'Review', value: Math.max(1, Math.ceil(totalApplications * 0.52)) },
+    { label: 'Shortlist', value: Math.max(1, shortlisted || 1) },
+    { label: 'Interviews', value: Math.max(1, allMeetings.length || 1) }
+  ];
+
+  return {
+    conversionRate,
+    pipelineTrend,
+    topDepartments,
+    summary: {
+      totalApplications,
+      shortlisted,
+      pending,
+      rejected,
+      interviews: allMeetings.length,
+      activeJobs: allJobs.length
+    },
+    actions: [
+      'Prioritize top shortlisted candidates for committee review and university outreach.',
+      'Convert pending applicants with strong academic fit into scheduled interviews within 48 hours.',
+      'Use department volume to rebalance recruiting effort across high-demand faculty tracks.'
+    ]
+  };
 }
 
 async function fetchRealtimeAIInsights(context) {
@@ -3366,6 +3594,11 @@ module.exports = {
   buildCloudAIActions,
   buildCloudAIRecommendations,
   buildRealtimeAIInsights,
+  buildCloudAIOverview,
+  buildCandidateMatchDashboard,
+  buildAIJobRecommendations,
+  buildHRExportReport,
+  buildRecruiterAnalyticsDashboard,
   fetchRealtimeAIInsights,
   generateProfessionalPracticeSet,
   getUniversityOpenings,

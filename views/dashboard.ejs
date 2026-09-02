@@ -453,7 +453,17 @@
  </div>
 
  <div class="insight-strip">
-  <% if (aiInsights && aiInsights.length) { %>
+  <% if (cloudAiOverview && cloudAiOverview.length) { %>
+   <% cloudAiOverview.forEach((insight) => { %>
+    <div class="insight-card">
+     <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+     <div>
+      <h3><%= insight.title %></h3>
+      <p><%= insight.description %></p>
+     </div>
+    </div>
+   <% }); %>
+  <% } else if (aiInsights && aiInsights.length) { %>
    <% aiInsights.forEach((insight) => { %>
     <div class="insight-card">
      <div class="insight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
