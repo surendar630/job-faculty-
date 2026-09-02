@@ -491,7 +491,72 @@
   <% } %>
  </div>
 
+ <% if (candidateAiPlan) { %>
+  <div class="training-hero">
+   <div>
+    <span class="training-pill"><i class="fas fa-rocket"></i> Cloud AI strategy</span>
+    <h2><%= candidateAiPlan.priority %></h2>
+    <p><%= candidateAiPlan.forecast %></p>
+    <div class="training-actions">
+     <button class="btn btn-primary" onclick="window.location.href='/jobs'"> <i class="fas fa-arrow-right"></i> Apply smarter</button>
+     <button class="btn btn-secondary" onclick="window.location.href='/practice'"> <i class="fas fa-robot"></i> Practice interview</button>
+    </div>
+   </div>
+   <div class="training-highlight">
+    <% (candidateAiPlan.plan || []).forEach((step) => { %>
+     <div class="training-highlight-item">
+      <i class="fas fa-check-circle"></i>
+      <span><strong><%= step.title %>:</strong> <%= step.description %></span>
+     </div>
+    <% }); %>
+   </div>
+  </div>
 
+  <div class="training-grid" style="margin-top:1rem;">
+   <div class="training-card">
+    <div class="training-card-icon"><i class="fas fa-chart-line"></i></div>
+    <h3>Resume strength</h3>
+    <p><strong><%= candidateAiPlan.resumeScore %>/100</strong> — your profile is trending toward stronger shortlist readiness.</p>
+   </div>
+   <div class="training-card">
+    <div class="training-card-icon"><i class="fas fa-map-signs"></i></div>
+    <h3>7-day roadmap</h3>
+    <p>Follow the AI execution plan to sharpen positioning, applications, and interview momentum.</p>
+   </div>
+   <div class="training-card">
+    <div class="training-card-icon"><i class="fas fa-bullseye"></i></div>
+    <h3>Best-fit predictions</h3>
+    <p>Top role matches are ranked by your current academic profile and subject alignment.</p>
+   </div>
+  </div>
+
+  <div class="training-grid" style="margin-top:0;">
+   <% (candidateAiPlan.fitScoreCards || []).forEach((card) => { %>
+    <div class="training-card">
+     <div class="training-card-icon"><i class="fas fa-award"></i></div>
+     <h3><%= card.role %></h3>
+     <p><strong><%= Math.round(card.score) %>%</strong> · <%= card.label %></p>
+     <p><%= card.reason %></p>
+    </div>
+   <% }); %>
+  </div>
+
+  <div class="meeting-panel" style="margin-top:1rem;">
+   <div class="meeting-panel-header">
+    <h3 style="margin:0; color:#282A35;">AI 7-day action plan</h3>
+   </div>
+   <div class="meeting-panel-content active" style="display:block;">
+    <% (candidateAiPlan.sevenDayPlan || []).forEach((task) => { %>
+     <div class="meeting-card">
+      <div class="meeting-card-header">
+       <h4 style="margin:0; color:#282A35;"><%= task.day %> · <%= task.focus %></h4>
+      </div>
+      <p style="margin:0; color:#475569;"><%= task.action %></p>
+     </div>
+    <% }); %>
+   </div>
+  </div>
+ <% } %>
 
  <div style="padding: 0 0 2rem;">
    <h2 style="font-size: 1.8rem; margin-bottom: 2rem;"><i class="fas fa-th-large"></i> Priority actions</h2>

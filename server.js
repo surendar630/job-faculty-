@@ -1347,6 +1347,7 @@ app.get('/dashboard', verifyToken, (req, res) => {
                 };
                 const cloudAiOverview = buildCloudAIOverview(dashboardInsightsContext);
                 const cloudAiActions = buildCloudAIActions(dashboardInsightsContext);
+                const candidateAiPlan = buildCandidateAIPlan(dashboardInsightsContext);
 
                 db.all(meetingQuery, params, (err, meetings) => {
                   if (err) return res.status(500).send('Error loading dashboard meetings');
@@ -1363,7 +1364,8 @@ app.get('/dashboard', verifyToken, (req, res) => {
                         aiEnabled: !!openaiClient,
                         aiInsights,
                         cloudAiOverview,
-                        cloudAiActions
+                        cloudAiActions,
+                        candidateAiPlan
                       });
                     }).catch(() => {
                       res.render('dashboard', {
@@ -1376,7 +1378,8 @@ app.get('/dashboard', verifyToken, (req, res) => {
                         aiEnabled: !!openaiClient,
                         aiInsights: buildRealtimeAIInsights(dashboardInsightsContext),
                         cloudAiOverview,
-                        cloudAiActions
+                        cloudAiActions,
+                        candidateAiPlan
                       });
                     });
                   };
@@ -2404,6 +2407,18 @@ app.get('/admin', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
                           profileCompletion: 92
                         };
 
+                        const adminAiOps = buildAdminAIOperations({
+                          jobs,
+                          applications,
+                          interviews,
+                          recentLogins: recentLogins || [],
+                          stats: {
+                            applications: applications.length || 0,
+                            interviews: interviews.length || 0,
+                            favorites: resumeUsers.length || 0
+                          }
+                        });
+
                         fetchRealtimeAIInsights(adminInsightsContext).then((aiInsights) => {
                           res.render('admin', {
                             jobs,
@@ -2415,9 +2430,11 @@ app.get('/admin', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
                             meetingByApp,
                             recentLogins: recentLogins || [],
                             aiEnabled: !!openaiClient,
-                            aiInsights
+                            aiInsights,
+                            adminAiOps
                           });
                         }).catch(() => {
+                          const fallbackAiInsights = buildRealtimeAIInsights(adminInsightsContext);
                           res.render('admin', {
                             jobs,
                             applications,
@@ -2428,7 +2445,11 @@ app.get('/admin', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
                             meetingByApp,
                             recentLogins: recentLogins || [],
                             aiEnabled: !!openaiClient,
-                            aiInsights: buildRealtimeAIInsights(adminInsightsContext)
+                            aiInsights: fallbackAiInsights,
+                            adminAiOps: {
+                              ...adminAiOps,
+                              overview: fallbackAiInsights.length ? fallbackAiInsights : adminAiOps.overview
+                            }
                           });
                         });
                       });
@@ -3545,6 +3566,168 @@ function buildRecruiterAnalyticsDashboard({ jobs = [], applications = [], meetin
   };
 }
 
+function buildAdminAIOperations({ jobs = [], applications = [], interviews = [], recentLogins = [], stats = {} } = {}) {
+  const allJobs = Array.isArray(jobs) ? jobs : [];
+  const allApplications = Array.isArray(applications) ? applications : [];
+  const allInterviews = Array.isArray(interviews) ? interviews : [];
+  const recentUsers = Array.isArray(recentLogins) ? recentLogins : [];
+  const totalApplications = Number(stats.applications || allApplications.length || 0);
+  const totalInterviews = Number(stats.interviews || allInterviews.length || 0);
+  const shortlisted = allApplications.filter((app) => String(app.status || '').toLowerCase().includes('shortlisted')).length;
+  const pending = allApplications.filter((app) => String(app.status || '').toLowerCase().includes('pending')).length;
+  const rejected = allApplications.filter((app) => String(app.status || '').toLowerCase().includes('rejected')).length;
+  const avgInterviewScore = allInterviews.length
+    ? allInterviews.reduce((sum, item) => sum + Number(item.score || 0), 0) / allInterviews.length
+    : 0;
+
+  const priority = pending > shortlisted
+    ? 'Accelerate pending candidate follow-up and keep the panel review queue moving.'
+    : 'Keep conversion momentum high by protecting the strongest shortlisted talent pipeline.';
+
+  const overview = [
+    {
+      title: 'Hiring velocity',
+      description: `${totalApplications} active applications are being assessed across ${allJobs.length || 0} active roles, with ${pending} still pending panel review.`
+    },
+    {
+      title: 'Shortlist quality',
+      description: `${shortlisted} applicants are already shortlisted and the average interview signal is ${avgInterviewScore ? Math.round(avgInterviewScore) : 0}/100.`
+    },
+    {
+      title: 'Admin coverage',
+      description: `${recentUsers.length} recent login events show active admin and HR engagement across the faculty hiring process.`
+    },
+    {
+      title: 'Risk posture',
+      description: `${rejected} rejections and ${pending} pending reviews suggest the team should rebalance review capacity for strong-fit candidates.`
+    }
+  ];
+
+  const riskAlerts = [
+    {
+      title: 'Review backlog',
+      detail: 'The pending application queue is rising and should be cleared within the next 48 hours to avoid missing high-fit candidates.'
+    },
+    {
+      title: 'Hiring fairness',
+      detail: 'Use the AI shortlist summary and candidate notes to avoid over-indexing on a single department or subject alignment.'
+    },
+    {
+      title: 'Interview quality',
+      detail: `Interview strength is ${avgInterviewScore ? Math.round(avgInterviewScore) : 0}/100, so focus on calibration in panel feedback before final offers.`
+    }
+  ];
+
+  const actions = [
+    'Prioritize shortlisted candidates for immediate committee action and final decision coordination.',
+    'Review pending applicants with the strongest academic profiles before generating a second shortlist wave.',
+    'Check recent login activity and confirm who is covering the current hiring funnel and interview scheduling.',
+    'Use role-based AI summaries to align department demand with the next fastest track for offer generation.'
+  ];
+
+  return {
+    priority,
+    overview,
+    riskAlerts,
+    actions
+  };
+}
+
+function buildCandidateAIPlan({ user = {}, jobs = [], stats = {}, profileCompletion = 0 } = {}) {
+  const skillText = String(user.skills || user.bio || '').toLowerCase();
+  const bioText = String(user.bio || '').toLowerCase();
+  const completion = Number(profileCompletion || 0);
+  const apps = Number(stats.applications || 0);
+  const interviews = Number(stats.interviews || 0);
+  const favorites = Number(stats.favorites || 0);
+  const relevantJobs = Array.isArray(jobs) ? jobs : [];
+
+  let priority = 'Strengthen research positioning';
+  if (completion >= 85) priority = 'Increase application velocity';
+  else if (relevantJobs.length > 0 && favorites >= 3) priority = 'Convert saved roles into high-intent applications';
+  else if (bioText.includes('research') || bioText.includes('teaching')) priority = 'Sharpen leadership and teaching impact';
+
+  const forecast = completion >= 80
+    ? `AI forecasts a stronger shortlist trajectory because your profile is already ${completion}% complete and aligned with ${relevantJobs.length || 'active'} relevant academic roles.`
+    : `AI forecasts steady growth if you complete the remaining profile sections, since your current visibility is only ${completion}% and the market signal is still building.`;
+
+  const roadmap = [
+    {
+      stage: 'Stage 1',
+      title: 'Profile positioning',
+      focus: 'Elevate your bio, publications, teaching evidence, and discipline keywords so faculty-fit scoring improves first.'
+    },
+    {
+      stage: 'Stage 2',
+      title: 'Targeted applications',
+      focus: 'Apply to the strongest-fit roles from your saved shortlist and focus on institutions that match your background and impact.'
+    },
+    {
+      stage: 'Stage 3',
+      title: 'Interview conversion',
+      focus: 'Practice panel-style answers around research, teaching philosophy, and career story to convert shortlisted interest into offers.'
+    }
+  ];
+
+  const fitScoreCards = (relevantJobs.length ? relevantJobs : [{ title: 'Faculty role', category: 'Academic' }]).slice(0, 3).map((job, index) => {
+    const title = String(job.title || 'Faculty role');
+    const category = String(job.category || 'Academic');
+    const jobBoost = title.toLowerCase().includes('ai') || category.toLowerCase().includes('ai') ? 14 : 8;
+    const researchBoost = bioText.includes('research') ? 18 : 10;
+    const teachingBoost = bioText.includes('teaching') ? 16 : 9;
+    const completionBoost = completion >= 80 ? 18 : 12;
+    const score = Math.min(98, Math.max(62, 52 + jobBoost + researchBoost + teachingBoost + completionBoost + index * 3));
+    const label = score >= 85 ? 'High probability' : score >= 72 ? 'Promising fit' : 'Needs tuning';
+    return {
+      role: title,
+      score,
+      label,
+      reason: `Strong alignment with ${category} and your academic profile.`
+    };
+  });
+
+  const resumeScore = Math.min(100, Math.max(45, Math.round(((completion * 0.45) + (favorites * 3) + (interviews * 8) + (apps * 4) + 18))));
+
+  const plan = [
+    {
+      title: 'Tighten your research narrative',
+      description: 'Update your bio and profile with quantified publications, teaching impact, and research outcomes to improve faculty-fit scoring.'
+    },
+    {
+      title: 'Apply to the highest-fit roles first',
+      description: `You have ${apps} applications, ${interviews} interviews, and ${favorites} saved roles. Prioritize the most aligned matches to improve conversion speed.`
+    },
+    {
+      title: 'Practice for the next interview round',
+      description: 'Use AI interview coaching to sharpen your teaching philosophy, research pitch, and panel-ready answers for shortlisted roles.'
+    },
+    {
+      title: 'Refresh keywords and profile signals',
+      description: `Add the strongest role keywords from your target disciplines such as ${skillText || 'teaching, AI, research, and academic leadership'}.`
+    }
+  ];
+
+  const sevenDayPlan = [
+    { day: 'Day 1', focus: 'Refresh profile copy', action: 'Rewrite your bio, highlight publications, and tune keywords to your target job category.' },
+    { day: 'Day 2', focus: 'Shortlist top roles', action: 'Review the 3 best-fit openings and prioritize applications based on match score.' },
+    { day: 'Day 3', focus: 'Reinforce resume points', action: 'Strengthen teaching impact, research outcomes, and clear positioning in your CV.' },
+    { day: 'Day 4', focus: 'Interview drilling', action: 'Practice the top five academic interview questions with AI coaching and refine your answers.' },
+    { day: 'Day 5', focus: 'Submit high-intent apps', action: 'Send applications to your strongest matches and follow up on saved roles.' },
+    { day: 'Day 6', focus: 'Track readiness', action: 'Review progress against your shortlist and update your roadmap for the next round.' },
+    { day: 'Day 7', focus: 'Prepare for outreach', action: 'Send your strongest profile summary to mentors and hiring contacts for fast feedback.' }
+  ];
+
+  return {
+    priority,
+    forecast,
+    roadmap,
+    fitScoreCards,
+    resumeScore,
+    plan: plan.slice(0, 4),
+    sevenDayPlan: sevenDayPlan.slice(0, 7)
+  };
+}
+
 async function fetchRealtimeAIInsights(context) {
   const fallback = buildRealtimeAIInsights(context);
   if (!openaiClient) return fallback;
@@ -3599,6 +3782,8 @@ module.exports = {
   buildAIJobRecommendations,
   buildHRExportReport,
   buildRecruiterAnalyticsDashboard,
+  buildAdminAIOperations,
+  buildCandidateAIPlan,
   fetchRealtimeAIInsights,
   generateProfessionalPracticeSet,
   getUniversityOpenings,

@@ -1,7 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary, generateProfessionalPracticeSet, analyzeResumeForAICTE, buildCloudAIOverview, buildCandidateMatchDashboard, buildAIJobRecommendations, buildHRExportReport, buildRecruiterAnalyticsDashboard } = require('../server');
+const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions, buildCloudAIRecommendations, buildResumeTrainingCards, buildAdvancedAICoach, calculateJobFitScore, buildUniversityForwardLink, buildPracticePerformanceSummary, generateProfessionalPracticeSet, analyzeResumeForAICTE, buildCloudAIOverview, buildCandidateMatchDashboard, buildAIJobRecommendations, buildHRExportReport, buildRecruiterAnalyticsDashboard, buildCandidateAIPlan, buildAdminAIOperations } = require('../server');
 
 (async function run() {
   const insights = buildRealtimeAIInsights({
@@ -87,6 +87,38 @@ const { evaluateShortlistDecision, buildRealtimeAIInsights, buildCloudAIActions,
   assert.ok(typeof recruiterDashboard.conversionRate === 'number', 'Conversion rate should be numeric');
   assert.ok(Array.isArray(recruiterDashboard.pipelineTrend) && recruiterDashboard.pipelineTrend.length >= 3, 'Pipeline trend should include time buckets');
   assert.ok(Array.isArray(recruiterDashboard.topDepartments) && recruiterDashboard.topDepartments.length >= 1, 'Top departments should be included');
+
+  const candidatePlan = buildCandidateAIPlan({
+    user: { name: 'Dr. Priya', role: 'user', skills: 'AI, data science, teaching', bio: 'Research and teaching in machine learning', experience: 6 },
+    jobs: [{ title: 'Professor - AI', category: 'Computer Science' }, { title: 'Assistant Professor - Data Science', category: 'Data Science' }],
+    stats: { applications: 3, interviews: 2, favorites: 5 },
+    profileCompletion: 87
+  });
+  assert.ok(candidatePlan && typeof candidatePlan === 'object', 'Candidate AI plan should be returned');
+  assert.ok(Array.isArray(candidatePlan.plan) && candidatePlan.plan.length >= 3, 'Candidate AI plan should include multiple action steps');
+  assert.ok(candidatePlan.forecast && typeof candidatePlan.forecast === 'string', 'Candidate AI plan should include a forecast summary');
+  assert.ok(candidatePlan.priority && typeof candidatePlan.priority === 'string', 'Candidate AI plan should identify a top priority');
+  assert.ok(Array.isArray(candidatePlan.roadmap) && candidatePlan.roadmap.length >= 3, 'Candidate roadmap should have at least three role-based stages');
+  assert.ok(Array.isArray(candidatePlan.fitScoreCards) && candidatePlan.fitScoreCards.length >= 2, 'Fit score cards should provide multiple role predictions');
+  assert.ok(candidatePlan.resumeScore >= 0 && candidatePlan.resumeScore <= 100, 'Resume score should be within the valid range');
+  assert.ok(Array.isArray(candidatePlan.sevenDayPlan) && candidatePlan.sevenDayPlan.length >= 3, 'Seven-day plan should include multiple daily actions');
+
+  const adminAiOps = buildAdminAIOperations({
+    jobs: [{ title: 'Professor - AI', category: 'Computer Science' }, { title: 'Associate Professor - Data Science', category: 'Data Science' }],
+    applications: [
+      { status: 'shortlisted', job_title: 'Professor - AI', candidate_name: 'Priya', candidate_email: 'priya@example.com' },
+      { status: 'pending', job_title: 'Professor - AI', candidate_name: 'Aditi', candidate_email: 'aditi@example.com' },
+      { status: 'rejected', job_title: 'Associate Professor - Data Science', candidate_name: 'Karan', candidate_email: 'karan@example.com' }
+    ],
+    interviews: [{ score: 88 }, { score: 72 }],
+    recentLogins: [{ user_name: 'Priya', role: 'admin' }, { user_name: 'Aditi', role: 'hr' }],
+    stats: { applications: 12, interviews: 6, favorites: 9 }
+  });
+  assert.ok(adminAiOps && typeof adminAiOps === 'object', 'Admin AI operations dashboard should be returned');
+  assert.ok(Array.isArray(adminAiOps.overview) && adminAiOps.overview.length >= 3, 'Admin overview cards should include multiple AI insights');
+  assert.ok(Array.isArray(adminAiOps.riskAlerts) && adminAiOps.riskAlerts.length >= 2, 'Admin risk alerts should identify key review items');
+  assert.ok(Array.isArray(adminAiOps.actions) && adminAiOps.actions.length >= 3, 'Admin AI actions should include a complete set of operational steps');
+  assert.ok(adminAiOps.priority && typeof adminAiOps.priority === 'string', 'Admin AI operations should identify a priority focus');
 
   const cases = [
     {
