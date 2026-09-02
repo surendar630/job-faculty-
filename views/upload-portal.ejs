@@ -265,6 +265,10 @@
      <div id="dash-recent" style="display:none">
       <div class="card"><div class="card-hd"><div class="card-hd-l"><i class="ti ti-clock"></i>Recent</div></div><div id="dash-rows"></div></div>
      </div>
+    <div id="committee-brief" class="card" style="display:none">
+     <div class="card-hd"><div class="card-hd-l"><i class="ti ti-file-report"></i>AI committee brief</div><button class="btn btn-acc btn-xs" onclick="generateCommitteeBrief()"><i class="ti ti-wand"></i>Generate brief</button></div>
+     <div id="committee-brief-body" class="detail-box">Generate an evidence-based summary for the shortlisted candidates.</div>
+    </div>
     </div>
 
     <div id="pg-bulk" class="page">
@@ -353,10 +357,10 @@
      </div>
     </div>
 
-    <div id="pg-sl" class="page"></div>
-    <div id="pg-vf" class="page"></div>
-    <div id="pg-cmp" class="page"></div>
-    <div id="pg-fn" class="page"></div>
+    <div id="pg-sl" class="page"><div id="sl-body"></div></div>
+    <div id="pg-vf" class="page"><div id="vf-body"></div></div>
+    <div id="pg-cmp" class="page"><div id="cmp-body"></div></div>
+    <div id="pg-fn" class="page"><div id="fn-body"></div></div>
     <div id="pg-norms" class="page"></div>
    </div>
   </div>
@@ -725,7 +729,7 @@ criteria exactly: UG Qualification,PG Qualification,First Class,PhD Degree,Teach
    if(!list.length){el.innerHTML='<div class="empty-s"><i class="ti ti-trophy"></i><p>No shortlisted candidates</p></div>';return;}
    const rcs=['rk1','rk2','rk3'];
    const rmap={STRONGLY_RECOMMEND:['rgba(16,185,129,.15)','#34D399'],RECOMMEND:['rgba(99,102,241,.15)','#818CF8'],CONDITIONAL:['rgba(245,158,11,.15)','#FCD34D']};
-   el.innerHTML=`<div class="card" style="margin-bottom:12px"><div class="card-hd"><div class="card-hd-l"><i class="ti ti-trophy" style="color:var(--amb2)"></i>Ranked shortlist — ${list.length} candidate(s)</div></div>${list.map((c,i)=>{const tot=Math.round((c.result.complianceScore+c.result.suitabilityScore)/2);const [rb,rt]=(c.verified&&c.vr&&rmap[c.vr.finalRecommendation])||['',''];return`<div class="fn-row"><div class="rk ${rcs[i]||'rkn'}">${i+1}</div><div class="ava">${ini(c.name)}</div><div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:500;color:var(--t1)">${c.name}</div><div style="font-size:11px;color:var(--t3)">${c.pos} • ${c.dept}</div><div class="bar" style="width:100px;margin-top:4px"><div class="bf ${bc(tot)}" style="width:${tot}%"></div></div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:19px;font-weight:500;color:var(--t1)">${tot}%</div><div style="font-size:10px;color:var(--t3)">score</div>${rb?`<div style="font-size:10px;margin-top:3px;padding:2px 8px;border-radius:20px;background:${rb};color:${rt}">${c.vr.finalRecommendation.replace(/_/g,' ')}</div>`:''}</div></div>`;}).join('')}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-grn" onclick="exportCSV()"><i class="ti ti-download"></i>Export shortlist CSV</button><button class="btn btn-acc" onclick="sendPrompt('Generate a formal AICTE faculty selection committee report for all shortlisted candidates with their ranks, scores, AICTE compliance, and verification outcomes')"><i class="ti ti-file-report"></i>Generate committee report ↗</button></div>`;
+  el.innerHTML=`<div class="card" style="margin-bottom:12px"><div class="card-hd"><div class="card-hd-l"><i class="ti ti-trophy" style="color:var(--amb2)"></i>Ranked shortlist — ${list.length} candidate(s)</div></div>${list.map((c,i)=>{const tot=Math.round((c.result.complianceScore+c.result.suitabilityScore)/2);const [rb,rt]=(c.verified&&c.vr&&rmap[c.vr.finalRecommendation])||['',''];return`<div class="fn-row"><div class="rk ${rcs[i]||'rkn'}">${i+1}</div><div class="ava">${ini(c.name)}</div><div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:500;color:var(--t1)">${c.name}</div><div style="font-size:11px;color:var(--t3)">${c.pos} • ${c.dept}</div><div class="bar" style="width:100px;margin-top:4px"><div class="bf ${bc(tot)}" style="width:${tot}%"></div></div></div><div style="text-align:right;flex-shrink:0"><div style="font-size:19px;font-weight:500;color:var(--t1)">${tot}%</div><div style="font-size:10px;color:var(--t3)">score</div>${rb?`<div style="font-size:10px;margin-top:3px;padding:2px 8px;border-radius:20px;background:${rb};color:${rt}">${c.vr.finalRecommendation.replace(/_/g,' ')}</div>`:''}</div></div>`;}).join('')}</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-grn" onclick="exportCSV()"><i class="ti ti-download"></i>Export shortlist CSV</button><button class="btn btn-acc" onclick="generateCommitteeBrief()"><i class="ti ti-file-report"></i>Generate committee brief</button></div>`;
   }
 
   function sync(){
@@ -746,9 +750,11 @@ criteria exactly: UG Qualification,PG Qualification,First Class,PhD Degree,Teach
     const ss=document.getElementById('seg-sum');if(ss)ss.textContent=`${qual} qualified · ${part} partial · ${nq} not qualified · ${total-analyzed.length-qual-part-nq} pending`;
     document.getElementById('seg-wrap').style.display='block';
    }
-   if(total>0){
+  if(total>0){
     document.getElementById('dash-recent').style.display='block';
     document.getElementById('dash-rows').innerHTML=cands.filter(c=>c.result).slice(-6).reverse().map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)"><div style="display:flex;gap:7px;align-items:center"><div class="ava" style="width:24px;height:24px;font-size:9px">${ini(c.name)}</div><div><div style="font-size:12px;font-weight:500;color:var(--t1)">${c.name}</div><div style="font-size:10px;color:var(--t3)">${c.pos}</div></div></div><span class="pill ${pc(c.result.overallVerdict)}" style="font-size:10px">${pl(c.result.overallVerdict)}</span></div>`).join('');
+    const brief=document.getElementById('committee-brief');
+    if(brief)brief.style.display=sl?'block':'none';
    }
   }
 
@@ -757,7 +763,20 @@ criteria exactly: UG Qualification,PG Qualification,First Class,PhD Degree,Teach
   function pl(v){return{QUALIFIED:'Qualified',PARTIALLY_QUALIFIED:'Partial',NOT_QUALIFIED:'Not qualified',NEEDS_REVIEW:'Review'}[v]||v}
   function bc(s){return s>=70?'bhi':s>=40?'bmd':'blo'}
 
-  function sendPrompt(msg){alert('Prompt generated: '+msg)}
+  function esc(value){return String(value||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+
+  async function generateCommitteeBrief(){
+   const shortlisted=cands.filter(c=>c.sl&&c.result);
+   if(!shortlisted.length){alert('Shortlist at least one analyzed candidate first.');return;}
+   const body=document.getElementById('committee-brief-body');
+   body.innerHTML='<div class="pulsing"><span></span><span></span><span></span></div> Building committee brief from shortlist evidence...';
+   try{
+    const response=await fetch('/upload-portal/committee-brief',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({candidates:shortlisted})});
+    const data=await response.json();
+    if(!response.ok)throw new Error(data.error||'Unable to generate brief');
+    body.innerHTML=`<div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:8px">${esc(data.headline)}</div><div style="color:var(--t2);line-height:1.7;margin-bottom:12px">${esc(data.recommendation)}</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px"><div><div style="font-size:10px;color:var(--grn2);font-weight:700;text-transform:uppercase;margin-bottom:5px">Committee priorities</div>${(data.priorities||[]).map(item=>`<div style="font-size:11px;color:var(--t2);padding:4px 0">• ${esc(item)}</div>`).join('')}</div><div><div style="font-size:10px;color:var(--amb2);font-weight:700;text-transform:uppercase;margin-bottom:5px">Risk watch</div>${(data.risks||[]).map(item=>`<div style="font-size:11px;color:var(--t2);padding:4px 0">• ${esc(item)}</div>`).join('')||'<div style="font-size:11px;color:var(--t3)">No additional risks surfaced.</div>'}</div></div><div style="font-size:10px;color:var(--t3);margin-top:10px">Generated by ${esc(data.generatedBy||'cloud AI')}</div>`;
+   }catch(error){body.textContent=error.message||'Unable to generate brief.';}
+  }
 
   document.addEventListener('DOMContentLoaded',()=>{go('dash');sync();});
  </script>

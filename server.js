@@ -1826,6 +1826,59 @@ app.get('/upload-portal/backups', verifyToken, (req, res) => {
   });
 });
 
+app.post('/upload-portal/committee-brief', verifyToken, async (req, res) => {
+  if (req.user.role !== 'hr') return res.status(403).send('Access denied');
+  const candidates = Array.isArray(req.body.candidates) ? req.body.candidates : [];
+  const shortlist = candidates.filter((candidate) => candidate && candidate.result && candidate.sl).slice(0, 12);
+  if (!shortlist.length) return res.status(400).json({ error: 'Shortlist at least one analyzed candidate first' });
+
+  const fallback = {
+    headline: `${shortlist.length} shortlisted candidate${shortlist.length === 1 ? '' : 's'} ready for committee review.`,
+    recommendation: 'Use the composite score as a screening aid, then validate documents, references, and role-specific AICTE requirements before making a final decision.',
+    priorities: shortlist.slice(0, 3).map((candidate) => `${candidate.name}: confirm ${candidate.result.gaps?.[0] || 'the strongest evidence in the resume'}.`),
+    risks: shortlist.flatMap((candidate) => (candidate.result.riskFactors || []).slice(0, 1)).slice(0, 4),
+    generatedBy: openaiClient ? 'Cloud AI fallback' : 'Local screening engine'
+  };
+
+  if (!openaiClient) return res.json(fallback);
+
+  try {
+    const roster = shortlist.map((candidate) => ({
+      name: candidate.name,
+      position: candidate.pos,
+      compliance: candidate.result.complianceScore,
+      suitability: candidate.result.suitabilityScore,
+      verdict: candidate.result.overallVerdict,
+      strengths: (candidate.result.strengths || []).slice(0, 3),
+      gaps: (candidate.result.gaps || []).slice(0, 3),
+      risks: (candidate.result.riskFactors || []).slice(0, 2)
+    }));
+    const response = await openaiClient.chat.completions.create({
+      model: AI_MODEL,
+      messages: [{
+        role: 'system',
+        content: 'You are an academic hiring committee chair. Return valid JSON only. Do not invent facts and clearly frame this as decision support, not an automated hiring decision.'
+      }, {
+        role: 'user',
+        content: `Create a concise committee brief from this analyzed shortlist. Return exactly: headline (one sentence), recommendation (2 sentences), priorities (3 concise strings), risks (up to 4 concise strings). Use only the supplied evidence. Shortlist: ${JSON.stringify(roster)}`
+      }],
+      max_tokens: 450,
+      response_format: { type: 'json_object' }
+    });
+    const parsed = JSON.parse(String(response.choices?.[0]?.message?.content || '{}'));
+    return res.json({
+      headline: String(parsed.headline || fallback.headline),
+      recommendation: String(parsed.recommendation || fallback.recommendation),
+      priorities: Array.isArray(parsed.priorities) && parsed.priorities.length ? parsed.priorities.map(String).slice(0, 3) : fallback.priorities,
+      risks: Array.isArray(parsed.risks) ? parsed.risks.map(String).slice(0, 4) : fallback.risks,
+      generatedBy: 'OpenAI cloud AI'
+    });
+  } catch (error) {
+    console.log('Committee brief generation failed, using local fallback:', error.message);
+    return res.json(fallback);
+  }
+});
+
 app.get('/office/shortlisted', verifyToken, (req, res) => {
   if (req.user.role !== 'hr') return res.status(403).send('Access denied');
   db.all(`SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email, u.resume_path, u.resume_review_status
