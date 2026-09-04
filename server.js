@@ -2250,10 +2250,12 @@ app.get('/hr/export', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
 });
 
 app.get('/shortlisted', verifyToken, requireRoles('admin', 'hr'), (req, res) => {
-  db.all(`SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email, u.resume_path, u.resume_review_status
+  db.all(`SELECT a.*, j.title as job_title, j.university, j.location, u.name as candidate_name, u.email as candidate_email, u.resume_path, u.resume_review_status,
+                 m.id as meeting_id, m.scheduled_at as meeting_scheduled_at, m.platform as meeting_platform, m.meeting_link, m.status as meeting_status
           FROM applications a
           JOIN jobs j ON a.job_id = j.id
           JOIN users u ON a.user_id = u.id
+          LEFT JOIN meetings m ON m.application_id = a.id
           WHERE a.status = 'shortlisted' OR u.resume_review_status = 'shortlisted'
           ORDER BY a.applied_at DESC`, [], (err, applications) => {
     if (err) return res.status(500).send('Error');
@@ -2280,6 +2282,19 @@ app.get('/shortlisted', verifyToken, requireRoles('admin', 'hr'), (req, res) => 
       resumeTraining,
       cloudAiSummary: aiScreening.summary || 'Cloud AI shortlist review ready.'
     });
+  });
+});
+
+app.post('/api/shortlisted/:id/interview-plan', verifyToken, requireRoles('admin', 'hr'), async (req, res) => {
+  db.get(`SELECT a.*, j.title as job_title, j.university, j.location, j.category, u.name as candidate_name, u.email as candidate_email
+          FROM applications a
+          JOIN jobs j ON a.job_id = j.id
+          JOIN users u ON a.user_id = u.id
+          WHERE a.id = ? AND (a.status = 'shortlisted' OR u.resume_review_status = 'shortlisted')`, [req.params.id], async (err, application) => {
+    if (err) return res.status(500).json({ error: 'Unable to load shortlisted application' });
+    if (!application) return res.status(404).json({ error: 'Shortlisted application not found' });
+    const plan = await generateInterviewMeetingPlan(application);
+    res.json({ plan });
   });
 });
 
@@ -3224,6 +3239,66 @@ async function generateUniversityJobRequirements({ title, university, category, 
   return fallback;
 }
 
+function buildInterviewMeetingPlan(application = {}) {
+  const candidateName = String(application.candidate_name || 'the candidate').trim();
+  const role = String(application.job_title || 'faculty role').trim();
+  const discipline = String(application.category || 'academic').trim();
+  const score = Number(application.resume_scan_score || 0);
+  const focusAreas = String(application.resume_scan_report || '').toLowerCase().includes('teaching')
+    ? ['teaching impact and course ownership', 'research outcomes and future plans', 'fit with the department and institution']
+    : ['research outcomes and future plans', 'teaching approach and student support', 'fit with the department and institution'];
+
+  return {
+    title: `Cloud AI interview plan for ${candidateName}`,
+    summary: `${candidateName} is shortlisted for ${role}. Use a structured panel to validate academic impact, teaching readiness, and role fit against the resume evidence${score ? ` (resume score ${score}%)` : ''}.`,
+    durationMinutes: 45,
+    agenda: [
+      { minutes: 5, topic: 'Welcome and candidate context' },
+      { minutes: 15, topic: 'Research, publications, and subject expertise' },
+      { minutes: 15, topic: 'Teaching practice, curriculum design, and mentoring' },
+      { minutes: 10, topic: 'Institution fit, availability, and candidate questions' }
+    ],
+    questions: [
+      `What would be your first-year research and teaching priorities as ${role}?`,
+      `Describe one measurable outcome from your work in ${discipline}.`,
+      'How would you support diverse learners and improve student outcomes?',
+      `Which evidence from your resume best supports your fit for ${role}?`
+    ],
+    focusAreas,
+    generatedBy: 'Local interview planning fallback'
+  };
+}
+
+async function generateInterviewMeetingPlan(application = {}) {
+  const fallback = buildInterviewMeetingPlan(application);
+  if (!openaiClient) return fallback;
+
+  try {
+    const prompt = `Create a concise faculty interview plan from this shortlisted application. Return valid JSON only with exactly these keys: title, summary, durationMinutes, agenda, questions, focusAreas. agenda must be an array of objects with minutes and topic. questions and focusAreas must be arrays of concise strings. Use only the supplied evidence and do not invent achievements. Candidate: ${application.candidate_name || 'Candidate'}; role: ${application.job_title || 'Faculty role'}; university: ${application.university || 'University'}; resume score: ${application.resume_scan_score || 'not available'}; AICTE status: ${application.resume_aicte_status || 'not available'}; screening report: ${application.resume_scan_report || 'not available'}`;
+    const response = await openaiClient.chat.completions.create({
+      model: AI_MODEL,
+      messages: [{ role: 'system', content: 'You are a senior academic hiring panel coordinator.' }, { role: 'user', content: prompt }],
+      max_tokens: 500,
+      response_format: { type: 'json_object' }
+    });
+    const text = String(response.choices?.[0]?.message?.content || '').trim();
+    const parsed = JSON.parse(text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim());
+    if (!parsed || typeof parsed !== 'object') return fallback;
+    return {
+      title: String(parsed.title || fallback.title),
+      summary: String(parsed.summary || fallback.summary),
+      durationMinutes: Number(parsed.durationMinutes || fallback.durationMinutes),
+      agenda: Array.isArray(parsed.agenda) && parsed.agenda.length ? parsed.agenda.slice(0, 6).map(item => ({ minutes: Number(item.minutes || 5), topic: String(item.topic || 'Panel discussion') })) : fallback.agenda,
+      questions: Array.isArray(parsed.questions) && parsed.questions.length ? parsed.questions.slice(0, 6).map(String) : fallback.questions,
+      focusAreas: Array.isArray(parsed.focusAreas) && parsed.focusAreas.length ? parsed.focusAreas.slice(0, 5).map(String) : fallback.focusAreas,
+      generatedBy: 'Cloud AI'
+    };
+  } catch (error) {
+    console.log('Cloud AI interview plan generation failed, using fallback:', error.message);
+    return fallback;
+  }
+}
+
 function buildResumeTrainingCards({ applications = [] } = {}) {
   const list = Array.isArray(applications) ? applications : [];
 
@@ -3973,6 +4048,8 @@ module.exports = {
   buildExternalJobSearchUrl,
   buildUniversityJobRequirements,
   generateUniversityJobRequirements,
+  buildInterviewMeetingPlan,
+  generateInterviewMeetingPlan,
   buildUniversityForwardLink
 };
 
