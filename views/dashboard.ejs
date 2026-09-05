@@ -722,29 +722,6 @@
   });
  </script>
 
- <div class="section" style="margin-top: 3rem; margin-bottom: 3rem;">
-  <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;"><i class="fas fa-star"></i> recommendations</h2>
-  <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-   <% if (recommendations && recommendations.length) { %>
-    <% recommendations.slice(0, 3).forEach(job => { %>
-     <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
-      <h4 style="color: #04AA6D; margin-top: 0;"><%= job.title %></h4>
-      <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-school"></i> <%= job.university %></p>
-      <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-map-marker-alt"></i> <%= job.location %></p>
-      <p style="font-weight: 600; margin: 1rem 0; color: #04AA6D;"><i class="fas fa-indian-rupee"></i> <%= job.salary %></p>
-      <a href="/job/<%= job.id %>" class="btn btn-primary" style="width: 100%; text-decoration: none; text-align: center;"><i class="fas fa-arrow-right"></i> View details</a>
-     </div>
-    <% }); %>
-   <% } else { %>
-    <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow-md); border-left: 4px solid #04AA6D;">
-     <h4 style="color: #04AA6D; margin-top: 0;">Profile optimization</h4>
-     <p style="margin: 0.5rem 0; color: #666;"><i class="fas fa-user-check"></i> Improve your research profile to unlock more relevant roles.</p>
-     <p style="font-weight: 600; margin: 1rem 0; color: #04AA6D;"><i class="fas fa-brain"></i> AI suggests a stronger academic positioning.</p>
-     <a href="/profile" class="btn btn-primary" style="width: 100%; text-decoration: none; text-align: center;"><i class="fas fa-arrow-right"></i> Update profile</a>
-    </div>
-   <% } %>
-  </div>
- </div>
 </div>
 
 <!-- RESUME UPLOAD MODAL -->
